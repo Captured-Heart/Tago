@@ -1,0 +1,30 @@
+name: tago
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.3.6
+  flutter_screenutil: ^5.7.0
+  shared_preferences: ^2.2.0
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+  fonts:
+    - family: BR Firma
+      fonts:
+        - asset: BR_firma_font/BRFirma-Bold.ttf
+        - asset: BR_firma_font/BRFirma-Medium.ttf
