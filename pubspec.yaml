@@ -24,7 +24,15 @@ flutter:
   assets:
     - assets/images/
   fonts:
-    - family: BR Firma
+    - family: Firma_Bold
       fonts:
         - asset: BR_firma_font/BRFirma-Bold.ttf
+        - asset: BR_firma_font/BRFirma-Black.ttf
+    - family: Firma_Normal
+      fonts:
+        - asset: BR_firma_font/BRFirma-Regular.ttf
         - asset: BR_firma_font/BRFirma-Medium.ttf
+    - family: Firma_Light
+      fonts:
+        - asset: BR_firma_font/BRFirma-Light.ttf
+        - asset: BR_firma_font/BRFirma-Thin.ttf

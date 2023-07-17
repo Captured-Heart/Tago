@@ -5,9 +5,9 @@ class TagoLight {
   static const Color textBold = Color(0xff14251B);
   static const Color textLight = Color(0xff768E7E);
   static const Color textHint = Color(0xFFBCC8C0);
-  static const Color textError = Color(0xFF222222);
-
+  static const Color textError = Color(0xFFBE2D2D);
   //widgets
+  static const Color textFieldBorder = Color(0xFFE5EAE7);
 
 //background
   static const Color scaffoldBackgroundColor = Color(0xFFffffff);

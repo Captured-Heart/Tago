@@ -29,6 +29,30 @@ extension PaddingExtension on Widget {
   }
 }
 
+extension ColumnChildrenSpacing on List<Widget> {
+  List<Widget> columnInPadding(double height) {
+    return expand(
+      (element) => [
+        element,
+        SizedBox(
+          height: height,
+        )
+      ],
+    ).toList();
+  }
+
+  List<Widget> rowInPadding(double width) {
+    return expand(
+      (element) => [
+        element,
+        SizedBox(
+          width: width,
+        )
+      ],
+    ).toList();
+  }
+}
+
 extension MediaQuerySizeExtension on BuildContext {
   double sizeWidth(double w) {
     return MediaQuery.of(this).size.width * w;

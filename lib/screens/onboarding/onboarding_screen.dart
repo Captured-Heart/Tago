@@ -1,4 +1,6 @@
 import 'package:tago/app.dart';
+import 'package:tago/screens/onboarding/sign_in_screen.dart';
+import 'package:tago/screens/onboarding/sign_up_screen.dart';
 
 class OnBoardScreen extends StatelessWidget {
   static const String routeName = 'Onboard';
@@ -33,7 +35,7 @@ class OnBoardScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(40)),
+                    borderRadius: const BorderRadius.all(Radius.circular(40)),
                     child: Image.asset(
                       logoMedium,
                       height: 37,
@@ -43,7 +45,7 @@ class OnBoardScreen extends StatelessWidget {
                   Text(
                     TextConstant.title.toLowerCase(),
                     style: const TextStyle(
-                      fontFamily: TextConstant.fontFamily,
+                      fontFamily: TextConstant.fontFamilyBold,
                       color: Colors.white,
                       fontWeight: AppFontWeight.w700,
                       fontSize: 32,
@@ -62,31 +64,32 @@ in minutes,
 right to you''',
                     style: TextStyle(
                       fontSize: 32,
+                      fontFamily: TextConstant.fontFamilyBold,
                       fontWeight: AppFontWeight.w700,
                       color: Colors.white,
                     ),
                     textAlign: TextAlign.left,
                   ).padOnly(bottom: 30),
 
-                  
+                  //Buttons
                   SizedBox(
                     width: context.sizeWidth(1),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        pushNamed(context, SignUpScreen.routeName);
+                      },
                       child: const Text(
                         TextConstant.createAcct,
-                        style: TextStyle(
-                          fontWeight: AppFontWeight.w700,
-                          fontSize: 16,
-                          fontFamily: TextConstant.fontFamily,
-                        ),
                       ),
                     ),
                   ).padOnly(bottom: 10),
+                  //
                   SizedBox(
                     width: context.sizeWidth(1),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        pushNamed(context, SignInScreen.routeName);
+                      },
                       style: TextButton.styleFrom(
                         side: BorderSide(
                           color: context.theme.scaffoldBackgroundColor,
@@ -97,14 +100,9 @@ right to you''',
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         TextConstant.signIn,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: AppFontWeight.w700,
-                          fontSize: 16,
-                          fontFamily: TextConstant.fontFamily,
-                        ),
+                        style: AppTextStyle.buttonTextTextstyleLight,
                       ),
                     ),
                   ),

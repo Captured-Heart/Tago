@@ -7,8 +7,22 @@ export 'package:tago/utils/shared_prefs.dart';
 
 //UTILS
 export 'utils/app_provider_observer.dart';
+export '../utils/navigation.dart';
+
 
 //CONSTANTS
 export 'package:tago/constants/image_constants.dart';
 export 'package:tago/theme/app_fontweight.dart';
 export 'package:tago/utils/extensions/padding.dart';
+
+//THEMES
+export 'package:tago/theme/app_textstyles.dart';
+export 'package:tago/theme/brand_theme_color.dart';
+
+//WIDGETS
+export 'package:tago/widgets/appbar_widget.dart';
+export 'package:tago/widgets/auth_textfield_with_error.dart';
+
+//! SCREENS
+export 'package:tago/screens/onboarding/confirm_phone_screen.dart';
+

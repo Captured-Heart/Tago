@@ -1,4 +1,9 @@
-import 'package:tago/screens/onboarding/onboarding.dart';
+import 'package:tago/screens/onboarding/add_address_manually.dart';
+import 'package:tago/screens/onboarding/add_address_screen.dart';
+import 'package:tago/screens/onboarding/confirm_phone_screen.dart';
+import 'package:tago/screens/onboarding/onboarding_screen.dart';
+import 'package:tago/screens/onboarding/sign_in_screen.dart';
+import 'package:tago/screens/onboarding/sign_up_screen.dart';
 import 'package:tago/theme/app_theme.dart';
 
 import 'app.dart';
@@ -37,7 +42,16 @@ class MainApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case OnBoardScreen.routeName:
                     return const OnBoardScreen();
-
+                  case SignUpScreen.routeName:
+                    return const SignUpScreen();
+                  case SignInScreen.routeName:
+                    return const SignInScreen();
+                  case ConfirmPhoneNumberScreen.routeName:
+                    return const ConfirmPhoneNumberScreen();
+                  case AddAddressScreen.routeName:
+                    return const AddAddressScreen();
+                  case AddAddressManuallyScreen.routeName:
+                    return const AddAddressManuallyScreen();
                   default:
                     return const OnBoardScreen();
                 }
