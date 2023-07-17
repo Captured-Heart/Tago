@@ -64,9 +64,7 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
           SizedBox(
             width: context.sizeWidth(1),
             child: ElevatedButton(
-              onPressed: () {
-                pushNamed(context, ConfirmPhoneNumberScreen.routeName);
-              },
+              onPressed: () {},
               child: const Text(TextConstant.signIn),
             ),
           ).padSymmetric(vertical: 10),
