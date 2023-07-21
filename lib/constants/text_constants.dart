@@ -64,4 +64,55 @@ abstract class TextConstant {
   static const resetsuccessful = 'Reset Successful';
   static const passwordresetsuccesful = 'Password reset successfully';
   static const proceedtosignin = 'Proceed to sign in with your new password';
+
+//HOME PAGE
+  static const whatdoYouNeedToday = 'What do you need today?';
+  static const activeOrderstatus = 'Active Order Status';
+  static const remainingTime = 'Remaining Time';
+  static const viewOrderdetails = 'View Order Details';
+  static const pickedup = 'Picked Up';
+  static const deliverto = 'Deliver to';
+  static const edit = 'Edit';
+  static const hotdeals = 'Hot Deals';
+  static const upto33percent = 'Up to 33% Off Flash Sales! Hurry!';
+  static const getupto33percent =
+      'Get up to 33% off all electronics on Tago in our mid year clearance sales on all Electronics ';
+  static const shopelectronics = 'Shop Electronics';
+  static const categories = 'Categories';
+  static const seeall = 'See All';
+  static const itemsNearYou = 'Items near you';
+  static const recentlyViewed = 'Recently Viewed';
+
+  //CATEGORIES
+  static const fruitsAndveg = 'Fruits & Vegetables';
+  static const dairyProducts = 'Dairy Products';
+  static const meatAndSeafood = 'Meat & Seafood';
+  static const healthAndwellness = 'Health & Wellness';
+  static const electronics = 'Electronics';
+  static const gamesAndtoys = 'Games & Toys';
+  static const homeEssential = 'Home Essentials';
+  static const babyCare = 'Baby Care Products';
+  static const officeSupplies = 'Office Supplies';
+
+  //FRUITS AND VEGETABLES SCREEN
+  static const searchInFruitsAndVeg = 'Search in Fruits & Vegetables';
+  static const chooseSubCategory = 'Choose sub-category';
+  static const freshVeg = 'Fresh Vegetables';
+  static const packagedFruitsAndveg = 'Packaged Fruits & Veg.';
+  static const allFruitsAndVegetables = 'All Fruits & Vegetables';
+  static const freeDelivery = 'Free delivery';
+  // static const seeall = 'See All';
+
 }
+
+const List categoriesFooters = [
+  'Fruits & Vegetables',
+  'Dairy Products',
+  'Meat & Seafood',
+  'Health & Wellness',
+  'Electronics',
+  'Games & Toys',
+  'Home Essentials',
+  'Baby Care Products',
+  'Office Supplies',
+];

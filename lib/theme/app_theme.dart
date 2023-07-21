@@ -8,6 +8,7 @@ final lightTheme = ThemeData(
 
   appBarTheme: const AppBarTheme(
     backgroundColor: TagoLight.scaffoldBackgroundColor,
+    foregroundColor: TagoDark.textBold,
     // titleTextStyle: AppTextStyle().appBarTextStyleLight,
     shape: InputBorder.none,
   ),
@@ -53,6 +54,7 @@ final lightTheme = ThemeData(
       textStyle: const TextStyle(
         fontWeight: AppFontWeight.w700,
         fontSize: 12,
+        fontFamily: TextConstant.fontFamilyNormal,
       ),
       foregroundColor: TagoDark.primaryColor,
     ),

@@ -1,4 +1,4 @@
-import 'package:tago/screens/onboarding/confirm_phone_screen.dart';
+import 'package:tago/screens/onboarding/sign_in_screen.dart';
 
 import '../../app.dart';
 
@@ -70,12 +70,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               Text(
                 TextConstant.alreadyhaveacct,
                 style: context.theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: AppFontWeight.w700,
-                  color: TagoLight.textBold
-                ),
+                    fontWeight: AppFontWeight.w700, color: TagoLight.textBold),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  pushReplaceNamed(context, SignInScreen.routeName);
+                },
                 child: const Text(TextConstant.signIn),
               )
             ],

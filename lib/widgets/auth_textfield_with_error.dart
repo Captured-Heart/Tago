@@ -15,6 +15,8 @@ Widget authTextFieldWithError({
   VoidCallback? onTap,
   Widget? prefixIcon,
   required bool isError,
+  bool? filled,
+  Color? fillColor,
 }) {
   return Column(children: [
     TextField(
@@ -29,7 +31,10 @@ Widget authTextFieldWithError({
           [FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))],
       decoration: InputDecoration(
         hintText: hintText,
+        
         prefixIcon: prefixIcon,
+        fillColor: fillColor,
+        filled: filled,
         hintStyle: AppTextStyle.hintTextStyleLight,
         suffixIconColor: TagoLight.textFieldBorder,
         prefixIconColor: TagoLight.textFieldBorder,

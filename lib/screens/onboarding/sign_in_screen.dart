@@ -1,4 +1,6 @@
+import 'package:tago/screens/home/home_screen.dart';
 import 'package:tago/screens/onboarding/forgot_password_screen.dart';
+import 'package:tago/screens/onboarding/sign_up_screen.dart';
 
 import '../../app.dart';
 
@@ -64,7 +66,12 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
           SizedBox(
             width: context.sizeWidth(1),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                push(
+                  context,
+                  const HomeScreen(),
+                );
+              },
               child: const Text(TextConstant.signIn),
             ),
           ).padSymmetric(vertical: 10),
@@ -76,7 +83,9 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                 style: AppTextStyle.normalBodyTitle,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  pushReplaceNamed(context, SignUpScreen.routeName);
+                },
                 child: const Text(TextConstant.signup),
               )
             ],

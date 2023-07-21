@@ -1,3 +1,5 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tago/screens/onboarding/add_address_manually.dart';
 import 'package:tago/screens/onboarding/add_address_screen.dart';
 import 'package:tago/screens/onboarding/confirm_phone_screen.dart';
@@ -15,10 +17,17 @@ void main() async {
     // This observer is used for logging changes in all Riverpod providers.
     observers: <ProviderObserver>[AppProviderObserver()],
   );
-  runApp(UncontrolledProviderScope(
-    container: container,
-    child: const MainApp(),
-  ));
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: 
+      const MainApp(),
+      // DevicePreview(
+      //   enabled: kReleaseMode,
+      //   builder: (context) => const MainApp(),
+      // ),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -32,6 +41,8 @@ class MainApp extends StatelessWidget {
         return MaterialApp(
           onGenerateTitle: (context) => TextConstant.title,
           restorationScopeId: 'app',
+          // useInheritedMediaQuery: true,
+          // builder: DevicePreview.appBuilder,
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           home: const OnBoardScreen(),

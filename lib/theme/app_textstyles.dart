@@ -25,12 +25,12 @@ class AppTextStyle {
   static TextStyle listTileSubtitleLight = const TextStyle(
     fontWeight: AppFontWeight.w400,
     fontSize: 12,
-    fontFamily: TextConstant.fontFamilyLight,
+    fontFamily: TextConstant.fontFamilyNormal,
   );
   static TextStyle hintTextStyleLight = const TextStyle(
     fontWeight: AppFontWeight.w400,
     fontSize: 12,
-    fontFamily: TextConstant.fontFamilyLight,
+    fontFamily: TextConstant.fontFamilyNormal,
     color: TagoLight.textHint,
   );
   static TextStyle normalBodyText = const TextStyle(
