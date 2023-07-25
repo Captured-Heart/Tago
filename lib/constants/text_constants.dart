@@ -79,6 +79,8 @@ abstract class TextConstant {
       'Get up to 33% off all electronics on Tago in our mid year clearance sales on all Electronics ';
   static const shopelectronics = 'Shop Electronics';
   static const categories = 'Categories';
+  static const allcategories = 'All Categories';
+
   static const seeall = 'See All';
   static const itemsNearYou = 'Items near you';
   static const recentlyViewed = 'Recently Viewed';
@@ -101,7 +103,23 @@ abstract class TextConstant {
   static const packagedFruitsAndveg = 'Packaged Fruits & Veg.';
   static const allFruitsAndVegetables = 'All Fruits & Vegetables';
   static const freeDelivery = 'Free delivery';
-  // static const seeall = 'See All';
+
+  //DRAWER
+  static const notifications = 'Notifications';
+  static const wishlist = 'Wishlist';
+  static const referandEarn = 'Refer & Earn';
+  static const vouchers = 'Vouchers';
+  static const logOut = 'Log out';
+
+//ORDERS SCREEN
+  static const serachYourOrders = 'Search Your Orders';
+  static const activeOrders = 'Active Orders';
+  static const completedOrders = 'Completed Orders';
+  static const inTransit = 'In Transit';
+  static const processing = 'Processing';
+  static const orderID = 'Order ID';
+
+
 
 }
 
@@ -111,6 +129,41 @@ const List categoriesFooters = [
   'Meat & Seafood',
   'Health & Wellness',
   'Electronics',
+  'Games & Toys',
+  'Home Essentials',
+  'Baby Care Products',
+  'Office Supplies',
+  //
+  'Electronics',
+  'Games & Toys',
+  'Home Essentials',
+  'Baby Care Products',
+  'Office Supplies', 'Electronics',
+  'Games & Toys',
+  'Home Essentials',
+  'Baby Care Products',
+  'Office Supplies', 'Electronics',
+  'Games & Toys',
+  'Home Essentials',
+  'Baby Care Products',
+  'Office Supplies', 'Electronics',
+  'Games & Toys',
+  'Home Essentials',
+  'Baby Care Products',
+  'Office Supplies', 'Electronics',
+  'Games & Toys',
+  'Home Essentials',
+  'Baby Care Products',
+  'Office Supplies',
+  'Electronics',
+  'Games & Toys',
+  'Home Essentials',
+  'Baby Care Products',
+  'Office Supplies', 'Electronics',
+  'Games & Toys',
+  'Home Essentials',
+  'Baby Care Products',
+  'Office Supplies', 'Electronics',
   'Games & Toys',
   'Home Essentials',
   'Baby Care Products',

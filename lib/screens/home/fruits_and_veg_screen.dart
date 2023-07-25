@@ -1,7 +1,7 @@
 import 'package:tago/app.dart';
-import 'package:tago/utils/extensions/debug_frame.dart';
 
 import '../../widgets/category_card.dart';
+import '../../widgets/fruits_veggies_card.dart';
 
 class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
   const FruitsAndVegetablesScreen({super.key});
@@ -13,6 +13,9 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
 
 class _FruitsAndVegetablesScreenState
     extends ConsumerState<FruitsAndVegetablesScreen> {
+  //
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,13 +54,15 @@ class _FruitsAndVegetablesScreenState
               alignment: WrapAlignment.start,
               crossAxisAlignment: WrapCrossAlignment.start,
               children: List.generate(
-                categoriesFrame.length - 5,
+                categoriesFrame.length - 19,
                 growable: true,
                 (index) => GestureDetector(
                   onTap: () {},
                   child: categoryCard(
                     context: context,
                     index: index,
+                    width: context.sizeWidth(0.155),
+                    height: 70,
                   ),
                 ),
               ),
@@ -75,47 +80,26 @@ class _FruitsAndVegetablesScreenState
                 categoriesFrame.length - 1,
                 growable: true,
                 (index) => GestureDetector(
-                    onTap: () {},
-                    child: SizedBox(
-                        width: context.sizeWidth(0.4),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Card(
-                              elevation: 1,
-                              child: Image.asset(
-                                categoriesFrame[index],
-                                height: 140,
-                                width: context.sizeWidth(1),
-                                fit: BoxFit.fill,
-                              ).padOnly(bottom: 4),
-                            ),
-                            Text(
-                              categoriesFooters[index],
-                              textAlign: TextAlign.center,
-                              style:
-                                  context.theme.textTheme.labelMedium?.copyWith(
-                                fontSize: 12,
-                                fontWeight: AppFontWeight.w600,
-                                fontFamily: TextConstant.fontFamilyNormal,
-                              ),
-                            ).padSymmetric(vertical: 8),
-                            Text(
-                              'N1,400',
-                              style: context.theme.textTheme.titleMedium
-                                  ?.copyWith(
-                                      fontFamily: TextConstant.fontFamilyBold,
-                                      fontSize: 12),
-                              textAlign: TextAlign.start,
-                            )
-                          ],
-                        )
-                        // .debugBorder()
-                        )),
+                  onTap: () {},
+                  child: SizedBox(
+                      width: context.sizeWidth(0.4),
+                      child: fruitsAndVeggiesCard(
+                          index: index,
+                          context: context,
+                          isFreeDelivery: true,
+                          indexList: [
+                            0,
+                            1,
+                            4,
+                          ])
+                      // .debugBorder()
+                      ),
+                ),
               ),
             ).padSymmetric(horizontal: 5),
           ].columnInPadding(15)),
     );
   }
+
+  
 }

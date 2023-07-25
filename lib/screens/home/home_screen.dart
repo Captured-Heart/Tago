@@ -1,10 +1,11 @@
-import 'dart:developer';
-
 import 'package:tago/screens/home/fruits_and_veg_screen.dart';
 import 'package:tago/screens/onboarding/onboarding_screen.dart';
+import 'package:tago/screens/orders/orders_screen.dart';
 
 import '../../app.dart';
 import '../../widgets/category_card.dart';
+import '../../widgets/menu_drawer.dart';
+import '../screens.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -25,7 +26,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(),
+      drawer: tagoHomeDrawer(context),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -49,7 +50,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              push(context, OrdersScreen());
+            },
             icon: const Icon(Icons.shopping_cart_outlined),
           )
         ],
@@ -156,7 +159,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   color: TagoDark.primaryColor,
                 ),
                 trailing: TextButton(
-                    onPressed: () {}, child: const Text(TextConstant.edit)),
+                  onPressed: () {},
+                  child: const Text(TextConstant.edit),
+                ),
                 title: Text(
                   '12, Adesemonye Avenue, Ikeja',
                   style: context.theme.textTheme.titleLarge?.copyWith(
@@ -229,7 +234,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               TextConstant.categories,
             ),
             trailing: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                push(
+                  context,
+                  const AllCategoriesScreen(),
+                );
+              },
               child: const Text(TextConstant.seeall),
             ),
           ),
@@ -237,22 +247,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Wrap(
             runSpacing: 20,
             spacing: 10,
-            alignment: WrapAlignment.start,
+            alignment: WrapAlignment.spaceEvenly,
             crossAxisAlignment: WrapCrossAlignment.start,
             children: List.generate(
-              categoriesFrame.length,
+              categoriesFrame.length - 14,
               growable: true,
               (index) => GestureDetector(
                 onTap: () => navigateToCategoryScreen(index),
                 child: categoryCard(
                   context: context,
                   index: index,
+                  width: context.sizeWidth(0.155),
+                  height: 70,
                 ),
               ),
             ),
           ).padSymmetric(horizontal: 15),
 
-          // .debugBorder(),
+//items near you
           ListTile(
             title: const Text(
               TextConstant.itemsNearYou,
@@ -262,27 +274,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: const Text(TextConstant.seeall),
             ),
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Card(
-                elevation: 4,
-                child: Image.asset(
-                  frame2,
-                  height: 70,
-                  width: 100,
-                  fit: BoxFit.fill,
-                ).padOnly(bottom: 4),
-              ),
-              Text(
-                TextConstant.alreadyhaveacct,
-                textAlign: TextAlign.center,
-                style: context.theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: 12,
-                  fontFamily: TextConstant.fontFamilyBold,
-                ),
-              )
-            ],
+
+          SizedBox(
+            height: 220,
+            child: ListView.builder(
+              itemCount: drinkImages.length,
+              shrinkWrap: false,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return SizedBox(
+                  width: context.sizeWidth(0.35),
+                  child: itemsNearYouCard(
+                    index: index,
+                    context: context,
+                  ),
+                );
+              },
+            ),
           ),
           ListTile(
             title: const Text(
@@ -293,9 +302,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: const Text(TextConstant.seeall),
             ),
           ),
+          SizedBox(
+            height: 220,
+            child: ListView.builder(
+              itemCount: drinkImages.length,
+              shrinkWrap: false,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return SizedBox(
+                  width: context.sizeWidth(0.35),
+                  child: itemsNearYouCard(
+                    index: index,
+                    context: context,
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
   }
-
 }

@@ -10,11 +10,10 @@ class TagoLight {
   static const Color textFieldBorder = Color(0xFFE5EAE7);
   static const Color textFieldFilledColor = Color(0xFFF8F9F8);
 
-  
-
 //background
   static const Color scaffoldBackgroundColor = Color(0xFFffffff);
   static const Color primaryColor = Color(0xff2DBE5B);
+  static const Color orange = Color(0xffF28A3E);
 }
 
 class TagoDark {
@@ -31,4 +30,5 @@ class TagoDark {
   //background 1D38E4
   static const Color scaffoldBackgroundColor = Color(0xFFffffff);
   static const Color primaryColor = Color(0xff2DBE5B);
+  static const Color orange = Color(0xffF28A3E);
 }
