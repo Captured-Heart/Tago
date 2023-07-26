@@ -116,8 +116,13 @@ abstract class TextConstant {
   static const activeOrders = 'Active Orders';
   static const completedOrders = 'Completed Orders';
   static const inTransit = 'In Transit';
+  static const cancelled = 'Cancelled';
+  static const delivered = 'Delivered';
   static const processing = 'Processing';
   static const orderID = 'Order ID';
+  static const youHaveNoActiveOrders = 'You have no active orders';
+
+  
 
 
 

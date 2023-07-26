@@ -1,6 +1,12 @@
 import 'package:tago/app.dart';
-import 'package:tago/utils/extensions/debug_frame.dart';
 import 'package:tago/widgets/menu_drawer.dart';
+
+enum OrderStatus {
+  intransit,
+  processing,
+  delivered,
+  cancelled,
+}
 
 class OrdersScreen extends ConsumerStatefulWidget {
   const OrdersScreen({super.key});
@@ -58,22 +64,83 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
           ListView(
             padding: const EdgeInsets.symmetric(vertical: 30),
             children: [
-              activeOrdersCard(imageAsset: logoLarge, context: context),
+              activeOrdersCard(
+                imageAsset: logoLarge,
+                context: context,
+                orderStatus: OrderStatus.cancelled,
+                imageIndex: 1,
+              ),
+              activeOrdersCard(
+                imageAsset: logoLarge,
+                context: context,
+                orderStatus: OrderStatus.delivered,
+                imageIndex: 0,
+              ),
+              activeOrdersCard(
+                imageAsset: logoLarge,
+                context: context,
+                orderStatus: OrderStatus.processing,
+                imageIndex: 4,
+              ),
               // .debugBorder()
             ],
           ),
-          Column(
-            children: [],
+
+          //completed tab
+          ListView(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            children: [
+              Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.receipt,
+                          size: 84,
+                          color: TagoLight.textHint,
+                        ),
+                        Text(
+                          TextConstant.youHaveNoActiveOrders,
+                          style: context.theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: AppFontWeight.w100,
+                            fontFamily: TextConstant.fontFamilyLight,
+                          ),
+                        )
+                      ].columnInPadding(20))
+                  .padOnly(top: context.sizeHeight(0.1))
+            ],
           ),
         ]),
       ),
     );
   }
 
-  Container activeOrdersCard({
-    required BuildContext context,
-    required String imageAsset,
-  }) {
+  Container activeOrdersCard(
+      {required BuildContext context,
+      required String imageAsset,
+      required Enum orderStatus,
+      required int imageIndex}) {
+    getOrderStatusColor(Enum status) {
+      if (status == OrderStatus.cancelled) {
+        return TagoLight.textError;
+      } else if (status == OrderStatus.processing) {
+        return TagoLight.orange;
+      } else {
+        return TagoLight.primaryColor;
+      }
+    }
+
+    getOrderStatusTitle(Enum status) {
+      if (status == OrderStatus.cancelled) {
+        return TextConstant.cancelled;
+      } else if (status == OrderStatus.processing) {
+        return TextConstant.processing;
+      } else if (status == OrderStatus.delivered) {
+        return TextConstant.delivered;
+      } else {
+        return TextConstant.inTransit;
+      }
+    }
+
     return Container(
       // height: 250,
       padding: const EdgeInsets.only(bottom: 15),
@@ -84,11 +151,11 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       ),
       width: double.infinity,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.baseline,
+        crossAxisAlignment: CrossAxisAlignment.center,
         textBaseline: TextBaseline.alphabetic,
         children: [
           Image.asset(
-            drinkImages[4],
+            drinkImages[imageIndex],
             height: 95,
             width: 100,
             fit: BoxFit.fill,
@@ -108,11 +175,13 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                   decoration: BoxDecoration(
-                      color: TagoDark.primaryColor.withOpacity(0.1)),
+                    color: getOrderStatusColor(orderStatus).withOpacity(0.1),
+                  ),
                   child: Text(
-                    TextConstant.inTransit,
+                    // TextConstant.inTransit,
+                    getOrderStatusTitle(orderStatus),
                     style: context.theme.textTheme.bodyLarge
-                        ?.copyWith(color: TagoLight.primaryColor),
+                        ?.copyWith(color: getOrderStatusColor(orderStatus)),
                   ),
                 ),
               ].columnInPadding(8)),

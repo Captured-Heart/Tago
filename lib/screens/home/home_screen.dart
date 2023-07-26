@@ -278,7 +278,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           SizedBox(
             height: 220,
             child: ListView.builder(
-              itemCount: drinkImages.length,
+              itemCount: drinkImages.length - 3,
               shrinkWrap: false,
               padding: const EdgeInsets.symmetric(horizontal: 15),
               scrollDirection: Axis.horizontal,
@@ -305,7 +305,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           SizedBox(
             height: 220,
             child: ListView.builder(
-              itemCount: drinkImages.length,
+              itemCount: drinkImages.length - 3,
               shrinkWrap: false,
               padding: const EdgeInsets.symmetric(horizontal: 15),
               scrollDirection: Axis.horizontal,
