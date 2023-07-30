@@ -1,5 +1,4 @@
 import 'package:tago/screens/home/fruits_and_veg_screen.dart';
-import 'package:tago/screens/home/notification_screen.dart';
 import 'package:tago/screens/onboarding/onboarding_screen.dart';
 import 'package:tago/screens/orders/orders_screen.dart';
 
@@ -52,8 +51,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // push(context, OrdersScreen());
-              push(context, NotificationScreen());
+              push(context, const OrdersScreen());
             },
             icon: const Icon(Icons.shopping_cart_outlined),
           )

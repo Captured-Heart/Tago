@@ -85,7 +85,6 @@ abstract class TextConstant {
   static const itemsNearYou = 'Items near you';
   static const recentlyViewed = 'Recently Viewed';
 
-
   //CATEGORIES
   static const fruitsAndveg = 'Fruits & Vegetables';
   static const dairyProducts = 'Dairy Products';
@@ -108,8 +107,13 @@ abstract class TextConstant {
   //DRAWER
   static const notifications = 'Notifications';
   static const wishlist = 'Wishlist';
+  static const accounts = 'Account';
+  static const myaccounts = 'My Account';
   static const referandEarn = 'Refer & Earn';
   static const vouchers = 'Vouchers';
+  static const myvouchers = 'My Vouchers';
+  static const mywishlist = 'My Wishlist';
+
   static const logOut = 'Log out';
 
 //ORDERS SCREEN
@@ -123,8 +127,29 @@ abstract class TextConstant {
   static const orderID = 'Order ID';
   static const youHaveNoActiveOrders = 'You have no active orders';
 
-  
+  //VOUCHERS SCREEN
+  static const vouchersWillAppear =
+      'Vouchers will appear here when you receive them';
 
+//WISHLIST SCREEN
+  static const addtocart = 'Add to Cart';
+
+  // MY ACCOUNTS SCREEN
+  static const paymentMethods = 'Payment Methods';
+  static const nameonCard = 'Name on Card';
+  static const cardNumber = 'Card Number';
+  static const expiryDate = 'Expiry Date';
+  static const cvv = 'CVV';
+  static const done = 'Done';
+
+  static const savedAddress = 'Saved Addresses';
+  static const savedCards = 'Saved Cards';
+  static const help = 'Help';
+  static const addnewCard = 'Add New Card ';
+  static const firstandlastname = 'First & Last Name';
+  static const mmAndyy = 'MM/YY';
+  static const cardNumberHint = '0000 0000 0000 0000';
+  // static const help = 'Help';
 
 
 }

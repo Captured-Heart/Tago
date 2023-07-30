@@ -3,6 +3,8 @@ const String logoMedium = 'assets/images/logo_medium.png';
 const String logoLarge = 'assets/images/logo_large.png';
 const String addAdressImage = 'assets/images/address_icon.png';
 const String frame2 = 'assets/images/Frame_13.png';
+const String mastercardLogo = 'assets/images/mastercard.png';
+const String visacardLogo = 'assets/images/visacard.png';
 const List categoriesFrame = [
   'assets/images/Frame_3.png',
   'assets/images/Frame_1.png',

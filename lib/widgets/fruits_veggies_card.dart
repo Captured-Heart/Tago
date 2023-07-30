@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/utils/extensions/debug_frame.dart';
 
 Widget getFreeDeliveryDesign(
     List<int> indexList, int index, BuildContext context) {
@@ -48,16 +49,11 @@ Column fruitsAndVeggiesCard({
             Positioned(
               // alignment: Alignment.bottomRight,
               bottom: 10,
-              right: -10,
-              child: SizedBox(
-                height: 30,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                  ),
-                  child: const Icon(Icons.add),
-                ),
+              right: -1,
+              child: addMinusBTN(
+                context: context,
+                onTap: () {},
+                isMinus: false,
               ),
             )
           ],
@@ -81,5 +77,33 @@ Column fruitsAndVeggiesCard({
         textAlign: TextAlign.start,
       )
     ],
+  );
+}
+
+Widget addMinusBTN({
+  bool? isMinus,
+  required BuildContext context,
+  required VoidCallback onTap,
+}) {
+  return ElevatedButton(
+    onPressed: onTap,
+    style: ElevatedButton.styleFrom(
+      shape: const CircleBorder(),
+      elevation: 0,
+      shadowColor: Colors.transparent,
+      visualDensity: VisualDensity.compact,
+      fixedSize: Size.fromRadius(15),
+      minimumSize: const Size.fromRadius(15),
+      padding: EdgeInsets.zero,
+      backgroundColor: isMinus == true
+          ? TagoLight.primaryColor.withOpacity(0.2)
+          : TagoLight.primaryColor,
+    ),
+    child: Icon(
+      isMinus == true ? Icons.remove : Icons.add,
+      color: isMinus == true
+          ? TagoDark.primaryColor
+          : TagoDark.scaffoldBackgroundColor,
+    ),
   );
 }

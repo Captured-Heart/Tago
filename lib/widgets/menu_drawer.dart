@@ -1,15 +1,24 @@
+import 'package:tago/screens/account/my_account_screen.dart';
+import 'package:tago/screens/drawer/notification_screen.dart';
+import 'package:tago/screens/drawer/refer_and_earn.dart';
+import 'package:tago/screens/drawer/vouchers.dart';
+import 'package:tago/screens/drawer/wishlist.dart';
 
 import '../app.dart';
 
 Drawer tagoHomeDrawer(BuildContext context) {
-    return Drawer(
-      child: SafeArea(
-        minimum: EdgeInsets.only(
-          top: context.sizeHeight(0.07),
-        ),
-        child: Column(
-          children: [
-            Row(
+  return Drawer(
+    child: SafeArea(
+      minimum: EdgeInsets.only(
+        top: context.sizeHeight(0.07),
+      ),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: (){
+              push(context, const MyAccountScreen());
+            },
+            child: Row(
                     children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(450),
@@ -25,36 +34,57 @@ Drawer tagoHomeDrawer(BuildContext context) {
             ].rowInPadding(10))
                 .padOnly(bottom: 20)
                 .padSymmetric(horizontal: 20),
-            drawerListTile(
+          ),
+          drawerListTile(
+            context: context,
+            icons: FontAwesomeIcons.bell,
+            title: TextConstant.notifications,
+            onTap: () {
+              pop(context);
+              push(context, const NotificationScreen());
+            },
+          ),
+          drawerListTile(
+            context: context,
+            icons: FontAwesomeIcons.heart,
+            title: TextConstant.wishlist,
+            onTap: () {
+              pop(context);
+              push(context, const WishListScreen());
+            },
+          ),
+          drawerListTile(
+            context: context,
+            icons: FontAwesomeIcons.share,
+            title: TextConstant.referandEarn,
+            onTap: () {
+              pop(context);
+              push(context, const ReferAndEarn());
+            },
+          ),
+          drawerListTile(
+            context: context,
+            icons: Icons.confirmation_num_outlined,
+            title: TextConstant.vouchers,
+            isMaterialIcon: true,
+            onTap: () {
+              pop(context);
+              push(
+                context,
+                const MyVouchers(),
+              );
+            },
+          ),
+          drawerListTile(
               context: context,
-              icons: FontAwesomeIcons.bell,
-              title: TextConstant.notifications,
-            ),
-            drawerListTile(
-              context: context,
-              icons: FontAwesomeIcons.heart,
-              title: TextConstant.wishlist,
-            ),
-            drawerListTile(
-              context: context,
-              icons: FontAwesomeIcons.share,
-              title: TextConstant.referandEarn,
-            ),
-            drawerListTile(
-              context: context,
-              icons: Icons.confirmation_num_outlined,
-              title: TextConstant.vouchers,
-              isMaterialIcon: true,
-            ),
-            drawerListTile(
-                context: context,
-                icons: Icons.logout,
-                title: TextConstant.logOut,
-                iconColor: TagoLight.textError,
-                textStyle: context.theme.textTheme.titleSmall
-                    ?.copyWith(color: TagoLight.textError)),
-          ],
-        ),
+              icons: Icons.logout,
+              title: TextConstant.logOut,
+              onTap: () {},
+              iconColor: TagoLight.textError,
+              textStyle: context.theme.textTheme.titleSmall
+                  ?.copyWith(color: TagoLight.textError)),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
