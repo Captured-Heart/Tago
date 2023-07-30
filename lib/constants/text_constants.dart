@@ -85,6 +85,7 @@ abstract class TextConstant {
   static const itemsNearYou = 'Items near you';
   static const recentlyViewed = 'Recently Viewed';
 
+
   //CATEGORIES
   static const fruitsAndveg = 'Fruits & Vegetables';
   static const dairyProducts = 'Dairy Products';

@@ -146,7 +146,11 @@ TextTheme _lightTextTheme(TextTheme base) {
       color: TagoLight.textBold,
       fontFamily: TextConstant.fontFamilyNormal,
     ),
-
+    titleSmall: AppTextStyle.listTileTitleLight.copyWith(
+      color: TagoLight.textBold,
+      fontFamily: TextConstant.fontFamilyNormal,
+      fontSize: 12,
+    ),
     // the text in [month, year] of showDatePicker
     // headlineSmall:
 
