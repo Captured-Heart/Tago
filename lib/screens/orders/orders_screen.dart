@@ -21,45 +21,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        drawer: tagoHomeDrawer(context),
-        appBar: AppBar(
-          leading: Builder(builder: (context) {
-            return IconButton(
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              icon: const Icon(
-                Icons.menu,
-              ),
-            );
-          }),
-          title: authTextFieldWithError(
-            controller: TextEditingController(),
-            context: context,
-            isError: false,
-            filled: true,
-            hintText: TextConstant.searchInFruitsAndVeg,
-            prefixIcon: const Icon(Icons.search),
-            fillColor: TagoLight.textFieldFilledColor,
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.shopping_cart_outlined),
-            )
-          ],
-          bottom: TabBar(
-            indicatorWeight: 4,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorColor: TagoDark.primaryColor,
-            labelStyle: context.theme.textTheme.titleMedium,
-            unselectedLabelStyle: context.theme.textTheme.titleSmall,
-            tabs: const [
-              Tab(text: 'Active Orders'),
-              Tab(text: 'Completed Orders'),
-            ],
-          ),
-        ),
+        // drawer: tagoHomeDrawer(context),
+        appBar: ordersAppbar(context),
         body: TabBarView(children: [
           ListView(
             padding: const EdgeInsets.symmetric(vertical: 30),
@@ -93,7 +56,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
               Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           FontAwesomeIcons.receipt,
                           size: 84,
                           color: TagoLight.textHint,
@@ -143,7 +106,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
 
     return Container(
       // height: 250,
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 0.1),
@@ -164,7 +127,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  drinkTitle.values.map((e) => e).toList()[0],
+                  drinkTitle[0],
                   style: context.theme.textTheme.titleMedium
                       ?.copyWith(fontWeight: AppFontWeight.w300),
                 ).padOnly(bottom: 5),

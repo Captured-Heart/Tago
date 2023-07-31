@@ -1,10 +1,6 @@
-import 'package:flutter/material.dart';
-
-
-
-
-
 //pushNamed
+import 'package:tago/app.dart';
+
 void pushNamed(BuildContext context, String routeName, {Object? args}) =>
     Navigator.pushNamed(context, routeName, arguments: args);
 
@@ -34,13 +30,16 @@ void pushReplacementOnRootNav(BuildContext context, Widget child) =>
     Navigator.of(context, rootNavigator: true)
         .pushReplacement(MaterialPageRoute(builder: (context) => child));
 
-// void navBarPush({
-//   required BuildContext context,
-//   required Widget child,
-//   required bool withNavBar,
-// }) =>
-//     PersistentNavBarNavigator.pushNewScreen(
-//       context,
-//       screen: child,
-//       withNavBar: withNavBar,
-//       pageTransitionAnimation: PageTransitionAnimation.cupertino,
+void navBarPush({
+  required BuildContext context,
+  required Widget screen,
+  required bool withNavBar,
+  PageTransitionAnimation? pageTransitionsAnimation,
+}) =>
+    PersistentNavBarNavigator.pushNewScreen(
+      context,
+      screen: screen,
+      withNavBar: withNavBar,
+      pageTransitionAnimation:
+          pageTransitionsAnimation ?? PageTransitionAnimation.cupertino,
+    );

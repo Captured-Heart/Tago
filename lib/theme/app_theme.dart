@@ -53,7 +53,7 @@ final lightTheme = ThemeData(
     style: TextButton.styleFrom(
       textStyle: const TextStyle(
         fontWeight: AppFontWeight.w700,
-        fontSize: 12,
+        fontSize: 14,
         fontFamily: TextConstant.fontFamilyNormal,
       ),
       foregroundColor: TagoDark.primaryColor,
@@ -135,6 +135,12 @@ TextTheme _lightTextTheme(TextTheme base) {
     //for errors in textfield
     labelSmall: AppTextStyle.errorTextTextstyle.copyWith(
       color: TagoLight.textError,
+    ),
+    //
+    labelMedium: AppTextStyle.normalBodyTitle.copyWith(
+      color: TagoDark.textBold,
+      fontWeight: FontWeight.w500,
+      fontFamily: TextConstant.fontFamilyNormal,
     ),
     // the text in Appbar and dialogs
     titleLarge: AppTextStyle.appBarTextStyleLight.copyWith(

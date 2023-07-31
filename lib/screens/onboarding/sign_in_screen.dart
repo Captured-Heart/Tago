@@ -1,4 +1,4 @@
-import 'package:tago/screens/home/home_screen.dart';
+import 'package:tago/screens/home/mainscreen.dart';
 import 'package:tago/screens/onboarding/forgot_password_screen.dart';
 import 'package:tago/screens/onboarding/sign_up_screen.dart';
 
@@ -69,7 +69,7 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
               onPressed: () {
                 push(
                   context,
-                  const HomeScreen(),
+                  const MainScreen(),
                 );
               },
               child: const Text(TextConstant.signIn),

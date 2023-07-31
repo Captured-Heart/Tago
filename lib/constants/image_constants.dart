@@ -39,15 +39,13 @@ const List<String> drinkImages = [
   'assets/images/drink_4.png',
   'assets/images/drink_5.png',
   'assets/images/drink_6.png',
-
 ];
 
-const Map<String, String> drinkTitle = {
-  'drink': 'Coca-cola Coca Cola Can 33cl x 1',
-  'drink1': 'Coca-cola Coca Cola Can 33cl x 12',
-  'drink2': 'Coca-cola Coca Cola Can 33cl x 1',
-  'drink3': 'Coca-cola Coca Cola Can 33cl x 1',
+const List<String> drinkTitle = [
+  'Coca-cola Coca Cola Can 33cl x 1',
+  'Coca-cola Coca Cola Can 33cl x 12',
+  'Coca-cola Coca Cola Can 33cl x 1',
+  'Coca-cola Coca Cola Can 33cl x 1',
 
-  
   // 'price': '₦20,000'
-};
+];

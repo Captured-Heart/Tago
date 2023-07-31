@@ -36,16 +36,25 @@ abstract class TextConstant {
   // Add address screen
   static const addAdress = 'Add Address';
   static const enterAnewAddress = 'Enter a new address';
+  static const addnewAddress = 'Add new address';
+  static const addressDetails = 'Address Details';
+  static const addressLabel = 'Address Label';
   static const thishelpsTagotofind =
       'This helps Tago find the closest items to your location';
   static const usemycurrentlocation = 'Use my current location';
   static const typeaddressmanually = 'Type address manually';
   static const save = 'Save';
+  static const saveforlater = 'Save for later';
+  static const saved = 'Saved!';
+  static const saveandContinue = 'Save and Continue';
   static const streetAddress = 'Street Address';
   static const apartmentFloorno = 'Apartment / Floor number';
   static const city = 'City';
   static const state = 'State';
   static const postalcode = 'Postal Code';
+  static const addressBook = 'Address Book';
+  static const appartmentsuite = '  Apartment / Suite / Floor number';
+  static const egOffice = '  (e.g., Office)';
 
 // forgot password
   static const enterthePhoneno =
@@ -66,6 +75,7 @@ abstract class TextConstant {
   static const proceedtosignin = 'Proceed to sign in with your new password';
 
 //HOME PAGE
+  static const home = 'Home';
   static const whatdoYouNeedToday = 'What do you need today?';
   static const activeOrderstatus = 'Active Order Status';
   static const remainingTime = 'Remaining Time';
@@ -82,7 +92,10 @@ abstract class TextConstant {
   static const allcategories = 'All Categories';
 
   static const seeall = 'See All';
+  static const similiarItems = 'Similar Items';
   static const itemsNearYou = 'Items near you';
+  static const itemsDetails = 'Item Details';
+
   static const recentlyViewed = 'Recently Viewed';
 
   //CATEGORIES
@@ -119,6 +132,7 @@ abstract class TextConstant {
 //ORDERS SCREEN
   static const serachYourOrders = 'Search Your Orders';
   static const activeOrders = 'Active Orders';
+  static const orders = 'Orders';
   static const completedOrders = 'Completed Orders';
   static const inTransit = 'In Transit';
   static const cancelled = 'Cancelled';
@@ -141,7 +155,6 @@ abstract class TextConstant {
   static const expiryDate = 'Expiry Date';
   static const cvv = 'CVV';
   static const done = 'Done';
-
   static const savedAddress = 'Saved Addresses';
   static const savedCards = 'Saved Cards';
   static const help = 'Help';
@@ -149,8 +162,15 @@ abstract class TextConstant {
   static const firstandlastname = 'First & Last Name';
   static const mmAndyy = 'MM/YY';
   static const cardNumberHint = '0000 0000 0000 0000';
-  // static const help = 'Help';
 
+  //SINGLE PRODUCT PAGE
+  static const productSpecifications = 'Product Specifications';
+  static const weight = 'Weight (kg): ';
+  static const sku = 'SKU: ';
+  static const ratingandReviews = 'Ratings & Reviews ';
+  static const verifiedPurchase = 'Verified Purchase';
+  // static const help = 'Help';
+  // static const help = 'Help';
 
 }
 

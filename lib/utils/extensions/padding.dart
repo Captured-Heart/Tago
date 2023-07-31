@@ -29,6 +29,74 @@ extension PaddingExtension on Widget {
   }
 }
 
+extension AlignmentExtension on Widget {
+  Widget alignCenterLeft({
+    double? widthFactor,
+    double? heightFactor,
+  }) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      widthFactor: widthFactor,
+      heightFactor: heightFactor,
+    );
+  }
+
+  Widget alignCenterRight({
+    double? widthFactor,
+    double? heightFactor,
+  }) {
+    return Align(
+      alignment: Alignment.centerRight,
+      widthFactor: widthFactor,
+      heightFactor: heightFactor,
+    );
+  }
+
+  Widget alignTopLeft({
+    double? widthFactor,
+    double? heightFactor,
+  }) {
+    return Align(
+      alignment: Alignment.topLeft,
+      widthFactor: widthFactor,
+      heightFactor: heightFactor,
+    );
+  }
+
+  Widget alignTopRight({
+    double? widthFactor,
+    double? heightFactor,
+  }) {
+    return Align(
+      alignment: Alignment.topRight,
+      widthFactor: widthFactor,
+      heightFactor: heightFactor,
+    );
+  }
+
+  Widget alignBottomLeft({
+    double? widthFactor,
+    double? heightFactor,
+  }) {
+    return Align(
+      alignment: Alignment.bottomLeft,
+      widthFactor: widthFactor,
+      heightFactor: heightFactor,
+    );
+  }
+
+  Widget alignBottomRight({
+    double? widthFactor,
+    double? heightFactor,
+  }) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      widthFactor: widthFactor,
+      heightFactor: heightFactor,
+    );
+  }
+}
+
 extension ColumnChildrenSpacing on List<Widget> {
   List<Widget> columnInPadding(double height) {
     return expand(

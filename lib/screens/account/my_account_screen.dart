@@ -1,5 +1,7 @@
 import 'package:tago/app.dart';
+import 'package:tago/screens/account/address_book_screen.dart';
 import 'package:tago/screens/account/payment_methods.dart';
+import 'package:tago/screens/drawer/notification_screen.dart';
 import 'package:tago/widgets/menu_drawer.dart';
 
 class MyAccountScreen extends ConsumerWidget {
@@ -9,12 +11,7 @@ class MyAccountScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       drawer: tagoHomeDrawer(context),
-      appBar: appBarWidget(
-        context: context,
-        title: TextConstant.myaccounts,
-        isLeading: true,
-        hasDrawer: true,
-      ),
+      appBar: myAccountAppbar(context),
       body: ListView(
         padding: const EdgeInsets.all(15),
         children: [
@@ -45,7 +42,6 @@ class MyAccountScreen extends ConsumerWidget {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-
             children: [
               drawerListTile(
                 context: context,
@@ -62,34 +58,38 @@ class MyAccountScreen extends ConsumerWidget {
                 },
               ),
               drawerListTile(
-                context: context,
-                icons: FontAwesomeIcons.locationDot,
-                isMaterialIcon: true,
-                materialIconSize: 22,
-                iconColor: TagoDark.textBold,
-                title: TextConstant.savedAddress,
-                textStyle: context.theme.textTheme.bodySmall?.copyWith(
-                  fontSize: 14,
-                ),
-              ),
+                  context: context,
+                  icons: FontAwesomeIcons.locationDot,
+                  isMaterialIcon: true,
+                  materialIconSize: 22,
+                  iconColor: TagoDark.textBold,
+                  title: TextConstant.savedAddress,
+                  textStyle: context.theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 14,
+                  ),
+                  onTap: () {
+                    push(context, const AddressBookScreen());
+                  }),
               drawerListTile(
-                context: context,
-                icons: FontAwesomeIcons.bell,
-                isMaterialIcon: true,
-                materialIconSize: 22,
-                iconColor: TagoDark.textBold,
-                title: TextConstant.notifications,
-                textStyle: context.theme.textTheme.bodySmall?.copyWith(
-                  fontSize: 14,
-                ),
-              ),
+                  context: context,
+                  icons: FontAwesomeIcons.bell,
+                  isMaterialIcon: true,
+                  materialIconSize: 22,
+                  iconColor: TagoDark.textBold,
+                  title: TextConstant.notifications,
+                  textStyle: context.theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 14,
+                  ),
+                  onTap: () {
+                    push(context, const NotificationScreen());
+                  }),
               drawerListTile(
                 context: context,
                 icons: FontAwesomeIcons.circleQuestion,
                 isMaterialIcon: true,
                 materialIconSize: 22,
                 iconColor: TagoDark.textBold,
-                title: TextConstant.paymentMethods,
+                title: TextConstant.help,
                 textStyle: context.theme.textTheme.bodySmall?.copyWith(
                   fontSize: 14,
                 ),

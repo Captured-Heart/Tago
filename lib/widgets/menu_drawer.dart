@@ -3,10 +3,11 @@ import 'package:tago/screens/drawer/notification_screen.dart';
 import 'package:tago/screens/drawer/refer_and_earn.dart';
 import 'package:tago/screens/drawer/vouchers.dart';
 import 'package:tago/screens/drawer/wishlist.dart';
+import 'package:tago/utils/extensions/debug_frame.dart';
 
 import '../app.dart';
 
-Drawer tagoHomeDrawer(BuildContext context) {
+Widget tagoHomeDrawer(BuildContext context) {
   return Drawer(
     child: SafeArea(
       minimum: EdgeInsets.only(
@@ -85,6 +86,7 @@ Drawer tagoHomeDrawer(BuildContext context) {
                   ?.copyWith(color: TagoLight.textError)),
         ],
       ),
-    ),
+    )
   );
+  // .padOnly(bottom: kBottomNavigationBarHeight - 50);
 }

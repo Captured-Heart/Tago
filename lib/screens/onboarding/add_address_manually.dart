@@ -11,7 +11,9 @@ class AddAddressManuallyScreen extends ConsumerWidget {
           context: context,
           title: TextConstant.addAdress,
           suffixIcon: TextButton(
-              onPressed: () {}, child: const Text(TextConstant.skip)),
+            onPressed: () {},
+            child: const Text(TextConstant.skip),
+          ),
         ),
         body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

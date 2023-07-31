@@ -33,7 +33,7 @@ class ConfirmResetCodeScreen extends ConsumerWidget {
                     width: context.sizeWidth(1),
                     child: ElevatedButton(
                       onPressed: () {
-                       // confirmn code
+                        // confirmn code
                         push(context, const ResetPasswordScreen());
                       },
                       child: const Text(TextConstant.confirm),

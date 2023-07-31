@@ -1,11 +1,11 @@
+
+import 'package:tago/controllers/bottom_navbar_provider.dart';
+import 'package:tago/controllers/scaffold_key.dart';
 import 'package:tago/screens/home/fruits_and_veg_screen.dart';
 import 'package:tago/screens/onboarding/onboarding_screen.dart';
-import 'package:tago/screens/orders/orders_screen.dart';
+import 'package:tago/screens/product/single_product_screen.dart';
 
 import '../../app.dart';
-import '../../widgets/category_card.dart';
-import '../../widgets/menu_drawer.dart';
-import '../screens.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -15,48 +15,20 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  Future<void> navigateToCategoryScreen(int index) {
-    List screen = [
-      FruitsAndVegetablesScreen(),
-      OnBoardScreen(),
-    ];
-    return push(context, screen[index]);
-  }
+  // final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    Future<void> navigateToCategoryScreen(int index) {
+      List screen = [
+        FruitsAndVegetablesScreen(),
+        OnBoardScreen(),
+      ];
+      return push(context, screen[index]);
+    }
+
     return Scaffold(
-      drawer: tagoHomeDrawer(context),
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              logoMedium,
-              height: 23,
-              width: 23,
-            ).padOnly(right: 5),
-            Text(
-              TextConstant.title.toLowerCase(),
-              style: context.theme.textTheme.titleLarge?.copyWith(
-                fontSize: 20,
-                fontFamily: TextConstant.fontFamilyBold,
-                fontWeight: AppFontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              push(context, const OrdersScreen());
-            },
-            icon: const Icon(Icons.shopping_cart_outlined),
-          )
-        ],
-      ),
+      appBar: homescreenAppbar(context),
       body: ListView(
         children: [
           authTextFieldWithError(
@@ -122,7 +94,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ref.read(scaffoldKeyProvider).currentState!.setState(() {
+                      Scaffold.of(context).openDrawer();
+                    });
+                  },
                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
                   child: const Text(
                     TextConstant.viewOrderdetails,
@@ -235,10 +211,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             trailing: TextButton(
               onPressed: () {
-                push(
-                  context,
-                  const AllCategoriesScreen(),
-                );
+                ref.read(bottomNavControllerProvider).jumpToTab(1);
               },
               child: const Text(TextConstant.seeall),
             ),
@@ -288,6 +261,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: itemsNearYouCard(
                     index: index,
                     context: context,
+                    onTap: () {
+                      navBarPush(
+                        context: context,
+                        screen: SingleProductPage(
+                          appBarTitle: drinkTitle[index],
+                          image: drinkImages[index] ,
+                        ),
+                        withNavBar: false,
+                      );
+                    },
                   ),
                 );
               },

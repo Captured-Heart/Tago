@@ -14,7 +14,6 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
 class _FruitsAndVegetablesScreenState
     extends ConsumerState<FruitsAndVegetablesScreen> {
   //
- 
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +99,4 @@ class _FruitsAndVegetablesScreenState
           ].columnInPadding(15)),
     );
   }
-
-  
 }

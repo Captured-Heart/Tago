@@ -1,7 +1,6 @@
 import 'package:tago/app.dart';
-import 'package:tago/utils/extensions/debug_frame.dart';
 
-import '../../widgets/category_card.dart';
+// import 'package:tago/utils/extensions/debug_frame.dart';
 
 class AllCategoriesScreen extends ConsumerStatefulWidget {
   const AllCategoriesScreen({super.key});
@@ -15,19 +14,7 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          TextConstant.allcategories,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_cart_outlined),
-          )
-        ],
-      ),
+      appBar: categoriesAppbar(context),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
@@ -37,7 +24,7 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
             alignment: WrapAlignment.spaceEvenly,
             crossAxisAlignment: WrapCrossAlignment.start,
             children: List.generate(
-              categoriesFrame.length ,
+              categoriesFrame.length,
               growable: true,
               (index) => GestureDetector(
                   onTap: () {},
