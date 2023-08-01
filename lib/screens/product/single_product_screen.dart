@@ -1,4 +1,10 @@
 import 'package:tago/app.dart';
+import 'package:tago/controllers/value_notifier.dart';
+import 'package:tago/screens/product/ratings_reviews_screen.dart';
+import 'package:tago/widgets/fruits_veggies_card.dart';
+import 'package:tago/widgets/ratings_card.dart';
+
+import '../../widgets/cart_list_tile.dart';
 
 class SingleProductPage extends ConsumerStatefulWidget {
   const SingleProductPage({
@@ -22,7 +28,58 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
         title: widget.appBarTitle,
         isLeading: true,
         suffixIcon: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isDismissible: false,
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              )),
+              builder: (context) {
+                return Container(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      title: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(TextConstant.myCart),
+                          GestureDetector(
+                            onTap: () {
+                              pop(context);
+                            },
+                            child: const Icon(Icons.close),
+                          )
+                        ],
+                      ),
+                      subtitle: Text(
+                        '${TextConstant.items} (2)',
+                        style: context.theme.textTheme.bodyLarge,
+                      ),
+                    ),
+                    myCartListTile(context, ref),
+                    myCartListTile(context, ref),
+                    myCartListTile(context, ref),
+                    SizedBox(
+                      width: context.sizeWidth(1),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: const Text('${TextConstant.checkout} (N34,000)'),
+                      ),
+                    ).padOnly(top: 30),
+                    TextButton(
+                        onPressed: () {},
+                        child: const Text(TextConstant.continueShopping))
+                  ],
+                ).padAll(20));
+              },
+            );
+          },
           icon: const Icon(Icons.shopping_cart_outlined),
         ),
       ),
@@ -45,6 +102,36 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 ),
                 singlePageProductListTile(context)
                     .padSymmetric(horizontal: 10, vertical: 5),
+                // ValueListenableBuilder(
+                //   valueListenable: ref.watch(valueNotifierProvider),
+                //   builder: (context, value, child) {
+                //     return Row(
+                //       mainAxisSize: MainAxisSize.max,
+                //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //       children: [
+                //         addMinusBTN(
+                //           context: context,
+                //           isMinus: true,
+                //           onTap: () {
+                //             if (value > 1) {
+                //               ref.read(valueNotifierProvider).value--;
+                //             }
+                //           },
+                //         ),
+                //         Text(
+                //           value.toString(),
+                //           style: context.theme.textTheme.titleMedium,
+                //         ),
+                //         addMinusBTN(
+                //           context: context,
+                //           onTap: () {
+                //             ref.read(valueNotifierProvider).value++;
+                //           },
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // ),
                 SizedBox(
                   width: context.sizeWidth(1),
                   child: ElevatedButton(
@@ -160,7 +247,17 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                         style: context.theme.textTheme.titleMedium,
                       ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            push(
+                              context,
+                              const RatingsAndReviewsScreen(),
+                            );
+                            // navBarPush(
+                            //   context: context,
+                            //   screen: const RatingsAndReviewsScreen(),
+                            //   withNavBar: false,
+                            // );
+                          },
                           child: const Text(TextConstant.seeall))
                     ],
                   ),
@@ -193,6 +290,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                   child: itemsNearYouCard(
                     index: index,
                     context: context,
+                    image: drinkImages[index],
                     onTap: () {
                       navBarPush(
                         context: context,
@@ -210,68 +308,6 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
           ),
         ],
       ),
-    );
-  }
-
-  Container ratingsCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      decoration: const BoxDecoration(
-          border: Border(
-        bottom: BorderSide(width: 0.1),
-      )),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.star, color: TagoLight.orange),
-                        Text(
-                          '4.5',
-                          style: context.theme.textTheme.bodyLarge,
-                        ),
-                      ].rowInPadding(5)),
-                  Text(
-                    'Nice Drink',
-                    style: context.theme.textTheme.titleMedium,
-                  ),
-                  SizedBox(
-                    width: context.sizeWidth(0.6),
-                    child: Text(
-                      'I loved it so much. It’s a worthy buy I loved it so much. It’s a worthy buy...I loved it so much. It’s a worthy buy...',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: context.theme.textTheme.bodyMedium,
-                    ),
-                  ),
-                ].columnInPadding(10)),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'by Kenneth',
-                  // style: context.theme.textTheme.bodySmall,
-                ),
-                TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      TextConstant.verifiedPurchase,
-                      style: AppTextStyle.buttonTextTextstyleLight.copyWith(
-                        color: TagoLight.primaryColor,
-                        fontFamily: TextConstant.fontFamilyLight,
-                        fontSize: 12,
-                      ),
-                    ))
-              ],
-            )
-          ]),
     );
   }
 

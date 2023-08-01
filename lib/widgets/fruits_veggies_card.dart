@@ -1,3 +1,4 @@
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:tago/app.dart';
 import 'package:tago/utils/extensions/debug_frame.dart';
 
@@ -84,6 +85,7 @@ Widget addMinusBTN({
   bool? isMinus,
   required BuildContext context,
   required VoidCallback onTap,
+  bool? isDelete,
 }) {
   return ElevatedButton(
     onPressed: onTap,
@@ -92,18 +94,23 @@ Widget addMinusBTN({
       elevation: 0,
       shadowColor: Colors.transparent,
       visualDensity: VisualDensity.compact,
-      fixedSize: Size.fromRadius(15),
+      fixedSize: const Size.fromRadius(15),
       minimumSize: const Size.fromRadius(15),
       padding: EdgeInsets.zero,
       backgroundColor: isMinus == true
-          ? TagoLight.primaryColor.withOpacity(0.2)
+          ? TagoLight.primaryColor.withOpacity(0.15)
           : TagoLight.primaryColor,
     ),
     child: Icon(
-      isMinus == true ? Icons.remove : Icons.add,
+      isDelete == true
+          ? Symbols.delete
+          : isMinus == true
+              ? Icons.remove
+              : Icons.add,
       color: isMinus == true
           ? TagoDark.primaryColor
           : TagoDark.scaffoldBackgroundColor,
+      size: 22,
     ),
   );
 }

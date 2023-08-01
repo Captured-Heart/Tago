@@ -1,4 +1,3 @@
-
 import 'package:tago/controllers/bottom_navbar_provider.dart';
 import 'package:tago/controllers/scaffold_key.dart';
 import 'package:tago/screens/home/fruits_and_veg_screen.dart';
@@ -261,12 +260,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: itemsNearYouCard(
                     index: index,
                     context: context,
+                    image: drinkImages[index],
                     onTap: () {
                       navBarPush(
                         context: context,
                         screen: SingleProductPage(
                           appBarTitle: drinkTitle[index],
-                          image: drinkImages[index] ,
+                          image: drinkImages[index],
                         ),
                         withNavBar: false,
                       );
@@ -296,9 +296,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 return SizedBox(
                   width: context.sizeWidth(0.35),
                   child: itemsNearYouCard(
-                    index: index,
-                    context: context,
-                  ),
+                      index: index,
+                      context: context,
+                      image: drinkImages[index]),
                 );
               },
             ),

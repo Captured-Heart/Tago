@@ -41,6 +41,7 @@ Widget itemsNearYouCard({
   required int index,
   required BuildContext context,
   VoidCallback? onTap,
+  required String image,
 }) {
   return GestureDetector(
     onTap: onTap,
@@ -51,7 +52,7 @@ Widget itemsNearYouCard({
         Card(
           elevation: 0.3,
           child: Image.asset(
-            drinkImages[index],
+            image,
             height: 140,
             width: context.sizeWidth(1),
             fit: BoxFit.fill,

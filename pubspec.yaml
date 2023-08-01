@@ -13,6 +13,7 @@ dependencies:
   flutter_riverpod: ^2.3.6
   flutter_screenutil: ^5.7.0
   font_awesome_flutter: ^10.3.0
+  material_symbols_icons: ^4.39.5
   persistent_bottom_nav_bar: ^5.0.2
   shared_preferences: ^2.2.0
 

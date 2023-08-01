@@ -61,7 +61,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           ref.read(bottomNavBarIndexProvider.notifier).update((state) => value);
         },
         items: navBarsItems(context: context),
-        screens: [
+        screens: const[
           HomeScreen(),
           AllCategoriesScreen(),
           OrdersScreen(),
@@ -89,7 +89,7 @@ List<PersistentBottomNavBarItem> navBarsItems({required BuildContext context}) {
   return [
     PersistentBottomNavBarItem(
       textStyle: itemTextStyle,
-      icon: const Icon(Icons.other_houses_outlined),
+      icon: const Icon(Icons.other_houses_outlined), //cottage_outlined
       title: TextConstant.home,
       iconSize: 24,
       activeColorPrimary: context.theme.primaryColor,

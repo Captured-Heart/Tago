@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:tago/app.dart';
+import 'package:tago/screens/checkout/my_cart_screen.dart';
 import 'package:tago/screens/drawer/wishlist.dart';
 
 // home screen appp bar
@@ -39,7 +40,7 @@ AppBar homescreenAppbar(BuildContext context) {
         onPressed: () {
           navBarPush(
             context: context,
-            screen: const WishListScreen(),
+            screen: const MyCartScreen(),
             withNavBar: false,
           );
         },

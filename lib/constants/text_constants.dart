@@ -168,9 +168,43 @@ abstract class TextConstant {
   static const weight = 'Weight (kg): ';
   static const sku = 'SKU: ';
   static const ratingandReviews = 'Ratings & Reviews ';
+  static const averageRating = 'Average Rating ';
+  static const verifiedRatings = 'Verified ratings';
   static const verifiedPurchase = 'Verified Purchase';
-  // static const help = 'Help';
-  // static const help = 'Help';
+  static const myCart = 'My Cart';
+  static const items = 'Items';
+  static const checkout = 'Checkout';
+  static const continueShopping = 'Continue Shopping';
+  static const userComments = 'User Comments ';
+
+// CHECKOUT SECTION
+  static const cart = 'Cart';
+  static const deliveringTo = 'Delivering To';
+  static const editAddress = 'Edit Address';
+  static const selectDeliveryType = 'Select Delivery Type';
+  static const deliveredIn = 'Delivered in';
+  static const minutes = 'Minutes';
+  static const scheduleforLater = 'Schedule for later';
+  static const notConfirmed = 'Not confirmed';
+  static const paymentMethod = 'Payment Method';
+  static const notselected = 'Not selected';
+  static const choose = 'Choose';
+  static const reviewItems = 'Review Items';
+  static const deliveryInstructionsOptional = 'Delivery Instructions (Optional)';
+  static const voucherCode = 'Voucher Code';
+  static const writeAnoteHint = 'Write a note (e.g., Estate Gate Code)';
+  static const pastevoucherCode = 'Paste Voucher code';
+  static const allitems = 'All Items';
+  static const deliveryfee = 'Delivery Fee';
+  static const total = 'Total';
+  static const confirmOrder = 'Confirm Order';
+  // static const cart = 'Cart';
+  // static const cart = 'Cart';
+  // static const cart = 'Cart';
+
+
+
+
 
 }
 
