@@ -6,7 +6,9 @@ abstract class TextConstant {
   static const createAcct = 'Create an account';
   static const signIn = 'Sign In';
 
-  //sign up screen
+/*----------------------------------------------------------------------
+  sign up screen
+-----------------------------------------------------------------------*/
   static const welcometotago = 'Welcome to Tago';
   static const groceriesDeliveryInMins =
       'Grocery delivery in minutes, right to you';
@@ -16,14 +18,18 @@ abstract class TextConstant {
   static const signup = 'Sign Up';
   static const alreadyhaveacct = 'Already have an account?';
 
-  // sign in screen
+/*----------------------------------------------------------------------
+sign in screen
+-----------------------------------------------------------------------*/
   static const welcomeBack = 'Welcome Back';
   static const letsgetyouback = 'Let’s get you back in';
   static const password = 'Password';
   static const forgotpassword = 'Forgot Password';
   static const newtoTago = 'New to Tago? ';
 
-  //confirm phone screen
+/*----------------------------------------------------------------------
+Confirm phone screen
+-----------------------------------------------------------------------*/
   static const confirmPhoneNo = 'Confirm phone number';
   static const wehavesent4digit = 'We have sent a 4-digit code to you ';
   static const enterthecode = 'Enter the code sent to';
@@ -33,7 +39,9 @@ abstract class TextConstant {
   static const resend = 'Resend';
   static const skip = 'Skip';
 
-  // Add address screen
+/*----------------------------------------------------------------------
+Add address screen
+-----------------------------------------------------------------------*/
   static const addAdress = 'Add Address';
   static const enterAnewAddress = 'Enter a new address';
   static const addnewAddress = 'Add new address';
@@ -56,14 +64,18 @@ abstract class TextConstant {
   static const appartmentsuite = '  Apartment / Suite / Floor number';
   static const egOffice = '  (e.g., Office)';
 
-// forgot password
+/*----------------------------------------------------------------------
+forgot password
+-----------------------------------------------------------------------*/
   static const enterthePhoneno =
       'Enter the phone number used to create an account';
   static const sendResetcode = 'Send Reset Code';
   static const confirmResetcode = 'Confirm Reset Code';
   static const confirmBytypingthecode = 'Confirm by typing the code below';
 
-// Reset password
+/*----------------------------------------------------------------------
+Reset password
+-----------------------------------------------------------------------*/
   static const resetPassword = 'Reset Password';
   static const createAnewpassword = 'Create a new password';
   static const enteryournewpassowrd = 'Enter your new password';
@@ -74,7 +86,9 @@ abstract class TextConstant {
   static const passwordresetsuccesful = 'Password reset successfully';
   static const proceedtosignin = 'Proceed to sign in with your new password';
 
-//HOME PAGE
+/*----------------------------------------------------------------------
+HOME PAGE
+-----------------------------------------------------------------------*/
   static const home = 'Home';
   static const whatdoYouNeedToday = 'What do you need today?';
   static const activeOrderstatus = 'Active Order Status';
@@ -98,7 +112,9 @@ abstract class TextConstant {
 
   static const recentlyViewed = 'Recently Viewed';
 
-  //CATEGORIES
+/*----------------------------------------------------------------------
+  CATEGORIES
+-----------------------------------------------------------------------*/
   static const fruitsAndveg = 'Fruits & Vegetables';
   static const dairyProducts = 'Dairy Products';
   static const meatAndSeafood = 'Meat & Seafood';
@@ -109,7 +125,9 @@ abstract class TextConstant {
   static const babyCare = 'Baby Care Products';
   static const officeSupplies = 'Office Supplies';
 
-  //FRUITS AND VEGETABLES SCREEN
+/*----------------------------------------------------------------------
+FRUITS AND VEGETABLES SCREEN
+-----------------------------------------------------------------------*/
   static const searchInFruitsAndVeg = 'Search in Fruits & Vegetables';
   static const chooseSubCategory = 'Choose sub-category';
   static const freshVeg = 'Fresh Vegetables';
@@ -117,7 +135,9 @@ abstract class TextConstant {
   static const allFruitsAndVegetables = 'All Fruits & Vegetables';
   static const freeDelivery = 'Free delivery';
 
-  //DRAWER
+/*----------------------------------------------------------------------
+DRAWER
+-----------------------------------------------------------------------*/
   static const notifications = 'Notifications';
   static const wishlist = 'Wishlist';
   static const accounts = 'Account';
@@ -129,7 +149,10 @@ abstract class TextConstant {
 
   static const logOut = 'Log out';
 
-//ORDERS SCREEN
+/*----------------------------------------------------------------------
+ORDERS SCREEN
+-----------------------------------------------------------------------*/
+
   static const serachYourOrders = 'Search Your Orders';
   static const activeOrders = 'Active Orders';
   static const orders = 'Orders';
@@ -141,14 +164,21 @@ abstract class TextConstant {
   static const orderID = 'Order ID';
   static const youHaveNoActiveOrders = 'You have no active orders';
 
-  //VOUCHERS SCREEN
+/*----------------------------------------------------------------------
+ VOUCHERS SCREEN
+-----------------------------------------------------------------------*/
   static const vouchersWillAppear =
       'Vouchers will appear here when you receive them';
 
-//WISHLIST SCREEN
+/*----------------------------------------------------------------------
+WISHLIST SCREEN
+-----------------------------------------------------------------------*/
   static const addtocart = 'Add to Cart';
 
-  // MY ACCOUNTS SCREEN
+/*----------------------------------------------------------------------
+ MY ACCOUNTS SCREEN
+-----------------------------------------------------------------------*/
+
   static const paymentMethods = 'Payment Methods';
   static const nameonCard = 'Name on Card';
   static const cardNumber = 'Card Number';
@@ -163,7 +193,10 @@ abstract class TextConstant {
   static const mmAndyy = 'MM/YY';
   static const cardNumberHint = '0000 0000 0000 0000';
 
-  //SINGLE PRODUCT PAGE
+/*----------------------------------------------------------------------
+SINGLE PRODUCT PAGE
+-----------------------------------------------------------------------*/
+
   static const productSpecifications = 'Product Specifications';
   static const weight = 'Weight (kg): ';
   static const sku = 'SKU: ';
@@ -177,7 +210,10 @@ abstract class TextConstant {
   static const continueShopping = 'Continue Shopping';
   static const userComments = 'User Comments ';
 
-// CHECKOUT SECTION
+/*----------------------------------------------------------------------
+CHECKOUT SECTION
+-----------------------------------------------------------------------*/
+
   static const cart = 'Cart';
   static const deliveringTo = 'Delivering To';
   static const editAddress = 'Edit Address';
@@ -190,19 +226,56 @@ abstract class TextConstant {
   static const notselected = 'Not selected';
   static const choose = 'Choose';
   static const reviewItems = 'Review Items';
-  static const deliveryInstructionsOptional = 'Delivery Instructions (Optional)';
+  static const deliveryInstructionsOptional =
+      'Delivery Instructions (Optional)';
   static const voucherCode = 'Voucher Code';
-  static const writeAnoteHint = 'Write a note (e.g., Estate Gate Code)';
+  static const writeaNoteHint = 'Write a note (e.g., Estate Gate Code)';
   static const pastevoucherCode = 'Paste Voucher code';
   static const allitems = 'All Items';
   static const deliveryfee = 'Delivery Fee';
   static const total = 'Total';
   static const confirmOrder = 'Confirm Order';
-  // static const cart = 'Cart';
-  // static const cart = 'Cart';
-  // static const cart = 'Cart';
+  static const discount = 'Discount';
+  static const choosePaymentMethod = 'Choose Payment Method';
 
+  static const paywithcash = 'Pay with cash (Cash on Delivery)';
+  static const paywithcard = 'Pay with Card';
+  static const paywithbank = 'Pay with Bank Transfer';
 
+/*----------------------------------------------------------------------
+RIDER SECTION
+-----------------------------------------------------------------------*/
+  static const youhavecompleted = 'You have completed ';
+  static const ordersToday = 'orders today';
+  static const viewdetails = 'View Details';
+  static const metrics = 'Metrics';
+  static const successfulOrders = 'Successful Orders';
+  static const failedOrders = 'Failed Orders';
+  static const distancecovered = 'Distance Covered';
+  static const timeTraveled = 'Time Traveled';
+  static const deliveryRequests = 'Delivery Requests';
+  static const acceptRequest = 'Accept Request';
+  static const newDeliveryRequests = 'New Delivery Request';
+  static const decline = 'Decline';
+  static const pickupLocation = 'Pickup Location';
+  static const deliveryLocation = 'Delivery Location';
+  static const ordercompleted = 'Order Completed!';
+  static const yousuccessfulCompletedanorder = 'You successfully completed an order';
+  static const backHome = 'Back Home';
+  static const geBack = 'Go back';
+  static const doyouwantTodeclinethisdelivery = 'Do you want to decline this delivery request';
+  static const doyouwantToAcceptthisdelivery = 'Do you want to accept this delivery request';
+  static const declinerequests = 'Decline Request?';
+  static const pleaseconfirmthebuyerhasreceived = 'Please confirm the buyer has received their products';
+  static const active = 'Active';
+  static const successful = 'Successful';
+
+  // static const geBack = 'Go back';
+  // static const geBack = 'Go back';
+  // static const geBack = 'Go back';
+  // static const geBack = 'Go back';
+  // static const geBack = 'Go back';
+  // static const geBack = 'Go back';
 
 
 

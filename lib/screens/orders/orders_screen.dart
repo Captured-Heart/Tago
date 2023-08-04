@@ -6,6 +6,8 @@ enum OrderStatus {
   processing,
   delivered,
   cancelled,
+  successful,
+  active,
 }
 
 class OrdersScreen extends ConsumerStatefulWidget {
@@ -77,11 +79,12 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     );
   }
 
-  Container activeOrdersCard(
-      {required BuildContext context,
-      required String imageAsset,
-      required Enum orderStatus,
-      required int imageIndex}) {
+  Container activeOrdersCard({
+    required BuildContext context,
+    required String imageAsset,
+    required Enum orderStatus,
+    required int imageIndex,
+  }) {
     getOrderStatusColor(Enum status) {
       if (status == OrderStatus.cancelled) {
         return TagoLight.textError;

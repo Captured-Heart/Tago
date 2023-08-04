@@ -47,10 +47,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       drawer: tagoHomeDrawer(context),
       body: PersistentTabView(
         context,
+        padding: const NavBarPadding.symmetric(horizontal: 10, vertical: 15),
         controller: ref.watch(bottomNavControllerProvider),
         navBarStyle: NavBarStyle.style6,
         hideNavigationBar: false,
-        navBarHeight: kBottomNavigationBarHeight,
+        navBarHeight: kBottomNavigationBarHeight * 1.2,
         hideNavigationBarWhenKeyboardShows: true,
         popAllScreensOnTapOfSelectedTab: true,
         popAllScreensOnTapAnyTabs: true,
@@ -61,22 +62,23 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           ref.read(bottomNavBarIndexProvider.notifier).update((state) => value);
         },
         items: navBarsItems(context: context),
-        screens: const[
+        screens: const [
           HomeScreen(),
           AllCategoriesScreen(),
           OrdersScreen(),
           MyAccountScreen(),
         ],
-        decoration: NavBarDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            colorBehindNavBar: Colors.black,
-            boxShadow: const [
-              BoxShadow(
-                color: TagoDark.textLight,
-                blurRadius: 1,
-                spreadRadius: 0.5,
-              ),
-            ]),
+        decoration: const NavBarDecoration(
+          // borderRadius: BorderRadius.circular(10.0),
+          colorBehindNavBar: Colors.black,
+          boxShadow: [
+            BoxShadow(
+              color: TagoDark.textLight,
+              blurRadius: 1,
+              spreadRadius: 0.5,
+            ),
+          ],
+        ),
       ),
     );
   }

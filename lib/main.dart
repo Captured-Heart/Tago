@@ -36,9 +36,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSeen = SharedPreferencesHelper.getOnBoardingSeen();
-    return ScreenUtilInit(
-      builder: (context, child) {
-        return MaterialApp(
+    return 
+    MaterialApp(
           onGenerateTitle: (context) => TextConstant.title,
           restorationScopeId: 'app',
           // useInheritedMediaQuery: true,
@@ -70,11 +69,47 @@ class MainApp extends StatelessWidget {
             );
           },
         );
-      },
-      designSize: const Size(375, 812),
-      scaleByHeight: true,
-      minTextAdapt: true,
-      child: Text('datadzfvwsvew'),
-    );
+    
+    
+    // ScreenUtilInit(
+    //   builder: (context, child) {
+    //     return MaterialApp(
+    //       onGenerateTitle: (context) => TextConstant.title,
+    //       restorationScopeId: 'app',
+    //       // useInheritedMediaQuery: true,
+    //       // builder: DevicePreview.appBuilder,
+    //       debugShowCheckedModeBanner: false,
+    //       theme: lightTheme,
+    //       home: const OnBoardScreen(),
+    //       onGenerateRoute: (RouteSettings routeSettings) {
+    //         return MaterialPageRoute<void>(
+    //           settings: routeSettings,
+    //           builder: (BuildContext context) {
+    //             switch (routeSettings.name) {
+    //               case OnBoardScreen.routeName:
+    //                 return const OnBoardScreen();
+    //               case SignUpScreen.routeName:
+    //                 return const SignUpScreen();
+    //               case SignInScreen.routeName:
+    //                 return const SignInScreen();
+    //               case ConfirmPhoneNumberScreen.routeName:
+    //                 return const ConfirmPhoneNumberScreen();
+    //               case AddAddressScreen.routeName:
+    //                 return const AddAddressScreen();
+    //               case AddAddressManuallyScreen.routeName:
+    //                 return const AddAddressManuallyScreen();
+    //               default:
+    //                 return const OnBoardScreen();
+    //             }
+    //           },
+    //         );
+    //       },
+    //     );
+    //   },
+    //   designSize: const Size(375, 812),
+    //   scaleByHeight: true,
+    //   minTextAdapt: true,
+    //   child: Text('datadzfvwsvew'),
+    // );
   }
 }

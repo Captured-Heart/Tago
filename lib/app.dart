@@ -6,6 +6,7 @@ export 'package:tago/constants/text_constants.dart';
 export 'package:tago/utils/shared_prefs.dart';
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+export 'package:material_symbols_icons/symbols.dart';
 
 //UTILS
 export 'utils/app_provider_observer.dart';
