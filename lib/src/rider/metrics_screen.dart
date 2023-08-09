@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/home/controllers/value_notifier.dart';
 
 class MetricsScreen extends ConsumerStatefulWidget {
   const MetricsScreen({super.key});

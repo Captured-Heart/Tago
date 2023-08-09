@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/rider/rider_account_screen.dart';
 
 class RiderHomeScreen extends ConsumerStatefulWidget {
   const RiderHomeScreen({super.key});

@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/product/single_product_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});

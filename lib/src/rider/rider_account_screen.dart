@@ -1,7 +1,5 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/rider/delivery_requests_screen.dart';
-import 'package:tago/src/rider/metrics_screen.dart';
-import 'package:tago/src/rider/new_delivery_request.dart';
+
 
 class RiderAccountScreen extends ConsumerWidget {
   const RiderAccountScreen({super.key});

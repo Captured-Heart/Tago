@@ -1,6 +1,6 @@
 import 'package:tago/app.dart';
 import 'package:tago/src/checkout/checkout_screen.dart';
-import 'package:tago/widgets/cart_list_tile.dart';
+import 'package:tago/src/widgets/cart_list_tile.dart';
 
 class MyCartScreen extends ConsumerStatefulWidget {
   const MyCartScreen({super.key});

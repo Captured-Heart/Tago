@@ -1,5 +1,5 @@
 import 'package:tago/app.dart';
-import 'package:tago/widgets/ratings_card.dart';
+import 'package:tago/src/widgets/ratings_card.dart';
 
 class RatingsAndReviewsScreen extends ConsumerStatefulWidget {
   const RatingsAndReviewsScreen({super.key});

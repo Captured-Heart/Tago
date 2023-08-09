@@ -1,6 +1,5 @@
 import 'package:tago/app.dart';
 
-import '../account.dart';
 
 class AddressBookScreen extends ConsumerWidget {
   const AddressBookScreen({super.key});

@@ -1,4 +1,4 @@
-import '../app.dart';
+import '../../app.dart';
 
 AppBar appBarWidget({
   required BuildContext context,

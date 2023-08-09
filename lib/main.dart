@@ -1,6 +1,6 @@
-import 'package:tago/theme/app_theme.dart';
+// import 'app.dart';
 
-import 'app.dart';
+import 'package:tago/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

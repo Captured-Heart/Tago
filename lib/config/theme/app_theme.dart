@@ -1,6 +1,6 @@
 //! LIGHT THEME
 
-import '../app.dart';
+import '../../app.dart';
 
 final lightTheme = ThemeData(
   scaffoldBackgroundColor: TagoLight.scaffoldBackgroundColor,

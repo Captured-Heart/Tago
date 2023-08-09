@@ -1,6 +1,6 @@
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:tago/app.dart';
-import 'package:tago/utils/extensions/debug_frame.dart';
+import 'package:tago/config/extensions/debug_frame.dart';
 
 Widget getFreeDeliveryDesign(
     List<int> indexList, int index, BuildContext context) {

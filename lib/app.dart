@@ -2,38 +2,34 @@
 export 'package:flutter/material.dart';
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
-export 'package:tago/utils/constants/text_constants.dart';
-export 'package:tago/utils/shared_prefs.dart';
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 export 'package:material_symbols_icons/symbols.dart';
 
 //UTILS
-export 'utils/app_provider_observer.dart';
-export '../utils/navigation.dart';
+export 'config/app_provider_observer.dart';
+export 'config/navigation.dart';
+export 'config/constants/text_constants.dart';
+export 'config/shared_prefs.dart';
 
 //CONSTANTS
-export 'package:tago/utils/constants/image_constants.dart';
-export 'package:tago/theme/app_fontweight.dart';
-export 'package:tago/utils/extensions/padding.dart';
+export 'config/constants/image_constants.dart';
+export 'config/theme/app_fontweight.dart';
+export 'config/extensions/padding.dart';
 
 //THEMES
-export 'package:tago/theme/app_textstyles.dart';
-export 'package:tago/theme/brand_theme_color.dart';
+export 'config/theme/app_textstyles.dart';
+export 'config/theme/brand_theme_color.dart';
+export 'config/theme/app_theme.dart';
 
 //WIDGETS
-// export 'package:tago/widgets/appbar_widget.dart';
-// export 'package:tago/widgets/auth_textfield_with_error.dart';
-// export 'package:tago/widgets/items_near_you_card.dart';
-// export 'package:tago/widgets/category_card.dart';
-// export 'package:tago/widgets/nav_bar_app_bar.dart';
-// export 'package:tago/widgets/menu_drawer.dart';
-export 'package:tago/widgets/widgets.dart';
+export 'src/widgets/widgets.dart';
 
 //! SCREENS
 export 'src/account/account.dart';
 export 'src/home/home.dart';
 export 'src/onboarding/onboarding.dart';
+export 'src/rider/rider.dart';
+export 'src/product/product.dart';
+export 'src/orders/order.dart';
 
-//! Order screens
-export 'src/orders/orders_screen.dart';

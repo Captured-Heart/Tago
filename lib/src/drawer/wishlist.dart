@@ -1,6 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/utils/extensions/debug_frame.dart';
-import 'package:tago/widgets/fruits_veggies_card.dart';
 
 class WishListScreen extends ConsumerWidget {
   const WishListScreen({super.key});
