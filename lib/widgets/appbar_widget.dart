@@ -5,10 +5,12 @@ AppBar appBarWidget({
   bool? isLeading,
   bool? hasDrawer,
   Widget? suffixIcon,
+  bool ? centerTitle,
   required String title,
 }) {
   return AppBar(
     elevation: 0,
+    centerTitle: centerTitle ?? true,
     leading: isLeading != null
         ? hasDrawer == null
             ? IconButton(

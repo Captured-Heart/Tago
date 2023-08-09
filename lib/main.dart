@@ -1,11 +1,3 @@
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
-import 'package:tago/screens/onboarding/add_address_manually.dart';
-import 'package:tago/screens/onboarding/add_address_screen.dart';
-import 'package:tago/screens/onboarding/confirm_phone_screen.dart';
-import 'package:tago/screens/onboarding/onboarding_screen.dart';
-import 'package:tago/screens/onboarding/sign_in_screen.dart';
-import 'package:tago/screens/onboarding/sign_up_screen.dart';
 import 'package:tago/theme/app_theme.dart';
 
 import 'app.dart';
@@ -20,8 +12,7 @@ void main() async {
   runApp(
     UncontrolledProviderScope(
       container: container,
-      child: 
-      const MainApp(),
+      child: const MainApp(),
       // DevicePreview(
       //   enabled: kReleaseMode,
       //   builder: (context) => const MainApp(),
@@ -36,41 +27,39 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSeen = SharedPreferencesHelper.getOnBoardingSeen();
-    return 
-    MaterialApp(
-          onGenerateTitle: (context) => TextConstant.title,
-          restorationScopeId: 'app',
-          // useInheritedMediaQuery: true,
-          // builder: DevicePreview.appBuilder,
-          debugShowCheckedModeBanner: false,
-          theme: lightTheme,
-          home: const OnBoardScreen(),
-          onGenerateRoute: (RouteSettings routeSettings) {
-            return MaterialPageRoute<void>(
-              settings: routeSettings,
-              builder: (BuildContext context) {
-                switch (routeSettings.name) {
-                  case OnBoardScreen.routeName:
-                    return const OnBoardScreen();
-                  case SignUpScreen.routeName:
-                    return const SignUpScreen();
-                  case SignInScreen.routeName:
-                    return const SignInScreen();
-                  case ConfirmPhoneNumberScreen.routeName:
-                    return const ConfirmPhoneNumberScreen();
-                  case AddAddressScreen.routeName:
-                    return const AddAddressScreen();
-                  case AddAddressManuallyScreen.routeName:
-                    return const AddAddressManuallyScreen();
-                  default:
-                    return const OnBoardScreen();
-                }
-              },
-            );
+    return MaterialApp(
+      onGenerateTitle: (context) => TextConstant.title,
+      restorationScopeId: 'app',
+      // useInheritedMediaQuery: true,
+      // builder: DevicePreview.appBuilder,
+      debugShowCheckedModeBanner: false,
+      theme: lightTheme,
+      home: const OnBoardScreen(),
+      onGenerateRoute: (RouteSettings routeSettings) {
+        return MaterialPageRoute<void>(
+          settings: routeSettings,
+          builder: (BuildContext context) {
+            switch (routeSettings.name) {
+              case OnBoardScreen.routeName:
+                return const OnBoardScreen();
+              case SignUpScreen.routeName:
+                return const SignUpScreen();
+              case SignInScreen.routeName:
+                return const SignInScreen();
+              case ConfirmPhoneNumberScreen.routeName:
+                return const ConfirmPhoneNumberScreen();
+              case AddAddressScreen.routeName:
+                return const AddAddressScreen();
+              case AddAddressManuallyScreen.routeName:
+                return const AddAddressManuallyScreen();
+              default:
+                return const OnBoardScreen();
+            }
           },
         );
-    
-    
+      },
+    );
+
     // ScreenUtilInit(
     //   builder: (context, child) {
     //     return MaterialApp(
