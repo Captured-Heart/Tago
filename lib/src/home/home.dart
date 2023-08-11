@@ -1,4 +1,3 @@
-
 // screens
 export './view/fruits_and_veg_screen.dart';
 export './view/home_screen.dart';

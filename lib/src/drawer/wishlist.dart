@@ -87,8 +87,7 @@ class WishListScreen extends ConsumerWidget {
                       ),
                     ].rowInPadding(5),
                   ),
-                ]
-                .columnInPadding(10),
+                ].columnInPadding(10),
               ),
 
               //subtitle
@@ -148,7 +147,7 @@ class WishListScreen extends ConsumerWidget {
                             ),
                           ].rowInPadding(15),
                         )
-                        // .debugBorder()
+                  // .debugBorder()
                 ],
               ),
             ),

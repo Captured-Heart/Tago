@@ -1,7 +1,5 @@
 import 'package:tago/app.dart';
 
-
-
 class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
   const FruitsAndVegetablesScreen({super.key});
 

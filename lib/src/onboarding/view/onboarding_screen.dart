@@ -1,6 +1,5 @@
 import 'package:tago/app.dart';
 
-
 class OnBoardScreen extends StatelessWidget {
   static const String routeName = 'Onboard';
   const OnBoardScreen({super.key});

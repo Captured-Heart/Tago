@@ -1,4 +1,4 @@
 abstract class PageRoutes {
-  static const String routeName = 'signup';
-
+  static const String signup = 'signup';
+  static const String onboard = 'Onboard';
 }

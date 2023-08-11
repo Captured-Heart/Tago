@@ -1,40 +1,47 @@
 import 'package:flutter/services.dart';
 import 'package:tago/app.dart';
 
-Widget authTextFieldWithError({
-  required TextEditingController controller,
-  FocusNode? focusNode,
-  List<TextInputFormatter>? inputFormatters,
-  String? hintText,
-  String? errorText,
-  Function(String)? onChanged,
-  required BuildContext context,
-  Widget? suffixIcon,
-  bool obscureText = false,
-  TextInputType? keyboardType,
-  VoidCallback? onTap,
-  Widget? prefixIcon,
-  required bool isError,
-  bool? filled,
-  Color? fillColor,
-}) {
+Widget authTextFieldWithError(
+    {required TextEditingController controller,
+    FocusNode? focusNode,
+    List<TextInputFormatter>? inputFormatters,
+    String? hintText,
+    String? errorText,
+    Function(String)? onChanged,
+    required BuildContext context,
+    Widget? suffixIcon,
+    bool obscureText = false,
+    TextInputType? keyboardType,
+    VoidCallback? onTap,
+    Widget? prefixIcon,
+    required bool isError,
+    bool? filled,
+    Color? fillColor,
+    int? maxLength,
+    String? Function(String?)? validator}) {
   return Column(children: [
-    TextField(
+    TextFormField(
       onTap: onTap,
       controller: controller,
       focusNode: focusNode,
       obscureText: obscureText,
       keyboardType: keyboardType,
       onChanged: onChanged,
+      maxLength: maxLength,
       cursorColor: TagoDark.primaryColor,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      autocorrect: false,
+      validator: validator,
+      style: AppTextStyle.listTileSubtitleLight,
       inputFormatters: inputFormatters ??
           [FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))],
       decoration: InputDecoration(
         hintText: hintText,
-        
         prefixIcon: prefixIcon,
         fillColor: fillColor,
         filled: filled,
+        errorStyle: AppTextStyle.errorTextTextstyle,
+
         hintStyle: AppTextStyle.hintTextStyleLight,
         suffixIconColor: TagoLight.textFieldBorder,
         prefixIconColor: TagoLight.textFieldBorder,

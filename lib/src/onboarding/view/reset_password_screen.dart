@@ -1,5 +1,3 @@
-
-
 import 'package:tago/app.dart';
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {

@@ -17,7 +17,6 @@ abstract class TextConstant {
   static const createpassword = 'Create a password';
   static const signup = 'Sign Up';
   static const alreadyhaveacct = 'Already have an account?';
-
 /*----------------------------------------------------------------------
 sign in screen
 -----------------------------------------------------------------------*/

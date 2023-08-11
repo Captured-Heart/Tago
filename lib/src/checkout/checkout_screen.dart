@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/config/extensions/debug_frame.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});

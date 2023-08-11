@@ -5,7 +5,7 @@ AppBar appBarWidget({
   bool? isLeading,
   bool? hasDrawer,
   Widget? suffixIcon,
-  bool ? centerTitle,
+  bool? centerTitle,
   required String title,
 }) {
   return AppBar(

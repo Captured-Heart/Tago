@@ -12,32 +12,8 @@ class MainScreen extends ConsumerStatefulWidget {
 }
 
 class _MainScreenState extends ConsumerState<MainScreen> {
-  // PreferredSizeWidget mainScreenAppBarWidget(screenIndex) {
-  //   if (screenIndex == 0) {
-  //     return homescreenAppbar(context);
-  //   } else if (screenIndex == 1) {
-  //     return categoriesAppbar();
-  //   } else if (screenIndex == 2) {
-  //     return ordersAppbar(context);
-  //   } else if (screenIndex == 3) {
-  //     return appBarWidget(
-  //       context: context,
-  //       title: TextConstant.myaccounts,
-  //       isLeading: true,
-  //       hasDrawer: true,
-  //     );
-  //   } else {
-  //     return const PreferredSize(
-  //       preferredSize: Size(20, 200),
-  //       child: SizedBox.shrink(),
-  //     );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // int screenIndex = ref.watch(bottomNavBarIndexProvider);
-
     return Scaffold(
       key: ref.watch(scaffoldKeyProvider),
       drawer: tagoHomeDrawer(context),

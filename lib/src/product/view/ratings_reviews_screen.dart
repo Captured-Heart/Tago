@@ -124,7 +124,6 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                           ratingsCard(context),
                           ratingsCard(context),
                           ratingsCard(context),
-
                         ],
                       ),
                     ),

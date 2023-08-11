@@ -47,14 +47,10 @@ class AppTextStyle {
   static TextStyle errorTextTextstyle = const TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 10,
-    fontStyle: FontStyle.italic,
+    // fontStyle: FontStyle.italic,
     fontFamily: TextConstant.fontFamilyNormal,
   );
 }
-
-
-
-
 
 //! TEXTSTYLES
 // class AppTextStyle {

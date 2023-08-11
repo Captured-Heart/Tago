@@ -1,6 +1,5 @@
 import 'package:tago/app.dart';
 
-
 class PaymentsMethodScreen extends ConsumerWidget {
   const PaymentsMethodScreen({super.key});
 

@@ -1,10 +1,13 @@
 //  PACKAGES
-export 'package:flutter/material.dart';
+export 'package:flutter/material.dart' hide FormFieldValidator;
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 export 'package:material_symbols_icons/symbols.dart';
+export 'package:form_field_validator/form_field_validator.dart';
+
+// export 'package:dio/dio.dart';
 
 //UTILS
 export 'config/app_provider_observer.dart';
@@ -32,4 +35,3 @@ export 'src/onboarding/onboarding.dart';
 export 'src/rider/rider.dart';
 export 'src/product/product.dart';
 export 'src/orders/order.dart';
-

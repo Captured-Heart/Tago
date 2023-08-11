@@ -1,6 +1,5 @@
 import 'package:tago/app.dart';
 
-
 class RiderAccountScreen extends ConsumerWidget {
   const RiderAccountScreen({super.key});
 

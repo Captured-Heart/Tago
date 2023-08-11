@@ -23,7 +23,8 @@ class MyVouchers extends ConsumerWidget {
               color: TagoLight.textHint,
             ),
             ConstrainedBox(
-              constraints: BoxConstraints.tight(Size(context.sizeWidth(0.5), 100)),
+              constraints:
+                  BoxConstraints.tight(Size(context.sizeWidth(0.5), 100)),
               child: Text(
                 TextConstant.vouchersWillAppear,
                 textAlign: TextAlign.center,

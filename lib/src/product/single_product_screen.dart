@@ -1,6 +1,5 @@
 import 'package:tago/app.dart';
 
-
 class SingleProductPage extends ConsumerStatefulWidget {
   const SingleProductPage({
     super.key,
