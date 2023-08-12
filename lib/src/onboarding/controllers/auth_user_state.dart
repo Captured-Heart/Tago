@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:tago/app.dart';
 
 class AuthUserState extends Equatable {
@@ -16,6 +15,6 @@ class AuthUserState extends Equatable {
   List<Object?> get props => [
         errorMessage,
         isLoading,
-        errorMessage,
+        isSuccess,
       ];
 }

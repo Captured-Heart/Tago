@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import '../../app.dart';
 
 extension DebugBorderWidgetExtension on Widget {
-  Widget debugBorder() {
+  Widget debugBorder({Color? color}) {
     if (kDebugMode) {
       return DecoratedBox(
-        decoration:
-            BoxDecoration(border: Border.all(color: Colors.red, width: 4)),
+        decoration: BoxDecoration(
+            border: Border.all(color: color ?? Colors.red, width: 4)),
         child: this,
       );
     } else {

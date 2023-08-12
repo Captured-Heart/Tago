@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/config/constants/auth_error_constants.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   static const String routeName = 'signIn';
@@ -10,6 +11,7 @@ class SignInScreen extends ConsumerStatefulWidget {
 }
 
 class _SignUpScreenState extends ConsumerState<SignInScreen> {
+  final TextEditingControllerClass controller = TextEditingControllerClass();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,39 +32,71 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
               TextConstant.letsgetyouback,
             ),
           ).padOnly(bottom: 5),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              authTextFieldWithError(
-                controller: TextEditingController(),
-                context: context,
-                isError: false,
-                hintText: TextConstant.fullname,
-              ),
-              authTextFieldWithError(
-                controller: TextEditingController(),
-                context: context,
-                isError: false,
-                hintText: TextConstant.phoneno,
-              ),
-
-              // forgot password
-              InkWell(
-                onTap: () {
-                  push(context, const ForgotPasswordScreen());
-                },
-                child: Text(
-                  TextConstant.forgotpassword,
-                  style: context.theme.textTheme.bodyLarge?.copyWith(),
+          Form(
+            key: controller.signInformKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                authTextFieldWithError(
+                  controller: controller.phoneNoController,
+                  context: context,
+                  isError: false,
+                  hintText: TextConstant.phoneno,
+                  keyboardType: TextInputType.phone,
+                  maxLength: 11,
+                  validator: LengthRangeValidator(
+                    min: 11,
+                    max: 11,
+                    errorText: phoneValidation,
+                  ),
                 ),
-              )
-            ].columnInPadding(10),
+                authTextFieldWithError(
+                  controller: controller.passWordController,
+                  context: context,
+                  isError: false,
+                  hintText: TextConstant.password,
+                  validator: MultiValidator(
+                    [
+                      RequiredValidator(errorText: passwordIsRequired),
+                      MinLengthValidator(
+                        8,
+                        errorText: passwordMustBeAtleast,
+                      ),
+                      PatternValidator(
+                        r'(?=.*?[#?!@$%^&*-])',
+                        errorText: passwordMustHaveaSymbol,
+                      )
+                    ],
+                  ),
+                ).padOnly(bottom: 10),
+
+                // forgot password
+                InkWell(
+                  onTap: () {
+                    push(context,  ForgotPasswordScreen());
+                  },
+                  child: Text(
+                    TextConstant.forgotpassword,
+                    style: context.theme.textTheme.bodyLarge?.copyWith(),
+                  ),
+                )
+              ].columnInPadding(10),
+            ),
           ),
           //
           SizedBox(
             width: context.sizeWidth(1),
             child: ElevatedButton(
               onPressed: () {
+                // if (controller.signInformKey.currentState!.validate()) {
+                //   ref.read(authUserProvider.notifier).signInUsers(
+                //     {
+                //       'password': controller.passWordController.text,
+                //       'phoneNumber': controller.phoneNoController.text,
+                //     },
+                //   );
+                // }
+
                 push(
                   context,
                   const MainScreen(),

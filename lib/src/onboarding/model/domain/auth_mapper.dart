@@ -1,4 +1,5 @@
-import 'package:tago/src/onboarding/model/domain/user_model.dart';
+
+import 'package:tago/app.dart';
 
 class AuthMapper {
 

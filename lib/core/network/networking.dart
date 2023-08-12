@@ -10,6 +10,9 @@ import 'package:dio/dio.dart';
 const String baseUrl = 'http://104.248.166.210:9800';
 const String signUpUrl = '/auth/signup';
 const String signInUrl = '/auth/signin';
+const String forgotPasswordUrl = '/auth/forgot-password';
+const String resetPasswordUrl = '/auth/reset-password';
+
 const String getCategories = '/public/categories';
 
 class NetworkHelper {
@@ -25,13 +28,6 @@ class NetworkHelper {
     log('$baseUrl$api');
 
     return response;
-    // if (response.statusCode == 200 || response.statusCode == 422) {
-    //   String data = response.body;
-    //   var decodedData = jsonDecode(data);
-    //   log('Post request successful $decodedData'); //
-
-    //   return decodedData;
-    // }
   }
 
   static Future<void> getRequest({required String api}) async {

@@ -1,7 +1,5 @@
 import 'package:tago/app.dart';
 import 'package:tago/config/constants/auth_error_constants.dart';
-import 'package:tago/src/onboarding/controllers/auth_user_notifier_provider.dart';
-import 'package:tago/src/onboarding/model/text_editing_controllers.dart';
 import 'package:tago/src/widgets/app_loader.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
@@ -15,7 +13,6 @@ class SignUpScreen extends ConsumerStatefulWidget {
 
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final TextEditingControllerClass controller = TextEditingControllerClass();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authUserProvider);
@@ -43,7 +40,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               ),
             ).padOnly(bottom: 5),
             Form(
-              key: _formKey,
+              key: controller.signUpformKey,
               child: Column(
                 children: [
                   authTextFieldWithError(
@@ -94,7 +91,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               width: context.sizeWidth(1),
               child: ElevatedButton(
                 onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
+                  if (controller.signUpformKey.currentState!.validate()) {
                     await ref.read(authUserProvider.notifier).signUpUsers(
                       {
                         'fullName': controller.fullNameController.text,

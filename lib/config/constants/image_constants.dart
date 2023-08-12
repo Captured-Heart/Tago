@@ -6,6 +6,9 @@ const String frame2 = 'assets/images/Frame_13.png';
 const String mastercardLogo = 'assets/images/mastercard.png';
 const String visacardLogo = 'assets/images/visacard.png';
 const String metricsIcon = 'assets/icons/metrics_icon.png';
+const String splashVideo = 'assets/images/Splash_screen.mp4';
+
+
 const List categoriesFrame = [
   'assets/images/Frame_3.png',
   'assets/images/Frame_1.png',

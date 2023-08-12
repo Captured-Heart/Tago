@@ -1,6 +1,7 @@
 // import 'app.dart';
 
 import 'package:tago/app.dart';
+import 'package:tago/src/onboarding/view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,9 @@ class MainApp extends StatelessWidget {
       // builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      home: const OnBoardScreen(),
+      home: const SplashScreen(),
+
+      // const OnBoardScreen(),
       onGenerateRoute: (RouteSettings routeSettings) {
         return MaterialPageRoute<void>(
           settings: routeSettings,

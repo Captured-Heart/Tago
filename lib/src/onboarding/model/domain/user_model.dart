@@ -1,4 +1,5 @@
-import 'package:equatable/equatable.dart';
+
+import 'package:tago/app.dart';
 
 class UserModel extends Equatable {
   final String? fullName;
@@ -24,11 +25,11 @@ class UserModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'fullName': fullName,
-        'id': id,
-        'phoneNumber': phoneNumber,
-        'password': password,
-        'otpType': otpType,
+        'fullName': fullName ?? '',
+        'id': id ?? 1,
+        'phoneNumber': phoneNumber ?? '',
+        'password': password ?? '',
+        'otpType': otpType ?? '',
       };
 
   @override

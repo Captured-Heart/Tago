@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tago/app.dart';
 
 // Set the bool flag to true to show debug prints. Even if you forgot
 // to set it to false, debug prints will not show in release builds.
@@ -26,6 +28,18 @@ class AppProviderObserver extends ProviderObserver {
           '  Type      : ${provider.runtimeType}\n'
           '  Old value : $previousValue\n'
           '  New value : $newValue');
+    }
+  }
+
+// @override
+  Future<void> authState() async {
+    AuthUserState? state;
+    if (_debug) {
+      log(
+        'authState.isSuccess : ${state!.isSuccess}\n'
+        'authstate.isLoading: ${state.isLoading}\n'
+        'authstate.errorMessage: ${state.errorMessage}',
+      );
     }
   }
 }
