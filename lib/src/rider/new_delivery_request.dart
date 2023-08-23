@@ -13,12 +13,12 @@ class NewDeliveryRequestScreen extends ConsumerStatefulWidget {
 
 class _NewDeliveryRequestScreenState
     extends ConsumerState<NewDeliveryRequestScreen> {
-      @override
+  @override
   void initState() {
     ref.read(getCurrentLocationProvider);
     super.initState();
   }
-      
+
   final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,6 @@
-
 import 'package:tago/app.dart';
 
 class AuthMapper {
-
-
-  
   static UserModel mapToUserModel(Map json) {
     return UserModel(
       fullName: json['fullName'],

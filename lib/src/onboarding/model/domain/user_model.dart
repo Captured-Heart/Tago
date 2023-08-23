@@ -1,4 +1,3 @@
-
 import 'package:tago/app.dart';
 
 class UserModel extends Equatable {

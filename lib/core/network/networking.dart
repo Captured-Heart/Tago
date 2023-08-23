@@ -12,6 +12,7 @@ const String signUpUrl = '/auth/signup';
 const String signInUrl = '/auth/signin';
 const String forgotPasswordUrl = '/auth/forgot-password';
 const String resetPasswordUrl = '/auth/reset-password';
+const String confirmResetPasswordUrl = '/auth/verify-resetcode';
 
 const String getCategories = '/public/categories';
 
@@ -30,7 +31,7 @@ class NetworkHelper {
     return response;
   }
 
-  static Future<void> getRequest({required String api}) async {
+  static Future<dynamic> getRequest({required String api}) async {
     final Dio dio = Dio();
 
     var url = '$baseUrl/$api';

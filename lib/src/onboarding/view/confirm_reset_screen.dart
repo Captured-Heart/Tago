@@ -1,7 +1,12 @@
 import 'package:tago/app.dart';
 
 class ConfirmResetCodeScreen extends ConsumerWidget {
-  const ConfirmResetCodeScreen({super.key});
+  ConfirmResetCodeScreen({
+    super.key,
+    required this.phoneNo,
+  });
+  final TextEditingControllerClass controller = TextEditingControllerClass();
+  final String phoneNo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,7 +27,7 @@ class ConfirmResetCodeScreen extends ConsumerWidget {
                     subtitle: Text(TextConstant.confirmBytypingthecode),
                   ),
                   authTextFieldWithError(
-                    controller: TextEditingController(),
+                    controller: controller.otpCode,
                     context: context,
                     isError: false,
                     hintText: TextConstant.fourdigitcode,
@@ -33,7 +38,17 @@ class ConfirmResetCodeScreen extends ConsumerWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         // confirmn code
-                        push(context, const ResetPasswordScreen());
+                        ref
+                            .read(authUserProvider.notifier)
+                            .confirmResetPassword(
+                          {
+                            'otp': controller.otpCode.text,
+                            'phoneNumber': phoneNo,
+                          },
+                          () {
+                            push(context, const ResetPasswordScreen());
+                          },
+                        );
                       },
                       child: const Text(TextConstant.confirm),
                     ),
@@ -46,7 +61,9 @@ class ConfirmResetCodeScreen extends ConsumerWidget {
                         style: AppTextStyle.normalBodyTitle,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          log(phoneNo);
+                        },
                         child: const Text(TextConstant.resend),
                       )
                     ],

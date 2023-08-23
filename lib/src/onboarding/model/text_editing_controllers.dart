@@ -7,6 +7,6 @@ class TextEditingControllerClass {
   TextEditingController passWordController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
   TextEditingController phoneNoController = TextEditingController();
-  // TextEditingController emailController = TextEditingController();
+  TextEditingController otpCode = TextEditingController();
   // TextEditingController emailController = TextEditingController();
 }

@@ -9,7 +9,8 @@ export 'package:form_field_validator/form_field_validator.dart';
 export 'package:equatable/equatable.dart';
 export 'dart:developer';
 export 'package:geolocator/geolocator.dart';
-
+export 'package:http/http.dart';
+export 'dart:convert';
 
 // export 'package:dio/dio.dart';
 

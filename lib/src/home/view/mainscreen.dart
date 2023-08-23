@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:tago/app.dart';
 import 'package:tago/config/google%20map/get_current_location.dart';
 
-import '../../categories/all_categories_screen.dart';
+import '../../categories/views/all_categories_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});

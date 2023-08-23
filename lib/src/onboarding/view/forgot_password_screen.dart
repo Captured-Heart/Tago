@@ -5,7 +5,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
   final TextEditingControllerClass controller = TextEditingControllerClass();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authUserProvider);
+    // final authState = ref.watch(authUserProvider);
     return Scaffold(
         appBar: appBarWidget(
           context: context,
@@ -42,17 +42,22 @@ class ForgotPasswordScreen extends ConsumerWidget {
                 width: context.sizeWidth(1),
                 child: ElevatedButton(
                   onPressed: () {
-
-                    
                     if (controller.signUpformKey.currentState!.validate()) {
                       ref.read(authUserProvider.notifier).forgotPassword(
-                        {'phoneNumber': controller.phoneNoController.text},
-                      );
-            
+                          {'phoneNumber': controller.phoneNoController.text},
+                          () {
+                        push(
+                            context,
+                            ConfirmResetCodeScreen(
+                              phoneNo: controller.phoneNoController.text,
+                            ));
+                      });
+
                       //
-                      authState.isSuccess == true
-                          ? push(context, const ConfirmResetCodeScreen())
-                          : null;
+                      // authState.isSuccess == true &&
+                      //         authState.isLoading == false
+                      //     ? push(context,  ConfirmResetCodeScreen())
+                      //     : null;
                     }
                   },
                   child: const Text(TextConstant.sendResetcode),

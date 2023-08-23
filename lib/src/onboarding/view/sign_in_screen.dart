@@ -1,5 +1,6 @@
 import 'package:tago/app.dart';
 import 'package:tago/config/constants/auth_error_constants.dart';
+import 'package:tago/config/hive_local_storage.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   static const String routeName = 'signIn';
@@ -12,6 +13,7 @@ class SignInScreen extends ConsumerStatefulWidget {
 
 class _SignUpScreenState extends ConsumerState<SignInScreen> {
   final TextEditingControllerClass controller = TextEditingControllerClass();
+  final HiveHelper hive = HiveHelper();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +75,7 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                 // forgot password
                 InkWell(
                   onTap: () {
-                    push(context,  ForgotPasswordScreen());
+                    push(context, ForgotPasswordScreen());
                   },
                   child: Text(
                     TextConstant.forgotpassword,
@@ -83,11 +85,12 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
               ].columnInPadding(10),
             ),
           ),
+
           //
           SizedBox(
             width: context.sizeWidth(1),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // if (controller.signInformKey.currentState!.validate()) {
                 //   ref.read(authUserProvider.notifier).signInUsers(
                 //     {
@@ -96,11 +99,7 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                 //     },
                 //   );
                 // }
-
-                push(
-                  context,
-                  const MainScreen(),
-                );
+                push(context, const MainScreen());
               },
               child: const Text(TextConstant.signIn),
             ),

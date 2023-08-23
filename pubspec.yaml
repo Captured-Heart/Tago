@@ -19,6 +19,7 @@ dependencies:
   geolocator: ^9.0.2
   google_maps_flutter: ^2.4.0
   google_polyline_algorithm: ^3.1.0
+  hive_flutter: ^1.1.0
   http: ^0.13.5
   material_symbols_icons: ^4.39.5
   persistent_bottom_nav_bar: ^5.0.2

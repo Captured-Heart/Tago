@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/categories/controller/categories_repository.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -183,7 +184,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         textAlign: TextAlign.left,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          log('message');
+                          fetchCategoriesMethod();
+                        },
                         style:
                             context.theme.elevatedButtonTheme.style?.copyWith(
                           fixedSize: const MaterialStatePropertyAll<Size>(

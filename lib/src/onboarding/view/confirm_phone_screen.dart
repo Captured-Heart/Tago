@@ -19,7 +19,7 @@ class ConfirmPhoneNumberScreen extends StatelessWidget {
         body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(
+                  const ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: const Text(
                       TextConstant.wehavesent4digit,

@@ -1,11 +1,14 @@
 // import 'app.dart';
 
 import 'package:tago/app.dart';
+import 'package:tago/config/hive_local_storage.dart';
 import 'package:tago/src/onboarding/view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferencesHelper.initSharedPref();
+  await HiveHelper.init();
+  log('started app');
   final ProviderContainer container = ProviderContainer(
     // This observer is used for logging changes in all Riverpod providers.
     observers: <ProviderObserver>[AppProviderObserver()],
@@ -27,7 +30,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isSeen = SharedPreferencesHelper.getOnBoardingSeen();
+    // bool isSeen = SharedPreferencesHelper.getOnBoardingSeen();
     return MaterialApp(
       onGenerateTitle: (context) => TextConstant.title,
       restorationScopeId: 'app',
@@ -50,7 +53,7 @@ class MainApp extends StatelessWidget {
               case SignInScreen.routeName:
                 return const SignInScreen();
               case ConfirmPhoneNumberScreen.routeName:
-                return const ConfirmPhoneNumberScreen();
+                return ConfirmPhoneNumberScreen();
               case AddAddressScreen.routeName:
                 return const AddAddressScreen();
               case AddAddressManuallyScreen.routeName:

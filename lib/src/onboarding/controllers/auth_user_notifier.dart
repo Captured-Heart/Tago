@@ -146,7 +146,8 @@ SIGN IN USERS METHOD
 /*------------------------------------------------------------------
 FORGOT PASSWORD METHOD
  -------------------------------------------------------------------*/
-  Future<void> forgotPassword(Map<String, dynamic> map) async {
+  Future<void> forgotPassword(
+      Map<String, dynamic> map, VoidCallback onSuccess) async {
     state = const AuthUserState(
       isLoading: true,
       errorMessage: '',
@@ -167,11 +168,12 @@ FORGOT PASSWORD METHOD
 
       //the response and error handling
 
-
       if (decodedData['success'] == true) {
         String data = response.body;
         var decodedData = jsonDecode(data);
         log('Post request successful $decodedData'); //
+        onSuccess();
+
         state = AuthUserState(
           isLoading: false,
           isSuccess: true,
@@ -203,10 +205,11 @@ FORGOT PASSWORD METHOD
       );
     }
   }
+
   /*------------------------------------------------------------------
 RESET PASSWORD METHOD
  -------------------------------------------------------------------*/
- Future<void> resetPassword(Map<String, dynamic> map) async {
+  Future<void> resetPassword(Map<String, dynamic> map) async {
     state = const AuthUserState(
       isLoading: true,
       errorMessage: '',
@@ -227,6 +230,66 @@ RESET PASSWORD METHOD
 
       //the response and error handling
 
+      if (decodedData['success'] == true) {
+        String data = response.body;
+        var decodedData = jsonDecode(data);
+        log('Post request successful: $decodedData'); //
+        state = AuthUserState(
+          isLoading: false,
+          isSuccess: true,
+          errorMessage: decodedData['message'],
+        );
+        return decodedData;
+      } else {
+        state = AuthUserState(
+          isLoading: false,
+          isSuccess: false,
+          errorMessage: decodedData['message'],
+        );
+        // log(decodedData['message']);
+      }
+    } on HttpException catch (error) {
+      log('httpexception error: ${error.message}');
+      state = AuthUserState(
+        isLoading: false,
+        errorMessage: error.message,
+        isSuccess: false,
+      );
+    } catch (e) {
+      log('the catch error: ${e.toString()}');
+
+      state = AuthUserState(
+        isLoading: false,
+        errorMessage: e.toString(),
+        isSuccess: false,
+      );
+    }
+  }
+
+  /*------------------------------------------------------------------
+Confirm RESET PASSWORD METHOD
+ -------------------------------------------------------------------*/
+  Future<void> confirmResetPassword(
+      Map<String, dynamic> map, Function onSuccess) async {
+    state = const AuthUserState(
+      isLoading: true,
+      errorMessage: '',
+      isSuccess: false,
+    );
+
+    try {
+      //post request executed
+      final Response response = await NetworkHelper.postRequest(
+        map: map,
+        api: confirmResetPasswordUrl,
+      );
+
+      // decoding the response
+      String data = response.body;
+      var decodedData = jsonDecode(data);
+      log('Response from a decodedData:  $decodedData'); //
+
+      //the response and error handling
 
       if (decodedData['success'] == true) {
         String data = response.body;
@@ -237,6 +300,7 @@ RESET PASSWORD METHOD
           isSuccess: true,
           errorMessage: decodedData['message'],
         );
+        onSuccess();
         return decodedData;
       } else {
         state = AuthUserState(
