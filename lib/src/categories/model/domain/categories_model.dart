@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:tago/app.dart';
 
 class CategoriesModel extends Equatable {
   final String? name;
@@ -6,6 +6,7 @@ class CategoriesModel extends Equatable {
   final String? label;
   final String? imgUrl;
   final List<dynamic>? subCategories;
+  final List<dynamic>? products;
 
   const CategoriesModel({
     this.name,
@@ -13,6 +14,7 @@ class CategoriesModel extends Equatable {
     this.label,
     this.imgUrl,
     this.subCategories,
+    this.products,
   });
 
   factory CategoriesModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class CategoriesModel extends Equatable {
       label: json['label'] as String?,
       imgUrl: json['imgUrl'] as String?,
       subCategories: json['subCategories'] as List<dynamic>?,
+      products: json['products'] as List<dynamic>?,
     );
   }
 
@@ -31,8 +34,9 @@ class CategoriesModel extends Equatable {
         'label': label,
         'imgUrl': imgUrl,
         'subCategories': subCategories,
+        'products': products,
       };
 
   @override
-  List<Object?> get props => [name, id, label, imgUrl, subCategories];
+  List<Object?> get props => [name, id, label, imgUrl, subCategories, products];
 }

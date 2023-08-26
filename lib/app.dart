@@ -12,12 +12,8 @@ export 'package:geolocator/geolocator.dart';
 export 'package:http/http.dart';
 export 'dart:convert';
 
-// export 'package:dio/dio.dart';
-
-//UTILS
-export 'config/app_provider_observer.dart';
-export 'config/navigation.dart';
-export 'config/shared_prefs.dart';
+// config
+export './config/config.dart';
 
 //CONSTANTS
 export 'config/constants/image_constants.dart';
@@ -41,3 +37,4 @@ export 'src/onboarding/onboarding.dart';
 export 'src/rider/rider.dart';
 export 'src/product/product.dart';
 export 'src/orders/order.dart';
+export 'src/categories/categories.dart';

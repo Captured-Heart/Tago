@@ -80,7 +80,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             height: context.sizeHeight(0.5),
             width: context.sizeWidth(0.7),
             // aspectRatio: videoController.value.aspectRatio/0.6,
-            child: VideoPlayer(videoController),
+            child: 
+            VideoPlayer(videoController),
           ),
         ),
         SizedBox(

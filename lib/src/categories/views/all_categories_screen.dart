@@ -1,7 +1,5 @@
 import 'package:tago/app.dart';
 
-// import 'package:tago/utils/extensions/debug_frame.dart';
-
 class AllCategoriesScreen extends ConsumerStatefulWidget {
   const AllCategoriesScreen({super.key});
 
@@ -13,27 +11,45 @@ class AllCategoriesScreen extends ConsumerStatefulWidget {
 class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
   @override
   Widget build(BuildContext context) {
+    final categories = ref.watch(fetchCategoriesProvider);
     return Scaffold(
       appBar: categoriesAppbar(context),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
-          Wrap(
-            runSpacing: 20,
-            spacing: 10,
-            alignment: WrapAlignment.spaceEvenly,
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: List.generate(
-              categoriesFrame.length,
-              growable: true,
-              (index) => GestureDetector(
-                  onTap: () {},
-                  child: categoryCard(
-                    context: context,
-                    index: index,
-                    width: context.sizeWidth(0.28),
-                    height: 100,
-                  )),
+          categories.when(
+            data: (data) {
+              return Wrap(
+                runSpacing: 20,
+                spacing: 10,
+                alignment: WrapAlignment.spaceEvenly,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: List.generate(
+                  data.length,
+                  growable: true,
+                  (index) => GestureDetector(
+                    onTap: () {
+                      var subList = data[index].subCategories;
+                      log(subList.toString());
+                      push(
+                        context,
+                        FruitsAndVegetablesScreen(subCategoriesList: subList!),
+                      );
+                    },
+                    child: categoryCard(
+                      context: context,
+                      index: index,
+                      width: context.sizeWidth(0.28),
+                      height: 100,
+                      categoriesModel: data[index],
+                    ),
+                  ),
+                ),
+              );
+            },
+            error: (error, stackTrace) => Text(error.toString()),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
             ),
           ),
         ],

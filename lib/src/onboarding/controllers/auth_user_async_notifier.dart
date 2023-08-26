@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:tago/app.dart';
-import 'package:tago/config/hive_local_storage.dart';
 import 'package:tago/core/network/networking.dart';
 import 'package:tago/src/onboarding/model/auth_exception.dart';
 

@@ -1,7 +1,12 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/widgets/sub_category_card.dart';
 
 class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
-  const FruitsAndVegetablesScreen({super.key});
+  final List<dynamic> subCategoriesList;
+  const FruitsAndVegetablesScreen({
+    super.key,
+    required this.subCategoriesList,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -14,6 +19,8 @@ class _FruitsAndVegetablesScreenState
 
   @override
   Widget build(BuildContext context) {
+    // final categories = ref.watch(fetchCategoriesProvider);
+    // final subCategory = widget.subCategoriesList;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -50,19 +57,55 @@ class _FruitsAndVegetablesScreenState
               alignment: WrapAlignment.start,
               crossAxisAlignment: WrapCrossAlignment.start,
               children: List.generate(
-                categoriesFrame.length - 19,
+                widget.subCategoriesList.length,
                 growable: true,
-                (index) => GestureDetector(
+                (index) {
+
+                  return GestureDetector(
                   onTap: () {},
-                  child: categoryCard(
+                  child: subCategoryCard(
                     context: context,
                     index: index,
                     width: context.sizeWidth(0.155),
                     height: 70,
+                    subCategoriesModel: widget.subCategoriesList,
+                    // subCategoriesModel: data[index].subCategories,
                   ),
-                ),
+                );
+                },
               ),
             ).padSymmetric(horizontal: 5),
+            // categories.when(
+            //   data: (data) {
+            //     return Wrap(
+            //       runSpacing: 20,
+            //       spacing: 10,
+            //       alignment: WrapAlignment.start,
+            //       crossAxisAlignment: WrapCrossAlignment.start,
+            //       children: List.generate(
+            //        data.length,
+            //         growable: true,
+            //         (index) => GestureDetector(
+            //           onTap: () {},
+            //           child: subCategoryCard(
+            //             context: context,
+            //             index: index,
+            //             width: context.sizeWidth(0.155),
+            //             height: 70,
+            //             subCategoriesModel: data[index].subCategories!,
+            //             // subCategoriesModel: data[index].subCategories,
+            //           ),
+            //         ),
+            //       ),
+            //     ).padSymmetric(horizontal: 5);
+            //   },
+            //   error: (error, stackTrace) {
+            //     return Text(error.toString());
+            //   },
+            //   loading: () => const Center(
+            //     child: CircularProgressIndicator(),
+            //   ),
+            // ),
             Text(
               TextConstant.allFruitsAndVegetables,
               style: context.theme.textTheme.bodyLarge,

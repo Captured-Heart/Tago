@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/categories/controller/categories_repository.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -13,14 +12,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> navigateToCategoryScreen(int index) {
-      List screen = [
-        FruitsAndVegetablesScreen(),
-        OnBoardScreen(),
-      ];
-      return push(context, screen[index]);
-    }
-
+    final categories = ref.watch(fetchCategoriesProvider);
     return Scaffold(
       appBar: homescreenAppbar(context),
       body: ListView(
@@ -214,25 +206,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
 
-          Wrap(
-            runSpacing: 20,
-            spacing: 10,
-            alignment: WrapAlignment.spaceEvenly,
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: List.generate(
-              categoriesFrame.length - 14,
-              growable: true,
-              (index) => GestureDetector(
-                onTap: () => navigateToCategoryScreen(index),
-                child: categoryCard(
-                  context: context,
-                  index: index,
-                  width: context.sizeWidth(0.155),
-                  height: 70,
+          categories.when(
+            data: (data) {
+              return Wrap(
+                runSpacing: 20,
+                spacing: 10,
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: List.generate(
+                  data.length - (data.length - 9),
+                  growable: true,
+                  (index) => GestureDetector(
+                    onTap: () {
+                      var subList = data[index].subCategories;
+                      log(subList.toString());
+                      push(
+                        context,
+                        FruitsAndVegetablesScreen(subCategoriesList: subList!),
+                      );
+                    },
+                    child: categoryCard(
+                      context: context,
+                      index: index,
+                      width: context.sizeWidth(0.155),
+                      height: 70,
+                      categoriesModel: data[index],
+                    ),
+                  ),
                 ),
-              ),
+              ).padSymmetric(horizontal: 15);
+            },
+            error: (error, stackTrace) => Text(error.toString()),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
             ),
-          ).padSymmetric(horizontal: 15),
+          ),
 
 //items near you
           ListTile(

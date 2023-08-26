@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+
 import '../../app.dart';
 
 Widget categoryCard({
@@ -5,6 +7,7 @@ Widget categoryCard({
   required int index,
   required double width,
   required double height,
+  CategoriesModel? categoriesModel,
 }) {
   return SizedBox(
     width: width,
@@ -12,14 +15,45 @@ Widget categoryCard({
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Image.asset(
-          categoriesFrame[index],
+        CachedNetworkImage(
+          imageUrl: categoriesModel!.imgUrl!,
           height: height,
           // width: 100,
           fit: BoxFit.fill,
+          imageBuilder: (context, imageProvider) {
+            return Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            );
+          },
+          progressIndicatorBuilder: (context, string, progress) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+                value: progress.progress,
+              ),
+            );
+          },
+          errorWidget: (context, url, error) {
+            return Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  //TODO: ADD AN ERROR IMAGE FOR WIDGET
+                  image: AssetImage(logoLarge),
+                  fit: BoxFit.fill,
+                ),
+              ),
+            );
+          },
         ).padOnly(bottom: 4),
         Text(
-          categoriesFooters[index],
+          categoriesModel.name!,
           textAlign: TextAlign.center,
           maxLines: 2,
           softWrap: true,

@@ -15,7 +15,7 @@ class MainScreen extends ConsumerStatefulWidget {
 class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   void initState() {
-    ref.read(getCurrentLocationProvider);
+    // ref.read(getCurrentLocationProvider);
     super.initState();
   }
 

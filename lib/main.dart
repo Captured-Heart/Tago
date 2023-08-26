@@ -1,7 +1,8 @@
 // import 'app.dart';
 
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tago/app.dart';
-import 'package:tago/config/hive_local_storage.dart';
 import 'package:tago/src/onboarding/view/splash_screen.dart';
 
 void main() async {
@@ -17,8 +18,8 @@ void main() async {
     UncontrolledProviderScope(
       container: container,
       child: const MainApp(),
-      // DevicePreview(
-      //   enabled: kReleaseMode,
+      // child: DevicePreview(
+      //   enabled: kDebugMode,
       //   builder: (context) => const MainApp(),
       // ),
     ),
@@ -53,7 +54,7 @@ class MainApp extends StatelessWidget {
               case SignInScreen.routeName:
                 return const SignInScreen();
               case ConfirmPhoneNumberScreen.routeName:
-                return ConfirmPhoneNumberScreen();
+                return const ConfirmPhoneNumberScreen();
               case AddAddressScreen.routeName:
                 return const AddAddressScreen();
               case AddAddressManuallyScreen.routeName:

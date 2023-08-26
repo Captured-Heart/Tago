@@ -1,9 +1,9 @@
 {
-    "__className": "categories_model", // <- The base class name of the object.
+    "__className": "sub_categories_model", // <- The base class name of the object.
     "__path": "/lib/src/categories/model/domain", // <- override default path with a new one by adding '__path' key.
     "name": "",
     "id": 1, // To mark as required value, change "id" to "r@id".
     "label": "", // To mark as a default value, change "title" to "d@title".
     "imgUrl": "",
-    "subCategories": []
+    "categoryId": 0
   }
