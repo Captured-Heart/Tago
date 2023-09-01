@@ -1,7 +1,5 @@
 // import 'app.dart';
 
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:tago/app.dart';
 import 'package:tago/src/onboarding/view/splash_screen.dart';
 
@@ -54,7 +52,7 @@ class MainApp extends StatelessWidget {
               case SignInScreen.routeName:
                 return const SignInScreen();
               case ConfirmPhoneNumberScreen.routeName:
-                return const ConfirmPhoneNumberScreen();
+                return ConfirmPhoneNumberScreen();
               case AddAddressScreen.routeName:
                 return const AddAddressScreen();
               case AddAddressManuallyScreen.routeName:

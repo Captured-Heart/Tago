@@ -1,9 +1,8 @@
 import 'package:tago/app.dart';
-import 'package:video_player/video_player.dart';
 
-final videoPlayerProvider = Provider((ref) {
-  return VideoPlayerController.asset(splashVideo);
-});
+// final videoPlayerProvider = Provider((ref) {
+//   return VideoPlayerController.asset(splashVideo);
+// });
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -16,8 +15,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   bool isVisible = false;
   @override
   void initState() {
-    final videoController = ref.read(videoPlayerProvider);
-
     super.initState();
 
     navigateToNexToScreen().then((_) {
@@ -28,12 +25,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         isVisible = true;
       });
     });
-    videoController.initialize().then((_) {});
-    videoController.play();
-    if (videoController.value.duration == const Duration(seconds: 4)) {
-      videoController.pause();
-    }
-    videoController.setLooping(true);
   }
 
   Future<void> navigateToNexToScreen() async {
@@ -45,58 +36,33 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    ref.read(videoPlayerProvider).dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final videoController = ref.watch(videoPlayerProvider);
-    // log(videoController.value.toString());
-    // Color multicolor() {
-    //   Color? setColor;
-    //   for (var i = 0; i < Colors.primaries.length; i++) {
-    //     // return Colors.primaries[i];
-    //     setState(() {
-    //       setColor = Colors.primaries[i];
-    //     });
-    //   }
-    //   return setColor!;
-    // }
-
     return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        //  {
-        //   // return Colors.primaries[i];
-        //   setState(() {
-        //     setColor = Colors.primaries[i];
-        //   });
-        // }
-        Center(
-          child: SizedBox(
-            height: context.sizeHeight(0.5),
-            width: context.sizeWidth(0.7),
-            // aspectRatio: videoController.value.aspectRatio/0.6,
-            child: 
-            VideoPlayer(videoController),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Center(
+            child: SizedBox(
+              height: context.sizeHeight(0.5),
+              width: context.sizeWidth(0.7),
+              // aspectRatio: videoController.value.aspectRatio/0.6,
+              child: Image.asset(splashVideoGif),
+              // VideoPlayer(videoController),
+            ),
           ),
-        ),
-        SizedBox(
-          height: context.sizeHeight(0.2),
-        ),
-
-        Visibility(
-          visible: isVisible,
-          child: const CircularProgressIndicator(
-            color: TagoLight.orange,
-            valueColor: AlwaysStoppedAnimation(TagoDark.primaryColor),
-            //  multicolor(),
+          SizedBox(
+            height: context.sizeHeight(0.2),
           ),
-        )
-      ],
-    ).padSymmetric(vertical: 40));
+          Visibility(
+            visible: isVisible,
+            child: const CircularProgressIndicator(
+              color: TagoLight.orange,
+              valueColor: AlwaysStoppedAnimation(TagoDark.primaryColor),
+              //  multicolor(),
+            ),
+          )
+        ],
+      ).padSymmetric(vertical: 40),
+    );
   }
 }

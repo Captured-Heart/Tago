@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/onboarding/controllers/auth_user_async_notifier.dart';
 
 class ForgotPasswordScreen extends ConsumerWidget {
   ForgotPasswordScreen({super.key});
@@ -43,21 +44,25 @@ class ForgotPasswordScreen extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     if (controller.signUpformKey.currentState!.validate()) {
-                      ref.read(authUserProvider.notifier).forgotPassword(
-                          {'phoneNumber': controller.phoneNoController.text},
-                          () {
-                        push(
-                            context,
-                            ConfirmResetCodeScreen(
-                              phoneNo: controller.phoneNoController.text,
-                            ));
-                      });
+                      ref
+                          .read(authAsyncNotifierProvider.notifier)
+                          .forgotPasswordAsyncMethod(
+                        map: {'phoneNumber': controller.phoneNoController.text},
+                        context: context,
+                      );
+                      // ref.read(authUserProvider.notifier).forgotPassword(
+                      //   {'phoneNumber': controller.phoneNoController.text},
+                      //   () {
+                      //     push(
+                      //       context,
+                      //       ConfirmResetCodeScreen(
+                      //         phoneNo: controller.phoneNoController.text,
+                      //       ),
+                      //     );
+                      //   },
+                      // );
 
                       //
-                      // authState.isSuccess == true &&
-                      //         authState.isLoading == false
-                      //     ? push(context,  ConfirmResetCodeScreen())
-                      //     : null;
                     }
                   },
                   child: const Text(TextConstant.sendResetcode),

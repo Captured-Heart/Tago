@@ -1,7 +1,6 @@
 //  PACKAGES
 export 'package:flutter/material.dart' hide FormFieldValidator, Flow;
 export 'package:flutter_riverpod/flutter_riverpod.dart';
-export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 export 'package:material_symbols_icons/symbols.dart';

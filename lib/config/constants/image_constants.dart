@@ -7,6 +7,7 @@ const String mastercardLogo = 'assets/images/mastercard.png';
 const String visacardLogo = 'assets/images/visacard.png';
 const String metricsIcon = 'assets/icons/metrics_icon.png';
 const String splashVideo = 'assets/images/Splash_screen.mp4';
+const String splashVideoGif = 'assets/images/splash_screen.gif';
 
 const List categoriesFrame = [
   'assets/images/Frame_3.png',

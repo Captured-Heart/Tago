@@ -1,11 +1,24 @@
 import 'package:tago/app.dart';
+import 'package:http/http.dart' as http;
+import 'package:tago/core/network/networking.dart';
 
 class AddAddressScreen extends ConsumerWidget {
   static const String routeName = 'add address';
   const AddAddressScreen({super.key});
 
+  void searchAddress() async {
+    // Uri.https(authority)
+    final response = await http.get(
+      Uri.parse(
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Paris&types=geocode&key=$googleAPIKey',
+      ),
+    );
+    log(response.body);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // final currentPosition  = ref.watch(getCurrentLocationProvider);
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -45,14 +58,17 @@ class AddAddressScreen extends ConsumerWidget {
           //     subtitle: Text('Ikeja, Lagos, Nigeria'),
           //   ),
           TextButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              ref.read(getCurrentLocationProvider);
+            },
             icon: const Icon(Icons.location_on, size: 15),
             label: const Text(TextConstant.usemycurrentlocation),
           ),
           const Spacer(),
           TextButton(
             onPressed: () {
-              pushNamed(context, AddAddressManuallyScreen.routeName);
+              // pushNamed(context, AddAddressManuallyScreen.routeName);
+              // searchAddress();
             },
             child: const Text(TextConstant.typeaddressmanually),
           ).padOnly(bottom: 16)

@@ -5,6 +5,8 @@ const String passwordMustBeAtleast = 'password must be at least 8 digits long';
 const String passwordMustHaveaSymbol =
     'passwords must have at least one special character';
 const String passwordIsRequired = 'password is required';
+const String otpisInvalid = 'otp code is invalid';
+
 // const String passwordRegex = '^(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{11,}$';
 
 // enum AuthErrors{

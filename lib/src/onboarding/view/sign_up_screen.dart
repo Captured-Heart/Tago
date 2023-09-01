@@ -17,21 +17,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     // final authState = ref.watch(authUserProvider);
-    final authState1 = ref.watch(authAsyncNotifierProvider);
-    final isError = authState1 is AsyncError;
+    final authState = ref.watch(authAsyncNotifierProvider);
+    final isError = authState is AsyncError;
     // log(authState.state.asData?.value ?? 'ok');
     log('isErrorLog: $isError');
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: appBarWidget(
-        context: context,
-        isLeading: true,
-        title: TextConstant.createAcct,
-      ),
-      body: FullScreenLoader(
-        isLoading: authState1.isLoading,
-        title: '${authState1.error}' ?? '',
-        child: Column(
+    return FullScreenLoader(
+      isLoading: authState.isLoading,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: appBarWidget(
+          context: context,
+          isLeading: true,
+          title: TextConstant.createAcct,
+        ),
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const ListTile(
@@ -86,7 +85,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       ],
                     ),
                   ),
-                  Text(authState1.error.toString() ?? 'df'),
+                  //!
+                  // Text(authState.error.toString()),
                 ].columnInPadding(10),
               ),
             ),
@@ -96,137 +96,30 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               width: context.sizeWidth(1),
               child: ElevatedButton(
                 onPressed: () async {
-                  // push(context, ConfirmPhoneNumberScreen());
+                  // push(
+                  //   context,
+                  //    ConfirmPhoneNumberScreen(
+                  //     phoneno: '',
+                  //   ),
+                  // );
+
+
+
+
                   if (controller.signUpformKey.currentState!.validate()) {
                     await ref
                         .read(authAsyncNotifierProvider.notifier)
                         .signUpAsyncMethod(
-                      {
+                      context: context,
+                      phoneno: controller.phoneNoController.text,
+                      map: {
                         'fullName': controller.fullNameController.text,
                         'password': controller.passWordController.text,
                         'phoneNumber': controller.phoneNoController.text,
                       },
-                    ).then((_) {
-                      showModalBottomSheet(
-                          context: context,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          )),
-                          builder: (context1) => Consumer(
-                                builder: (context, ref, child) {
-                                  final authState =
-                                      ref.watch(authAsyncNotifierProvider);
-
-                                  return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              !authState.isLoading &&
-                                                      !authState.hasValue ==
-                                                          true
-                                                  ? Icons.done
-                                                  : Icons.cancel,
-                                              color: !authState.hasError == true
-                                                  ? TagoLight.primaryColor
-                                                  : TagoLight.textError,
-                                              size: 44,
-                                            ),
-                                            ListTile(
-                                              title: Text(
-                                                !authState.hasError == true
-                                                    ? 'succesful'
-                                                    : 'Error',
-                                                textScaleFactor: 1.1,
-                                                textAlign: TextAlign.center,
-                                              ).padOnly(bottom: 10),
-                                              subtitle: Text(
-                                                '${authState.asData!.value}' ??
-                                                    'invalid phone number/password combination',
-                                                textScaleFactor: 1.1,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            )
-                                          ].columnInPadding(20))
-                                      .padSymmetric(
-                                          vertical: 40, horizontal: 30);
-                                },
-                              ));
-                    });
-                    // await ref.read(authUserProvider.notifier).signUpUsers(
-                    //   {
-                    //     'fullName': controller.fullNameController.text,
-                    //     'password': controller.passWordController.text,
-                    //     'phoneNumber': controller.phoneNoController.text,
-                    //   },
-                    // )
-
-                    // .then((_) {
-                    //   !authState.isSuccess! && !authState.isLoading
-                    //       ? showModalBottomSheet(
-                    //           context: context,
-                    //           shape: const RoundedRectangleBorder(
-                    //               borderRadius: BorderRadius.only(
-                    //             topLeft: Radius.circular(20),
-                    //             topRight: Radius.circular(20),
-                    //           )),
-                    //           builder: (context1) => Consumer(
-                    //                 builder: (context, ref, child) {
-                    //                   return Column(
-                    //                           crossAxisAlignment:
-                    //                               CrossAxisAlignment.center,
-                    //                           mainAxisSize: MainAxisSize.min,
-                    //                           children: [
-                    //                             Icon(
-                    //                               ref
-                    //                                           .watch(
-                    //                                               authUserProvider)
-                    //                                           .isSuccess ==
-                    //                                       true
-                    //                                   ? Icons.done
-                    //                                   : Icons.cancel,
-                    //                               color: ref
-                    //                                           .watch(
-                    //                                               authUserProvider)
-                    //                                           .isSuccess ==
-                    //                                       true
-                    //                                   ? TagoLight.primaryColor
-                    //                                   : TagoLight.textError,
-                    //                               size: 44,
-                    //                             ),
-                    //                             ListTile(
-                    //                               title: Text(
-                    //                                 ref
-                    //                                             .watch(
-                    //                                                 authUserProvider)
-                    //                                             .isSuccess ==
-                    //                                         true
-                    //                                     ? 'succesful'
-                    //                                     : 'Error',
-                    //                                 textScaleFactor: 1.1,
-                    //                                 textAlign: TextAlign.center,
-                    //                               ).padOnly(bottom: 10),
-                    //                               subtitle: Text(
-                    //                                 ref
-                    //                                         .watch(
-                    //                                             authUserProvider)
-                    //                                         .errorMessage ??
-                    //                                     'invalid phone number/password combination',
-                    //                                 textScaleFactor: 1.1,
-                    //                                 textAlign: TextAlign.center,
-                    //                               ),
-                    //                             )
-                    //                           ].columnInPadding(20))
-                    //                       .padSymmetric(
-                    //                           vertical: 40, horizontal: 30);
-                    //                 },
-                    //               ))
-                    //       : const SizedBox.shrink();
-                    // });
+                    );
                   }
+
                 },
                 child: const Text(TextConstant.signup),
               ),

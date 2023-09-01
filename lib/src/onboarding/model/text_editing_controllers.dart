@@ -9,4 +9,11 @@ class TextEditingControllerClass {
   TextEditingController phoneNoController = TextEditingController();
   TextEditingController otpCode = TextEditingController();
   // TextEditingController emailController = TextEditingController();
+
+  void disposeControllers() {
+    passWordController.dispose();
+    fullNameController.dispose();
+    phoneNoController.dispose();
+    otpCode.dispose();
+  }
 }

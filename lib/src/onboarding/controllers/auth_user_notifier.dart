@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:http/http.dart';
 import 'package:tago/app.dart';
 import 'package:tago/core/network/networking.dart';
 
@@ -281,7 +278,7 @@ Confirm RESET PASSWORD METHOD
       //post request executed
       final Response response = await NetworkHelper.postRequest(
         map: map,
-        api: confirmResetPasswordUrl,
+        api: verifyResetCode,
       );
 
       // decoding the response
