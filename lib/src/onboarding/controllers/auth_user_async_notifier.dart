@@ -1,13 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
-
 import 'package:tago/app.dart';
-import 'package:tago/config/constants/hive_keys.dart';
-import 'package:tago/core/network/networking.dart';
-import 'package:tago/src/onboarding/model/auth_exception.dart';
-
-import '../../../config/utils/dialogs.dart';
 
 final authAsyncNotifierProvider =
     StateNotifierProvider<AuthAsyncNotifier, AsyncValue>((ref) {
@@ -16,9 +9,9 @@ final authAsyncNotifierProvider =
 
 class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
   AuthAsyncNotifier() : super(const AsyncValue.data(null));
-
+  TextEditingControllerClass controller = TextEditingControllerClass();
 /*------------------------------------------------------------------
-SIGN UP USERS METHOD
+                  SIGN UP USERS METHOD
  -------------------------------------------------------------------*/
   Future<void> signUpAsyncMethod({
     required Map<String, dynamic> map,
@@ -47,9 +40,10 @@ SIGN UP USERS METHOD
           .saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
       await HiveHelper()
           .saveData(HiveKeys.role.keys, decodedData['data']['role']);
+      log('decodedData: $decodedData');
 
       state = AsyncValue.data(decodedData['message']);
-
+      controller.disposeControllers();
       push(
           context,
           ConfirmPhoneNumberScreen(
@@ -67,7 +61,7 @@ SIGN UP USERS METHOD
   }
 
   /*------------------------------------------------------------------
-SIGN IN USERS METHOD
+                      SIGN IN USERS METHOD
  -------------------------------------------------------------------*/
   Future<void> signInAsyncMethod({
     required Map<String, dynamic> map,
@@ -97,6 +91,7 @@ SIGN IN USERS METHOD
           .saveData(HiveKeys.role.keys, decodedData['data']['role']);
 
       state = AsyncValue.data(decodedData['message']);
+      log('decodedData: $decodedData');
 
 //NAVIGATING TO THE MAIN SCREEN
       pushReplacement(
@@ -114,11 +109,13 @@ SIGN IN USERS METHOD
   }
 
 /*------------------------------------------------------------------
-FORGOT PASSWORD METHOD
+                    FORGOT PASSWORD METHOD
  -------------------------------------------------------------------*/
   Future<void> forgotPasswordAsyncMethod({
     required Map<String, dynamic> map,
     required BuildContext context,
+    required String phoneNo,
+    required VoidCallback onNavigation,
   }) async {
     state = const AsyncValue.loading();
 
@@ -138,14 +135,10 @@ FORGOT PASSWORD METHOD
     //the response and error handling
     if (decodedData['success'] == true) {
       state = AsyncValue.data(decodedData['message']);
+      log('decodedData: $decodedData');
 
       warningDialogs(state.value ?? '');
-      push(
-        context,
-        ConfirmResetCodeScreen(
-          phoneNo: map.values.map((e) => e).toString(),
-        ),
-      );
+      onNavigation();
 
       return decodedData;
     } else {
@@ -157,9 +150,9 @@ FORGOT PASSWORD METHOD
   }
 
   /*------------------------------------------------------------------
-Confirm RESET PASSWORD METHOD
+                  VERIFY RESET CODE METHOD
  -------------------------------------------------------------------*/
-  Future<void> confirmResetPasswordAsyncMethod({
+  Future<void> verifyResetcodeMethod({
     required Map<String, dynamic> map,
     required BuildContext context,
   }) async {
@@ -181,13 +174,128 @@ Confirm RESET PASSWORD METHOD
     //the response and error handling
     if (decodedData['success'] == true) {
       state = AsyncValue.data(decodedData['message']);
+      await HiveHelper()
+          .saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
+      warningDialogs(state.value ?? '');
+      log('decodedData: $decodedData');
+
+      push(
+        context,
+        const ResetPasswordScreen(),
+      );
+
+      return decodedData;
+    } else {
+      state = AsyncValue.error(decodedData['message'], StackTrace.empty);
+      showAuthBottomSheet(
+        context: context,
+      );
+    }
+  }
+
+  /*------------------------------------------------------------------
+                    SEND OTP METHOD
+ -------------------------------------------------------------------*/
+  Future<void> resendOtpMethod(context) async {
+    state = const AsyncValue.loading();
+
+    Response response = await NetworkHelper.postRequestWithToken(
+      map: {'otpType': 'verify-phone-number'},
+      api: sendOtp,
+    ).timeout(const Duration(seconds: 25), onTimeout: () {
+      state = const AsyncValue.data(null);
+      showScaffoldSnackBarMessage('Connection timeout, try again');
+    });
+
+    // decoding the response
+    String data = response.body;
+    var decodedData = jsonDecode(data);
+
+    if (decodedData['success'] == true) {
+      state = AsyncValue.data(decodedData['message']);
+    } else {
+      state = AsyncValue.error(decodedData['message'], StackTrace.empty);
+      showAuthBottomSheet(
+        context: context,
+      );
+    }
+  }
+
+  /*------------------------------------------------------------------
+                  VERIFY PHONE NUMBER METHOD
+ -------------------------------------------------------------------*/
+  Future<void> verifyPhoneNumberMethod({
+    required Map<String, dynamic> map,
+    required BuildContext context,
+  }) async {
+    state = const AsyncValue.loading();
+
+    //post request executed
+    final Response response = await NetworkHelper.postRequest(
+      map: map,
+      api: verifyPhoneNumber,
+    ).timeout(const Duration(seconds: 25), onTimeout: () {
+      state = const AsyncValue.data(null);
+      showScaffoldSnackBarMessage('Connection timeout, try again');
+    });
+
+    // decoding the response
+    String data = response.body;
+    var decodedData = jsonDecode(data);
+
+    //the response and error handling
+    if (decodedData['success'] == true) {
+      state = AsyncValue.data(decodedData['message']);
+      log('decodedData: $decodedData');
 
       warningDialogs(state.value ?? '');
 
       //navigation
       push(
         context,
-        const ResetPasswordScreen(),
+        const AddAddressScreen(),
+      );
+
+      return decodedData;
+    } else {
+      state = AsyncValue.error(decodedData['message'], StackTrace.empty);
+      showAuthBottomSheet(
+        context: context,
+      );
+    }
+  }
+
+  /*------------------------------------------------------------------
+                      RESET PASSWORD METHOD
+ -------------------------------------------------------------------*/
+  Future<void> resetPasswordMethod({
+    required Map<String, dynamic> map,
+    required BuildContext context,
+  }) async {
+    state = const AsyncValue.loading();
+
+    //post request executed
+    final Response response = await NetworkHelper.postRequest(
+      map: map,
+      api: resetPasswordUrl,
+    ).timeout(const Duration(seconds: 25), onTimeout: () {
+      state = const AsyncValue.data(null);
+      showScaffoldSnackBarMessage('Connection timeout, try again');
+    });
+
+    // decoding the response
+    String data = response.body;
+    var decodedData = jsonDecode(data);
+
+    //the response and error handling
+    if (decodedData['success'] == true) {
+      state = AsyncValue.data(decodedData['message']);
+      log('decodedData: $decodedData');
+      warningDialogs(state.value ?? '');
+
+      push(
+        context,
+        const ResetSuccessfulScreen(),
       );
 
       return decodedData;

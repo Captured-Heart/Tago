@@ -96,16 +96,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               width: context.sizeWidth(1),
               child: ElevatedButton(
                 onPressed: () async {
-                  // push(
-                  //   context,
-                  //    ConfirmPhoneNumberScreen(
-                  //     phoneno: '',
-                  //   ),
-                  // );
-
-
-
-
                   if (controller.signUpformKey.currentState!.validate()) {
                     await ref
                         .read(authAsyncNotifierProvider.notifier)
@@ -113,13 +103,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       context: context,
                       phoneno: controller.phoneNoController.text,
                       map: {
-                        'fullName': controller.fullNameController.text,
-                        'password': controller.passWordController.text,
-                        'phoneNumber': controller.phoneNoController.text,
+                        AuthTypeField.fullName.name:
+                            controller.fullNameController.text,
+                        AuthTypeField.password.name:
+                            controller.passWordController.text,
+                        AuthTypeField.phoneNumber.name:
+                            controller.phoneNoController.text,
                       },
                     );
                   }
-
                 },
                 child: const Text(TextConstant.signup),
               ),

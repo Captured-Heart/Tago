@@ -5,6 +5,8 @@ class TextEditingControllerClass {
   final GlobalKey<FormState> signInformKey = GlobalKey<FormState>();
 
   TextEditingController passWordController = TextEditingController();
+  TextEditingController passWordController2 = TextEditingController();
+
   TextEditingController fullNameController = TextEditingController();
   TextEditingController phoneNoController = TextEditingController();
   TextEditingController otpCode = TextEditingController();

@@ -1,6 +1,4 @@
-
 import 'package:tago/app.dart';
-
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});

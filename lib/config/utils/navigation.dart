@@ -8,6 +8,10 @@ void pushNamed(BuildContext context, String routeName, {Object? args}) =>
 Future<T?> push<T>(BuildContext context, Widget child) =>
     Navigator.of(context).push<T>(MaterialPageRoute(builder: (_) => child));
 
+//push_as_void
+void pushAsVoid(BuildContext context, Widget child) =>
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => child));
+
 //push_replacement
 void pushReplacement(BuildContext context, Widget child) =>
     Navigator.of(context)

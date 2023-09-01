@@ -9,6 +9,8 @@ class TagoLight {
   //widgets
   static const Color textFieldBorder = Color(0xFFE5EAE7);
   static const Color textFieldFilledColor = Color(0xFFF8F9F8);
+  static const Color indicatorInactiveColor = Color(0xFFE5EAE7);
+  static const Color indicatorActiveColor = Color(0xFF9E9FB2);
 
 //background
   static const Color scaffoldBackgroundColor = Color(0xFFffffff);

@@ -4,7 +4,7 @@ class CategoriesModel extends Equatable {
   final String? name;
   final int? id;
   final String? label;
-  final String? imgUrl;
+  final Map<String, dynamic>? image;
   final List<dynamic>? subCategories;
   final List<dynamic>? products;
 
@@ -12,7 +12,7 @@ class CategoriesModel extends Equatable {
     this.name,
     this.id,
     this.label,
-    this.imgUrl,
+    this.image,
     this.subCategories,
     this.products,
   });
@@ -22,7 +22,7 @@ class CategoriesModel extends Equatable {
       name: json['name'] as String?,
       id: json['id'] as int?,
       label: json['label'] as String?,
-      imgUrl: json['imgUrl'] as String?,
+      image: json['image'] as Map<String, dynamic>?,
       subCategories: json['subCategories'] as List<dynamic>?,
       products: json['products'] as List<dynamic>?,
     );
@@ -32,11 +32,11 @@ class CategoriesModel extends Equatable {
         'name': name,
         'id': id,
         'label': label,
-        'imgUrl': imgUrl,
+        'image': image,
         'subCategories': subCategories,
         'products': products,
       };
 
   @override
-  List<Object?> get props => [name, id, label, imgUrl, subCategories, products];
+  List<Object?> get props => [name, id, label, image, subCategories, products];
 }

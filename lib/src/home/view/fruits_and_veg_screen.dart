@@ -6,8 +6,9 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
   const FruitsAndVegetablesScreen({
     super.key,
     required this.subCategoriesList,
+    required this.appBarTitle,
   });
-
+  final String appBarTitle;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _FruitsAndVegetablesScreenState();
@@ -16,17 +17,17 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
 class _FruitsAndVegetablesScreenState
     extends ConsumerState<FruitsAndVegetablesScreen> {
   //
-
+  final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
-    // final categories = ref.watch(fetchCategoriesProvider);
+    final categoryByLabel = ref.watch(fetchCategoryByLabelProvider);
     // final subCategory = widget.subCategoriesList;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          TextConstant.fruitsAndveg,
+        title: Text(
+          widget.appBarTitle,
         ),
         actions: [
           IconButton(
@@ -36,6 +37,7 @@ class _FruitsAndVegetablesScreenState
         ],
       ),
       body: ListView(
+          controller: controller,
           padding: const EdgeInsets.symmetric(horizontal: 25),
           children: [
             authTextFieldWithError(
@@ -43,7 +45,7 @@ class _FruitsAndVegetablesScreenState
               context: context,
               isError: false,
               filled: true,
-              hintText: TextConstant.searchInFruitsAndVeg,
+              hintText: TextConstant.searchIn + widget.appBarTitle,
               prefixIcon: const Icon(Icons.search),
               fillColor: TagoLight.textFieldFilledColor,
             ),
@@ -60,18 +62,16 @@ class _FruitsAndVegetablesScreenState
                 widget.subCategoriesList.length,
                 growable: true,
                 (index) {
-
                   return GestureDetector(
-                  onTap: () {},
-                  child: subCategoryCard(
-                    context: context,
-                    index: index,
-                    width: context.sizeWidth(0.155),
-                    height: 70,
-                    subCategoriesModel: widget.subCategoriesList,
-                    // subCategoriesModel: data[index].subCategories,
-                  ),
-                );
+                    onTap: () {},
+                    child: subCategoryCard(
+                      context: context,
+                      index: index,
+                      width: context.sizeWidth(0.155),
+                      height: 70,
+                      subCategoriesModel: widget.subCategoriesList,
+                    ),
+                  );
                 },
               ),
             ).padSymmetric(horizontal: 5),
@@ -107,35 +107,78 @@ class _FruitsAndVegetablesScreenState
             //   ),
             // ),
             Text(
-              TextConstant.allFruitsAndVegetables,
+              '${TextConstant.all}${widget.appBarTitle}',
               style: context.theme.textTheme.bodyLarge,
             ),
-            Wrap(
-              runSpacing: 20,
-              spacing: 5,
-              alignment: WrapAlignment.spaceAround,
-              crossAxisAlignment: WrapCrossAlignment.start,
-              children: List.generate(
-                categoriesFrame.length - 1,
-                growable: true,
-                (index) => GestureDetector(
-                  onTap: () {},
-                  child: SizedBox(
-                      width: context.sizeWidth(0.4),
-                      child: fruitsAndVeggiesCard(
-                          index: index,
-                          context: context,
-                          isFreeDelivery: true,
-                          indexList: [
-                            0,
-                            1,
-                            4,
-                          ])
-                      // .debugBorder()
-                      ),
-                ),
+            categoryByLabel.when(
+              data: (data) {
+                return GridView.count(
+                  controller: controller,
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  mainAxisSpacing: 5,
+                  crossAxisSpacing: 15,
+                  childAspectRatio: 0.85,
+                  children: List.generate(
+                    data.length,
+                    growable: true,
+                    (index) => GestureDetector(
+                      onTap: () {
+                        log(data[index].productImages.toString());
+                      },
+                      child: SizedBox(
+                          width: context.sizeWidth(0.4),
+                          child: fruitsAndVeggiesCard(
+                              index: index,
+                              productModel: data[index],
+                              context: context,
+                              isFreeDelivery: true,
+                              productImagesList: data[index].productImages,
+                              indexList: [
+                                0,
+                                1,
+                                4,
+                              ])
+                          // .debugBorder()
+                          ),
+                    ),
+                  ),
+                );
+              },
+              error: (error, _) => Center(
+                child: Text(error.toString()),
               ),
-            ).padSymmetric(horizontal: 5),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+
+            // Wrap(
+            //   runSpacing: 20,
+            //   spacing: 5,
+            //   alignment: WrapAlignment.spaceAround,
+            //   crossAxisAlignment: WrapCrossAlignment.start,
+            //   children: List.generate(
+            //     categoriesFrame.length - 1,
+            //     growable: true,
+            //     (index) => GestureDetector(
+            //       onTap: () {},
+            //       child: SizedBox(
+            //           width: context.sizeWidth(0.4),
+            //           child: fruitsAndVeggiesCard(
+            //               index: index,
+            //               context: context,
+            //               isFreeDelivery: true,
+            //               indexList: [
+            //                 0,
+            //                 1,
+            //                 4,
+            //               ])
+            //           // .debugBorder()
+            //           ),
+            //     ),
+            //   ),
+            // ).padSymmetric(horizontal: 5),
           ].columnInPadding(15)),
     );
   }

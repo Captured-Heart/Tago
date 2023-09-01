@@ -31,8 +31,12 @@ Confirm phone screen
 -----------------------------------------------------------------------*/
   static const confirmPhoneNo = 'Confirm phone number';
   static const wehavesent4digit = 'We have sent a 4-digit code to you ';
+  static const wehavesent6digit = 'We have sent a 6-digit code to you ';
+
   static const enterthecode = 'Enter the code sent to';
   static const fourdigitcode = '4-digit code';
+  static const sixdigitcode = '6-digit code';
+
   static const confirm = 'Confirm';
   static const haventreceived = 'Haven’t received a code?';
   static const resend = 'Resend';
@@ -128,10 +132,13 @@ HOME PAGE
 FRUITS AND VEGETABLES SCREEN
 -----------------------------------------------------------------------*/
   static const searchInFruitsAndVeg = 'Search in Fruits & Vegetables';
+  static const searchIn = 'Search in ';
   static const chooseSubCategory = 'Choose sub-category';
   static const freshVeg = 'Fresh Vegetables';
   static const packagedFruitsAndveg = 'Packaged Fruits & Veg.';
   static const allFruitsAndVegetables = 'All Fruits & Vegetables';
+  static const all = 'All ';
+
   static const freeDelivery = 'Free delivery';
 
 /*----------------------------------------------------------------------

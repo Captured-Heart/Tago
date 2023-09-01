@@ -10,16 +10,21 @@ export 'dart:developer';
 export 'package:geolocator/geolocator.dart';
 export 'package:http/http.dart';
 export 'dart:convert';
+export 'package:cached_network_image/cached_network_image.dart'
+    hide ErrorListener;
 
 // config
 export './config/config.dart';
+
+//core
+export './core/core.dart';
 
 //CONSTANTS
 export 'config/constants/image_constants.dart';
 export 'config/theme/app_fontweight.dart';
 export 'config/extensions/padding.dart';
 export 'config/constants/text_constants.dart';
-export 'config/constants/auth_error_constants.dart';
+export 'config/utils/enums/auth_error_enums.dart';
 
 //THEMES
 export 'config/theme/app_textstyles.dart';

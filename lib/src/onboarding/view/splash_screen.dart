@@ -18,7 +18,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     super.initState();
 
     navigateToNexToScreen().then((_) {
-      return push(context, const OnBoardScreen());
+      if (HiveHelper().getData(HiveKeys.token.name) != null) {
+        return pushReplacement(context, const MainScreen());
+      } else {
+        return pushAsVoid(context, const OnBoardScreen());
+      }
     });
     showLoader().then((_) {
       setState(() {

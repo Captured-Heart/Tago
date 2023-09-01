@@ -1,8 +1,9 @@
-/*------------------------------------------------------------------
-fetch Categories
- -------------------------------------------------------------------*/
 import 'package:tago/app.dart';
-import 'package:tago/core/network/networking.dart';
+import 'package:tago/src/categories/model/domain/products_model.dart';
+
+/*------------------------------------------------------------------
+              FETCH CATEGORIES METHOD
+ -------------------------------------------------------------------*/
 
 Future<List<CategoriesModel>> fetchCategoriesMethod() async {
   // try {
@@ -32,16 +33,16 @@ Future<List<CategoriesModel>> fetchCategoriesMethod() async {
 }
 
 /*------------------------------------------------------------------
-fetch sub Categories
+                    FETCH CATEGORIES BY LABEL
  -------------------------------------------------------------------*/
 
-Future<List<CategoriesModel>> fetchCategoriesByLabel(String label) async {
+Future<List<ProductsModel>> fetchCategoriesByLabel(String label) async {
   // try {
   //post request executed
   final Response response = await NetworkHelper.getRequest(
-    api: '$getCategory=$label',
+    api: '$getCategory=home-essentials',
   );
-
+  log('$getCategory=home-essentials');
   // decoding the response
 
   String data = response.body;
@@ -51,12 +52,12 @@ Future<List<CategoriesModel>> fetchCategoriesByLabel(String label) async {
   if (response.statusCode == 200) {
     // log('get request for Categories:  $decodedData'); //
 
-    final categoriesList = (decodedData['data']['categories'] as List)
-        .map((e) => CategoriesModel.fromJson(e))
+    final productList = (decodedData['data']['products'] as List)
+        .map((e) => ProductsModel.fromJson(e))
         .toList();
-    log('get request for Categories:  $categoriesList'); //
+    log('get request for Categories by label:  $productList'); //
 
-    return categoriesList;
+    return productList;
   } else {
     return decodedData['message'];
   }

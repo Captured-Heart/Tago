@@ -1,4 +1,12 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tago/app.dart';
+
+final carouselSliderProvider = Provider<CarouselController>((ref) {
+  return CarouselController();
+});
+final currentCarouselIndexProvider = StateProvider<int>((ref) {
+  return 0;
+});
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +21,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(fetchCategoriesProvider);
+    List<Widget> carouselWidgetList = [
+      hotDealsCarouselWidget(context).padSymmetric(horizontal: 20),
+      hotDealsCarouselWidget(context).padSymmetric(horizontal: 20),
+      hotDealsCarouselWidget(context).padSymmetric(horizontal: 20),
+      hotDealsCarouselWidget(context).padSymmetric(horizontal: 20),
+    ];
     return Scaffold(
       appBar: homescreenAppbar(context),
       body: ListView(
@@ -26,74 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             prefixIcon: const Icon(Icons.search),
             fillColor: TagoLight.textFieldFilledColor,
           ).padSymmetric(horizontal: context.sizeWidth(0.07), vertical: 15),
-          Container(
-            decoration: const BoxDecoration(
-              color: TagoLight.textFieldFilledColor,
-              border: Border(bottom: BorderSide(width: 0.1)),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        TextConstant.activeOrderstatus,
-                        style: context.theme.textTheme.bodyLarge,
-                      ),
-                    ),
-                    Chip(
-                        label: const Text(
-                          TextConstant.pickedup,
-                          style: TextStyle(color: TagoDark.primaryColor),
-                        ),
-                        shape: const ContinuousRectangleBorder(),
-                        backgroundColor:
-                            TagoLight.primaryColor.withOpacity(0.1))
-                  ],
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        TextConstant.remainingTime,
-                        style: context.theme.textTheme.bodyLarge,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.access_time,
-                          color: TagoDark.primaryColor,
-                        ).padOnly(right: 5),
-                        Text(
-                          '12 minutes away',
-                          style: context.theme.textTheme.bodyLarge,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                TextButton(
-                  onPressed: () {
-                    ref.read(scaffoldKeyProvider).currentState!.setState(() {
-                      Scaffold.of(context).openDrawer();
-                    });
-                  },
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  child: const Text(
-                    TextConstant.viewOrderdetails,
-                    textAlign: TextAlign.start,
-                  ),
-                )
-              ],
-            ),
-          ),
+          homeScreenOrderStatusWidget(context: context, ref: ref),
 
 // deliver to
           Column(
@@ -134,66 +81,58 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           ),
 
-//hot deals
+          // HOT DEALS CATEGORY
           Column(
             children: [
+              CarouselSlider(
+                items: carouselWidgetList,
+                carouselController: ref.watch(carouselSliderProvider),
+                options: CarouselOptions(
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.99,
+                    enlargeFactor: 0,
+                    // aspectRatio: 1.55,
+                    // height: context.sizeHeight(0.35),
+                    onPageChanged: (index, reason) {
+                      ref
+                          .read(currentCarouselIndexProvider.notifier)
+                          .update((state) => index);
+                    }),
+              ).padOnly(bottom: 10),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Text(
-                    '🔥',
-                    textScaleFactor: 2,
-                  ).padOnly(right: 5),
-                  Text(
-                    TextConstant.hotdeals,
-                    style: context.theme.textTheme.titleLarge,
-                  )
-                ],
-              ).padSymmetric(vertical: 12),
-
-              // container
-              Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  width: context.sizeWidth(1),
-                  decoration: BoxDecoration(
-                      color: TagoLight.textFieldFilledColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        TextConstant.upto33percent,
-                        style: context.theme.textTheme.titleLarge,
-                        textAlign: TextAlign.left,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  carouselWidgetList.length,
+                  (index) => GestureDetector(
+                    onTap: () =>
+                        ref.read(carouselSliderProvider).animateToPage(index),
+                    child: Container(
+                      width: 6.0,
+                      height: 6.0,
+                      margin: const EdgeInsets.symmetric(
+                        // vertical: 8.0,
+                        horizontal: 4.0,
                       ),
-                      Text(
-                        TextConstant.getupto33percent,
-                        style: context.theme.textTheme.titleLarge?.copyWith(
-                          fontSize: 12,
-                          fontWeight: AppFontWeight.w400,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: (Theme.of(context).brightness == Brightness.dark
+                                ? TagoLight.indicatorInactiveColor
+                                : TagoLight.indicatorActiveColor)
+                            .withOpacity(
+                          ref.watch(currentCarouselIndexProvider) == index
+                              ? 0.9
+                              : 0.4,
                         ),
-                        textAlign: TextAlign.left,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          log('message');
-                          fetchCategoriesMethod();
-                        },
-                        style:
-                            context.theme.elevatedButtonTheme.style?.copyWith(
-                          fixedSize: const MaterialStatePropertyAll<Size>(
-                            Size.fromHeight(38),
-                          ),
-                        ),
-                        child: const Text(TextConstant.shopelectronics),
-                      )
-                    ].columnInPadding(15),
-                  ))
+                    ),
+                  ),
+                ),
+              ),
             ],
-          ).padSymmetric(horizontal: 20),
+          ).padSymmetric(vertical: 7),
 
-//! Categories section
+          //! Categories section
           ListTile(
             title: const Text(
               TextConstant.categories,
@@ -212,17 +151,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 runSpacing: 20,
                 spacing: 10,
                 alignment: WrapAlignment.start,
+                // runAlignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: List.generate(
                   data.length - (data.length - 9),
+                  // data.length,
                   growable: true,
                   (index) => GestureDetector(
                     onTap: () {
+                      ref
+                          .read(categoryLabelProvider.notifier)
+                          .update((state) => data[index].label ?? '');
                       var subList = data[index].subCategories;
                       log(subList.toString());
                       push(
                         context,
-                        FruitsAndVegetablesScreen(subCategoriesList: subList!),
+                        FruitsAndVegetablesScreen(
+                          subCategoriesList: subList!,
+                          appBarTitle: data[index].name ?? 'Product name',
+                        ),
                       );
                     },
                     child: categoryCard(
@@ -248,7 +195,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               TextConstant.itemsNearYou,
             ),
             trailing: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                log(ref.watch(categoryLabelProvider));
+              },
               child: const Text(TextConstant.seeall),
             ),
           ),
@@ -311,6 +260,64 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Column hotDealsCarouselWidget(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Text(
+              '🔥',
+              textScaleFactor: 2,
+            ).padOnly(right: 5),
+            Text(
+              TextConstant.hotdeals,
+              style: context.theme.textTheme.titleLarge,
+            )
+          ],
+        ).padSymmetric(vertical: 12),
+
+        // container
+        Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            width: context.sizeWidth(1),
+            decoration: BoxDecoration(
+                color: TagoLight.textFieldFilledColor,
+                borderRadius: BorderRadius.circular(10)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  TextConstant.upto33percent,
+                  style: context.theme.textTheme.titleLarge,
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  TextConstant.getupto33percent,
+                  style: context.theme.textTheme.titleLarge?.copyWith(
+                    fontSize: 12,
+                    fontWeight: AppFontWeight.w400,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    log('message');
+                    fetchCategoriesMethod();
+                  },
+                  style: context.theme.elevatedButtonTheme.style?.copyWith(
+                    fixedSize: const MaterialStatePropertyAll<Size>(
+                      Size.fromHeight(38),
+                    ),
+                  ),
+                  child: const Text(TextConstant.shopelectronics),
+                )
+              ].columnInPadding(15),
+            ))
+      ],
     );
   }
 }

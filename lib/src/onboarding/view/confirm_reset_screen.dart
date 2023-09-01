@@ -26,7 +26,7 @@ class ConfirmResetCodeScreen extends ConsumerWidget {
                     const ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: Text(
-                        TextConstant.wehavesent4digit,
+                        TextConstant.wehavesent6digit,
                       ),
                       subtitle: Text(TextConstant.confirmBytypingthecode),
                     ),
@@ -34,7 +34,7 @@ class ConfirmResetCodeScreen extends ConsumerWidget {
                       controller: controller.otpCode,
                       context: context,
                       isError: false,
-                      hintText: TextConstant.fourdigitcode,
+                      hintText: TextConstant.sixdigitcode,
                     ),
                     //
                     SizedBox(
@@ -43,23 +43,13 @@ class ConfirmResetCodeScreen extends ConsumerWidget {
                         onPressed: () {
                           ref
                               .read(authAsyncNotifierProvider.notifier)
-                              .confirmResetPasswordAsyncMethod(map: {
-                            'otp': controller.otpCode.text,
-                            'phoneNumber': phoneNo,
-                          }, context: context);
-
-                          // confirmn code
-                          // ref
-                          //     .read(authUserProvider.notifier)
-                          //     .confirmResetPassword(
-                          //   {
-                          //     'otp': controller.otpCode.text,
-                          //     'phoneNumber': phoneNo,
-                          //   },
-                          //   () {
-                          //     push(context, const ResetPasswordScreen());
-                          //   },
-                          // );
+                              .verifyResetcodeMethod(
+                            map: {
+                              AuthTypeField.otp.name: controller.otpCode.text,
+                              AuthTypeField.phoneNumber.name: phoneNo,
+                            },
+                            context: context,
+                          );
                         },
                         child: const Text(TextConstant.confirm),
                       ),
@@ -74,6 +64,16 @@ class ConfirmResetCodeScreen extends ConsumerWidget {
                         TextButton(
                           onPressed: () {
                             log(phoneNo);
+                            ref
+                                .read(authAsyncNotifierProvider.notifier)
+                                .forgotPasswordAsyncMethod(
+                              map: {
+                                AuthTypeField.phoneNumber.name: phoneNo,
+                              },
+                              phoneNo: phoneNo,
+                              context: context,
+                              onNavigation: () {},
+                            );
                           },
                           child: const Text(TextConstant.resend),
                         )

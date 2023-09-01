@@ -1,9 +1,6 @@
-import 'dart:developer';
 // import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:tago/app.dart';
-import 'package:tago/config/constants/hive_keys.dart';
-import 'package:tago/config/utils/dialogs.dart';
 
 const String baseUrl = 'http://104.248.166.210:9800';
 const String signUpUrl = '/auth/signup';
@@ -12,6 +9,7 @@ const String sendOtp = '/auth/otp';
 const String forgotPasswordUrl = '/auth/forgot-password';
 const String resetPasswordUrl = '/auth/reset-password';
 const String verifyResetCode = '/auth/verify-resetcode';
+const String verifyPhoneNumber = '/verification/phone-number';
 
 const String getCategories = '/public/categories';
 const String getCategory = '/public/category?label';

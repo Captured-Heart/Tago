@@ -1,6 +1,5 @@
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:tago/app.dart';
-import 'package:tago/config/extensions/debug_frame.dart';
+import 'package:tago/src/categories/model/domain/products_model.dart';
 
 Widget getFreeDeliveryDesign(
     List<int> indexList, int index, BuildContext context) {
@@ -31,7 +30,10 @@ Column fruitsAndVeggiesCard({
   required BuildContext context,
   bool? isFreeDelivery,
   List<int>? indexList,
+  List<dynamic>? productImagesList,
+  required ProductsModel productModel,
 }) {
+  var products = convertDynamicListToProductListModel(productImagesList!);
   return Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,13 +42,18 @@ Column fruitsAndVeggiesCard({
         elevation: 0.3,
         child: Stack(
           children: [
-            Image.asset(
-              categoriesFrame[index],
+            ElevatedButton(onPressed: (){
+              log(productImagesList.toString());
+            }, child: Text('debug')),
+            cachedNetworkImageWidget(
+              imgUrl: products[index].productImages?.first.values.first,
               height: 140,
-              width: context.sizeWidth(1),
-              fit: BoxFit.fill,
-            ).padOnly(bottom: 4),
-            getFreeDeliveryDesign(indexList ?? [], index, context),
+            ),
+            getFreeDeliveryDesign(
+              indexList ?? [],
+              index,
+              context,
+            ),
             Positioned(
               // alignment: Alignment.bottomRight,
               bottom: 10,

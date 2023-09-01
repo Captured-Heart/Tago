@@ -5,5 +5,5 @@ export './view/mainscreen.dart';
 
 //controller
 export './controllers/bottom_navbar_provider.dart';
-export './controllers/scaffold_key.dart';
-export './controllers/value_notifier.dart';
+export 'controllers/scaffold_key_provider.dart';
+export 'controllers/value_notifier_provider.dart';
