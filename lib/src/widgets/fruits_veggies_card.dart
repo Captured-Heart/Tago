@@ -33,7 +33,7 @@ Column fruitsAndVeggiesCard({
   List<dynamic>? productImagesList,
   required ProductsModel productModel,
 }) {
-  var products = convertDynamicListToProductListModel(productImagesList!);
+  // var products = convertDynamicListToProductListModel(productImagesList!);
   return Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,11 +42,13 @@ Column fruitsAndVeggiesCard({
         elevation: 0.3,
         child: Stack(
           children: [
-            ElevatedButton(onPressed: (){
-              log(productImagesList.toString());
-            }, child: Text('debug')),
+            // ElevatedButton(
+            //     onPressed: () {
+            //       log(productImagesList.toString());
+            //     },
+            //     child: Text('debug')),
             cachedNetworkImageWidget(
-              imgUrl: products[index].productImages?.first.values.first,
+              imgUrl: productImagesList!.first['image']['url'],
               height: 140,
             ),
             getFreeDeliveryDesign(
@@ -68,8 +70,9 @@ Column fruitsAndVeggiesCard({
         ),
       ),
       Text(
-        categoriesFooters[index],
+        productModel.name ?? '',
         textAlign: TextAlign.center,
+        overflow: TextOverflow.ellipsis,
         style: context.theme.textTheme.labelMedium?.copyWith(
           fontSize: 12,
           fontWeight: AppFontWeight.w400,
@@ -77,7 +80,7 @@ Column fruitsAndVeggiesCard({
         ),
       ).padSymmetric(vertical: 8),
       Text(
-        'N1,400',
+        'N${productModel.amount}',
         style: context.theme.textTheme.titleMedium?.copyWith(
           fontFamily: TextConstant.fontFamilyNormal,
           fontSize: 12,

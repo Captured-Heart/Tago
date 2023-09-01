@@ -40,9 +40,9 @@ Future<List<ProductsModel>> fetchCategoriesByLabel(String label) async {
   // try {
   //post request executed
   final Response response = await NetworkHelper.getRequest(
-    api: '$getCategory=home-essentials',
+    api: '$getCategory=$label',
   );
-  log('$getCategory=home-essentials');
+  log('$getCategory=$label');
   // decoding the response
 
   String data = response.body;

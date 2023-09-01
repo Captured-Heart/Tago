@@ -122,26 +122,26 @@ class _FruitsAndVegetablesScreenState
                   children: List.generate(
                     data.length,
                     growable: true,
-                    (index) => GestureDetector(
-                      onTap: () {
-                        log(data[index].productImages.toString());
-                      },
-                      child: SizedBox(
-                          width: context.sizeWidth(0.4),
-                          child: fruitsAndVeggiesCard(
-                              index: index,
-                              productModel: data[index],
-                              context: context,
-                              isFreeDelivery: true,
-                              productImagesList: data[index].productImages,
-                              indexList: [
-                                0,
-                                1,
-                                4,
-                              ])
-                          // .debugBorder()
-                          ),
-                    ),
+                    (index) {
+                      return GestureDetector(
+                        onTap: () {},
+                        child: SizedBox(
+                            width: context.sizeWidth(0.4),
+                            child: fruitsAndVeggiesCard(
+                                index: index,
+                                productModel: data[index],
+                                context: context,
+                                isFreeDelivery: true,
+                                productImagesList: data[index].productImages,
+                                indexList: [
+                                  0,
+                                  1,
+                                  4,
+                                ])
+                            // .debugBorder()
+                            ),
+                      );
+                    },
                   ),
                 );
               },
