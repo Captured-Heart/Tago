@@ -177,7 +177,7 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
       state = AsyncValue.data(decodedData['message']);
       await HiveHelper()
           .saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
-      warningDialogs(state.value ?? '');
+      // warningDialogs(state.value ?? '');
       log('decodedData: $decodedData');
 
       push(
@@ -294,7 +294,7 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
     if (decodedData['success'] == true) {
       state = AsyncValue.data(decodedData['message']);
       log('decodedData: $decodedData');
-      warningDialogs(state.value ?? '');
+      // warningDialogs(context, state.value ?? '');
 
       push(
         context,

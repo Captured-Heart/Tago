@@ -165,6 +165,7 @@ ORDERS SCREEN
   static const completedOrders = 'Completed Orders';
   static const inTransit = 'In Transit';
   static const cancelled = 'Cancelled';
+  static const cancel = 'Cancel';
   static const delivered = 'Delivered';
   static const processing = 'Processing';
   static const orderID = 'Order ID';
@@ -194,10 +195,12 @@ WISHLIST SCREEN
   static const savedAddress = 'Saved Addresses';
   static const savedCards = 'Saved Cards';
   static const help = 'Help';
+  static const areSureYouWantToDelete = 'Are you sure you want to delete this address?';
+
   static const addnewCard = 'Add New Card ';
   static const firstandlastname = 'First & Last Name';
   static const mmAndyy = 'MM/YY';
-  static const cardNumberHint = '0000 0000 0000 0000';
+  static const cardNumberHint = '0000 0000 0000 0000';  
 
 /*----------------------------------------------------------------------
 SINGLE PRODUCT PAGE

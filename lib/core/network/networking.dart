@@ -21,7 +21,7 @@ const String getCategoryUrl = '/public/category?label';
 const String getAddressUrl = '/account/user/address';
 const String addAddressUrl = '/account/user/address';
 const String updateAddressUrl = '/account/user/address';
-const String deleteAddressUrl = '/account/address';
+const String deleteAddressUrl = '/account/user/address';
 
 // WISH LIST URL
 const String getWishListUrl = '/account/user/wishlist';
@@ -140,12 +140,26 @@ class NetworkHelper {
   }
 
 /*------------------------------------------------------------------
-                   HTTP DELETE REQUESTS
+                   HTTP DELETE REQUESTS WITH TOKEN
  -------------------------------------------------------------------*/
-  static Future<dynamic> deleteRequest({required String api}) async {
+  static Future<dynamic> deleteRequestWithToken({
+    required Map<String, dynamic> map,
+    required String api,
+  }) async {
     var url = '$baseUrl$api';
     try {
-      final response = await http.delete(Uri.parse(url));
+      final response = await http.delete(
+        Uri.parse(url),
+        body: map,
+        headers: {
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Connection': 'keep-alive',
+          'Accept-Encoding': 'gzip, deflate, br',
+        },
+      );
+      log('$baseUrl$api');
 
       return response;
     } catch (e) {

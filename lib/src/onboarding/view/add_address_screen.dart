@@ -1,6 +1,5 @@
 import 'package:tago/app.dart';
 import 'package:http/http.dart' as http;
-import 'package:tago/core/network/networking.dart';
 
 class AddAddressScreen extends ConsumerWidget {
   static const String routeName = 'add address';

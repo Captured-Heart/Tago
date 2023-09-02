@@ -18,6 +18,7 @@ Widget authTextFieldWithError(
     bool? filled,
     Color? fillColor,
     int? maxLength,
+    TextInputAction? textInputAction,
     String? Function(String?)? validator}) {
   return Column(children: [
     TextFormField(
@@ -28,6 +29,7 @@ Widget authTextFieldWithError(
       keyboardType: keyboardType,
       onChanged: onChanged,
       maxLength: maxLength,
+      textInputAction: textInputAction ?? TextInputAction.next,
       cursorColor: TagoDark.primaryColor,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       autocorrect: false,

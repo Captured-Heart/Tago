@@ -23,7 +23,9 @@ final accountAddressProvider =
  -------------------------------------------------------------------*/
 class AccountAddressNotifier extends StateNotifier<AsyncValue> {
   AccountAddressNotifier() : super(const AsyncValue.data(null));
-
+/*------------------------------------------------------------------
+              ADD ADDRESS METHOD
+ -------------------------------------------------------------------*/
   Future<List<AddressModel>> addAddressMethod({
     required Map<String, dynamic> map,
     required BuildContext context,
@@ -48,6 +50,36 @@ class AccountAddressNotifier extends StateNotifier<AsyncValue> {
 
         showScaffoldSnackBarMessage(decodedData['message']);
       });
+
+      return decodedData['message'];
+    } else {
+      state = AsyncValue.error(decodedData['message'], StackTrace.empty);
+      return decodedData['message'];
+    }
+  }
+
+  /*------------------------------------------------------------------
+              DELETE ADDRESS METHOD
+ -------------------------------------------------------------------*/
+  Future deleteAddressMethod({
+    required Map<String, dynamic> map,
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    state = const AsyncValue.loading();
+    //post request executed
+    final Response response = await NetworkHelper.deleteRequestWithToken(
+      api: deleteAddressUrl,
+      map: map,
+    );
+    // decoding the response
+    String data = response.body;
+    var decodedData = jsonDecode(data);
+    //the response and error handling
+    if (decodedData['success'] == true) {
+      state = AsyncValue.data(decodedData['message']);
+      ref.invalidate(getAccountAddressProvider);
+      showScaffoldSnackBarMessage(decodedData['message']);
 
       return decodedData['message'];
     } else {

@@ -12,6 +12,8 @@ export 'package:http/http.dart';
 export 'dart:convert';
 export 'package:cached_network_image/cached_network_image.dart'
     hide ErrorListener;
+export 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 // config
 export './config/config.dart';

@@ -3,10 +3,13 @@ export './utils/convert_dynamic_list.dart';
 export './utils/hive_local_storage.dart';
 export './utils/navigation.dart';
 export './utils/shared_prefs.dart';
+export './utils/dialogs.dart';
+
+// enums
 export './utils/enums/auth_error_enums.dart';
 export './utils/enums/auth_type_enums.dart';
 export './utils/enums/hive_keys_enums.dart';
-export './utils/dialogs.dart';
+export './utils/enums/address_type_enums.dart';
 
 //constants
 export './constants/image_constants.dart';

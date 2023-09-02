@@ -3,4 +3,6 @@ enum AddressType {
   apartmentNumber,
   city,
   state,
+  addressId,
+  id,
 }

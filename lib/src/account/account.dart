@@ -10,3 +10,4 @@ export './model/domain/address_model.dart';
 
 //repositories
 export './controller/account_repositories.dart';
+export './controller/address_notifier_provider.dart';
