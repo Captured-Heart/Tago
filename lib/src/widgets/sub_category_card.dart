@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
-
-import '../../app.dart';
+import 'package:tago/app.dart';
 
 Widget subCategoryCard({
   required BuildContext context,

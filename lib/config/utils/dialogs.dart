@@ -1,7 +1,5 @@
 import 'package:tago/app.dart';
 
-import '../../src/onboarding/controllers/auth_user_async_notifier.dart';
-
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
@@ -11,11 +9,21 @@ void showScaffoldSnackBar(SnackBar snackBar) =>
 void showScaffoldSnackBarMessage(String message) =>
     rootScaffoldMessengerKey.currentState?.showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-          textAlign: TextAlign.left,
-        ),
-        duration: const Duration(seconds: 2),
+        content: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.check_circle,
+                color: TagoLight.primaryColor,
+              ),
+              Expanded(
+                child: Text(
+                  message,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ].rowInPadding(5)),
+        duration: const Duration(seconds: 4),
       ),
     );
 

@@ -1,8 +1,5 @@
 import 'package:tago/app.dart';
 
-import '../../drawer/notification_screen.dart';
-import '../account.dart';
-
 class MyAccountScreen extends ConsumerWidget {
   const MyAccountScreen({super.key});
 

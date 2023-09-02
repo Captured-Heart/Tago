@@ -1,6 +1,5 @@
 import 'package:tago/app.dart';
 import 'package:tago/src/checkout/checkout_screen.dart';
-import 'package:tago/src/widgets/cart_list_tile.dart';
 
 class MyCartScreen extends ConsumerStatefulWidget {
   const MyCartScreen({super.key});
@@ -29,7 +28,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
             onPressed: () {
               push(context, const CheckoutScreen());
             },
-            child: Text('proceed to checkout screen'),
+            child: const Text('proceed to checkout screen'),
           )
         ],
       ),

@@ -64,6 +64,7 @@ class ConfirmResetCodeScreen extends ConsumerWidget {
                         TextButton(
                           onPressed: () {
                             log(phoneNo);
+
                             ref
                                 .read(authAsyncNotifierProvider.notifier)
                                 .forgotPasswordAsyncMethod(

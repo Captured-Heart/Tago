@@ -1,9 +1,6 @@
 import 'package:tago/app.dart';
 
-import '../drawer/notification_screen.dart';
-import '../drawer/refer_and_earn.dart';
-import '../drawer/vouchers.dart';
-import '../drawer/wishlist.dart';
+
 
 Widget tagoHomeDrawer(BuildContext context) {
   return Drawer(

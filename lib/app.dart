@@ -42,3 +42,4 @@ export 'src/rider/rider.dart';
 export 'src/product/product.dart';
 export 'src/orders/order.dart';
 export 'src/categories/categories.dart';
+export 'src/drawer/drawer.dart';

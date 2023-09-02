@@ -11,6 +11,12 @@ class TextEditingControllerClass {
   TextEditingController phoneNoController = TextEditingController();
   TextEditingController otpCode = TextEditingController();
   // TextEditingController emailController = TextEditingController();
+  TextEditingController addressStreetController = TextEditingController();
+  TextEditingController addressCityController = TextEditingController();
+  TextEditingController apartmentNoController = TextEditingController();
+  TextEditingController addressLabelController = TextEditingController();
+  // TextEditingController otpCode = TextEditingController();
+  // TextEditingController otpCode = TextEditingController();
 
   void disposeControllers() {
     passWordController.dispose();

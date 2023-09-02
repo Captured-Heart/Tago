@@ -137,7 +137,8 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
       state = AsyncValue.data(decodedData['message']);
       log('decodedData: $decodedData');
 
-      warningDialogs(state.value ?? '');
+      // warningDialogs(decodedData['message']);
+      showScaffoldSnackBarMessage(decodedData['message']);
       onNavigation();
 
       return decodedData;
@@ -161,7 +162,7 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
     //post request executed
     final Response response = await NetworkHelper.postRequest(
       map: map,
-      api: verifyResetCode,
+      api: verifyResetCodeUrl,
     ).timeout(const Duration(seconds: 25), onTimeout: () {
       state = const AsyncValue.data(null);
       showScaffoldSnackBarMessage('Connection timeout, try again');
@@ -201,7 +202,7 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
 
     Response response = await NetworkHelper.postRequestWithToken(
       map: {'otpType': 'verify-phone-number'},
-      api: sendOtp,
+      api: sendOtpUrl,
     ).timeout(const Duration(seconds: 25), onTimeout: () {
       state = const AsyncValue.data(null);
       showScaffoldSnackBarMessage('Connection timeout, try again');
@@ -212,6 +213,8 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
     var decodedData = jsonDecode(data);
 
     if (decodedData['success'] == true) {
+      showScaffoldSnackBarMessage(decodedData['message']);
+
       state = AsyncValue.data(decodedData['message']);
     } else {
       state = AsyncValue.error(decodedData['message'], StackTrace.empty);
@@ -231,9 +234,9 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
     state = const AsyncValue.loading();
 
     //post request executed
-    final Response response = await NetworkHelper.postRequest(
+    final Response response = await NetworkHelper.postRequestWithToken(
       map: map,
-      api: verifyPhoneNumber,
+      api: verifyPhoneNumberUrl,
     ).timeout(const Duration(seconds: 25), onTimeout: () {
       state = const AsyncValue.data(null);
       showScaffoldSnackBarMessage('Connection timeout, try again');
@@ -248,7 +251,7 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
       state = AsyncValue.data(decodedData['message']);
       log('decodedData: $decodedData');
 
-      warningDialogs(state.value ?? '');
+      showScaffoldSnackBarMessage(decodedData['message']);
 
       //navigation
       push(

@@ -183,7 +183,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ).padSymmetric(horizontal: 15);
             },
-            error: (error, stackTrace) => Text(error.toString()),
+            error: (error, stackTrace) => Center(
+              child: Text(
+                error.toString(),
+                textAlign: TextAlign.center,
+              ),
+            ),
             loading: () => const Center(
               child: CircularProgressIndicator(),
             ),

@@ -1,10 +1,12 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/drawer/controller/wishlist_provider.dart';
 
 class WishListScreen extends ConsumerWidget {
   const WishListScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final wishList = ref.watch(wishListProvider);
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -18,6 +20,17 @@ class WishListScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
+          SizedBox(
+            height: 200,
+            child: wishList.when(
+                data: (data) => Text('data'),
+                error: (error, _) => Center(
+                      child: Text(error.toString()),
+                    ),
+                loading: () => const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    )),
+          ),
           wishlistWidget(
             context: context,
             isPriceCancelled: false,

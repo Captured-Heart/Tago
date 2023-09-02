@@ -1,9 +1,4 @@
-import 'dart:developer';
-
 import 'package:tago/app.dart';
-import 'package:tago/src/checkout/my_cart_screen.dart';
-import 'package:tago/src/drawer/wishlist.dart';
-import 'package:tago/src/rider/rider_home_screen.dart';
 
 // home screen appp bar
 AppBar homescreenAppbar(BuildContext context) {

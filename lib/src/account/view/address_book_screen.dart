@@ -1,10 +1,13 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/account/controller/address_notifier_provider.dart';
 
 class AddressBookScreen extends ConsumerWidget {
   const AddressBookScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    
+    final address = ref.watch(getAccountAddressProvider);
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -12,39 +15,92 @@ class AddressBookScreen extends ConsumerWidget {
         isLeading: true,
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        children: [
-          savedAddressCard(
-            context: context,
-            title: '12, Adesemoye Avenue',
-            subtitle:
-                'data AdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoye',
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          children: [
+            address.when(
+              data: (data) {
+                return Column(
+                  children: List.generate(
+                    data.length,
+                    (index) => savedAddressCard(
+                      context: context,
+                      title: '12, Adesemoye Avenue',
+                      subtitle:
+                          'data AdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoye',
+                    ),
+                  ),
+                );
+                // ListView.builder(
+                //   shrinkWrap: true,
+                //   itemBuilder: (context, index) => savedAddressCard(
+                //     context: context,
+                //     title: '12, Adesemoye Avenue',
+                //     subtitle:
+                //         'data AdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoye',
+                //   ),
+                // );
+              },
+              error: (error, _) {
+                return Center(
+                  child: Text(
+                    error.toString(),
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              },
+              loading: () => const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextButton.icon(
+                    onPressed: () {
+                      push(context, const AddNewAddressScreen());
+                      // ref.invalidate(getAccountAddressProvider);
+                      // log(HiveHelper().getData(HiveKeys.token.keys));
+                    },
+                    icon: const Icon(Icons.add_location_alt_outlined),
+                    label: const Text(
+                      TextConstant.addnewAddress,
+                    )),
+              ],
+            ).padOnly(top: 10)
+          ]
+          // [
+
+          //   savedAddressCard(
+          //     context: context,
+          //     title: '12, Adesemoye Avenue',
+          //     subtitle:
+          //         'data AdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoye',
+          //   ),
+          //   savedAddressCard(
+          //     context: context,
+          //     title: '12, Adesemoye Avenue',
+          //     subtitle:
+          //         'data AdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoye',
+          //   ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     TextButton.icon(
+          //         onPressed: () {
+          //           push(context, const AddNewAddressScreen());
+          //         },
+          //         icon: const Icon(Icons.add_location_alt_outlined),
+          //         label: const Text(
+          //           TextConstant.addnewAddress,
+          //         )),
+          //   ],
+          // ).padOnly(top: 10)
+          // ],
           ),
-          savedAddressCard(
-            context: context,
-            title: '12, Adesemoye Avenue',
-            subtitle:
-                'data AdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoyeAdesemoye',
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TextButton.icon(
-                  onPressed: () {
-                    push(context, const AddNewAddressScreen());
-                  },
-                  icon: const Icon(Icons.add_location_alt_outlined),
-                  label: const Text(
-                    TextConstant.addnewAddress,
-                  )),
-            ],
-          ).padOnly(top: 10)
-        ],
-      ),
     );
   }
 
-  Container savedAddressCard({
+  Widget savedAddressCard({
     required BuildContext context,
     required String title,
     required String subtitle,

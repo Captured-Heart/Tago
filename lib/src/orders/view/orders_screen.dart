@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/widgets/menu_drawer.dart';
 
 enum OrderStatus {
   intransit,
@@ -71,7 +70,9 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                           ),
                         )
                       ].columnInPadding(20))
-                  .padOnly(top: context.sizeHeight(0.1))
+                  .padOnly(
+                top: context.sizeHeight(0.1),
+              )
             ],
           ),
         ]),

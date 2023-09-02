@@ -104,13 +104,6 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                       },
                       context: context,
                     );
-
-                    // ref.read(authUserProvider.notifier).signInUsers(
-                    //   {
-                    //     'password': controller.passWordController.text,
-                    //     'phoneNumber': controller.phoneNoController.text,
-                    //   },
-                    // );
                   }
                   // push(context, const MainScreen());
                 },

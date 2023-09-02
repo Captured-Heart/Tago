@@ -28,7 +28,7 @@ class ConfirmPhoneNumberScreen extends ConsumerWidget {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: const Text(
-                        TextConstant.wehavesent4digit,
+                        TextConstant.wehavesent6digit,
                       ),
                       subtitle: Row(
                           children: [
@@ -40,7 +40,7 @@ class ConfirmPhoneNumberScreen extends ConsumerWidget {
                         controller: controller.otpCode,
                         context: context,
                         isError: false,
-                        hintText: TextConstant.fourdigitcode,
+                        hintText: TextConstant.sixdigitcode,
                         maxLength: 6,
                         validator: RequiredValidator(errorText: otpisInvalid)),
                     //

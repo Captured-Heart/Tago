@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/categories/model/domain/products_model.dart';
 
 /*------------------------------------------------------------------
               FETCH CATEGORIES PROVIDER

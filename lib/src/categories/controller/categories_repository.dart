@@ -9,7 +9,7 @@ Future<List<CategoriesModel>> fetchCategoriesMethod() async {
   // try {
   //post request executed
   final Response response = await NetworkHelper.getRequest(
-    api: getCategories,
+    api: getCategoriesUrl,
   );
 
   // decoding the response
@@ -40,9 +40,9 @@ Future<List<ProductsModel>> fetchCategoriesByLabel(String label) async {
   // try {
   //post request executed
   final Response response = await NetworkHelper.getRequest(
-    api: '$getCategory=$label',
+    api: '$getCategoryUrl=$label',
   );
-  log('$getCategory=$label');
+  log('$getCategoryUrl=$label');
   // decoding the response
 
   String data = response.body;

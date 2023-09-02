@@ -36,6 +36,7 @@ class MainApp extends StatelessWidget {
       // useInheritedMediaQuery: true,
       // builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
       theme: lightTheme,
       home: const SplashScreen(),
 

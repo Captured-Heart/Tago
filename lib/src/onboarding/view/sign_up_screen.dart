@@ -52,6 +52,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     isError: false,
                     hintText: TextConstant.fullname,
                     validator: RequiredValidator(errorText: requiredValue),
+                    inputFormatters: [],
                   ),
                   authTextFieldWithError(
                     controller: controller.phoneNoController,
