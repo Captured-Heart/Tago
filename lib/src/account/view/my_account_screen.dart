@@ -5,6 +5,7 @@ class MyAccountScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final accountInfo = ref.watch(getAccountInfoProvider);
     return Scaffold(
       drawer: tagoHomeDrawer(context),
       appBar: myAccountAppbar(context),
@@ -23,8 +24,9 @@ class MyAccountScreen extends ConsumerWidget {
             leading: ClipRRect(
               child: Image.asset(logoMedium),
             ),
-            title: const Text('Samuel Adekanbi'),
-            subtitle: const Text('samuel@example.com'),
+            title: Text('${accountInfo.value?.fname} ${accountInfo.value?.lname}'),
+            // const Text('Samuel Adekanbi'),
+            subtitle: Text(accountInfo.value?.email ?? 'you@example.com'),
             trailing: TextButton(
               onPressed: () {},
               child: Text(

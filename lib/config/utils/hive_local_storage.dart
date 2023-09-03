@@ -24,6 +24,11 @@ class HiveHelper {
 
     await _box.delete(key);
   }
+  Future<void> deleteDataAt(int index) async {
+    log('deletedDataIndex: $index');
+
+    await _box.deleteAt(index);
+  }
 
   List<dynamic> getAllKeys() {
     return _box.keys.toList();

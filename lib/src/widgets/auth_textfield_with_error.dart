@@ -7,6 +7,7 @@ Widget authTextFieldWithError(
     List<TextInputFormatter>? inputFormatters,
     String? hintText,
     String? errorText,
+    String? initialValue,
     Function(String)? onChanged,
     required BuildContext context,
     Widget? suffixIcon,
@@ -23,6 +24,7 @@ Widget authTextFieldWithError(
   return Column(children: [
     TextFormField(
       onTap: onTap,
+      initialValue: initialValue,
       controller: controller,
       focusNode: focusNode,
       obscureText: obscureText,

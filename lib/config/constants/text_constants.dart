@@ -10,8 +10,7 @@ abstract class TextConstant {
   sign up screen
 -----------------------------------------------------------------------*/
   static const welcometotago = 'Welcome to Tago';
-  static const groceriesDeliveryInMins =
-      'Grocery delivery in minutes, right to you';
+  static const groceriesDeliveryInMins = 'Grocery delivery in minutes, right to you';
   static const fullname = 'Full Name';
   static const phoneno = 'Phone Number';
   static const createpassword = 'Create a password';
@@ -50,8 +49,7 @@ Add address screen
   static const addnewAddress = 'Add new address';
   static const addressDetails = 'Address Details';
   static const addressLabel = 'Address Label';
-  static const thishelpsTagotofind =
-      'This helps Tago find the closest items to your location';
+  static const thishelpsTagotofind = 'This helps Tago find the closest items to your location';
   static const usemycurrentlocation = 'Use my current location';
   static const typeaddressmanually = 'Type address manually';
   static const save = 'Save';
@@ -70,8 +68,7 @@ Add address screen
 /*----------------------------------------------------------------------
 forgot password
 -----------------------------------------------------------------------*/
-  static const enterthePhoneno =
-      'Enter the phone number used to create an account';
+  static const enterthePhoneno = 'Enter the phone number used to create an account';
   static const sendResetcode = 'Send Reset Code';
   static const confirmResetcode = 'Confirm Reset Code';
   static const confirmBytypingthecode = 'Confirm by typing the code below';
@@ -102,9 +99,18 @@ HOME PAGE
   static const edit = 'Edit';
   static const hotdeals = 'Hot Deals';
   static const upto33percent = 'Up to 33% Off Flash Sales! Hurry!';
+  static const newArrivals = 'New Arrivals - Dettol';
+  static const tagoTreasureHunt = 'Tago Treasure Hunt';
+  static const findTheHiddenItems =
+      'Find the hidden ittems in all categories and stand a chance a win a voucher worth 100,000';
+  static const checkOutHomeEssentials =
+      'Check out Home Essentials for the new & improved Dettol range of products. Limited items available';
   static const getupto33percent =
       'Get up to 33% off all electronics on Tago in our mid year clearance sales on all Electronics ';
   static const shopelectronics = 'Shop Electronics';
+  static const startSearching = 'Start Searching';
+  static const browseHomeEssentials = 'Browse Home Essentials';
+
   static const categories = 'Categories';
   static const allcategories = 'All Categories';
 
@@ -174,8 +180,7 @@ ORDERS SCREEN
 /*----------------------------------------------------------------------
  VOUCHERS SCREEN
 -----------------------------------------------------------------------*/
-  static const vouchersWillAppear =
-      'Vouchers will appear here when you receive them';
+  static const vouchersWillAppear = 'Vouchers will appear here when you receive them';
 
 /*----------------------------------------------------------------------
 WISHLIST SCREEN
@@ -200,7 +205,7 @@ WISHLIST SCREEN
   static const addnewCard = 'Add New Card ';
   static const firstandlastname = 'First & Last Name';
   static const mmAndyy = 'MM/YY';
-  static const cardNumberHint = '0000 0000 0000 0000';  
+  static const cardNumberHint = '0000 0000 0000 0000';
 
 /*----------------------------------------------------------------------
 SINGLE PRODUCT PAGE
@@ -235,8 +240,7 @@ CHECKOUT SECTION
   static const notselected = 'Not selected';
   static const choose = 'Choose';
   static const reviewItems = 'Review Items';
-  static const deliveryInstructionsOptional =
-      'Delivery Instructions (Optional)';
+  static const deliveryInstructionsOptional = 'Delivery Instructions (Optional)';
   static const voucherCode = 'Voucher Code';
   static const writeaNoteHint = 'Write a note (e.g., Estate Gate Code)';
   static const pastevoucherCode = 'Paste Voucher code';
@@ -270,14 +274,11 @@ RIDER SECTION
   static const pickupLocation = 'Pickup Location';
   static const deliveryLocation = 'Delivery Location';
   static const ordercompleted = 'Order Completed!';
-  static const yousuccessfulCompletedanorder =
-      'You successfully completed an order';
+  static const yousuccessfulCompletedanorder = 'You successfully completed an order';
   static const backHome = 'Back Home';
   static const geBack = 'Go back';
-  static const doyouwantTodeclinethisdelivery =
-      'Do you want to decline this delivery request';
-  static const doyouwantToAcceptthisdelivery =
-      'Do you want to accept this delivery request';
+  static const doyouwantTodeclinethisdelivery = 'Do you want to decline this delivery request';
+  static const doyouwantToAcceptthisdelivery = 'Do you want to accept this delivery request';
   static const declinerequests = 'Decline Request?';
   static const pleaseconfirmthebuyerhasreceived =
       'Please confirm the buyer has received their products';

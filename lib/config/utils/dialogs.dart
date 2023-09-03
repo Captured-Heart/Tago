@@ -6,15 +6,18 @@ final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
 void showScaffoldSnackBar(SnackBar snackBar) =>
     rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 
-void showScaffoldSnackBarMessage(String message) =>
+void showScaffoldSnackBarMessage(
+  String message, {
+  bool isError = false,
+}) =>
     rootScaffoldMessengerKey.currentState?.showSnackBar(
       SnackBar(
         content: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
-                Icons.check_circle,
-                color: TagoLight.primaryColor,
+              Icon(
+                isError ? Icons.cancel : Icons.check_circle,
+                color: isError ? TagoLight.textError : TagoLight.primaryColor,
               ),
               Expanded(
                 child: Text(
@@ -23,7 +26,7 @@ void showScaffoldSnackBarMessage(String message) =>
                 ),
               ),
             ].rowInPadding(5)),
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 5),
       ),
     );
 
@@ -62,12 +65,9 @@ void warningDialogs({
                     () {
                       pop(context);
                     },
-                style:
-                    TextButton.styleFrom(foregroundColor: TagoLight.textError),
+                style: TextButton.styleFrom(foregroundColor: TagoLight.textError),
                 child: const Text(TextConstant.cancel)),
-            TextButton(
-                onPressed: onPostiveAction,
-                child: const Text(TextConstant.confirm))
+            TextButton(onPressed: onPostiveAction, child: const Text(TextConstant.confirm))
           ],
           // Column(
           //   crossAxisAlignment: CrossAxisAlignment.center,

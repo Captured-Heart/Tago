@@ -1,17 +1,17 @@
 {
-    "__className": "address_model", // <- The base class name of the object.
+    "__className": "account_model", // <- The base class name of the object.
     "__path": "/lib/src/account/model/domain", // <- override default path with a new one by adding '__path' key.
-    "userId": "",
+    "phoneNumber": "",
     "id": "", // To mark as required value, change "id" to "r@id".
-    "label": "", // To mark as a default value, change "title" to "d@title".
-    "streetAddress": "",
-    "apartmentNumber": "",
-    "city":"",
-    "state": "",
-    "postalCode":"",
-    "position": "",
-    "createdAt": "",
-    "updatedAt": "",
-    "deletedAt": ""
+    "fname": "", // To mark as a default value, change "title" to "d@title".
+    "lname": "",
+    "email": "",
+    "role":"",
+    "emailVerifiedAt": "",
+    "phoneVerifiedAt":"",
+    "address": {}
+    
 
   }
+
+  

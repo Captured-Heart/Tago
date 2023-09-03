@@ -23,6 +23,9 @@ const String addAddressUrl = '/account/user/address';
 const String updateAddressUrl = '/account/user/address';
 const String deleteAddressUrl = '/account/user/address';
 
+// ACCOUNT URL
+const String getAccountInfoUrl = '/account/';
+
 // WISH LIST URL
 const String getWishListUrl = '/account/user/wishlist';
 // const String getAddressUrl = '/account/user/address';
@@ -92,7 +95,10 @@ class NetworkHelper {
 
       return response;
     } catch (e) {
-      showScaffoldSnackBarMessage(e.toString());
+      showScaffoldSnackBarMessage(
+        e.toString(),
+        isError: true,
+      );
       log('error from getRequest: ${e.toString()}');
     }
   }
@@ -118,23 +124,44 @@ class NetworkHelper {
       log('$baseUrl$api');
       return response;
     } catch (e) {
-      showScaffoldSnackBarMessage(e.toString());
+      showScaffoldSnackBarMessage(
+        e.toString(),
+        isError: true,
+      );
 
       log('error from postRequestWithToken: ${e.toString()}');
     }
   }
 
 /*------------------------------------------------------------------
-                  HTTP PATCH REQUEST
+                  HTTP PATCH REQUEST WITH TOKEN
  -------------------------------------------------------------------*/
-  static Future<dynamic> patchRequest({required String api}) async {
-    var url = '$baseUrl$api';
+  static Future<dynamic> patchRequestWithToken({
+    required String api,
+    required Map<String, dynamic> map,
+  }) async {
+    // var url = '$baseUrl$api';
+      log('$baseUrl$api');
+
     try {
-      final response = await http.patch(Uri.parse(url));
+      final response = await http.patch(
+        Uri.parse('$baseUrl$api'),
+        body: map,
+        headers: {
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Connection': 'keep-alive',
+          'Accept-Encoding': 'gzip, deflate, br',
+        },
+      );
 
       return response;
     } catch (e) {
-      showScaffoldSnackBarMessage(e.toString());
+      showScaffoldSnackBarMessage(
+        e.toString(),
+        isError: true,
+      );
       log('error from patchRequest: ${e.toString()}');
     }
   }
@@ -163,7 +190,7 @@ class NetworkHelper {
 
       return response;
     } catch (e) {
-      showScaffoldSnackBarMessage(e.toString());
+      showScaffoldSnackBarMessage(e.toString(), isError: true);
       log('error from getRequest: ${e.toString()}');
     }
   }

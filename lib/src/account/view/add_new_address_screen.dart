@@ -1,13 +1,15 @@
 import 'package:tago/app.dart';
-import 'package:tago/config/utils/enums/address_type_enums.dart';
-import 'package:tago/src/account/controller/address_notifier_provider.dart';
 
 class AddNewAddressScreen extends ConsumerStatefulWidget {
-  const AddNewAddressScreen({super.key});
-
+  const AddNewAddressScreen({
+    super.key,
+    this.addressModel,
+    this.isEditMode = false,
+  });
+  final AddressModel? addressModel;
+  final bool? isEditMode;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AddNewAddressScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AddNewAddressScreenState();
 }
 
 class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
@@ -20,10 +22,18 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
 
   final ScrollController scrollController = ScrollController();
   final TextEditingControllerClass controller = TextEditingControllerClass();
+
   @override
   Widget build(BuildContext context) {
     final currentPosition = ref.watch(getCurrentLocationProvider);
-
+    TextEditingController addressStreetController =
+        TextEditingController(text: widget.addressModel?.streetAddress);
+    TextEditingController addressCityController =
+        TextEditingController(text: widget.addressModel?.city);
+    TextEditingController apartmentNoController =
+        TextEditingController(text: widget.addressModel?.apartmentNumber);
+    TextEditingController addressLabelController =
+        TextEditingController(text: widget.addressModel?.label);
     return FullScreenLoader(
       isLoading: ref.watch(accountAddressProvider).isLoading,
       child: Scaffold(
@@ -47,15 +57,15 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                     controller: scrollController,
                     children: [
                       //
-            
+
                       SizedBox(
                         height: context.sizeHeight(0.35),
                         child: GoogleMap(
                           mapType: MapType.terrain,
                           initialCameraPosition: CameraPosition(
                             target: LatLng(
-                              currentPosition.value?.latitude ?? 20,
-                              currentPosition.value?.longitude ?? 12.2,
+                              currentPosition.valueOrNull?.latitude ?? 20,
+                              currentPosition.valueOrNull?.longitude ?? 12.2,
                             ),
                           ),
                         ),
@@ -69,7 +79,9 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                             style: context.theme.textTheme.bodyLarge,
                           ),
                           authTextFieldWithError(
-                            controller: controller.addressStreetController,
+                            controller: widget.isEditMode == false
+                                ? controller.addressStreetController
+                                : addressStreetController,
                             context: context,
                             isError: false,
                             inputFormatters: [],
@@ -77,15 +89,22 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                               Icons.search,
                             ),
                             hintText: TextConstant.enterAnewAddress,
+                            validator: RequiredValidator(errorText: requiredValue),
                           ),
                           authTextFieldWithError(
-                            controller: controller.addressCityController,
+                            controller: widget.isEditMode == false
+                                ? controller.addressCityController
+                                : addressCityController,
                             context: context,
+                            inputFormatters: [],
                             isError: false,
                             hintText: TextConstant.city,
+                            validator: RequiredValidator(errorText: requiredValue),
                           ),
                           authTextFieldWithError(
-                            controller: controller.apartmentNoController,
+                            controller: widget.isEditMode == false
+                                ? controller.apartmentNoController
+                                : apartmentNoController,
                             context: context,
                             isError: false,
                             hintText: TextConstant.appartmentsuite,
@@ -96,7 +115,9 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                             style: context.theme.textTheme.bodyLarge,
                           ),
                           authTextFieldWithError(
-                            controller: controller.addressLabelController,
+                            controller: widget.isEditMode == false
+                                ? controller.addressLabelController
+                                : addressLabelController,
                             context: context,
                             isError: false,
                             inputFormatters: [],
@@ -110,27 +131,46 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                 ),
               ),
             ),
-
+            // ElevatedButton(
+            //     onPressed: () {
+            //       log(widget.addressModel!.id!);
+            //     },
+            //     child: Text('debug')),
             //button
             SizedBox(
               width: context.sizeWidth(1),
               child: ElevatedButton(
                 onPressed: () {
                   if (controller.signInformKey.currentState!.validate()) {
-                    ref.read(accountAddressProvider.notifier).addAddressMethod(
-                      map: {
-                        AddressType.apartmentNumber.name:
-                            controller.apartmentNoController.text,
-                        AddressType.city.name:
-                            controller.addressCityController.text,
-                        AddressType.state.name:
-                            controller.addressLabelController.text,
-                        AddressType.streetAddress.name:
-                            controller.addressStreetController.text
-                      },
-                      context: context,
-                      ref: ref,
-                    );
+                    if (widget.isEditMode == false) {
+                      log('entered the add address voidcallback');
+                      ref.read(accountAddressProvider.notifier).addAddressMethod(
+                        map: {
+                          AddressType.apartmentNumber.name: controller.apartmentNoController.text,
+                          AddressType.city.name: controller.addressCityController.text,
+                          AddressType.state.name: controller.addressLabelController.text,
+                          AddressType.streetAddress.name: controller.addressStreetController.text
+                        },
+                        context: context,
+                        ref: ref,
+                      );
+                    } else {
+                      log('entered the edit address function');
+
+                      ref.read(accountAddressProvider.notifier).editAddressMethod(
+                        map: {
+                          AddressType.postalCode.name: widget.addressModel?.label.toString(),
+                          AddressType.setAsDefault.name: 'false',
+                          AddressType.id.name: widget.addressModel?.id.toString(),
+                          AddressType.apartmentNumber.name: apartmentNoController.text,
+                          AddressType.city.name: addressCityController.text,
+                          AddressType.state.name: addressCityController.text,
+                          AddressType.streetAddress.name: addressStreetController.text
+                        },
+                        context: context,
+                        ref: ref,
+                      );
+                    }
                   }
                 },
                 child: const Text(TextConstant.saveandContinue),

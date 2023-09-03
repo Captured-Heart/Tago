@@ -5,11 +5,9 @@ Widget savedAddressCard({
   required String title,
   required String subtitle,
   required String subtitle2,
-
   VoidCallback? onEdit,
   VoidCallback? onDelete,
   VoidCallback? onTap,
-
 }) {
   return GestureDetector(
     onTap: onTap,

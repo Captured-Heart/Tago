@@ -1,7 +1,5 @@
 import 'package:tago/app.dart';
 
-
-
 Widget tagoHomeDrawer(BuildContext context) {
   return Drawer(
       child: SafeArea(

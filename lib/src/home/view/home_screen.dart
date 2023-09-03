@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tago/app.dart';
+import 'package:tago/src/home/loaders/category_card_loaders.dart';
 
 final carouselSliderProvider = Provider<CarouselController>((ref) {
   return CarouselController();
@@ -22,10 +23,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final categories = ref.watch(fetchCategoriesProvider);
     List<Widget> carouselWidgetList = [
-      hotDealsCarouselWidget(context).padSymmetric(horizontal: 20),
-      hotDealsCarouselWidget(context).padSymmetric(horizontal: 20),
-      hotDealsCarouselWidget(context).padSymmetric(horizontal: 20),
-      hotDealsCarouselWidget(context).padSymmetric(horizontal: 20),
+      hotDealsCarouselWidget(
+        context: context,
+        title: TextConstant.upto33percent,
+        subTitle: TextConstant.getupto33percent,
+        btnText: TextConstant.shopelectronics,
+        onTapBtn: () {},
+      ).padSymmetric(horizontal: 20),
+      hotDealsCarouselWidget(
+        context: context,
+        title: TextConstant.tagoTreasureHunt,
+        subTitle: TextConstant.findTheHiddenItems,
+        onTapBtn: () {},
+        btnText: TextConstant.startSearching,
+      ).padSymmetric(horizontal: 20),
+      hotDealsCarouselWidget(
+        context: context,
+        title: TextConstant.newArrivals,
+        subTitle: TextConstant.checkOutHomeEssentials,
+        onTapBtn: () {},
+        btnText: TextConstant.browseHomeEssentials,
+        isOrange: true,
+      ).padSymmetric(horizontal: 20),
     ];
     return Scaffold(
       appBar: homescreenAppbar(context),
@@ -80,8 +99,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               )
             ],
           ),
-
-          // HOT DEALS CATEGORY
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Text(
+                '🔥',
+                textScaleFactor: 2,
+              ).padOnly(right: 5),
+              Text(
+                TextConstant.hotdeals,
+                style: context.theme.textTheme.titleLarge,
+              )
+            ],
+          ).padOnly(top: 20, left: 20, bottom: 5),
+          //! HOT DEALS CATEGORY
           Column(
             children: [
               CarouselSlider(
@@ -89,24 +120,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 carouselController: ref.watch(carouselSliderProvider),
                 options: CarouselOptions(
                     autoPlay: true,
-                    enlargeCenterPage: true,
+                    aspectRatio: 20 / 9,
+                    enlargeCenterPage: false,
                     viewportFraction: 0.99,
                     enlargeFactor: 0,
-                    // aspectRatio: 1.55,
-                    // height: context.sizeHeight(0.35),
                     onPageChanged: (index, reason) {
-                      ref
-                          .read(currentCarouselIndexProvider.notifier)
-                          .update((state) => index);
+                      ref.read(currentCarouselIndexProvider.notifier).update((state) => index);
                     }),
-              ).padOnly(bottom: 10),
+              ),
+              // .padOnly(bottom: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
                   carouselWidgetList.length,
                   (index) => GestureDetector(
-                    onTap: () =>
-                        ref.read(carouselSliderProvider).animateToPage(index),
+                    onTap: () => ref.read(carouselSliderProvider).animateToPage(index),
                     child: Container(
                       width: 6.0,
                       height: 6.0,
@@ -120,9 +148,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ? TagoLight.indicatorInactiveColor
                                 : TagoLight.indicatorActiveColor)
                             .withOpacity(
-                          ref.watch(currentCarouselIndexProvider) == index
-                              ? 0.9
-                              : 0.4,
+                          ref.watch(currentCarouselIndexProvider) == index ? 0.9 : 0.4,
                         ),
                       ),
                     ),
@@ -189,9 +215,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
+            loading: () => categoryCardLoaders(context: context),
           ),
 
 //items near you
@@ -255,10 +279,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               itemBuilder: (context, index) {
                 return SizedBox(
                   width: context.sizeWidth(0.35),
-                  child: itemsNearYouCard(
-                      index: index,
-                      context: context,
-                      image: drinkImages[index]),
+                  child:
+                      itemsNearYouCard(index: index, context: context, image: drinkImages[index]),
                 );
               },
             ),
@@ -268,60 +290,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Column hotDealsCarouselWidget(BuildContext context) {
+  Widget hotDealsCarouselWidget({
+    required BuildContext context,
+    required String title,
+    required String subTitle,
+    required String btnText,
+    required VoidCallback onTapBtn,
+    bool? isOrange = false,
+  }) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Text(
-              '🔥',
-              textScaleFactor: 2,
-            ).padOnly(right: 5),
-            Text(
-              TextConstant.hotdeals,
-              style: context.theme.textTheme.titleLarge,
-            )
-          ],
-        ).padSymmetric(vertical: 12),
-
+        //  Row(
+        //   mainAxisAlignment: MainAxisAlignment.start,
+        //   children: [
+        //     const Text(
+        //       '🔥',
+        //       textScaleFactor: 2,
+        //     ).padOnly(right: 5),
+        //     Text(
+        //       TextConstant.hotdeals,
+        //       style: context.theme.textTheme.titleLarge,
+        //     )
+        //   ],
+        // ).padSymmetric(vertical: 12),
         // container
+
         Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            width: context.sizeWidth(1),
-            decoration: BoxDecoration(
-                color: TagoLight.textFieldFilledColor,
-                borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  TextConstant.upto33percent,
-                  style: context.theme.textTheme.titleLarge,
-                  textAlign: TextAlign.left,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          width: context.sizeWidth(1),
+          decoration: BoxDecoration(
+              color: TagoLight.textFieldFilledColor, borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: context.theme.textTheme.titleLarge,
+                textAlign: TextAlign.left,
+              ),
+              Text(
+                subTitle,
+                style: context.theme.textTheme.titleLarge?.copyWith(
+                  fontSize: 12,
+                  fontWeight: AppFontWeight.w400,
                 ),
-                Text(
-                  TextConstant.getupto33percent,
-                  style: context.theme.textTheme.titleLarge?.copyWith(
-                    fontSize: 12,
-                    fontWeight: AppFontWeight.w400,
+                textAlign: TextAlign.left,
+              ),
+              ElevatedButton(
+                onPressed: onTapBtn,
+                style: context.theme.elevatedButtonTheme.style?.copyWith(
+                  fixedSize: const MaterialStatePropertyAll<Size>(
+                    Size.fromHeight(38),
                   ),
-                  textAlign: TextAlign.left,
+                  backgroundColor: isOrange == true
+                      ? const MaterialStatePropertyAll<Color>(TagoLight.orange)
+                      : const MaterialStatePropertyAll<Color>(TagoLight.primaryColor),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    log('message');
-                    fetchCategoriesMethod();
-                  },
-                  style: context.theme.elevatedButtonTheme.style?.copyWith(
-                    fixedSize: const MaterialStatePropertyAll<Size>(
-                      Size.fromHeight(38),
-                    ),
-                  ),
-                  child: const Text(TextConstant.shopelectronics),
-                )
-              ].columnInPadding(15),
-            ))
+                child: Text(btnText),
+              )
+            ].columnInPadding(15),
+          ),
+        )
       ],
     );
   }

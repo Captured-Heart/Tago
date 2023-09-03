@@ -4,6 +4,8 @@ CachedNetworkImage cachedNetworkImageWidget({
   CategoriesModel? categoriesModel,
   required String imgUrl,
   required double height,
+  // double? loaderHeight,
+  double? loaderWidth,
 }) {
   return CachedNetworkImage(
     imageUrl: imgUrl,
@@ -22,10 +24,14 @@ CachedNetworkImage cachedNetworkImageWidget({
       );
     },
     progressIndicatorBuilder: (context, string, progress) {
-      return Center(
-        child: CircularProgressIndicator(
-          color: Theme.of(context).primaryColor,
-          value: progress.progress,
+      return Shimmer.fromColors(
+        baseColor: TagoLight.indicatorActiveColor.withOpacity(0.2),
+        highlightColor: TagoLight.indicatorInactiveColor,
+        child: Container(
+          alignment: Alignment.center,
+          height: height,
+          width: context.sizeWidth(1),
+          color: TagoLight.indicatorActiveColor,
         ),
       );
     },

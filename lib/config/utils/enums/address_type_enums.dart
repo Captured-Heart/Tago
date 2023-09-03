@@ -5,4 +5,6 @@ enum AddressType {
   state,
   addressId,
   id,
+  setAsDefault,
+  postalCode,
 }

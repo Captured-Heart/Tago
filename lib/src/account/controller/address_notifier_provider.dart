@@ -1,20 +1,26 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:tago/app.dart';
+import 'package:tago/src/account/model/domain/account_model.dart';
 
 /*------------------------------------------------------------------
                   GET ACCOUNT ADDRESS PROVIDER
  -------------------------------------------------------------------*/
-final getAccountAddressProvider =
-    FutureProvider<List<AddressModel>>((ref) async {
+final getAccountAddressProvider = FutureProvider<List<AddressModel>>((ref) async {
   return getAddressMethod();
+});
+
+/*------------------------------------------------------------------
+                  GET ACCOUNT  PROVIDER
+ -------------------------------------------------------------------*/
+final getAccountInfoProvider = FutureProvider<AccountModel>((ref) async {
+  return getAccountInfoMethod();
 });
 
 /*------------------------------------------------------------------
                  ACCOUNT ADDRESS STATE NOTIFIER PROVIDER
  -------------------------------------------------------------------*/
-final accountAddressProvider =
-    StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
+final accountAddressProvider = StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
   return AccountAddressNotifier();
 });
 
@@ -46,6 +52,46 @@ class AccountAddressNotifier extends StateNotifier<AsyncValue> {
       state = AsyncValue.data(decodedData['message']);
       pop(context);
       Future.delayed(const Duration(milliseconds: 200), () {
+        ref.invalidate(getAccountAddressProvider);
+
+        showScaffoldSnackBarMessage(decodedData['message']);
+      });
+
+      return decodedData['message'];
+    } else {
+      state = AsyncValue.error(decodedData['message'], StackTrace.empty);
+      return decodedData['message'];
+    }
+  }
+
+  /*------------------------------------------------------------------
+              EDIT ADDRESS METHOD
+ -------------------------------------------------------------------*/
+  Future editAddressMethod({
+    required Map<String, dynamic> map,
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    state = const AsyncValue.loading();
+    //post request executed
+    final Response response = await NetworkHelper.patchRequestWithToken(
+      api: updateAddressUrl,
+      map: map,
+    ).catchError((er) {
+      state = AsyncValue.error(er, StackTrace.empty);
+      showScaffoldSnackBarMessage(er, isError: true);
+    });
+
+    // decoding the response
+    String data = response.body;
+    var decodedData = jsonDecode(data);
+    state = AsyncValue.data(decodedData['message']);
+
+    //the response and error handling
+    if (response.statusCode == 200) {
+      state = AsyncValue.data(decodedData['message']);
+      pop(context);
+      Future.delayed(const Duration(milliseconds: 400), () {
         ref.invalidate(getAccountAddressProvider);
 
         showScaffoldSnackBarMessage(decodedData['message']);

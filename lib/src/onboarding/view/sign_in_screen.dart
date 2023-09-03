@@ -60,6 +60,7 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                     context: context,
                     isError: false,
                     hintText: TextConstant.password,
+                    textInputAction: TextInputAction.done,
                     validator: MultiValidator(
                       [
                         RequiredValidator(errorText: passwordIsRequired),
@@ -95,9 +96,7 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
               child: ElevatedButton(
                 onPressed: () async {
                   if (controller.signInformKey.currentState!.validate()) {
-                    ref
-                        .read(authAsyncNotifierProvider.notifier)
-                        .signInAsyncMethod(
+                    ref.read(authAsyncNotifierProvider.notifier).signInAsyncMethod(
                       map: {
                         'password': controller.passWordController.text,
                         'phoneNumber': controller.phoneNoController.text,

@@ -1,4 +1,4 @@
-import '../../app.dart';
+import 'package:tago/app.dart';
 
 Widget categoryCard({
   required BuildContext context,
@@ -18,9 +18,7 @@ Widget categoryCard({
           height: height,
         ).padOnly(bottom: 4),
         Text(
-          categoriesModel.name!.isNotEmpty
-              ? categoriesModel.name!
-              : 'Not available',
+          categoriesModel.name!.isNotEmpty ? categoriesModel.name! : 'Not available',
           textAlign: TextAlign.center,
           maxLines: 2,
           softWrap: true,
