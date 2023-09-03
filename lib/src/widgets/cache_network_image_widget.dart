@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/widgets/shimmer_widget.dart';
 
 CachedNetworkImage cachedNetworkImageWidget({
   CategoriesModel? categoriesModel,
@@ -24,9 +25,7 @@ CachedNetworkImage cachedNetworkImageWidget({
       );
     },
     progressIndicatorBuilder: (context, string, progress) {
-      return Shimmer.fromColors(
-        baseColor: TagoLight.indicatorActiveColor.withOpacity(0.2),
-        highlightColor: TagoLight.indicatorInactiveColor,
+      return shimmerWidget(
         child: Container(
           alignment: Alignment.center,
           height: height,

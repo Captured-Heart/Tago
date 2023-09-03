@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/widgets/shimmer_widget.dart';
 
 Widget categoryCardLoaders({
   required BuildContext context,
@@ -11,9 +12,7 @@ Widget categoryCardLoaders({
     crossAxisAlignment: WrapCrossAlignment.start,
     children: List.generate(
       9,
-      (index) => Shimmer.fromColors(
-        baseColor: TagoLight.indicatorActiveColor.withOpacity(0.2),
-        highlightColor: TagoLight.indicatorInactiveColor,
+      (index) => shimmerWidget(
         child: SizedBox(
           width: context.sizeWidth(0.155),
           child: Column(

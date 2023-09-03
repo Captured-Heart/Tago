@@ -1,12 +1,10 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/widgets/shimmer_widget.dart';
 
 Widget savedAddressCardLoader({
   required BuildContext context,
 }) {
-  return Shimmer.fromColors(
-    period: const Duration(milliseconds: 3000),
-    highlightColor: TagoLight.indicatorActiveColor.withOpacity(0.15),
-    baseColor: TagoLight.indicatorInactiveColor,
+  return shimmerWidget(
     child: Container(
       decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: 0.1))),
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),

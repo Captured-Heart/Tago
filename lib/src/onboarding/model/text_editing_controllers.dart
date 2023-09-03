@@ -15,7 +15,7 @@ class TextEditingControllerClass {
   TextEditingController addressCityController = TextEditingController();
   TextEditingController apartmentNoController = TextEditingController();
   TextEditingController addressLabelController = TextEditingController();
-  // TextEditingController otpCode = TextEditingController();
+  TextEditingController searchProductController = TextEditingController();
   // TextEditingController otpCode = TextEditingController();
 
   void disposeControllers() {

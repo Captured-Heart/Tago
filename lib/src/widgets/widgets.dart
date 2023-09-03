@@ -13,3 +13,5 @@ export './app_loader.dart';
 export './home_screen_order_status_widget.dart';
 export './cache_network_image_widget.dart';
 export './saved_address_card_widget.dart';
+export './home_screen_carousel_widget.dart';
+export './sub_category_card.dart';
