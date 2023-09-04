@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tago/app.dart';
 import 'package:tago/src/home/loaders/category_card_loaders.dart';
 
@@ -31,6 +30,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             controller: TextEditingController(),
             context: context,
             isError: false,
+            readOnly: true,
+            onTap: () {
+              push(context, SearchScreen());
+            },
             filled: true,
             hintText: TextConstant.whatdoYouNeedToday,
             prefixIcon: const Icon(Icons.search),
@@ -64,7 +67,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   color: TagoDark.primaryColor,
                 ),
                 trailing: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    HiveHelper().deleteData(HiveKeys.token.keys);
+                  },
                   child: const Text(TextConstant.edit),
                 ),
                 title: Text(
@@ -192,9 +197,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            loading: () => categoryCardLoaders(context: context),
+            loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
           ),
-
 //items near you
           ListTile(
             title: const Text(

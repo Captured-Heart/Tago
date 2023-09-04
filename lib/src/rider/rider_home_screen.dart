@@ -4,13 +4,14 @@ class RiderHomeScreen extends ConsumerStatefulWidget {
   const RiderHomeScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RiderHomeScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RiderHomeScreenState();
 }
 
 class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final accountInfo = ref.watch(getAccountInfoProvider);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -29,11 +30,12 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                           FontAwesomeIcons.circleUser,
                           color: TagoLight.textBold,
                         ),
-                        title: const Text('Hello, Fuad'),
+                        title:  Text('Hello, ${accountInfo.valueOrNull?.fname}'),
                         //
                         trailing: GestureDetector(
                           onTap: () {
                             push(context, const RiderAccountScreen());
+                            // HiveHelper().deleteData(HiveKeys.token.keys);
                           },
                           child: const Icon(
                             Icons.notifications_none_outlined,
@@ -53,13 +55,11 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    color:
-                                        TagoDark.primaryColor.withOpacity(0.1),
+                                    color: TagoDark.primaryColor.withOpacity(0.1),
                                   ),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       const Icon(
                                         Icons.receipt,
@@ -68,9 +68,7 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                                       ),
                                       Text(
                                         '0',
-                                        style: context
-                                            .theme.textTheme.titleLarge
-                                            ?.copyWith(
+                                        style: context.theme.textTheme.titleLarge?.copyWith(
                                           color: TagoDark.primaryColor,
                                           fontWeight: AppFontWeight.w500,
                                         ),

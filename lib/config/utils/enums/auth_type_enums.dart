@@ -7,3 +7,9 @@ enum AuthTypeField {
   otp,
   token,
 }
+
+enum AuthRoleType {
+  rider,
+  admin,
+  user,
+}

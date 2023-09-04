@@ -17,6 +17,9 @@ Widget authTextFieldWithError(
     Widget? prefixIcon,
     required bool isError,
     bool? filled,
+    bool? autoFocus,
+    bool? readOnly,
+
     Color? fillColor,
     int? maxLength,
     TextInputAction? textInputAction,
@@ -27,6 +30,8 @@ Widget authTextFieldWithError(
       initialValue: initialValue,
       controller: controller,
       focusNode: focusNode,
+      readOnly: readOnly ?? false,
+      autofocus: autoFocus ?? false,
       obscureText: obscureText,
       keyboardType: keyboardType,
       onChanged: onChanged,
@@ -37,11 +42,11 @@ Widget authTextFieldWithError(
       autocorrect: false,
       validator: validator,
       style: AppTextStyle.listTileSubtitleLight,
-      inputFormatters: inputFormatters ??
-          [FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))],
+      inputFormatters: inputFormatters ?? [FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))],
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         fillColor: fillColor,
         filled: filled,
         errorStyle: AppTextStyle.errorTextTextstyle,
@@ -58,18 +63,15 @@ Widget authTextFieldWithError(
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide:
-              const BorderSide(width: 1, color: TagoLight.textFieldBorder),
+          borderSide: const BorderSide(width: 1, color: TagoLight.textFieldBorder),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide:
-              const BorderSide(width: 1, color: TagoLight.textFieldBorder),
+          borderSide: const BorderSide(width: 1, color: TagoLight.textFieldBorder),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide:
-              const BorderSide(width: 1, color: TagoLight.textFieldBorder),
+          borderSide: const BorderSide(width: 1, color: TagoLight.textFieldBorder),
         ),
         errorMaxLines: 1,
         // errorStyle: AppTextStyle().errorTextStyle,

@@ -18,16 +18,25 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     super.initState();
 
     navigateToNexToScreen().then((_) {
-      if (HiveHelper().getData(HiveKeys.token.name) != null) {
+      //if user == user
+      if (HiveHelper().getData(HiveKeys.token.name) != null &&
+          HiveHelper().getData(HiveKeys.role.name) == AuthRoleType.user.name) {
         return pushReplacement(context, const MainScreen());
+
+        //if user == rider
+      } else if (HiveHelper().getData(HiveKeys.token.name) != null &&
+          HiveHelper().getData(HiveKeys.role.name) == AuthRoleType.rider.name) {
+        return pushReplacement(context, const RiderHomeScreen());
       } else {
         return pushAsVoid(context, const OnBoardScreen());
       }
     });
     showLoader().then((_) {
-      setState(() {
-        isVisible = true;
-      });
+      if (!mounted) {
+        setState(() {
+          isVisible = true;
+        });
+      }
     });
   }
 

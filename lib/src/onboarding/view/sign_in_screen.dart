@@ -68,10 +68,10 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                           8,
                           errorText: passwordMustBeAtleast,
                         ),
-                        PatternValidator(
-                          r'(?=.*?[#?!@$%^&*-])',
-                          errorText: passwordMustHaveaSymbol,
-                        )
+                        // PatternValidator(
+                        //   r'(?=.*?[#?!@$%^&*-])',
+                        //   errorText: passwordMustHaveaSymbol,
+                        // )
                       ],
                     ),
                   ).padOnly(bottom: 10),
@@ -102,6 +102,19 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                         'phoneNumber': controller.phoneNoController.text,
                       },
                       context: context,
+                      onNavigation: () {
+                        if (HiveHelper().getData(HiveKeys.role.name) == AuthRoleType.user.name) {
+                          pushReplacement(
+                            context,
+                            const MainScreen(),
+                          );
+                        } else {
+                          pushReplacement(
+                            context,
+                            const RiderHomeScreen(),
+                          );
+                        }
+                      },
                     );
                   }
                   // push(context, const MainScreen());

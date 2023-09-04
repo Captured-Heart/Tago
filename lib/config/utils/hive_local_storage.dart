@@ -1,40 +1,71 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tago/app.dart';
 
 class HiveHelper {
-  final _box = Hive.box('tago');
+  final _boxTago = Hive.box('tago');
+  final _boxSearch = Hive.box('search');
 
   static Future<void> init() async {
     await Hive.initFlutter();
     await Hive.openBox('tago');
-    // _box = Hive.box('tago');
+    await Hive.openBox('search');
   }
 
+/*------------------------------------------------------------------
+                 FOR BOX('TAGO')
+ -------------------------------------------------------------------*/
   Future<void> saveData(String key, dynamic value) async {
     log('savedData: $value');
-    await _box.put(key, value);
+    await _boxTago.put(key, value);
   }
 
   dynamic getData(String key) {
-    return _box.get(key);
+    log('getData: $key');
+    return _boxTago.get(key);
   }
 
   Future<void> deleteData(String key) async {
     log('deletedDataKey: $key');
 
-    await _box.delete(key);
-  }
-  Future<void> deleteDataAt(int index) async {
-    log('deletedDataIndex: $index');
-
-    await _box.deleteAt(index);
+    await _boxTago.delete(key);
   }
 
   List<dynamic> getAllKeys() {
-    return _box.keys.toList();
+    log(_boxTago.keys.map((e) => e).toString());
+    return _boxTago.keys.toList();
   }
 
   Future<void> closeBox() async {
-    await _box.close();
+    await _boxTago.close();
+  }
+
+  /*------------------------------------------------------------------
+                 FOR BOX ('SEARCH')
+ -------------------------------------------------------------------*/
+
+  ///     save data
+  Future<void> saveDataSearch(dynamic value) async {
+    log('savedData: $value');
+    await _boxSearch.add(value);
+  }
+
+  //      get data
+  dynamic getDataSearch(String key) {
+    log('getData: $key');
+    return _boxSearch.get(key);
+  }
+
+  ValueListenable getSearchListenable() {
+    return _boxSearch.listenable();
+  }
+
+  List<dynamic> getAllSearchEntries() {
+    return _boxSearch.values.toList();
+  }
+
+  // close box
+  Future<void> closeBoxSearch() async {
+    await _boxSearch.close();
   }
 }

@@ -1,7 +1,5 @@
 import 'package:tago/app.dart';
 
-import '../home/controllers/value_notifier_provider.dart';
-import 'fruits_veggies_card.dart';
 
 Widget myCartListTile(BuildContext context, WidgetRef ref) {
   return Container(

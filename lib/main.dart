@@ -24,9 +24,14 @@ void main() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerStatefulWidget {
   const MainApp({super.key});
 
+  @override
+  MainAppState createState() => MainAppState();
+}
+
+class MainAppState extends ConsumerState<MainApp> {
   @override
   Widget build(BuildContext context) {
     // bool isSeen = SharedPreferencesHelper.getOnBoardingSeen();
@@ -65,46 +70,5 @@ class MainApp extends StatelessWidget {
         );
       },
     );
-
-    // ScreenUtilInit(
-    //   builder: (context, child) {
-    //     return MaterialApp(
-    //       onGenerateTitle: (context) => TextConstant.title,
-    //       restorationScopeId: 'app',
-    //       // useInheritedMediaQuery: true,
-    //       // builder: DevicePreview.appBuilder,
-    //       debugShowCheckedModeBanner: false,
-    //       theme: lightTheme,
-    //       home: const OnBoardScreen(),
-    //       onGenerateRoute: (RouteSettings routeSettings) {
-    //         return MaterialPageRoute<void>(
-    //           settings: routeSettings,
-    //           builder: (BuildContext context) {
-    //             switch (routeSettings.name) {
-    //               case OnBoardScreen.routeName:
-    //                 return const OnBoardScreen();
-    //               case SignUpScreen.routeName:
-    //                 return const SignUpScreen();
-    //               case SignInScreen.routeName:
-    //                 return const SignInScreen();
-    //               case ConfirmPhoneNumberScreen.routeName:
-    //                 return const ConfirmPhoneNumberScreen();
-    //               case AddAddressScreen.routeName:
-    //                 return const AddAddressScreen();
-    //               case AddAddressManuallyScreen.routeName:
-    //                 return const AddAddressManuallyScreen();
-    //               default:
-    //                 return const OnBoardScreen();
-    //             }
-    //           },
-    //         );
-    //       },
-    //     );
-    //   },
-    //   designSize: const Size(375, 812),
-    //   scaleByHeight: true,
-    //   minTextAdapt: true,
-    //   child: Text('datadzfvwsvew'),
-    // );
   }
 }

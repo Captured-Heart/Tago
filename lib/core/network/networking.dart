@@ -17,6 +17,8 @@ const String verifyPhoneNumberUrl = '/verification/phone-number';
 const String getCategoriesUrl = '/public/categories';
 const String getCategoryUrl = '/public/category?label';
 
+//SEARCH URL
+const String getSearchUrl = '/public/search';
 // ADDRESS URL
 const String getAddressUrl = '/account/user/address';
 const String addAddressUrl = '/account/user/address';

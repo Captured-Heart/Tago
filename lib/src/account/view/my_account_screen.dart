@@ -24,9 +24,9 @@ class MyAccountScreen extends ConsumerWidget {
             leading: ClipRRect(
               child: Image.asset(logoMedium),
             ),
-            title: Text('${accountInfo.value?.fname} ${accountInfo.value?.lname}'),
+            title: Text('${accountInfo.valueOrNull?.fname} ${accountInfo.valueOrNull?.lname}'),
             // const Text('Samuel Adekanbi'),
-            subtitle: Text(accountInfo.value?.email ?? 'you@example.com'),
+            subtitle: Text(accountInfo.valueOrNull?.email ?? 'you@example.com'),
             trailing: TextButton(
               onPressed: () {},
               child: Text(
