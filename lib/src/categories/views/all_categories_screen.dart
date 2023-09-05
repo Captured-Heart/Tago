@@ -24,6 +24,7 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
               return GridView.count(
                   controller: controller,
                   crossAxisCount: 3,
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   shrinkWrap: true,
                   children: List.generate(
                     data.length,

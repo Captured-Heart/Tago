@@ -6,7 +6,8 @@ import 'package:tago/src/account/model/domain/account_model.dart';
 /*------------------------------------------------------------------
                   GET ACCOUNT ADDRESS PROVIDER
  -------------------------------------------------------------------*/
-final getAccountAddressProvider = FutureProvider<List<AddressModel>>((ref) async {
+final getAccountAddressProvider =
+    FutureProvider<List<AddressModel>>((ref) async {
   return getAddressMethod();
 });
 
@@ -20,7 +21,8 @@ final getAccountInfoProvider = FutureProvider<AccountModel>((ref) async {
 /*------------------------------------------------------------------
                  ACCOUNT ADDRESS STATE NOTIFIER PROVIDER
  -------------------------------------------------------------------*/
-final accountAddressProvider = StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
+final accountAddressProvider =
+    StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
   return AccountAddressNotifier();
 });
 

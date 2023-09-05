@@ -19,7 +19,9 @@ Future<List<AddressModel>> getAddressMethod() async {
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true) {
-    final addressList = (decodedData['data'] as List).map((e) => AddressModel.fromJson(e)).toList();
+    final addressList = (decodedData['data'] as List)
+        .map((e) => AddressModel.fromJson(e))
+        .toList();
     log('get request for address:  ${decodedData['data']}'); //
 
     return addressList;

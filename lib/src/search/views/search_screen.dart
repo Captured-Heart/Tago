@@ -66,7 +66,8 @@ class SearchScreen extends ConsumerWidget {
               ),
               loading: () {
                 if (keyWord.isNotEmpty && keyWord.length > 2) {
-                  return const Center(child: CircularProgressIndicator.adaptive());
+                  return const Center(
+                      child: CircularProgressIndicator.adaptive());
                 } else if (keyWord.isNotEmpty && keyWord.length < 3) {
                   return const Text(
                     'Search keyword must be greater than 3 characters',

@@ -41,7 +41,8 @@ Widget hotDealsCarouselWidget({
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         width: context.sizeWidth(1),
         decoration: BoxDecoration(
-            color: TagoLight.textFieldFilledColor, borderRadius: BorderRadius.circular(10)),
+            color: TagoLight.textFieldFilledColor,
+            borderRadius: BorderRadius.circular(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -66,7 +67,8 @@ Widget hotDealsCarouselWidget({
                 ),
                 backgroundColor: isOrange == true
                     ? const MaterialStatePropertyAll<Color>(TagoLight.orange)
-                    : const MaterialStatePropertyAll<Color>(TagoLight.primaryColor),
+                    : const MaterialStatePropertyAll<Color>(
+                        TagoLight.primaryColor),
               ),
               child: Text(btnText),
             )

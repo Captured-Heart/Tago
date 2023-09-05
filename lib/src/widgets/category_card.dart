@@ -18,7 +18,9 @@ Widget categoryCard({
           height: height,
         ).padOnly(bottom: 4),
         Text(
-          categoriesModel.name!.isNotEmpty ? categoriesModel.name! : 'Not available',
+          categoriesModel.name!.isNotEmpty
+              ? categoriesModel.name!
+              : 'Not available',
           textAlign: TextAlign.center,
           maxLines: 2,
           softWrap: true,
@@ -30,5 +32,5 @@ Widget categoryCard({
         )
       ],
     ),
-  );
+  ).padOnly(right: 8);
 }

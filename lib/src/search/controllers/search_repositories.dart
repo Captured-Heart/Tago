@@ -1,6 +1,7 @@
 import 'package:tago/app.dart';
 
-final fetchSearchStreamProvider = StreamProvider.autoDispose.family<List<ProductsModel>, String>((ref, keyWord) async* {
+final fetchSearchStreamProvider = StreamProvider.autoDispose
+    .family<List<ProductsModel>, String>((ref, keyWord) async* {
   // final keyWord = ref.watch(searchTextProvider);
   // log('keyWord: $keyWord');
   yield* fetchSearchMethod(keyWord: keyWord);
@@ -16,7 +17,8 @@ Stream<List<ProductsModel>> fetchSearchMethod({
 }) async* {
   // try {
   //post request executed
-  var url = '$getSearchUrl?keyWord=$keyWord&byCategoryId=$categoryId&byBrandIds=$brandIds';
+  var url =
+      '$getSearchUrl?keyWord=$keyWord&byCategoryId=$categoryId&byBrandIds=$brandIds';
   final Response response = await NetworkHelper.getRequest(
     api: url,
   );
@@ -30,8 +32,9 @@ Stream<List<ProductsModel>> fetchSearchMethod({
   if (response.statusCode == 200) {
     // log('get request for Categories:  $decodedData'); //
 
-    final productList =
-        (decodedData['data'] as List).map((e) => ProductsModel.fromJson(e)).toList();
+    final productList = (decodedData['data'] as List)
+        .map((e) => ProductsModel.fromJson(e))
+        .toList();
     log('get request for Search by keyWord:  $productList'); //
 
     yield productList;

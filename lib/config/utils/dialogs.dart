@@ -65,9 +65,12 @@ void warningDialogs({
                     () {
                       pop(context);
                     },
-                style: TextButton.styleFrom(foregroundColor: TagoLight.textError),
+                style:
+                    TextButton.styleFrom(foregroundColor: TagoLight.textError),
                 child: const Text(TextConstant.cancel)),
-            TextButton(onPressed: onPostiveAction, child: const Text(TextConstant.confirm))
+            TextButton(
+                onPressed: onPostiveAction,
+                child: const Text(TextConstant.confirm))
           ],
           // Column(
           //   crossAxisAlignment: CrossAxisAlignment.center,

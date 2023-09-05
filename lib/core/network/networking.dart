@@ -143,7 +143,7 @@ class NetworkHelper {
     required Map<String, dynamic> map,
   }) async {
     // var url = '$baseUrl$api';
-      log('$baseUrl$api');
+    log('$baseUrl$api');
 
     try {
       final response = await http.patch(

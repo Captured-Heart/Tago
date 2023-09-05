@@ -1,17 +1,96 @@
 {
-    "__className": "account_model", // <- The base class name of the object.
-    "__path": "/lib/src/account/model/domain", // <- override default path with a new one by adding '__path' key.
-    "phoneNumber": "",
+    "__className": "fulfillment_hub_model", // <- The base class name of the object.
+    "__path": "/lib/src/rider/models/domain", // <- override default path with a new one by adding '__path' key.
     "id": "", // To mark as required value, change "id" to "r@id".
-    "fname": "", // To mark as a default value, change "title" to "d@title".
-    "lname": "",
-    "email": "",
-    "role":"",
-    "emailVerifiedAt": "",
-    "phoneVerifiedAt":"",
-    "address": {}
+    "name": "", // To mark as a default value, change "title" to "d@title".
+    "address": "",
+    "position": ""
+    // "orderItems": [],
+    // "user": {}
+    // "phoneNumber": "",
+    // "phoneNumber": "",
+    // "phoneNumber": "",
+    // "phoneNumber": "",
+    // "phoneNumber": "",
+    // "lname": "",
+    // "email": "",
+    // "role":"",
+    // "emailVerifiedAt": "",
+    // "phoneVerifiedAt":"",
+    // "address": {}
     
 
   }
 
-  
+//   {
+    
+//             "order": {
+//                 "id": "4244323905",
+//                 "name": "Tatase Pepper - Big Basket with 2 more items",
+//                 "address": {
+//                     "id": "1dc047ba-0894-4446-bb50-58831f1f0f9c",
+//                     "streetAddress": "no 2 adejayi konolafe",
+//                     "apartmentNumber": "no 34",
+//                     "city": "Alagbado",
+//                     "state": "lagos",
+//                     "postalCode": null,
+//                     "label": null,
+//                     "position": null
+//                 },
+//                 "fulfillmentHub": {
+//                     "id": "4270354a-8667-493b-8c6d-9a9d0b7d46c9",
+//                     "name": "Mercury Ikoyi Hub",
+//                     "address": "no 2, Ikoyi no 2 kajola , ikoyi, lagos state",
+//                     "position": "66:00:8638252"
+//                 },
+//                 "orderItems": [
+//                     {
+//                         "quantity": 1,
+//                         "amount": 600,
+//                         "product": {
+//                             "id": 5,
+//                             "name": "Tatase Pepper - Big Basket",
+//                             "productImages": [
+//                                 {
+//                                     "image": {
+//                                         "url": "https://cdn.filestackcontent.com/QQTanqbtSYOqNAkTpPDu"
+//                                     }
+//                                 }
+//                             ]
+//                         }
+//                     },
+//                     {
+//                         "quantity": 1,
+//                         "amount": 1000,
+//                         "product": {
+//                             "id": 2,
+//                             "name": "Coca-cola drink - pack of 6 can",
+//                             "productImages": []
+//                         }
+//                     },
+//                     {
+//                         "quantity": 1,
+//                         "amount": 2500,
+//                         "product": {
+//                             "id": 3,
+//                             "name": "Schweppes Pineapple Can 33cl x24",
+//                             "productImages": [
+//                                 {
+//                                     "image": {
+//                                         "url": "https://cdn.filestackcontent.com/dP6QItKGRcsTlLBCQsWu"
+//                                     }
+//                                 }
+//                             ]
+//                         }
+//                     }
+//                 ],
+//                 "user": {
+//                     "id": "5eaec9e7-c12f-4b96-80e3-494376bb5531",
+//                     "fname": "Babalola",
+//                     "lname": "Oladele",
+//                     "phoneNumber": "08132311491"
+//                 }
+//             }
+//         }
+//     ]
+// }

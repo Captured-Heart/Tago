@@ -21,7 +21,7 @@ class RiderAccountScreen extends ConsumerWidget {
                 strokeAlign: BorderSide.strokeAlignCenter,
               ),
             ),
-            leading: Icon(
+            leading: const Icon(
               FontAwesomeIcons.circleUser,
               color: TagoLight.textBold,
             ),

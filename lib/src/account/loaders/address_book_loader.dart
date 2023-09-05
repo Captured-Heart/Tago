@@ -6,7 +6,8 @@ Widget savedAddressCardLoader({
 }) {
   return shimmerWidget(
     child: Container(
-      decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: 0.1))),
+      decoration:
+          const BoxDecoration(border: Border(bottom: BorderSide(width: 0.1))),
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       width: context.sizeWidth(1),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [

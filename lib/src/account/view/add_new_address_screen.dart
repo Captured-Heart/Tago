@@ -9,7 +9,8 @@ class AddNewAddressScreen extends ConsumerStatefulWidget {
   final AddressModel? addressModel;
   final bool? isEditMode;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AddNewAddressScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AddNewAddressScreenState();
 }
 
 class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
@@ -89,7 +90,8 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                               Icons.search,
                             ),
                             hintText: TextConstant.enterAnewAddress,
-                            validator: RequiredValidator(errorText: requiredValue),
+                            validator:
+                                RequiredValidator(errorText: requiredValue),
                           ),
                           authTextFieldWithError(
                             controller: widget.isEditMode == false
@@ -99,7 +101,8 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                             inputFormatters: [],
                             isError: false,
                             hintText: TextConstant.city,
-                            validator: RequiredValidator(errorText: requiredValue),
+                            validator:
+                                RequiredValidator(errorText: requiredValue),
                           ),
                           authTextFieldWithError(
                             controller: widget.isEditMode == false
@@ -144,12 +147,18 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                   if (controller.signInformKey.currentState!.validate()) {
                     if (widget.isEditMode == false) {
                       log('entered the add address voidcallback');
-                      ref.read(accountAddressProvider.notifier).addAddressMethod(
+                      ref
+                          .read(accountAddressProvider.notifier)
+                          .addAddressMethod(
                         map: {
-                          AddressType.apartmentNumber.name: controller.apartmentNoController.text,
-                          AddressType.city.name: controller.addressCityController.text,
-                          AddressType.state.name: controller.addressLabelController.text,
-                          AddressType.streetAddress.name: controller.addressStreetController.text
+                          AddressType.apartmentNumber.name:
+                              controller.apartmentNoController.text,
+                          AddressType.city.name:
+                              controller.addressCityController.text,
+                          AddressType.state.name:
+                              controller.addressLabelController.text,
+                          AddressType.streetAddress.name:
+                              controller.addressStreetController.text
                         },
                         context: context,
                         ref: ref,
@@ -157,15 +166,21 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                     } else {
                       log('entered the edit address function');
 
-                      ref.read(accountAddressProvider.notifier).editAddressMethod(
+                      ref
+                          .read(accountAddressProvider.notifier)
+                          .editAddressMethod(
                         map: {
-                          AddressType.postalCode.name: widget.addressModel?.label.toString(),
+                          AddressType.postalCode.name:
+                              widget.addressModel?.label.toString(),
                           AddressType.setAsDefault.name: 'false',
-                          AddressType.id.name: widget.addressModel?.id.toString(),
-                          AddressType.apartmentNumber.name: apartmentNoController.text,
+                          AddressType.id.name:
+                              widget.addressModel?.id.toString(),
+                          AddressType.apartmentNumber.name:
+                              apartmentNoController.text,
                           AddressType.city.name: addressCityController.text,
                           AddressType.state.name: addressCityController.text,
-                          AddressType.streetAddress.name: addressStreetController.text
+                          AddressType.streetAddress.name:
+                              addressStreetController.text
                         },
                         context: context,
                         ref: ref,

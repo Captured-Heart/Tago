@@ -2,7 +2,8 @@
 
 import 'package:tago/app.dart';
 
-final authAsyncNotifierProvider = StateNotifierProvider<AuthAsyncNotifier, AsyncValue>((ref) {
+final authAsyncNotifierProvider =
+    StateNotifierProvider<AuthAsyncNotifier, AsyncValue>((ref) {
   return AuthAsyncNotifier();
 });
 
@@ -35,8 +36,10 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
     //the response and error handling
     if (decodedData['success'] == true) {
       log('came in here');
-      await HiveHelper().saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
-      await HiveHelper().saveData(HiveKeys.role.keys, decodedData['data']['role']);
+      await HiveHelper()
+          .saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
+      await HiveHelper()
+          .saveData(HiveKeys.role.keys, decodedData['data']['role']);
       log('decodedData: $decodedData');
 
       state = AsyncValue.data(decodedData['message']);
@@ -49,7 +52,8 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
 
       return decodedData;
     } else {
-      state = AsyncValue.error(decodedData['message'], StackTrace.fromString('stackTraceString'));
+      state = AsyncValue.error(
+          decodedData['message'], StackTrace.fromString('stackTraceString'));
       showAuthBottomSheet(
         context: context,
       );
@@ -82,8 +86,10 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
     //the response and error handling
     if (decodedData['success'] == true) {
       log('came in here');
-      await HiveHelper().saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
-      await HiveHelper().saveData(HiveKeys.role.keys, decodedData['data']['role']);
+      await HiveHelper()
+          .saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
+      await HiveHelper()
+          .saveData(HiveKeys.role.keys, decodedData['data']['role']);
 
       state = AsyncValue.data(decodedData['message']);
       log('decodedData: $decodedData');
@@ -167,7 +173,8 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
     //the response and error handling
     if (decodedData['success'] == true) {
       state = AsyncValue.data(decodedData['message']);
-      await HiveHelper().saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
+      await HiveHelper()
+          .saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
       // warningDialogs(state.value ?? '');
       log('decodedData: $decodedData');
 

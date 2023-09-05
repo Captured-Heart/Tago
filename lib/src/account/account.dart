@@ -7,6 +7,7 @@ export 'view/payment_methods_screen.dart';
 
 //models
 export './model/domain/address_model.dart';
+export './model/domain/account_model.dart';
 
 //repositories
 export './controller/account_repositories.dart';
