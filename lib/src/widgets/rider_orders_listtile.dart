@@ -52,9 +52,11 @@ Widget riderOrdersListTile({
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Fanta Drink - 50cl Pet x 12',
-                  style: context.theme.textTheme.bodySmall,
+                Expanded(
+                  child: Text(
+                    'Fanta Drink - 50cl Pet x 12 ',
+                    style: context.theme.textTheme.bodySmall,
+                  ),
                 ),
                 isDeliveryRequests == true
                     ? const SizedBox.shrink()

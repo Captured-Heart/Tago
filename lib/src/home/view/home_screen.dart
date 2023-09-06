@@ -107,9 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     viewportFraction: 0.99,
                     enlargeFactor: 0,
                     onPageChanged: (index, reason) {
-                      ref
-                          .read(currentCarouselIndexProvider.notifier)
-                          .update((state) => index);
+                      ref.read(currentCarouselIndexProvider.notifier).update((state) => index);
                     }),
               ),
               // .padOnly(bottom: 10),
@@ -118,8 +116,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: List.generate(
                   carouselWidgetList(context).length,
                   (index) => GestureDetector(
-                    onTap: () =>
-                        ref.read(carouselSliderProvider).animateToPage(index),
+                    onTap: () => ref.read(carouselSliderProvider).animateToPage(index),
                     child: Container(
                       width: 6.0,
                       height: 6.0,
@@ -133,9 +130,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ? TagoLight.indicatorInactiveColor
                                 : TagoLight.indicatorActiveColor)
                             .withOpacity(
-                          ref.watch(currentCarouselIndexProvider) == index
-                              ? 0.9
-                              : 0.4,
+                          ref.watch(currentCarouselIndexProvider) == index ? 0.9 : 0.4,
                         ),
                       ),
                     ),
@@ -160,12 +155,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
           categories.when(
             data: (data) {
-              return Wrap(
-                runSpacing: 20,
-                spacing: 10,
-                alignment: WrapAlignment.start,
-                // runAlignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.start,
+              return GridView.count(
+                crossAxisCount: 5,
+                shrinkWrap: true,
+                childAspectRatio: 0.65,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
                 children: List.generate(
                   data.length - (data.length - 9),
                   // data.length,
@@ -194,7 +189,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-              ).padSymmetric(horizontal: 15);
+              );
+              //  Wrap(
+              //   runSpacing: 20,
+              //   spacing: 10,
+              //   alignment: WrapAlignment.start,
+              //   // runAlignment: WrapAlignment.start,
+              //   crossAxisAlignment: WrapCrossAlignment.start,
+              //   children: List.generate(
+              //     data.length - (data.length - 9),
+              //     // data.length,
+              //     growable: true,
+              //     (index) => GestureDetector(
+              //       onTap: () {
+              //         ref
+              //             .read(categoryLabelProvider.notifier)
+              //             .update((state) => data[index].label ?? '');
+              //         var subList = data[index].subCategories;
+
+              //         push(
+              //           context,
+              //           FruitsAndVegetablesScreen(
+              //             subCategoriesList: subList!,
+              //             appBarTitle: data[index].name ?? 'Product name',
+              //           ),
+              //         );
+              //       },
+              //       child: categoryCard(
+              //         context: context,
+              //         index: index,
+              //         width: context.sizeWidth(0.155),
+              //         height: 70,
+              //         categoriesModel: data[index],
+              //       ),
+              //     ),
+              //   ),
+              // ).padSymmetric(horizontal: 15);
             },
             error: (error, stackTrace) => Center(
               child: Text(
@@ -202,8 +232,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            loading: () => categoryCardLoaders(context: context)
-                .padSymmetric(horizontal: 20),
+            loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
           ),
 //items near you
           ListTile(
@@ -266,10 +295,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               itemBuilder: (context, index) {
                 return SizedBox(
                   width: context.sizeWidth(0.35),
-                  child: itemsNearYouCard(
-                      index: index,
-                      context: context,
-                      image: drinkImages[index]),
+                  child:
+                      itemsNearYouCard(index: index, context: context, image: drinkImages[index]),
                 );
               },
             ),

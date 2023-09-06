@@ -4,7 +4,6 @@
 
 import 'package:tago/app.dart';
 
-import '../model/domain/account_model.dart';
 
 Future<List<AddressModel>> getAddressMethod() async {
   // try {

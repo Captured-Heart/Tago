@@ -6,3 +6,6 @@ export './views/rider_home_screen.dart';
 export './models/domain/fulfillment_hub_model.dart';
 export './models/domain/order_model.dart';
 export './models/domain/rider_model.dart';
+export './controller/delivery_requests_provider.dart';
+export './controller/delivery_requests_repositories.dart';
+export './loaders/delivery_requests_loaders.dart';

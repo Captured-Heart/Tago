@@ -30,7 +30,7 @@ const String getAccountInfoUrl = '/account/';
 
 // WISH LIST URL
 const String getWishListUrl = '/account/user/wishlist';
-// const String getAddressUrl = '/account/user/address';
+const String getDeliveryRequestUrl = '/account/rider/delivery_requests';
 
 //
 const googleAPIKey = 'AIzaSyDhKg6wsJbCyYLdjRj5m2bf5b_uUJfN8iE';
