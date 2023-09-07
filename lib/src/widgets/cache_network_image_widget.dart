@@ -3,13 +3,13 @@ import 'package:tago/src/widgets/shimmer_widget.dart';
 
 CachedNetworkImage cachedNetworkImageWidget({
   CategoriesModel? categoriesModel,
-  required String imgUrl,
+  required String? imgUrl,
   required double height,
   // double? loaderHeight,
-  double? loaderWidth,
+  // double? loaderWidth,
 }) {
   return CachedNetworkImage(
-    imageUrl: imgUrl,
+    imageUrl: imgUrl ?? noImagePlaceholderHttp,
     height: height,
     // width: 100,
     fit: BoxFit.fill,

@@ -5,6 +5,7 @@ abstract class TextConstant {
   static const fontFamilyLight = 'Firma_Light';
   static const createAcct = 'Create an account';
   static const signIn = 'Sign In';
+  static const nairaSign = '₦';
 
 /*----------------------------------------------------------------------
   sign up screen
@@ -48,6 +49,7 @@ Add address screen
   static const addAdress = 'Add Address';
   static const enterAnewAddress = 'Enter a new address';
   static const addnewAddress = 'Add new address';
+  static const noAddressFound = 'No address found';
   static const addressDetails = 'Address Details';
   static const addressLabel = 'Address Label';
   static const thishelpsTagotofind =
@@ -238,6 +240,12 @@ CHECKOUT SECTION
   static const editAddress = 'Edit Address';
   static const selectDeliveryType = 'Select Delivery Type';
   static const deliveredIn = 'Delivered in';
+  static const instantDelivering = 'Instant Delivering';
+  static const day = 'Day';
+  static const chhoseTime = 'Choose Time';
+  static const available = 'Available';
+  static const unAvailable = 'Unavailable';
+
   static const minutes = 'Minutes';
   static const scheduleforLater = 'Schedule for later';
   static const notConfirmed = 'Not confirmed';

@@ -15,6 +15,7 @@ export 'package:cached_network_image/cached_network_image.dart'
 export 'package:google_maps_flutter/google_maps_flutter.dart';
 export 'package:shimmer/shimmer.dart';
 export 'package:carousel_slider/carousel_slider.dart';
+export 'package:intl/intl.dart' hide TextDirection;
 
 // config
 export './config/config.dart';
@@ -47,3 +48,4 @@ export 'src/orders/order.dart';
 export 'src/categories/categories.dart';
 export 'src/drawer/drawer.dart';
 export './src/search/search.dart';
+export './src/checkout/checkout.dart';

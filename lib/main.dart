@@ -5,7 +5,6 @@ import 'package:tago/src/onboarding/view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferencesHelper.initSharedPref();
   await HiveHelper.init();
   log('started app');
   final ProviderContainer container = ProviderContainer(

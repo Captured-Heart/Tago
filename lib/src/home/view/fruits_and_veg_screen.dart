@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/config/utils/enums/product_type_enums.dart';
 
 class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
   final List<dynamic> subCategoriesList;
@@ -32,7 +33,13 @@ class _FruitsAndVegetablesScreenState
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              navBarPush(
+                context: context,
+                screen: const MyCartScreen(),
+                withNavBar: false,
+              );
+            },
             icon: const Icon(Icons.shopping_cart_outlined),
           )
         ],
@@ -93,15 +100,27 @@ class _FruitsAndVegetablesScreenState
                     data.length,
                     growable: true,
                     (index) {
+                      var productModel = data[index];
                       return GestureDetector(
                         onTap: () {},
                         child: SizedBox(
                             width: context.sizeWidth(0.4),
                             child: fruitsAndVeggiesCard(
                                 index: index,
-                                productModel: data[index],
+                                productModel: productModel,
                                 context: context,
                                 isFreeDelivery: true,
+                                addToCartBTN: () {
+                                  ref
+                                      .read(cartNotifierProvider.notifier)
+                                      .addToCartMethod(
+                                    map: {
+                                      ProductTypeEnums.productId.name:
+                                          productModel.id.toString(),
+                                      ProductTypeEnums.quantity.name: '1',
+                                    },
+                                  );
+                                },
                                 productImagesList: data[index].productImages,
                                 indexList: [
                                   0,

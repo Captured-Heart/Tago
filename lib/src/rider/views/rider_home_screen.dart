@@ -12,7 +12,6 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider);
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -36,6 +35,7 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                         trailing: GestureDetector(
                           onTap: () {
                             push(context, const RiderAccountScreen());
+                            log(accountInfo.valueOrNull!.id!.toString());
                             // HiveHelper().deleteData(HiveKeys.token.keys);
                           },
                           child: const Icon(

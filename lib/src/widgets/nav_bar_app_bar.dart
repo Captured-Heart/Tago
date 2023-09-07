@@ -34,15 +34,9 @@ AppBar homescreenAppbar(BuildContext context) {
     actions: [
       IconButton(
         onPressed: () {
-          // navBarPush(
-          //   context: context,
-          //   screen: const MyCartScreen(),
-          //   withNavBar: false,
-          // );
-
           navBarPush(
             context: context,
-            screen: const RiderHomeScreen(),
+            screen: const MyCartScreen(),
             withNavBar: false,
           );
         },

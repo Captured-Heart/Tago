@@ -4,7 +4,8 @@ class DeliveryRequestScreen extends ConsumerStatefulWidget {
   const DeliveryRequestScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _DeliveryRequestScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DeliveryRequestScreenState();
 }
 
 class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {

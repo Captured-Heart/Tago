@@ -4,7 +4,6 @@
 
 import 'package:tago/app.dart';
 
-
 Future<List<AddressModel>> getAddressMethod() async {
   // try {
   //post request executed

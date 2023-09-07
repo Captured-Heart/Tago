@@ -56,9 +56,10 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                         style: context.theme.textTheme.bodyLarge,
                       ),
                     ),
-                    myCartListTile(context, ref),
-                    myCartListTile(context, ref),
-                    myCartListTile(context, ref),
+                    //TODO: ADD THIS CART LIST TILE HERE
+                    // myCartListTile(context, ref),
+                    // myCartListTile(context, ref),
+                    // myCartListTile(context, ref),
                     SizedBox(
                       width: context.sizeWidth(1),
                       child: ElevatedButton(

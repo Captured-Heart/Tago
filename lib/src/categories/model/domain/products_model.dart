@@ -4,35 +4,54 @@ class ProductsModel extends Equatable {
   final String? name;
   final int? id;
   final String? label;
-  final List<dynamic>? productImages;
+  final String? description;
+  final List<dynamic>? productImages, productSpecification;
   final int? categoryId;
   final int? subCategoryId;
   final int? amount;
+  final String? brand;
+
   final int? originalAmount;
   final double? savedPerc;
   final int? availableQuantity;
-
+// name*	string
+// description*	string
+// amount*	number
+// originalAmount	number
+// categoryId*	number
+// subCategoryId*	number
+// brandId*	number
+// tagIds*	[[...]]
+// imageIds*	[[...]]
+// productSpecifications*	[ProductSpecificationItem{...}]
+// }
   const ProductsModel({
     this.name,
     this.id,
     this.label,
     this.productImages,
+    this.productSpecification,
     this.categoryId,
     this.subCategoryId,
     this.amount,
+    this.brand,
     this.originalAmount,
     this.savedPerc,
     this.availableQuantity,
+    this.description,
   });
 
   factory ProductsModel.fromJson(Map<String, dynamic> json) => ProductsModel(
         name: json['name'] as String?,
         id: json['id'] as int?,
         label: json['label'] as String?,
+        description: json['description'] as String?,
         productImages: json['productImages'] as List<dynamic>?,
+        productSpecification: json['productSpecification'] as List<dynamic>?,
         categoryId: json['categoryId'] as int?,
         subCategoryId: json['subCategoryId'] as int?,
         amount: json['amount'] as int?,
+        brand: json['brandId'] as String?,
         originalAmount: json['originalAmount'] as int?,
         savedPerc: json['savedPerc'] as double?,
         availableQuantity: json['availableQuantity'] as int?,
@@ -48,6 +67,9 @@ class ProductsModel extends Equatable {
         'amount': amount,
         'originalAmount': originalAmount,
         'savedPerc': savedPerc,
+        'description': description,
+        'brand': brand,
+        'productSpecification': productSpecification,
         'availableQuantity': availableQuantity,
       };
 
@@ -64,6 +86,9 @@ class ProductsModel extends Equatable {
       originalAmount,
       savedPerc,
       availableQuantity,
+      productSpecification,
+      description,
+      brand,
     ];
   }
 }

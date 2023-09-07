@@ -30,7 +30,19 @@ const String getAccountInfoUrl = '/account/';
 
 // WISH LIST URL
 const String getWishListUrl = '/account/user/wishlist';
+
+//DELIVERY REQUESTS
 const String getDeliveryRequestUrl = '/account/rider/delivery_requests';
+const String declineDeliveryRequestUrl =
+    '/account/rider/delivery_request/decline';
+const String acceptDeliveryRequestUrl =
+    '/account/rider/delivery_request/accept';
+
+// CARTS URL
+const String getCartsUrl = '/account/user/cart';
+
+//CHECKOUT
+const String getAvailabilityUrl = '/account/user/checkout/availability';
 
 //
 const googleAPIKey = 'AIzaSyDhKg6wsJbCyYLdjRj5m2bf5b_uUJfN8iE';

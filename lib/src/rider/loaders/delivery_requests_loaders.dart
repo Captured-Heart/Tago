@@ -75,7 +75,8 @@ Widget riderOrdersListTileLoaders({
                             ),
                             //
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 7),
                               decoration: BoxDecoration(
                                 color: TagoLight.primaryColor,
                                 borderRadius: BorderRadius.circular(7),

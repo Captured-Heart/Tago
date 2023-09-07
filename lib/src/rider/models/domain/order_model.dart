@@ -1,6 +1,5 @@
 import 'package:tago/app.dart';
 
-
 class OrderModel extends Equatable {
   final String? id;
   final String? name;

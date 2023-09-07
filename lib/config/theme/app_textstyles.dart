@@ -9,7 +9,11 @@ class AppTextStyle {
     fontSize: 16,
     fontFamily: TextConstant.fontFamilyNormal,
   );
-
+  static TextStyle textButtonW600_12 = const TextStyle(
+    fontWeight: AppFontWeight.w600,
+    fontSize: 12,
+    fontFamily: TextConstant.fontFamilyNormal,
+  );
   static TextStyle appBarTextStyleLight = const TextStyle(
     fontWeight: AppFontWeight.w600,
     fontSize: 16,

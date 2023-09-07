@@ -1,4 +1,3 @@
-
 import 'package:tago/app.dart';
 
 class FulfillmentHubModel extends Equatable {

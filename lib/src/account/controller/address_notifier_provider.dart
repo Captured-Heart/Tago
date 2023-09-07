@@ -1,20 +1,20 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:tago/app.dart';
-import 'package:tago/src/account/model/domain/account_model.dart';
 
 /*------------------------------------------------------------------
                   GET ACCOUNT ADDRESS PROVIDER
  -------------------------------------------------------------------*/
 final getAccountAddressProvider =
-    FutureProvider<List<AddressModel>>((ref) async {
+    FutureProvider.autoDispose<List<AddressModel>>((ref) async {
   return getAddressMethod();
 });
 
 /*------------------------------------------------------------------
                   GET ACCOUNT  PROVIDER
  -------------------------------------------------------------------*/
-final getAccountInfoProvider = FutureProvider<AccountModel>((ref) async {
+final getAccountInfoProvider =
+    FutureProvider.autoDispose<AccountModel>((ref) async {
   return getAccountInfoMethod();
 });
 

@@ -9,6 +9,7 @@ void showScaffoldSnackBar(SnackBar snackBar) =>
 void showScaffoldSnackBarMessage(
   String message, {
   bool isError = false,
+  int? duration,
 }) =>
     rootScaffoldMessengerKey.currentState?.showSnackBar(
       SnackBar(
@@ -26,7 +27,7 @@ void showScaffoldSnackBarMessage(
                 ),
               ),
             ].rowInPadding(5)),
-        duration: const Duration(seconds: 5),
+        duration: Duration(seconds: duration ?? 5),
       ),
     );
 

@@ -107,7 +107,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     viewportFraction: 0.99,
                     enlargeFactor: 0,
                     onPageChanged: (index, reason) {
-                      ref.read(currentCarouselIndexProvider.notifier).update((state) => index);
+                      ref
+                          .read(currentCarouselIndexProvider.notifier)
+                          .update((state) => index);
                     }),
               ),
               // .padOnly(bottom: 10),
@@ -116,7 +118,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: List.generate(
                   carouselWidgetList(context).length,
                   (index) => GestureDetector(
-                    onTap: () => ref.read(carouselSliderProvider).animateToPage(index),
+                    onTap: () =>
+                        ref.read(carouselSliderProvider).animateToPage(index),
                     child: Container(
                       width: 6.0,
                       height: 6.0,
@@ -130,7 +133,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ? TagoLight.indicatorInactiveColor
                                 : TagoLight.indicatorActiveColor)
                             .withOpacity(
-                          ref.watch(currentCarouselIndexProvider) == index ? 0.9 : 0.4,
+                          ref.watch(currentCarouselIndexProvider) == index
+                              ? 0.9
+                              : 0.4,
                         ),
                       ),
                     ),
@@ -232,7 +237,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
+            loading: () => categoryCardLoaders(context: context)
+                .padSymmetric(horizontal: 20),
           ),
 //items near you
           ListTile(
@@ -295,8 +301,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               itemBuilder: (context, index) {
                 return SizedBox(
                   width: context.sizeWidth(0.35),
-                  child:
-                      itemsNearYouCard(index: index, context: context, image: drinkImages[index]),
+                  child: itemsNearYouCard(
+                      index: index,
+                      context: context,
+                      image: drinkImages[index]),
                 );
               },
             ),

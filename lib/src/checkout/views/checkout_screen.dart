@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/config/utils/date_formatter.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
@@ -8,8 +9,13 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 }
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
+  bool isInstant = true;
+  int? selectedValue;
   @override
   Widget build(BuildContext context) {
+    final accountInfo = ref.watch(getAccountInfoProvider);
+    final availabileDate = ref.watch(getAvailabileDateProvider);
+
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -24,28 +30,33 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             style: context.theme.textTheme.bodyLarge,
           ),
           ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
+            contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             minLeadingWidth: 10,
             shape: const Border(bottom: BorderSide(width: 0.1)),
-            leading: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: const [
-                Icon(
-                  Icons.location_on_outlined,
-                  color: TagoDark.primaryColor,
-                ),
-              ],
+            leading: const Icon(
+              Icons.location_on_outlined,
+              color: TagoDark.primaryColor,
             ),
             title: Text(
-              '''22b, Adesemoye Street, 
-Ikeja, Lagos 
-101221''',
-              style: context.theme.textTheme.titleMedium,
+              accountInfo.valueOrNull?.address?.streetAddress ?? TextConstant.noAddressFound,
+              style: context.theme.textTheme.labelMedium,
             ),
             trailing: TextButton(
-              onPressed: () {},
-              child: const Text(TextConstant.editAddress),
+              style: TextButton.styleFrom(
+                textStyle: AppTextStyle.textButtonW600_12,
+              ),
+              onPressed: () {
+                if (accountInfo.valueOrNull?.address == null) {
+                  push(context, const AddNewAddressScreen());
+                } else {
+                  push(context, const AddressBookScreen());
+                }
+              },
+              child: Text(
+                accountInfo.valueOrNull?.address == null
+                    ? TextConstant.addAdress
+                    : TextConstant.editAddress,
+              ),
             ),
           ),
 
@@ -60,53 +71,67 @@ Ikeja, Lagos
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: TagoLight.orange,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Symbols.bolt_rounded,
-                                color: TagoLight.scaffoldBackgroundColor,
-                                size: 17,
-                              ),
-                              Text(
-                                '${TextConstant.deliveredIn} 15 ${TextConstant.minutes}',
-                                style: context.theme.textTheme.bodySmall
-                                    ?.copyWith(
-                                        color:
-                                            TagoLight.scaffoldBackgroundColor),
-                              ),
-                            ].rowInPadding(5),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isInstant = true;
+                            });
+                            log(isInstant.toString());
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color:
+                                  isInstant == true ? TagoLight.orange : TagoLight.textFieldBorder,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Symbols.bolt_rounded,
+                                  color: TagoLight.scaffoldBackgroundColor,
+                                  size: 17,
+                                ),
+                                Text(
+                                  TextConstant.instantDelivering,
+                                  style: context.theme.textTheme.bodySmall
+                                      ?.copyWith(color: TagoLight.scaffoldBackgroundColor),
+                                ),
+                              ].rowInPadding(5),
+                            ),
                           ),
                         ),
                         //schedule for later
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: TagoLight.textFieldBorder,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Symbols.schedule,
-                                color: TagoLight.scaffoldBackgroundColor,
-                                size: 17,
-                              ),
-                              Text(
-                                '${TextConstant.deliveredIn} 15 ${TextConstant.minutes}',
-                                style: context.theme.textTheme.bodySmall
-                                    ?.copyWith(
-                                        color:
-                                            TagoLight.scaffoldBackgroundColor),
-                              ),
-                            ].rowInPadding(5),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isInstant = false;
+                            });
+                            log(isInstant.toString());
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color:
+                                  isInstant == true ? TagoLight.textFieldBorder : TagoLight.orange,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Symbols.schedule,
+                                  color: TagoLight.scaffoldBackgroundColor,
+                                  size: 17,
+                                ),
+                                Text(
+                                  '${TextConstant.deliveredIn} 15 ${TextConstant.minutes}',
+                                  style: context.theme.textTheme.bodySmall
+                                      ?.copyWith(color: TagoLight.scaffoldBackgroundColor),
+                                ),
+                              ].rowInPadding(5),
+                            ),
                           ),
                         ),
                       ],
@@ -116,6 +141,111 @@ Ikeja, Lagos
                     ),
                   ].columnInPadding(10))
               .padOnly(top: 25),
+
+          //DAY
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      TextConstant.day,
+                      style: context.theme.textTheme.bodyLarge,
+                    ),
+                    SizedBox(
+                      height: context.sizeHeight(0.1),
+                      child: availabileDate.when(
+                        data: (data) {
+                          return ListView.builder(
+                            itemCount: data.length,
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: const EdgeInsets.all(18),
+                                margin: EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                  color: TagoLight.primaryColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      getDayOfWeek(data[index].date!),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      style: AppTextStyle.hintTextStyleLight.copyWith(
+                                        color: context.theme.scaffoldBackgroundColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      dateFormatted2(data[index].date!),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      style: AppTextStyle.hintTextStyleLight.copyWith(
+                                        color: context.theme.scaffoldBackgroundColor,
+                                      ),
+                                    ),
+                                  ].columnInPadding(5),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        error: (err, _) => const Text('No time available'),
+                        loading: () => const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        ),
+                      ),
+                    ),
+                  ].columnInPadding(10)),
+
+//CHOOSE TIME
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    TextConstant.chhoseTime,
+                    style: context.theme.textTheme.bodyLarge,
+                  ),
+
+                  // radioListTileWidget(
+                  //   onChanged: (value) {
+                  //     selectedValue = value;
+                  //   },
+                  //   title: title,
+                  //   isAvailable: isAvailable,
+                  //   selectedValue: selectedValue,
+                  //   value: 0,
+                  // ),
+                  RadioListTile(
+                    title: Text('Option 6'),
+                    value: 6,
+                    secondary: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircleAvatar(
+                          radius: 4,
+                          backgroundColor: context.theme.primaryColor,
+                        ),
+                        Text('Available')
+                      ].rowInPadding(7),
+                    ),
+                    groupValue: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value;
+                      });
+                    },
+                  ),
+                  // RadioListTile(value: value, groupValue: groupValue, onChanged: onChanged)
+                ],
+              )
+            ].columnInPadding(10),
+          ),
 
           //phone number
           Column(
@@ -134,27 +264,36 @@ Ikeja, Lagos
                 ),
                 title: Row(
                   children: [
-                    Text(
-                      '027372872373',
-                      style: context.theme.textTheme.labelMedium,
-                    ).padOnly(right: 5),
-                    Text(
-                      TextConstant.notConfirmed,
-                      style: context.theme.textTheme.titleMedium?.copyWith(
-                          color: TagoDark.orange,
-                          fontWeight: AppFontWeight.w500),
+                    Expanded(
+                      child: Text(
+                        accountInfo.valueOrNull?.phoneNumber.toString() ??
+                            TextConstant.enterthePhoneno,
+                        style: context.theme.textTheme.labelMedium,
+                      ).padOnly(right: 5),
                     ),
+                    accountInfo.valueOrNull?.phoneNumber != null
+                        ? const SizedBox.shrink()
+                        : Text(
+                            TextConstant.notConfirmed,
+                            style: context.theme.textTheme.titleMedium
+                                ?.copyWith(color: TagoDark.orange, fontWeight: AppFontWeight.w500),
+                          ),
                   ],
                 ),
-                trailing: TextButton(
-                  onPressed: () {},
-                  child: const Text(TextConstant.edit),
-                ),
+                trailing: accountInfo.valueOrNull?.phoneNumber != null
+                    ? const SizedBox.shrink()
+                    : TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: AppTextStyle.textButtonW600_12,
+                        ),
+                        onPressed: () {},
+                        child: const Text(TextConstant.edit),
+                      ),
               ),
             ],
           ),
 
-          //payment method
+          //!payment method
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -178,6 +317,9 @@ Ikeja, Lagos
                   ),
                 ),
                 trailing: TextButton(
+                  style: TextButton.styleFrom(
+                    textStyle: AppTextStyle.textButtonW600_12,
+                  ),
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
@@ -207,11 +349,11 @@ Ikeja, Lagos
                                   child: const Icon(Icons.close),
                                 )
                               ],
-                            ),
+                            ).padOnly(bottom: 15, top: 5),
                             ListTile(
+                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
                               minLeadingWidth: 25,
-                              shape:
-                                  const Border(bottom: BorderSide(width: 0.1)),
+                              shape: const Border(bottom: BorderSide(width: 0.1)),
                               leading: const Icon(
                                 FontAwesomeIcons.moneyBill,
                               ),
@@ -230,8 +372,8 @@ Ikeja, Lagos
                             ),
                             ListTile(
                               minLeadingWidth: 25,
-                              shape:
-                                  const Border(bottom: BorderSide(width: 0.1)),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                              shape: const Border(bottom: BorderSide(width: 0.1)),
                               leading: const Icon(
                                 FontAwesomeIcons.ccMastercard,
                               ),
@@ -250,6 +392,7 @@ Ikeja, Lagos
                             ),
                             ListTile(
                               minLeadingWidth: 25,
+                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
                               leading: const Icon(
                                 Icons.north_east_outlined,
                               ),
@@ -277,7 +420,7 @@ Ikeja, Lagos
             ],
           ).padOnly(top: 20),
 
-//RREVIEW ITEMS
+//! REVIEW ITEMS
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -292,7 +435,7 @@ Ikeja, Lagos
                 ),
               ),
               Text(
-                'N20,000',
+                'Coca-cola drink - pack of 6 can',
                 style: context.theme.textTheme.labelMedium,
               ),
               const Divider(thickness: 1),
@@ -427,6 +570,33 @@ Ikeja, Lagos
           ).padOnly(top: 25, bottom: 45)
         ],
       ),
+    );
+  }
+
+  RadioListTile<int> radioListTileWidget({
+    required Function(int?)? onChanged,
+    required String title,
+    required bool isAvailable,
+    required int selectedValue,
+    required int value,
+  }) {
+    return RadioListTile(
+      title: Text(title),
+      value: value,
+      secondary: isAvailable == false
+          ? const Text(TextConstant.unAvailable)
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  radius: 4,
+                  backgroundColor: context.theme.primaryColor,
+                ),
+                const Text(TextConstant.available)
+              ].rowInPadding(7),
+            ),
+      groupValue: selectedValue,
+      onChanged: onChanged,
     );
   }
 }

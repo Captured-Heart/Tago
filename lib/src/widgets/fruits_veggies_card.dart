@@ -32,6 +32,7 @@ Column fruitsAndVeggiesCard({
   List<int>? indexList,
   List<dynamic>? productImagesList,
   required ProductsModel productModel,
+  required VoidCallback addToCartBTN,
 }) {
   // var products = convertDynamicListToProductListModel(productImagesList!);
   return Column(
@@ -42,11 +43,6 @@ Column fruitsAndVeggiesCard({
         elevation: 0.3,
         child: Stack(
           children: [
-            // ElevatedButton(
-            //     onPressed: () {
-            //       log(productImagesList.toString());
-            //     },
-            //     child: Text('debug')),
             cachedNetworkImageWidget(
               imgUrl: productImagesList!.first['image']['url'],
               height: 140,
@@ -62,7 +58,7 @@ Column fruitsAndVeggiesCard({
               right: -1,
               child: addMinusBTN(
                 context: context,
-                onTap: () {},
+                onTap: addToCartBTN,
                 isMinus: false,
               ),
             )
