@@ -5,25 +5,26 @@ CachedNetworkImage cachedNetworkImageWidget({
   CategoriesModel? categoriesModel,
   required String? imgUrl,
   required double height,
+  double? width,
   // double? loaderHeight,
   // double? loaderWidth,
 }) {
   return CachedNetworkImage(
     imageUrl: imgUrl ?? noImagePlaceholderHttp,
     height: height,
-    // width: 100,
+    width: width,
     fit: BoxFit.fill,
-    imageBuilder: (context, imageProvider) {
-      return Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          image: DecorationImage(
-            image: imageProvider,
-            fit: BoxFit.fill,
-          ),
-        ),
-      );
-    },
+    // imageBuilder: (context, imageProvider) {
+    //   return Container(
+    //     decoration: BoxDecoration(
+    //       shape: BoxShape.rectangle,
+    //       image: DecorationImage(
+    //         image: NetworkImage(imgUrl ?? noImagePlaceholderHttp),
+    //         fit: BoxFit.fill,
+    //       ),
+    //     ),
+    //   );
+    // },
     progressIndicatorBuilder: (context, string, progress) {
       return shimmerWidget(
         child: Container(

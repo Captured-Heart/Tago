@@ -11,11 +11,24 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   bool isInstant = true;
   int? selectedValue;
+  int selectedIndex = 0;
+
+  Color getColor(int selectedIndex, int index) {
+    if (index == selectedIndex) {
+      return TagoLight.primaryColor;
+    } else {
+      return TagoLight.textFieldBorder;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider);
     final availabileDate = ref.watch(getAvailabileDateProvider);
-
+    final availabileTimes =
+        ref.watch(getAvailabileTimesProvider(selectedIndex));
+    final deliveryfee = ref
+        .watch(getDeliveryFeeProvider([accountInfo.valueOrNull?.id, 102000]));
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -30,7 +43,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             style: context.theme.textTheme.bodyLarge,
           ),
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             minLeadingWidth: 10,
             shape: const Border(bottom: BorderSide(width: 0.1)),
             leading: const Icon(
@@ -38,7 +52,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               color: TagoDark.primaryColor,
             ),
             title: Text(
-              accountInfo.valueOrNull?.address?.streetAddress ?? TextConstant.noAddressFound,
+              accountInfo.valueOrNull?.address?.streetAddress ??
+                  TextConstant.noAddressFound,
               style: context.theme.textTheme.labelMedium,
             ),
             trailing: TextButton(
@@ -81,8 +96,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color:
-                                  isInstant == true ? TagoLight.orange : TagoLight.textFieldBorder,
+                              color: isInstant == true
+                                  ? TagoLight.orange
+                                  : TagoLight.textFieldBorder,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -96,7 +112,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 Text(
                                   TextConstant.instantDelivering,
                                   style: context.theme.textTheme.bodySmall
-                                      ?.copyWith(color: TagoLight.scaffoldBackgroundColor),
+                                      ?.copyWith(
+                                          color: TagoLight
+                                              .scaffoldBackgroundColor),
                                 ),
                               ].rowInPadding(5),
                             ),
@@ -113,8 +131,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color:
-                                  isInstant == true ? TagoLight.textFieldBorder : TagoLight.orange,
+                              color: isInstant == true
+                                  ? TagoLight.textFieldBorder
+                                  : TagoLight.orange,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -128,7 +147,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 Text(
                                   '${TextConstant.deliveredIn} 15 ${TextConstant.minutes}',
                                   style: context.theme.textTheme.bodySmall
-                                      ?.copyWith(color: TagoLight.scaffoldBackgroundColor),
+                                      ?.copyWith(
+                                          color: TagoLight
+                                              .scaffoldBackgroundColor),
                                 ),
                               ].rowInPadding(5),
                             ),
@@ -154,53 +175,66 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       TextConstant.day,
                       style: context.theme.textTheme.bodyLarge,
                     ),
-                    SizedBox(
-                      height: context.sizeHeight(0.1),
-                      child: availabileDate.when(
-                        data: (data) {
-                          return ListView.builder(
-                            itemCount: data.length,
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                padding: const EdgeInsets.all(18),
-                                margin: EdgeInsets.symmetric(horizontal: 5),
-                                decoration: BoxDecoration(
-                                  color: TagoLight.primaryColor,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      getDayOfWeek(data[index].date!),
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      style: AppTextStyle.hintTextStyleLight.copyWith(
-                                        color: context.theme.scaffoldBackgroundColor,
+                    availabileDate.when(
+                      data: (data) {
+                        return Row(
+                          children: List.generate(
+                              data.length,
+                              (index) => GestureDetector(
+                                    onTap: () {
+                                      log(data[index].times![1].toString());
+                                      setState(() {
+                                        selectedIndex = index;
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(18),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      decoration: BoxDecoration(
+                                        color: getColor(selectedIndex, index),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            getDayOfWeek(data[index].date!),
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            style: AppTextStyle
+                                                .hintTextStyleLight
+                                                .copyWith(
+                                              color: context.theme
+                                                  .scaffoldBackgroundColor,
+                                              fontWeight: AppFontWeight.w700,
+                                            ),
+                                          ),
+                                          Text(
+                                            dateFormatted2(data[index].date!),
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            style: AppTextStyle
+                                                .hintTextStyleLight
+                                                .copyWith(
+                                              color: context.theme
+                                                  .scaffoldBackgroundColor,
+                                              fontWeight: AppFontWeight.w700,
+                                            ),
+                                          ),
+                                        ].columnInPadding(5),
                                       ),
                                     ),
-                                    Text(
-                                      dateFormatted2(data[index].date!),
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      style: AppTextStyle.hintTextStyleLight.copyWith(
-                                        color: context.theme.scaffoldBackgroundColor,
-                                      ),
-                                    ),
-                                  ].columnInPadding(5),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        error: (err, _) => const Text('No time available'),
-                        loading: () => const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        ),
+                                  )).toList(),
+                        );
+                      },
+                      error: (err, _) => const Text('No time available'),
+                      loading: () => const Center(
+                        child: CircularProgressIndicator.adaptive(),
                       ),
-                    ),
+                    )
                   ].columnInPadding(10)),
 
 //CHOOSE TIME
@@ -211,37 +245,35 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     TextConstant.chhoseTime,
                     style: context.theme.textTheme.bodyLarge,
                   ),
-
-                  // radioListTileWidget(
-                  //   onChanged: (value) {
-                  //     selectedValue = value;
-                  //   },
-                  //   title: title,
-                  //   isAvailable: isAvailable,
-                  //   selectedValue: selectedValue,
-                  //   value: 0,
-                  // ),
-                  RadioListTile(
-                    title: Text('Option 6'),
-                    value: 6,
-                    secondary: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CircleAvatar(
-                          radius: 4,
-                          backgroundColor: context.theme.primaryColor,
-                        ),
-                        Text('Available')
-                      ].rowInPadding(7),
-                    ),
-                    groupValue: selectedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value;
-                      });
+                  availabileTimes.when(
+                    data: (data) {
+                      return Column(
+                        children: List.generate(
+                          data.length,
+                          (index) {
+                            var timesModel = data[index];
+                            return radioListTileWidget(
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedValue = value!;
+                                });
+                                log(value.toString());
+                              },
+                              title:
+                                  '${timesModel.startTime}am to ${convertTo12Hrs(int.tryParse(timesModel.endTime!)!)}pm',
+                              isAvailable: timesModel.status!,
+                              selectedValue: selectedValue ?? 0,
+                              value: index,
+                            );
+                          },
+                        ).toList(),
+                      );
                     },
+                    error: (error, _) => Text(error.toString()),
+                    loading: () => const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    ),
                   ),
-                  // RadioListTile(value: value, groupValue: groupValue, onChanged: onChanged)
                 ],
               )
             ].columnInPadding(10),
@@ -276,7 +308,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         : Text(
                             TextConstant.notConfirmed,
                             style: context.theme.textTheme.titleMedium
-                                ?.copyWith(color: TagoDark.orange, fontWeight: AppFontWeight.w500),
+                                ?.copyWith(
+                                    color: TagoDark.orange,
+                                    fontWeight: AppFontWeight.w500),
                           ),
                   ],
                 ),
@@ -351,9 +385,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               ],
                             ).padOnly(bottom: 15, top: 5),
                             ListTile(
-                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 5),
                               minLeadingWidth: 25,
-                              shape: const Border(bottom: BorderSide(width: 0.1)),
+                              shape:
+                                  const Border(bottom: BorderSide(width: 0.1)),
                               leading: const Icon(
                                 FontAwesomeIcons.moneyBill,
                               ),
@@ -372,8 +408,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                             ListTile(
                               minLeadingWidth: 25,
-                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
-                              shape: const Border(bottom: BorderSide(width: 0.1)),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 5),
+                              shape:
+                                  const Border(bottom: BorderSide(width: 0.1)),
                               leading: const Icon(
                                 FontAwesomeIcons.ccMastercard,
                               ),
@@ -392,7 +430,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                             ListTile(
                               minLeadingWidth: 25,
-                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 5),
                               leading: const Icon(
                                 Icons.north_east_outlined,
                               ),
@@ -433,10 +472,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 style: context.theme.textTheme.labelMedium?.copyWith(
                   fontWeight: AppFontWeight.w400,
                 ),
-              ),
-              Text(
-                'Coca-cola drink - pack of 6 can',
-                style: context.theme.textTheme.labelMedium,
               ),
               const Divider(thickness: 1),
               Text(
@@ -527,7 +562,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   style: context.theme.textTheme.labelMedium,
                 ),
                 Text(
-                  '₦800.44',
+                  '₦${deliveryfee.asData?.valueOrNull}',
                   style: context.theme.textTheme.bodyMedium,
                 ),
               ],
@@ -581,10 +616,15 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     required int value,
   }) {
     return RadioListTile(
-      title: Text(title),
+      title: Text(
+        title,
+        style: context.theme.textTheme.bodySmall,
+      ),
       value: value,
       secondary: isAvailable == false
-          ? const Text(TextConstant.unAvailable)
+          ? const Text(
+              TextConstant.unAvailable,
+            )
           : Row(
               mainAxisSize: MainAxisSize.min,
               children: [

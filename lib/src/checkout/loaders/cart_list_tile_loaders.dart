@@ -12,6 +12,8 @@ Widget myCartListTileLoader(BuildContext context) {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             height: 100,

@@ -118,12 +118,12 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          ratingsCard(context),
-                          ratingsCard(context),
-                          ratingsCard(context),
-                          ratingsCard(context),
-                          ratingsCard(context),
-                          ratingsCard(context),
+                          // ratingsCard(context),
+                          // ratingsCard(context),
+                          // ratingsCard(context),
+                          // ratingsCard(context),
+                          // ratingsCard(context),
+                          // ratingsCard(context),
                         ],
                       ),
                     ),

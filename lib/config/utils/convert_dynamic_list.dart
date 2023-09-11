@@ -1,5 +1,6 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/categories/model/domain/products_model.dart';
+import 'package:tago/src/product/models/domain/product_reviews_model.dart';
+import 'package:tago/src/product/models/domain/product_specifications_model.dart';
 
 List<SubCategoriesModel> convertDynamicListToSubCategoryListModel(
   List<dynamic> dynamicList,
@@ -27,4 +28,54 @@ List<ProductsModel> convertDynamicListToProductListModel(
   }
 
   return modelList;
+}
+
+List<TimesModel> convertDynamicListToTimesListModel(
+  List<dynamic> dynamicList,
+) {
+  List<TimesModel> modelList = [];
+
+  for (var dynamicItem in dynamicList) {
+    TimesModel modelInstance = TimesModel.fromJson(dynamicItem);
+
+    modelList.add(modelInstance);
+  }
+
+  return modelList;
+}
+
+List<ProductSpecificationsModel> convertDynamicListToProductSpecificationsModel(
+  List<dynamic> ? dynamicList,
+) {
+  List<ProductSpecificationsModel> modelList = [];
+
+  for (var dynamicItem in dynamicList ?? []) {
+    ProductSpecificationsModel modelInstance = ProductSpecificationsModel.fromJson(dynamicItem);
+
+    modelList.add(modelInstance);
+  }
+
+  return modelList;
+}
+
+List<ProductReviewsModel> convertDynamicListToProductReviewsModel(
+  List<dynamic> dynamicList,
+) {
+  List<ProductReviewsModel> modelList = [];
+
+  for (var dynamicItem in dynamicList) {
+    ProductReviewsModel modelInstance = ProductReviewsModel.fromJson(dynamicItem);
+
+    modelList.add(modelInstance);
+  }
+
+  return modelList;
+}
+
+int convertTo12Hrs(int timeInInt) {
+  if (timeInInt > 12) {
+    return timeInInt - 12;
+  } else {
+    return timeInInt;
+  }
 }

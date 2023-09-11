@@ -64,7 +64,13 @@ AppBar categoriesAppbar(context) {
     ),
     actions: [
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          navBarPush(
+            context: context,
+            screen: const MyCartScreen(),
+            withNavBar: false,
+          );
+        },
         icon: const Icon(Icons.shopping_cart_outlined),
       )
     ],

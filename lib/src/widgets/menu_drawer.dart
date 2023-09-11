@@ -73,7 +73,11 @@ Widget tagoHomeDrawer(BuildContext context) {
             context: context,
             icons: Icons.logout,
             title: TextConstant.logOut,
-            onTap: () {},
+            onTap: () {
+              HiveHelper().deleteData(HiveKeys.token.keys).then((value) {
+                pushReplacement(context, const SignInScreen());
+              });
+            },
             iconColor: TagoLight.textError,
             textStyle: context.theme.textTheme.titleSmall
                 ?.copyWith(color: TagoLight.textError)),

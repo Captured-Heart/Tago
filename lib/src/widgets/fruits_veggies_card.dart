@@ -39,30 +39,32 @@ Column fruitsAndVeggiesCard({
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Card(
-        elevation: 0.3,
-        child: Stack(
-          children: [
-            cachedNetworkImageWidget(
-              imgUrl: productImagesList!.first['image']['url'],
-              height: 140,
-            ),
-            getFreeDeliveryDesign(
-              indexList ?? [],
-              index,
-              context,
-            ),
-            Positioned(
-              // alignment: Alignment.bottomRight,
-              bottom: 10,
-              right: -1,
-              child: addMinusBTN(
-                context: context,
-                onTap: addToCartBTN,
-                isMinus: false,
+      Expanded(
+        child: Card(
+          elevation: 0.3,
+          child: Stack(
+            children: [
+              cachedNetworkImageWidget(
+                imgUrl: productImagesList!.first['image']['url'],
+                height: 140,
               ),
-            )
-          ],
+              getFreeDeliveryDesign(
+                indexList ?? [],
+                index,
+                context,
+              ),
+              Positioned(
+                // alignment: Alignment.bottomRight,
+                bottom: 10,
+                right: -1,
+                child: addMinusBTN(
+                  context: context,
+                  onTap: addToCartBTN,
+                  isMinus: false,
+                ),
+              )
+            ],
+          ),
         ),
       ),
       Text(
@@ -100,8 +102,8 @@ Widget addMinusBTN({
       elevation: 0,
       shadowColor: Colors.transparent,
       visualDensity: VisualDensity.compact,
-      fixedSize: const Size.fromRadius(15),
-      minimumSize: const Size.fromRadius(15),
+      maximumSize: const Size.fromRadius(15),
+      minimumSize: const Size.fromRadius(5),
       padding: EdgeInsets.zero,
       backgroundColor: isMinus == true
           ? TagoLight.primaryColor.withOpacity(0.15)
@@ -116,7 +118,7 @@ Widget addMinusBTN({
       color: isMinus == true
           ? TagoDark.primaryColor
           : TagoDark.scaffoldBackgroundColor,
-      size: 22,
+      size: 20,
     ),
   );
 }
@@ -135,7 +137,7 @@ Widget fruitsAndVeggiesCardLoader({
           child: Stack(
             children: [
               Container(
-                height: 140,
+                height: 120,
                 // color: TagoLight.indicatorActiveColor,
               ),
               Positioned(

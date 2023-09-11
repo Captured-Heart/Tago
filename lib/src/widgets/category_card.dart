@@ -14,20 +14,24 @@ Widget categoryCard({
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         cachedNetworkImageWidget(
-          imgUrl: categoriesModel!.image?.entries.single.value ?? '',
+          imgUrl: categoriesModel!.image?.entries.single.value ??
+              noImagePlaceholderHttp,
           height: height,
         ).padOnly(bottom: 4),
-        Text(
-          categoriesModel.name!.isNotEmpty
-              ? categoriesModel.name!
-              : 'Not available',
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          softWrap: true,
-          style: context.theme.textTheme.bodyMedium?.copyWith(
-            fontSize: 12,
+        Expanded(
+          child: Text(
+            categoriesModel.name!.isNotEmpty
+                ? categoriesModel.name!
+                : 'Not available',
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            softWrap: true,
             overflow: TextOverflow.ellipsis,
-            fontFamily: TextConstant.fontFamilyBold,
+            style: context.theme.textTheme.bodyMedium?.copyWith(
+              fontSize: 12,
+              overflow: TextOverflow.ellipsis,
+              fontFamily: TextConstant.fontFamilyBold,
+            ),
           ),
         )
       ],

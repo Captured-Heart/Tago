@@ -38,7 +38,8 @@ ListTile drawerListTile({
 }
 
 Widget itemsNearYouCard({
-  required int index,
+  // required int index,
+  required ProductsModel productsModel,
   required BuildContext context,
   VoidCallback? onTap,
   required String image,
@@ -51,16 +52,16 @@ Widget itemsNearYouCard({
       children: [
         Card(
           elevation: 0.3,
-          child: Image.asset(
-            image,
+          child: cachedNetworkImageWidget(
+            imgUrl: image,
             height: 140,
-            width: context.sizeWidth(1),
-            fit: BoxFit.fill,
           ),
         ),
         Text(
-          drinkTitle[index],
+          productsModel.label ?? '',
           textAlign: TextAlign.start,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
           style: context.theme.textTheme.labelMedium?.copyWith(
             fontSize: 12,
             fontWeight: AppFontWeight.w500,
@@ -68,7 +69,7 @@ Widget itemsNearYouCard({
           ),
         ).padSymmetric(vertical: 8),
         Text(
-          'N20,000',
+          TextConstant.nairaSign + productsModel.amount.toString().toCommaPrices(),
           style: context.theme.textTheme.titleMedium?.copyWith(
             fontFamily: TextConstant.fontFamilyNormal,
             fontSize: 12,

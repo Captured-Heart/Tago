@@ -1,60 +1,78 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/drawer/controller/wishlist_provider.dart';
 
 class WishListScreen extends ConsumerWidget {
   const WishListScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final wishList = ref.watch(wishListProvider);
+    final wishList = ref.watch(fetchWishListProvider);
     return Scaffold(
       appBar: appBarWidget(
         context: context,
         title: TextConstant.mywishlist,
         isLeading: true,
         suffixIcon: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            navBarPush(
+              context: context,
+              screen: const MyCartScreen(),
+              withNavBar: false,
+            );
+          },
           icon: const Icon(Icons.shopping_cart_outlined),
         ),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
-          SizedBox(
-            height: 200,
-            child: wishList.when(
-                data: (data) => Text('data'),
-                error: (error, _) => Center(
-                      child: Text(error.toString()),
-                    ),
-                loading: () => const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    )),
-          ),
-          wishlistWidget(
-            context: context,
-            isPriceCancelled: false,
-            images: drinkImages[2],
-          ),
-          wishlistWidget(
-            context: context,
-            isPriceCancelled: true,
-            images: drinkImages[3],
-          ),
-          wishlistWidget(
-            context: context,
-            isPriceCancelled: true,
-            images: drinkImages[5],
-          ),
+          wishList.when(
+              data: (data) {
+                return Column(
+                  children: List.generate(data.length, (index) {
+                    // var wishList = convertDynamicListToProductListModel(data)[index];
+                    var wishList = data[index];
+
+                    return wishlistWidget(
+                      context: context,
+                      isPriceCancelled: false,
+                      productsModel: wishList,
+                    );
+                  }),
+                );
+
+                // const Text('data');
+              },
+              error: (error, _) => Center(
+                    child: Text(error.toString()),
+                  ),
+              loading: () => const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  )),
+          // wishlistWidget(
+          //   context: context,
+          //   isPriceCancelled: false,
+          //   images: drinkImages[2],
+          // ),
+          // wishlistWidget(
+          //   context: context,
+          //   isPriceCancelled: true,
+          //   images: drinkImages[3],
+          // ),
+          // wishlistWidget(
+          //   context: context,
+          //   isPriceCancelled: true,
+          //   images: drinkImages[5],
+          // ),
         ],
       ),
     );
   }
 
-  Container wishlistWidget(
-      {required BuildContext context,
-      bool? isPriceCancelled,
-      required String images}) {
+  Container wishlistWidget({
+    required BuildContext context,
+    bool? isPriceCancelled,
+    required ProductsModel productsModel,
+  }) {
     return Container(
       padding: const EdgeInsets.only(bottom: 10, top: 20),
       decoration: const BoxDecoration(
@@ -65,11 +83,9 @@ class WishListScreen extends ConsumerWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
-            images,
+          cachedNetworkImageWidget(
+            imgUrl: productsModel.productImages?.first['image']['url'],
             height: 100,
-            width: 100,
-            fit: BoxFit.fill,
           ),
           Expanded(
             child: ListTile(
@@ -80,22 +96,24 @@ class WishListScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Fanta Drink - 50cl Pet x 12',
+                    productsModel.name ?? '',
+                    // 'Fanta Drink - 50cl Pet x 12',
                     style: context.theme.textTheme.bodySmall,
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      isPriceCancelled == true
+                      productsModel.savedPerc != null
                           ? Text(
-                              'N1,879',
+                              productsModel.amount.toString().toCommaPrices(),
                               style: context.theme.textTheme.bodyMedium
-                                  ?.copyWith(
-                                      decoration: TextDecoration.lineThrough),
+                                  ?.copyWith(decoration: TextDecoration.lineThrough),
                             )
                           : const SizedBox.shrink(),
                       Text(
-                        'N1,879',
+                        productsModel.originalAmount == null
+                            ? productsModel.amount.toString().toCommaPrices()
+                            : productsModel.originalAmount.toString().toCommaPrices(),
                         style: context.theme.textTheme.titleMedium,
                       ),
                     ].rowInPadding(5),

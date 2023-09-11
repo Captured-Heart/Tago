@@ -2,6 +2,10 @@ import 'package:tago/app.dart';
 import 'package:tago/config/utils/enums/product_type_enums.dart';
 import 'package:tago/src/checkout/loaders/cart_list_tile_loaders.dart';
 
+final checkCartListProvider = StateProvider<List<bool>>((ref) {
+  return [];
+});
+
 class MyCartScreen extends ConsumerStatefulWidget {
   const MyCartScreen({super.key});
 
@@ -10,11 +14,11 @@ class MyCartScreen extends ConsumerStatefulWidget {
 }
 
 class _MyCartScreenState extends ConsumerState<MyCartScreen> {
+  List<bool> checkBoxValueList = [];
+
   @override
   Widget build(BuildContext context) {
-    // List cartList = List.generate(4, (index) => myCartListTile(context, ref));
     final cartList = ref.watch(getCartListProvider);
-
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -30,15 +34,31 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                 itemCount: data.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  var cartModel = data[index];
+                  List<bool> checkBoxValues =
+                      List.generate(data.length, (index) => false);
 
+                  var cartModel = data[index];
                   return myCartListTile(
                     context: context,
+                    key: Key('value $index'),
+                    checkBoxValue: checkBoxValues[index],
+                    onChanged: (value) {
+                      // log(value.toString());
+                      setState(() {
+                        checkBoxValues[index] = value ?? false;
+                        ref
+                            .read(checkCartListProvider.notifier)
+                            .update((state) => checkBoxValues);
+                        // checkBoxValues.add(value);
+                        checkBoxValueList.add(value ?? false);
+                      });
+                      log(' checkbox values in index: $index ${checkBoxValues}');
+                    },
                     onTap: () {
-                      push(
-                        context,
-                        const CheckoutScreen(),
-                      );
+                      // push(
+                      //   context,
+                      //   const CheckoutScreen(),
+                      // );
                     },
                     ref: ref,
                     cartModel: cartModel,
@@ -50,18 +70,36 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                           ProductTypeEnums.productId.name:
                               cartModel.product!.id.toString(),
                         },
-                      ).whenComplete(() => ref.invalidate(getCartListProvider));
+                      ).whenComplete(
+                        () => ref.invalidate(getCartListProvider),
+                      );
                     },
                   );
                 },
               );
             },
             error: (error, _) => Text(error.toString()),
-            loading: () => myCartListTileLoader(context),
+            loading: () => Column(
+              children: List.generate(
+                3,
+                (index) => myCartListTileLoader(context),
+              ).toList(),
+            ),
           ),
+          !ref.watch(checkCartListProvider).contains(true)
+              ? const SizedBox.shrink()
+              : ElevatedButton(
+                  onPressed: () {
+                    push(
+                      context,
+                      const CheckoutScreen(),
+                    );
+                  },
+                  child: const Text(TextConstant.proceedtoCheckout),
+                ).padAll(20),
           // TextButton(
           //   onPressed: () {},
-          //   child: const Text('proceed to checkout screen'),
+          //   child: const Text(TextConstant.proceedtoCheckout),
           // )
         ],
       ),

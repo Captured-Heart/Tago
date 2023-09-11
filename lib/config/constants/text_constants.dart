@@ -245,6 +245,7 @@ CHECKOUT SECTION
   static const chhoseTime = 'Choose Time';
   static const available = 'Available';
   static const unAvailable = 'Unavailable';
+  static const proceedtoCheckout = 'Proceed to checkout';
 
   static const minutes = 'Minutes';
   static const scheduleforLater = 'Schedule for later';

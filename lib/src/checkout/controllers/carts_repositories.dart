@@ -20,7 +20,7 @@ Future<List<CartModel>> getCartMethod() async {
     final addressList = (decodedData['data'] as List)
         .map((e) => CartModel.fromJson(e))
         .toList();
-    log('get request for cart model:  ${decodedData['data']}'); //
+    // log('get request for cart model:  ${decodedData['data']}'); //
 
     return addressList;
   } else {

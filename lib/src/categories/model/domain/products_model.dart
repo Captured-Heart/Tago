@@ -5,26 +5,20 @@ class ProductsModel extends Equatable {
   final int? id;
   final String? label;
   final String? description;
-  final List<dynamic>? productImages, productSpecification;
+  final List<dynamic>? productImages,
+      productSpecification,
+      productReview,
+      productTags,
+      relatedProducts;
   final int? categoryId;
   final int? subCategoryId;
   final int? amount;
   final String? brand;
-
+  final Map<String, dynamic>? category, subCategory;
   final int? originalAmount;
   final double? savedPerc;
   final int? availableQuantity;
-// name*	string
-// description*	string
-// amount*	number
-// originalAmount	number
-// categoryId*	number
-// subCategoryId*	number
-// brandId*	number
-// tagIds*	[[...]]
-// imageIds*	[[...]]
-// productSpecifications*	[ProductSpecificationItem{...}]
-// }
+
   const ProductsModel({
     this.name,
     this.id,
@@ -39,6 +33,12 @@ class ProductsModel extends Equatable {
     this.savedPerc,
     this.availableQuantity,
     this.description,
+    //
+    this.category,
+    this.productReview,
+    this.productTags,
+    this.relatedProducts,
+    this.subCategory,
   });
 
   factory ProductsModel.fromJson(Map<String, dynamic> json) => ProductsModel(
@@ -55,6 +55,11 @@ class ProductsModel extends Equatable {
         originalAmount: json['originalAmount'] as int?,
         savedPerc: json['savedPerc'] as double?,
         availableQuantity: json['availableQuantity'] as int?,
+        category: json['category'] as Map<String, dynamic>?,
+        subCategory: json['subCategory'] as Map<String, dynamic>?,
+        productReview: json['productReview'] as List<dynamic>?,
+        productTags: json['productTags'] as List<dynamic>?,
+        relatedProducts: json['relatedProducts'] as List<dynamic>?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -71,6 +76,12 @@ class ProductsModel extends Equatable {
         'brand': brand,
         'productSpecification': productSpecification,
         'availableQuantity': availableQuantity,
+        //
+        'category': category,
+        'subCategory': subCategory,
+        'productReview': productReview,
+        'productTags': productTags,
+        'relatedProducts': relatedProducts,
       };
 
   @override
@@ -89,6 +100,11 @@ class ProductsModel extends Equatable {
       productSpecification,
       description,
       brand,
+      category,
+      subCategory,
+      productReview,
+      productTags,
+      relatedProducts,
     ];
   }
 }

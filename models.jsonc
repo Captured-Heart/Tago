@@ -1,12 +1,12 @@
 {
-    "__className": "availability_model", // <- The base class name of the object.
-    "__path": "/lib/src/checkout/models/domain", // <- override default path with a new one by adding '__path' key.
-    "date": "", // To mark as required value, change "id" to "r@id".
-    "times": [] // To mark as a default value, change "title" to "d@title".
-    // "address": "",
-    // "position": ""
-    // "orderItems": [],
-    // "user": {}
+    "__className": "product_reviews_model", // <- The base class name of the object.
+    "__path": "/lib/src/product/models/domain", // <- override default path with a new one by adding '__path' key.
+    "id": 1, // To mark as required value, change "id" to "r@id".
+    "title": "", // To mark as a default value, change "title" to "d@title".
+    "rating": "",
+    "review": "",
+    "createdAt": "",
+    "user": {}
     // "phoneNumber": "",
     // "phoneNumber": "",
     // "phoneNumber": "",
@@ -21,17 +21,11 @@
     
 
   }
-  // "date": "2023-09-06T00:00:00.000Z",
-  // "times": [
-  //     {
-  //         "startTime": "10",
-  //         "endTime": "11",
-  //         "period": "",
-  //         "status": false
-  //     },
-  //     {
-  //         "startTime": "11",
-  //         "endTime": "12",
-  //         "period": "",
-  //         "status": true
-  //     },
+  // "id": 1,
+  // "title": "Nice product",
+  // "rating": 3.5,
+  // "review": "This is a good product i appreciate it",
+  // "createdAt": "2023-09-05T22:57:28.278Z",
+  // "user": {
+  //     "fname": "Babalola"
+  // }

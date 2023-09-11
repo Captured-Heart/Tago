@@ -142,4 +142,10 @@ extension StringCasingExtension on String {
       .split(' ')
       .map((str) => str.toCapitalized())
       .join(' ');
+
+  String toCommaPrices() {
+    final formatter = NumberFormat("###,###.#", "en_US");
+    final price = formatter.format(double.parse(this));
+    return price;
+  }
 }

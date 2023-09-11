@@ -1,6 +1,12 @@
 import 'package:tago/app.dart';
 
-Widget ratingsCard(BuildContext context) {
+Widget ratingsCard({
+  required BuildContext context,
+  required AsyncValue<ProductsModel> productsModel,
+  required int index,
+}) {
+  var productReviews = convertDynamicListToProductReviewsModel(
+      productsModel.valueOrNull?.productReview ?? [])[index];
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
     decoration: const BoxDecoration(
@@ -20,18 +26,19 @@ Widget ratingsCard(BuildContext context) {
                 children: [
                   const Icon(Icons.star, color: TagoLight.orange),
                   Text(
-                    '4.5',
+                    productReviews.rating.toString(),
                     style: context.theme.textTheme.bodyLarge,
                   ),
                 ].rowInPadding(5)),
             Text(
-              'Nice Drink',
+              productReviews.title ?? 'title',
               style: context.theme.textTheme.titleMedium,
             ),
             SizedBox(
               width: context.sizeWidth(0.6),
               child: Text(
-                'I loved it so much. It’s a worthy buy I loved it so much. It’s a worthy buy...I loved it so much. It’s a worthy buy...',
+                productReviews.review ??
+                  '',
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: context.theme.textTheme.bodyMedium,
@@ -43,9 +50,12 @@ Widget ratingsCard(BuildContext context) {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'by Kenneth',
-              // style: context.theme.textTheme.bodySmall,
+            Expanded(
+              child: Text(
+                'by ${productReviews.user?.fname}',
+                // 'by Kenneth',
+                // style: context.theme.textTheme.bodySmall,
+              ),
             ),
             TextButton(
               onPressed: () {},

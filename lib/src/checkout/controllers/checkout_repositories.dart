@@ -4,7 +4,7 @@ import 'package:tago/app.dart';
              GET LIST OF AVAILABLE TIMES METHOD
  -------------------------------------------------------------------*/
 
-Future<List<AvailabilityModel>> getAvailableTimesMethod() async {
+Future<List<AvailabilityModel>> getAvailableDatesMethod() async {
   // try {
   //post request executed
   final Response response = await NetworkHelper.getRequestWithToken(
@@ -17,12 +17,13 @@ Future<List<AvailabilityModel>> getAvailableTimesMethod() async {
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true || response.statusCode == 200) {
-    final availbleTimes =
-        (decodedData['data'] as List).map((e) => AvailabilityModel.fromJson(e)).toList();
+    final availableTimes = (decodedData['data'] as List)
+        .map((e) => AvailabilityModel.fromJson(e))
+        .toList();
 
     log('get request for availibilty model:  ${decodedData['data']}');
 
-    return availbleTimes;
+    return availableTimes;
   } else {
     return [decodedData['message']];
   }
@@ -32,24 +33,49 @@ Future<List<AvailabilityModel>> getAvailableTimesMethod() async {
 //              GET LIST OF AVAILABLE DATE METHOD
 //  -------------------------------------------------------------------*/
 
-// Future<String> getAvailableDateMethod() async {
-//   // try {
-//   //post request executed
-//   final Response response = await NetworkHelper.getRequestWithToken(
-//     api: getAvailabilityUrl,
-//   );
+Future<List<TimesModel>> getAvailableTimesMethod(int index) async {
+  // try {
+  // post request executed
+  final Response response = await NetworkHelper.getRequestWithToken(
+    api: getAvailabilityUrl,
+  );
 
-//   // decoding the response
+  // decoding the response
 
-//   String data = response.body;
-//   var decodedData = jsonDecode(data);
-//   //the response and error handling
-//   if (decodedData['success'] == true) {
-//     final availbleTimes = (decodedData['data']['date'] as String);
-//     log('get request for cart model:  ${decodedData['data']}');
+  String data = response.body;
+  var decodedData = jsonDecode(data);
+  //the response and error handling
+  if (decodedData['success'] == true || response.statusCode == 200) {
+    // final availableTimes =
+    //     (decodedData['data'] as List).map((e) => TimesModel.fromJson(e)).toList();
+    var availableTimes = (decodedData['data'] as List)[index]['times'];
+    var convertedList = convertDynamicListToTimesListModel(availableTimes);
+    log('get request for availibilty times:  $availableTimes');
 
-//     return availbleTimes;
-//   } else {
-//     return decodedData['message'];
-//   }
-// }
+    return convertedList;
+  } else {
+    return [decodedData['message']];
+  }
+}
+
+Future<String> getDeliveryFeeMethod(
+    {required String addressId, required String totalAmount}) async {
+  var url =
+      '$checkOutUrl/delivery-fee?addressId=$addressId&totalAmount=$totalAmount';
+  final Response response = await NetworkHelper.getRequestWithToken(
+    api: url,
+  );
+
+  // log(url);
+  String data = response.body;
+  var decodedData = jsonDecode(data);
+
+  // log(decodedData.toString());
+  //the response and error handling
+  if (decodedData['success'] == true || response.statusCode == 200) {
+    // log(' get requests for delivery fee : ${decodedData['data']}');
+    return decodedData['data'].toString();
+  } else {
+    return decodedData['message'];
+  }
+}

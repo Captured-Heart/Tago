@@ -2,7 +2,7 @@
 import 'package:http/http.dart' as http;
 import 'package:tago/app.dart';
 
-const String baseUrl = 'http://104.248.166.210:9800';
+const String baseUrl = 'https://api.tagonow.com';
 
 // AUTH URL
 const String signUpUrl = '/auth/signup';
@@ -16,6 +16,9 @@ const String verifyPhoneNumberUrl = '/verification/phone-number';
 // CATEGORY URL
 const String getCategoriesUrl = '/public/categories';
 const String getCategoryUrl = '/public/category?label';
+
+//PRODUCT URL
+const String getProductsUrl = '/public/product?label';
 
 //SEARCH URL
 const String getSearchUrl = '/public/search';
@@ -43,6 +46,7 @@ const String getCartsUrl = '/account/user/cart';
 
 //CHECKOUT
 const String getAvailabilityUrl = '/account/user/checkout/availability';
+const String checkOutUrl = '/account/user/checkout';
 
 //
 const googleAPIKey = 'AIzaSyDhKg6wsJbCyYLdjRj5m2bf5b_uUJfN8iE';
@@ -62,8 +66,10 @@ class NetworkHelper {
 
       return response;
     } catch (e) {
-      showScaffoldSnackBarMessage(e.toString());
-      log('error from postRequest: ${e.toString()}');
+      showScaffoldSnackBarMessage(e.toString(), isError: true);
+      log(
+        'error from postRequest: ${e.toString()}',
+      );
     }
   }
 
@@ -83,7 +89,7 @@ class NetworkHelper {
 
       return response;
     } catch (e) {
-      showScaffoldSnackBarMessage(e.toString());
+      showScaffoldSnackBarMessage(e.toString(), isError: true);
       log('error from getRequest: ${e.toString()}');
     }
   }
@@ -138,10 +144,10 @@ class NetworkHelper {
       log('$baseUrl$api');
       return response;
     } catch (e) {
-      showScaffoldSnackBarMessage(
-        e.toString(),
-        isError: true,
-      );
+      // showScaffoldSnackBarMessage(
+      //   e.toString(),
+      //   isError: true,
+      // );
 
       log('error from postRequestWithToken: ${e.toString()}');
     }

@@ -1,6 +1,11 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/drawer/controller/wishlist_repository.dart';
 
-final wishListProvider = FutureProvider<List<ProductsModel>>((ref) async {
+final fetchWishListProvider =
+    FutureProvider.autoDispose<List<ProductsModel>>((ref) async {
   return fetchWishListMethod();
 });
+
+// final postToWishListProvider =
+//     FutureProvider.family.autoDispose<String, Map<String, dynamic>>((ref, map) async {
+//   return postToWishListMethod(map: map);
+// });

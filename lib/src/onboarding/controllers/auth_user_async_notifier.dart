@@ -74,8 +74,12 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
     final Response response = await NetworkHelper.postRequest(
       map: map,
       api: signInUrl,
-    ).timeout(const Duration(seconds: 25), onTimeout: () {
-      state = const AsyncValue.data(null);
+    )
+        .onError(
+      (error, stackTrace) => state = AsyncValue.error(error!, stackTrace),
+    )
+        .timeout(const Duration(seconds: 25), onTimeout: () {
+      state = const AsyncValue.error('error, try again', StackTrace.empty);
       showScaffoldSnackBarMessage('Connection timeout, try again');
     });
 

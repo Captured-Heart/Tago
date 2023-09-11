@@ -4,7 +4,7 @@ class TimesModel extends Equatable {
   final String? startTime;
   final String? endTime;
   final String? period;
-  final String? status;
+  final bool? status;
 
   const TimesModel({
     this.startTime,
@@ -17,7 +17,7 @@ class TimesModel extends Equatable {
         startTime: json['startTime'] as String?,
         endTime: json['endTime'] as String?,
         period: json['period'] as String?,
-        status: json['status'] as String?,
+        status: json['status'] as bool?,
       );
 
   Map<String, dynamic> toJson() => {
