@@ -1,6 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/config/utils/enums/product_type_enums.dart';
-import 'package:tago/src/checkout/loaders/cart_list_tile_loaders.dart';
 
 final checkCartListProvider = StateProvider<List<bool>>((ref) {
   return [];
@@ -18,7 +16,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cartList = ref.watch(getCartListProvider);
+    final cartList = ref.watch(getCartListProvider(true));
     return Scaffold(
       appBar: appBarWidget(
         context: context,

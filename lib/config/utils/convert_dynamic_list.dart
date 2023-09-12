@@ -45,7 +45,7 @@ List<TimesModel> convertDynamicListToTimesListModel(
 }
 
 List<ProductSpecificationsModel> convertDynamicListToProductSpecificationsModel(
-  List<dynamic> ? dynamicList,
+  List<dynamic>? dynamicList,
 ) {
   List<ProductSpecificationsModel> modelList = [];
 
@@ -78,4 +78,13 @@ int convertTo12Hrs(int timeInInt) {
   } else {
     return timeInInt;
   }
+}
+
+bool checkIdenticalListsWithInt({
+  required List list1,
+  required int int,
+}) {
+  var itemList = list1.contains(int);
+
+  return itemList;
 }

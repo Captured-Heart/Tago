@@ -26,11 +26,8 @@ Future<List<ProductsModel>> fetchWishListMethod() async {
         // .where((element) => element == ['product'])
         .map((e) => ProductsModel.fromJson(e))
         .toList();
-    // .map((e) => ProductsModel.fromJson(e))
-    // .toList();
-    // log('wishlist2: $wishList');
 
-    // log('get request for WishList:  ${decodedData['data']['product']}'); //
+    showScaffoldSnackBarMessage(decodedData['message']);
 
     return wishList;
   } else {

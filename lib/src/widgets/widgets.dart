@@ -1,17 +1,22 @@
-export './appbar_widget.dart';
-export './auth_textfield_with_error.dart';
 export './cart_list_tile.dart';
-export './category_card.dart';
-export './fruits_veggie_card.dart';
-export './fruits_veggies_card.dart';
-export './items_near_you_card.dart';
-export './menu_drawer.dart';
-export './nav_bar_app_bar.dart';
 export './ratings_card.dart';
-export './rider_orders_listtile.dart';
 export './app_loader.dart';
-export './home_screen_order_status_widget.dart';
 export './cache_network_image_widget.dart';
-export './saved_address_card_widget.dart';
-export './home_screen_carousel_widget.dart';
-export './sub_category_card.dart';
+
+//DRAWERS
+export './drawer_widget/drawer_widget.dart';
+
+//FORMS
+export 'form_widget/form_widgets.dart';
+
+//HOME SCREEN
+export './home_screen_widget/home_screen_widget.dart';
+
+//CATEGORIES
+export './categories_widget/categories_widget.dart';
+
+//RIDERS WIDGET
+export './rider_widget/rider_widget.dart';
+
+//ACCOUNT WIDGET
+export './account_widget/account_widget.dart';

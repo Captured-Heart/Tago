@@ -74,69 +74,68 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                     products: products,
                   ).padSymmetric(horizontal: 10, vertical: 5),
                   Column(
-                    children: [
-                      ref.watch(cartNotifierProvider).hasError
-                          ? ValueListenableBuilder(
-                              valueListenable: ref.watch(valueNotifierProvider(0)),
-                              builder: (context, value, child) {
-                                return Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    addMinusBTN(
-                                      context: context,
-                                      isMinus: true,
-                                      onTap: () {
-                                        if (value > 1) {
-                                          ref.read(valueNotifierProvider(0)).value--;
-                                        }
-                                      },
-                                    ),
-                                    Text(
-                                      value.toString(),
-                                      style: context.theme.textTheme.titleMedium,
-                                    ),
-                                    addMinusBTN(
-                                      context: context,
-                                      onTap: () {
-                                        ref.read(valueNotifierProvider(0)).value++;
-                                      },
-                                    ),
-                                  ],
+                      children: [
+                    ref.watch(cartNotifierProvider).hasError
+                        ? ValueListenableBuilder(
+                            valueListenable: ref.watch(valueNotifierProvider(0)),
+                            builder: (context, value, child) {
+                              return Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  addMinusBTN(
+                                    context: context,
+                                    isMinus: true,
+                                    onTap: () {
+                                      if (value > 1) {
+                                        ref.read(valueNotifierProvider(0)).value--;
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    value.toString(),
+                                    style: context.theme.textTheme.titleMedium,
+                                  ),
+                                  addMinusBTN(
+                                    context: context,
+                                    onTap: () {
+                                      ref.read(valueNotifierProvider(0)).value++;
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          )
+                        : SizedBox(
+                            width: context.sizeWidth(1),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                  map: {
+                                    ProductTypeEnums.productId.name: widget.id.toString(),
+                                    ProductTypeEnums.quantity.name: '1',
+                                  },
                                 );
                               },
-                            )
-                          : SizedBox(
-                              width: context.sizeWidth(1),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  ref.read(cartNotifierProvider.notifier).addToCartMethod(
-                                    map: {
-                                      ProductTypeEnums.productId.name: widget.id.toString(),
-                                      ProductTypeEnums.quantity.name: '1',
-                                    },
-                                  );
-                                },
-                                child: const Text(TextConstant.addtocart),
-                              ),
+                              child: const Text(TextConstant.addtocart),
                             ),
-                      TextButton.icon(
-                        onPressed: () {
-                          if (wishListID != true) {
-                            ref.read(postToWishListNotifierProvider.notifier).postToWishListMethod(
-                              map: {ProductTypeEnums.productId.name: widget.id.toString()},
-                            );
-                          }
-                        },
-                        icon: wishListID == true
-                            ? const Icon(Icons.favorite)
-                            : const Icon(Icons.favorite_border_outlined),
-                        label: wishListID == true
-                            ? const Text(TextConstant.saved)
-                            : const Text(TextConstant.saveforlater),
-                      )
-                    ].columnInPadding(10)
-                  ),
+                          ),
+                    TextButton.icon(
+                      onPressed: () {
+                        if (wishListID != true) {
+                          ref.read(postToWishListNotifierProvider.notifier).postToWishListMethod(
+                            map: {ProductTypeEnums.productId.name: widget.id.toString()},
+                          );
+                        }
+                      },
+                      icon: wishListID == true
+                          ? const Icon(Icons.favorite)
+                          : const Icon(Icons.favorite_border_outlined),
+                      label: wishListID == true
+                          ? const Text(TextConstant.saved)
+                          : const Text(TextConstant.saveforlater),
+                    )
+                  ].columnInPadding(10)),
                 ],
               ),
             ),
@@ -310,7 +309,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 itemBuilder: (context, index) {
                   return SizedBox(
                     width: context.sizeWidth(0.35),
-                    child: itemsNearYouCard(
+                    child: singlePageCard(
                       // index: index,
                       productsModel: relatedProducts[index],
 
@@ -339,14 +338,59 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     );
   }
 
+  Widget singlePageCard({
+    // required int index,
+    required ProductsModel? productsModel,
+    required BuildContext context,
+    VoidCallback? onTap,
+    required String image,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+            elevation: 0.3,
+            child: cachedNetworkImageWidget(
+              imgUrl: image,
+              height: 140,
+            ),
+          ),
+          Text(
+            productsModel?.label ?? '',
+            textAlign: TextAlign.start,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: context.theme.textTheme.labelMedium?.copyWith(
+              fontSize: 12,
+              fontWeight: AppFontWeight.w500,
+              fontFamily: TextConstant.fontFamilyNormal,
+            ),
+          ).padSymmetric(vertical: 8),
+          Text(
+            '${TextConstant.nairaSign} ${productsModel?.amount.toString().toCommaPrices() ?? '1000'}',
+            style: context.theme.textTheme.titleMedium?.copyWith(
+              fontFamily: TextConstant.fontFamilyNormal,
+              fontSize: 12,
+            ),
+            textAlign: TextAlign.start,
+          )
+        ],
+      ),
+    );
+  }
+
   Consumer miniCartModalWIdget() {
     return Consumer(
       builder: (context, ref, _) {
-        final cartList = ref.watch(getCartListProvider);
+        final cartList = ref.watch(getCartListProvider(true));
 
         return FullScreenLoader(
           isLoading: ref.watch(cartNotifierProvider).isLoading,
           child: Container(
+              margin: const EdgeInsets.only(top: 20),
               child: cartList
                   .when(
                     data: (data) {

@@ -3,7 +3,9 @@ import 'package:tago/app.dart';
 /*------------------------------------------------------------------
              GET LIST OF CART METHOD
  -------------------------------------------------------------------*/
-Future<List<CartModel>> getCartMethod() async {
+Future<List<CartModel>> getCartMethod({
+  bool showSnackBar = true,
+}) async {
   // try {
   //post request executed
   final Response response = await NetworkHelper.getRequestWithToken(
@@ -16,10 +18,8 @@ Future<List<CartModel>> getCartMethod() async {
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true) {
-    showScaffoldSnackBarMessage(decodedData['message'], duration: 3);
-    final addressList = (decodedData['data'] as List)
-        .map((e) => CartModel.fromJson(e))
-        .toList();
+    showSnackBar ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3) : null;
+    final addressList = (decodedData['data'] as List).map((e) => CartModel.fromJson(e)).toList();
     // log('get request for cart model:  ${decodedData['data']}'); //
 
     return addressList;

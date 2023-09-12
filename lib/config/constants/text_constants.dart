@@ -192,6 +192,8 @@ ORDERS SCREEN
 WISHLIST SCREEN
 -----------------------------------------------------------------------*/
   static const addtocart = 'Add to Cart';
+  static const deleteFromcart = 'Delete from Cart';
+
 
 /*----------------------------------------------------------------------
  MY ACCOUNTS SCREEN

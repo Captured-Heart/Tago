@@ -260,7 +260,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: itemsNearYouCard(
                     context: context,
                     image: noImagePlaceholderHttp,
-                    productsModel: ProductsModel(),
                     onTap: () {
                       // navBarPush(
                       //   context: context,
@@ -296,7 +295,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   width: context.sizeWidth(0.35),
                   child: itemsNearYouCard(
                     // index: index,
-                    productsModel: ProductsModel(),
                     context: context,
                     image: noImagePlaceholderHttp,
                   ),
