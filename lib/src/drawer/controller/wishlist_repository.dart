@@ -7,7 +7,8 @@ import 'package:tago/app.dart';
 Future<List<ProductsModel>> fetchWishListMethod() async {
   // try {
   //post request executed
-  final Response response = await NetworkHelper.getRequest(api: getWishListUrl, headers: {
+  final Response response =
+      await NetworkHelper.getRequest(api: getWishListUrl, headers: {
     'Authorization': HiveHelper().getData(HiveKeys.token.name),
   });
 

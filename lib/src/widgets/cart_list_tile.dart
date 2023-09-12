@@ -58,6 +58,7 @@ Widget myCartListTile(
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Checkbox.adaptive(

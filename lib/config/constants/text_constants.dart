@@ -194,7 +194,6 @@ WISHLIST SCREEN
   static const addtocart = 'Add to Cart';
   static const deleteFromcart = 'Delete from Cart';
 
-
 /*----------------------------------------------------------------------
  MY ACCOUNTS SCREEN
 -----------------------------------------------------------------------*/
@@ -221,6 +220,7 @@ SINGLE PRODUCT PAGE
 -----------------------------------------------------------------------*/
 
   static const productSpecifications = 'Product Specifications';
+  static const product = 'Product';
   static const weight = 'Weight (kg): ';
   static const sku = 'SKU: ';
   static const ratingandReviews = 'Ratings & Reviews ';

@@ -1,14 +1,25 @@
 import 'package:tago/app.dart';
 import 'package:tago/config/utils/date_formatter.dart';
 
+final voucherCodeProvider = StateProvider<String>((ref) {
+  return '';
+});
+
 class CheckoutScreen extends ConsumerStatefulWidget {
-  const CheckoutScreen({super.key});
+  const CheckoutScreen({
+    super.key,
+    required this.cartModel,
+  });
+
+  final CartModel cartModel;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
+  final TextEditingControllerClass controller = TextEditingControllerClass();
+
   bool isInstant = true;
   int? selectedValue;
   int selectedIndex = 0;
@@ -24,11 +35,20 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider);
+    final code = ref.watch(voucherCodeProvider);
     final availabileDate = ref.watch(getAvailabileDateProvider);
-    final availabileTimes =
-        ref.watch(getAvailabileTimesProvider(selectedIndex));
-    final deliveryfee = ref
-        .watch(getDeliveryFeeProvider([accountInfo.valueOrNull?.id, 102000]));
+    final availabileTimes = ref.watch(getAvailabileTimesProvider(selectedIndex));
+
+    final voucherCode = ref.watch(getVoucherStreamProvider(code));
+
+    final deliveryfee = ref.watch(getDeliveryFeeProvider(widget.cartModel.product?.amount ?? 0));
+    log(deliveryfee.toString());
+
+    var perc =
+        ((int.parse('${voucherCode.value?.amount ?? '0'}') / widget.cartModel.product!.amount!) *
+                100)
+            .round();
+    // log('percentage: ${perc.round()}%');
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -43,8 +63,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             style: context.theme.textTheme.bodyLarge,
           ),
           ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             minLeadingWidth: 10,
             shape: const Border(bottom: BorderSide(width: 0.1)),
             leading: const Icon(
@@ -52,8 +71,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               color: TagoDark.primaryColor,
             ),
             title: Text(
-              accountInfo.valueOrNull?.address?.streetAddress ??
-                  TextConstant.noAddressFound,
+              accountInfo.valueOrNull?.address?.streetAddress ?? TextConstant.noAddressFound,
               style: context.theme.textTheme.labelMedium,
             ),
             trailing: TextButton(
@@ -96,9 +114,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: isInstant == true
-                                  ? TagoLight.orange
-                                  : TagoLight.textFieldBorder,
+                              color:
+                                  isInstant == true ? TagoLight.orange : TagoLight.textFieldBorder,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -112,9 +129,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 Text(
                                   TextConstant.instantDelivering,
                                   style: context.theme.textTheme.bodySmall
-                                      ?.copyWith(
-                                          color: TagoLight
-                                              .scaffoldBackgroundColor),
+                                      ?.copyWith(color: TagoLight.scaffoldBackgroundColor),
                                 ),
                               ].rowInPadding(5),
                             ),
@@ -131,9 +146,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: isInstant == true
-                                  ? TagoLight.textFieldBorder
-                                  : TagoLight.orange,
+                              color:
+                                  isInstant == true ? TagoLight.textFieldBorder : TagoLight.orange,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -147,9 +161,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 Text(
                                   '${TextConstant.deliveredIn} 15 ${TextConstant.minutes}',
                                   style: context.theme.textTheme.bodySmall
-                                      ?.copyWith(
-                                          color: TagoLight
-                                              .scaffoldBackgroundColor),
+                                      ?.copyWith(color: TagoLight.scaffoldBackgroundColor),
                                 ),
                               ].rowInPadding(5),
                             ),
@@ -189,26 +201,21 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.all(18),
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 5),
+                                      margin: const EdgeInsets.symmetric(horizontal: 5),
                                       decoration: BoxDecoration(
                                         color: getColor(selectedIndex, index),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Text(
                                             getDayOfWeek(data[index].date!),
                                             textAlign: TextAlign.center,
                                             maxLines: 1,
-                                            style: AppTextStyle
-                                                .hintTextStyleLight
-                                                .copyWith(
-                                              color: context.theme
-                                                  .scaffoldBackgroundColor,
+                                            style: AppTextStyle.hintTextStyleLight.copyWith(
+                                              color: context.theme.scaffoldBackgroundColor,
                                               fontWeight: AppFontWeight.w700,
                                             ),
                                           ),
@@ -216,11 +223,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                             dateFormatted2(data[index].date!),
                                             textAlign: TextAlign.center,
                                             maxLines: 1,
-                                            style: AppTextStyle
-                                                .hintTextStyleLight
-                                                .copyWith(
-                                              color: context.theme
-                                                  .scaffoldBackgroundColor,
+                                            style: AppTextStyle.hintTextStyleLight.copyWith(
+                                              color: context.theme.scaffoldBackgroundColor,
                                               fontWeight: AppFontWeight.w700,
                                             ),
                                           ),
@@ -308,9 +312,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         : Text(
                             TextConstant.notConfirmed,
                             style: context.theme.textTheme.titleMedium
-                                ?.copyWith(
-                                    color: TagoDark.orange,
-                                    fontWeight: AppFontWeight.w500),
+                                ?.copyWith(color: TagoDark.orange, fontWeight: AppFontWeight.w500),
                           ),
                   ],
                 ),
@@ -385,11 +387,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               ],
                             ).padOnly(bottom: 15, top: 5),
                             ListTile(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 5),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
                               minLeadingWidth: 25,
-                              shape:
-                                  const Border(bottom: BorderSide(width: 0.1)),
+                              shape: const Border(bottom: BorderSide(width: 0.1)),
                               leading: const Icon(
                                 FontAwesomeIcons.moneyBill,
                               ),
@@ -408,10 +408,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                             ListTile(
                               minLeadingWidth: 25,
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 5),
-                              shape:
-                                  const Border(bottom: BorderSide(width: 0.1)),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                              shape: const Border(bottom: BorderSide(width: 0.1)),
                               leading: const Icon(
                                 FontAwesomeIcons.ccMastercard,
                               ),
@@ -430,8 +428,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                             ListTile(
                               minLeadingWidth: 25,
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 5),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
                               leading: const Icon(
                                 Icons.north_east_outlined,
                               ),
@@ -468,20 +465,21 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 style: context.theme.textTheme.titleLarge,
               ).padOnly(bottom: 5),
               Text(
-                'Coca-cola drink - pack of 6 can',
+                widget.cartModel.product?.label?.toTitleCase() ?? TextConstant.product,
+                // 'Coca-cola drink - pack of 6 can',
                 style: context.theme.textTheme.labelMedium?.copyWith(
                   fontWeight: AppFontWeight.w400,
                 ),
               ),
-              const Divider(thickness: 1),
+              // const Divider(thickness: 1),
+              // Text(
+              //   'Coca-cola drink - pack of 6 can',
+              //   style: context.theme.textTheme.labelMedium?.copyWith(
+              //     fontWeight: AppFontWeight.w400,
+              //   ),
+              // ),
               Text(
-                'Coca-cola drink - pack of 6 can',
-                style: context.theme.textTheme.labelMedium?.copyWith(
-                  fontWeight: AppFontWeight.w400,
-                ),
-              ),
-              Text(
-                'N20,000',
+                '${TextConstant.nairaSign} ${widget.cartModel.product?.amount.toString().toCommaPrices() ?? '0'}',
                 style: context.theme.textTheme.labelMedium,
               ),
               const Divider(thickness: 1)
@@ -506,7 +504,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               ),
             ].rowInPadding(8)),
             authTextFieldWithError(
-              controller: TextEditingController(),
+              controller: controller.instructionsController,
               context: context,
               isError: false,
               hintText: TextConstant.writeaNoteHint,
@@ -529,10 +527,32 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 ),
               ].rowInPadding(8)),
               authTextFieldWithError(
-                controller: TextEditingController(),
+                controller: controller.voucherController,
                 context: context,
                 isError: false,
                 hintText: TextConstant.pastevoucherCode,
+                onChanged: (value) {
+                  ref.read(voucherCodeProvider.notifier).update((state) => value);
+                },
+                suffixIcon: voucherCode.when(
+                  data: (data) {
+                    if (data.amount == null) {
+                      if (controller.voucherController.text.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
+                      return const Icon(Icons.close, color: TagoLight.orange);
+                    } else {
+                      return const Icon(Icons.check, color: TagoLight.primaryColor);
+                    }
+                  },
+                  error: (er, _) => const Icon(Icons.close, color: TagoLight.orange),
+                  loading: () {
+                    if (controller.voucherController.text.length < 7) {
+                      return const SizedBox.shrink();
+                    }
+                    return const CircularProgressIndicator.adaptive();
+                  },
+                ),
               ).padSymmetric(horizontal: 30),
               const Divider(thickness: 1)
             ].columnInPadding(10),
@@ -549,7 +569,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   style: context.theme.textTheme.labelMedium,
                 ),
                 Text(
-                  '₦20,000',
+                  ' ${TextConstant.nairaSign} ${widget.cartModel.product?.amount.toString().toCommaPrices() ?? '0'}',
                   style: context.theme.textTheme.bodyMedium,
                 ),
               ],
@@ -562,7 +582,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   style: context.theme.textTheme.labelMedium,
                 ),
                 Text(
-                  '₦${deliveryfee.asData?.valueOrNull}',
+                  '₦${deliveryfee.value?.toCommaPrices() ?? 0}',
                   style: context.theme.textTheme.bodyMedium,
                 ),
               ],
@@ -571,11 +591,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${TextConstant.discount} (20%)',
+                  '${TextConstant.discount} ($perc%)',
                   style: context.theme.textTheme.labelMedium,
                 ),
                 Text(
-                  '-₦6,130.23',
+                  '- ${TextConstant.nairaSign}${voucherCode.valueOrNull?.amount ?? 0}',
                   style: context.theme.textTheme.bodyMedium,
                 ),
               ],
@@ -592,7 +612,18 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   style: context.theme.textTheme.labelMedium,
                 ),
                 Text(
-                  '₦80,000.00',
+                  TextConstant.nairaSign +
+                      ((widget.cartModel.product?.amount ?? 0) +
+                              int.parse(deliveryfee.value ?? '0') -
+                              int.parse(
+                                voucherCode.value?.amount == null
+                                    ? '0'
+                                    : voucherCode.value!.amount.toString(),
+                              ))
+                          .toString()
+                          .toCommaPrices(),
+                  //
+                  // '₦80,000.00',
                   style: context.theme.textTheme.titleLarge?.copyWith(
                     color: TagoLight.primaryColor,
                   ),

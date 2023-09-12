@@ -40,14 +40,16 @@ Widget wishlistWidget({
                     productsModel.savedPerc != null
                         ? Text(
                             productsModel.amount.toString().toCommaPrices(),
-                            style: context.theme.textTheme.bodyMedium
-                                ?.copyWith(decoration: TextDecoration.lineThrough),
+                            style: context.theme.textTheme.bodyMedium?.copyWith(
+                                decoration: TextDecoration.lineThrough),
                           )
                         : const SizedBox.shrink(),
                     Text(
                       productsModel.originalAmount == null
                           ? productsModel.amount.toString().toCommaPrices()
-                          : productsModel.originalAmount.toString().toCommaPrices(),
+                          : productsModel.originalAmount
+                              .toString()
+                              .toCommaPrices(),
                       style: context.theme.textTheme.titleMedium,
                     ),
                   ].rowInPadding(5),
@@ -80,7 +82,8 @@ Widget wishlistWidget({
                             fixedSize: const Size.fromHeight(25),
                             visualDensity: VisualDensity.compact,
                             foregroundColor: TagoLight.primaryColor,
-                            backgroundColor: TagoLight.textError.withOpacity(0.15)),
+                            backgroundColor:
+                                TagoLight.textError.withOpacity(0.15)),
                         child: Text(
                           TextConstant.deleteFromcart,
                           style: context.theme.textTheme.bodyLarge?.copyWith(

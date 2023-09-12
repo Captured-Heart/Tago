@@ -1,7 +1,7 @@
 import 'package:tago/app.dart';
 
-final getCartListProvider =
-    FutureProvider.autoDispose.family<List<CartModel>, bool>((ref, showSnackBar) async {
+final getCartListProvider = FutureProvider.autoDispose
+    .family<List<CartModel>, bool>((ref, showSnackBar) async {
   return getCartMethod(showSnackBar: showSnackBar);
 });
 

@@ -1,17 +1,17 @@
 {
-    "__className": "product_reviews_model", // <- The base class name of the object.
-    "__path": "/lib/src/product/models/domain", // <- override default path with a new one by adding '__path' key.
-    "id": 1, // To mark as required value, change "id" to "r@id".
-    "title": "", // To mark as a default value, change "title" to "d@title".
-    "rating": "",
-    "review": "",
-    "createdAt": "",
-    "user": {}
-    // "phoneNumber": "",
-    // "phoneNumber": "",
-    // "phoneNumber": "",
-    // "phoneNumber": "",
-    // "phoneNumber": "",
+    "__className": "checkout_model", // <- The base class name of the object.
+    "__path": "/lib/src/checkout/models/domain", // <- override default path with a new one by adding '__path' key.
+    "addressId": "", // To mark as required value, change "id" to "r@id".
+    "deliveryType": "", // To mark as a default value, change "title" to "d@title".
+    "paymentMethod": "",
+    "instructions": "",
+    "voucherCode": "",
+    "scheduleForDate": "",
+    "scheduleForTime": "",
+    "items": [],
+    "orderId": "",
+    "url": "",
+    "phoneNumber": "",
     // "lname": "",
     // "email": "",
     // "role":"",
@@ -21,11 +21,8 @@
     
 
   }
-  // "id": 1,
-  // "title": "Nice product",
-  // "rating": 3.5,
-  // "review": "This is a good product i appreciate it",
-  // "createdAt": "2023-09-05T22:57:28.278Z",
-  // "user": {
-  //     "fname": "Babalola"
-  // }
+//   "data": {
+//     "code": "MT7663G",
+//     "currency": "NGN",
+//     "amount": 3000
+// }

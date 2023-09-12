@@ -16,6 +16,10 @@ class TextEditingControllerClass {
   TextEditingController apartmentNoController = TextEditingController();
   TextEditingController addressLabelController = TextEditingController();
   TextEditingController searchProductController = TextEditingController();
+  TextEditingController voucherController = TextEditingController();
+  TextEditingController instructionsController = TextEditingController();
+
+
   // TextEditingController otpCode = TextEditingController();
 
   void disposeControllers() {

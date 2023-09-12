@@ -37,8 +37,7 @@ Widget ratingsCard({
             SizedBox(
               width: context.sizeWidth(0.6),
               child: Text(
-                productReviews.review ??
-                  '',
+                productReviews.review ?? '',
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: context.theme.textTheme.bodyMedium,

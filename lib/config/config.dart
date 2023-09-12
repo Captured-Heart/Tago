@@ -11,6 +11,7 @@ export './utils/enums/hive_keys_enums.dart';
 export './utils/enums/address_type_enums.dart';
 export './utils/enums/product_type_enums.dart';
 export './utils/enums/network_error_enums.dart';
+export './utils/enums/payment_method_type_enums.dart';
 
 //constants
 export './constants/image_constants.dart';

@@ -9,7 +9,8 @@ class WishListScreen extends ConsumerWidget {
     var cartList = ref.watch(getCartListProvider(false));
     var wishListID = wishList.valueOrNull?.map((e) => e.id).toList();
     log('wishListID: $wishListID');
-    var cartListID = cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList();
+    var cartListID =
+        cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList();
     log('cartListID: $cartListID');
     return FullScreenLoader(
       isLoading: ref.watch(cartNotifierProvider).isLoading,
@@ -38,8 +39,8 @@ class WishListScreen extends ConsumerWidget {
                   children: List.generate(data.length, (index) {
                     // var wishList = convertDynamicListToProductListModel(data)[index];
                     var wishListIndex = data[index];
-                    var isInCartAlready =
-                        checkIdenticalListsWithInt(list1: cartListID!, int: wishListIndex.id!);
+                    var isInCartAlready = checkIdenticalListsWithInt(
+                        list1: cartListID!, int: wishListIndex.id!);
 
                     log(isInCartAlready.toString());
                     return wishlistWidget(
@@ -49,17 +50,23 @@ class WishListScreen extends ConsumerWidget {
                       onAddToCart: () {
                         ref.read(cartNotifierProvider.notifier).addToCartMethod(
                           map: {
-                            ProductTypeEnums.productId.name: wishListIndex.id.toString(),
+                            ProductTypeEnums.productId.name:
+                                wishListIndex.id.toString(),
                             ProductTypeEnums.quantity.name: '1',
                           },
-                        ).whenComplete(() => ref.invalidate(getCartListProvider));
+                        ).whenComplete(
+                            () => ref.invalidate(getCartListProvider));
                       },
                       deleteFromCart: () {
-                        ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                        ref
+                            .read(cartNotifierProvider.notifier)
+                            .deleteFromCartMethod(
                           map: {
-                            ProductTypeEnums.productId.name: wishListIndex.id.toString(),
+                            ProductTypeEnums.productId.name:
+                                wishListIndex.id.toString(),
                           },
-                        ).whenComplete(() => ref.invalidate(getCartListProvider));
+                        ).whenComplete(
+                                () => ref.invalidate(getCartListProvider));
                       },
                     );
                   }),

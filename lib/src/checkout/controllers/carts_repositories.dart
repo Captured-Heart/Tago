@@ -27,3 +27,36 @@ Future<List<CartModel>> getCartMethod({
     return decodedData['message'];
   }
 }
+
+/*------------------------------------------------------------------
+             GET VOUCHER METHOD
+ -------------------------------------------------------------------*/
+Stream<VoucherModel> getVoucherMethod({
+  required String code,
+}) async* {
+  // try {
+  //post request executed
+  // /account/user/checkout/voucher?code=MT7663G
+  var url = '$voucherUrl?code=$code';
+  final Response response = await NetworkHelper.getRequestWithToken(
+    api: url,
+  );
+  log(url);
+  // decoding the response
+
+  String data = response.body;
+  var decodedData = jsonDecode(data);
+
+  //the response and error handling
+  if (response.statusCode == 200 || decodedData['success'] == true) {
+    log('get request for Categories:  $decodedData'); //
+
+    final vouchers = VoucherModel.fromJson(decodedData['data']);
+    log('get request for Search by code:  $vouchers'); //
+
+    yield vouchers;
+  }
+  else {
+    yield const VoucherModel(code: null, currency: null, amount: null);
+  }
+}

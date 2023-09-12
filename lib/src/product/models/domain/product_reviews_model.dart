@@ -24,8 +24,9 @@ class ProductReviewsModel extends Equatable {
       rating: json['rating'] as num?,
       review: json['review'] as String?,
       createdAt: json['createdAt'] as String?,
-      user:
-          json['user'] == null ? null : AccountModel.fromJson(json['user'] as Map<String, dynamic>),
+      user: json['user'] == null
+          ? null
+          : AccountModel.fromJson(json['user'] as Map<String, dynamic>),
     );
   }
 

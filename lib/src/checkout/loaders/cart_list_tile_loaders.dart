@@ -4,6 +4,7 @@ import 'package:tago/src/widgets/shimmer_widget.dart';
 Widget myCartListTileLoader(BuildContext context) {
   return shimmerWidget(
     child: Container(
+      width: context.sizeWidth(0.9),
       padding: const EdgeInsets.only(bottom: 10, top: 20),
       decoration: const BoxDecoration(
         border: Border(

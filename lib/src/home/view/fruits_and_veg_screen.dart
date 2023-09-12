@@ -9,13 +9,16 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
   });
   final String appBarTitle;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _FruitsAndVegetablesScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _FruitsAndVegetablesScreenState();
 }
 
-class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesScreen> {
+class _FruitsAndVegetablesScreenState
+    extends ConsumerState<FruitsAndVegetablesScreen> {
   //
   final ScrollController controller = ScrollController();
-  final TextEditingControllerClass editingController = TextEditingControllerClass();
+  final TextEditingControllerClass editingController =
+      TextEditingControllerClass();
   @override
   Widget build(BuildContext context) {
     final categoryByLabel = ref.watch(fetchCategoryByLabelProvider);
@@ -122,9 +125,12 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                                   context: context,
                                   isFreeDelivery: true,
                                   addToCartBTN: () {
-                                    ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                    ref
+                                        .read(cartNotifierProvider.notifier)
+                                        .addToCartMethod(
                                       map: {
-                                        ProductTypeEnums.productId.name: productModel.id.toString(),
+                                        ProductTypeEnums.productId.name:
+                                            productModel.id.toString(),
                                         ProductTypeEnums.quantity.name: '1',
                                       },
                                     );

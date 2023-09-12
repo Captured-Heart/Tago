@@ -47,7 +47,7 @@ const String getCartsUrl = '/account/user/cart';
 //CHECKOUT
 const String getAvailabilityUrl = '/account/user/checkout/availability';
 const String checkOutUrl = '/account/user/checkout';
-
+const String voucherUrl = '/account/user/checkout/voucher';
 //
 const googleAPIKey = 'AIzaSyDhKg6wsJbCyYLdjRj5m2bf5b_uUJfN8iE';
 

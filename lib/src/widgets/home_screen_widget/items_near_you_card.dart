@@ -1,6 +1,5 @@
 import 'package:tago/app.dart';
 
-
 Widget itemsNearYouCard({
   required BuildContext context,
   VoidCallback? onTap,

@@ -8,7 +8,8 @@ class SingleProductPage extends ConsumerStatefulWidget {
   final int id;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SingleProductPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SingleProductPageState();
 }
 
 class _SingleProductPageState extends ConsumerState<SingleProductPage> {
@@ -16,10 +17,10 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
   Widget build(BuildContext context) {
     final products = ref.watch(getProductsProvider(widget.id.toString()));
     // log(products.valueOrNull?.relatedProducts.toString() ?? '');
-    var productSpec =
-        convertDynamicListToProductSpecificationsModel(products.valueOrNull!.productSpecification!);
-    var relatedProducts =
-        convertDynamicListToProductListModel(products.valueOrNull?.relatedProducts ?? []);
+    var productSpec = convertDynamicListToProductSpecificationsModel(
+        products.valueOrNull!.productSpecification!);
+    var relatedProducts = convertDynamicListToProductListModel(
+        products.valueOrNull?.relatedProducts ?? []);
     var wishlist = ref.watch(fetchWishListProvider);
     var cartList = ref.watch(cartNotifierProvider);
 
@@ -64,7 +65,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 children: [
                   Expanded(
                     child: cachedNetworkImageWidget(
-                        imgUrl: products.valueOrNull?.productImages?.first['image']['url'] ??
+                        imgUrl: products.valueOrNull?.productImages
+                                ?.first['image']['url'] ??
                             noImagePlaceholderHttp,
                         height: context.sizeHeight(1),
                         width: context.sizeWidth(1)),
@@ -77,18 +79,22 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                       children: [
                     ref.watch(cartNotifierProvider).hasError
                         ? ValueListenableBuilder(
-                            valueListenable: ref.watch(valueNotifierProvider(0)),
+                            valueListenable:
+                                ref.watch(valueNotifierProvider(0)),
                             builder: (context, value, child) {
                               return Row(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   addMinusBTN(
                                     context: context,
                                     isMinus: true,
                                     onTap: () {
                                       if (value > 1) {
-                                        ref.read(valueNotifierProvider(0)).value--;
+                                        ref
+                                            .read(valueNotifierProvider(0))
+                                            .value--;
                                       }
                                     },
                                   ),
@@ -99,7 +105,9 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                   addMinusBTN(
                                     context: context,
                                     onTap: () {
-                                      ref.read(valueNotifierProvider(0)).value++;
+                                      ref
+                                          .read(valueNotifierProvider(0))
+                                          .value++;
                                     },
                                   ),
                                 ],
@@ -110,9 +118,12 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                             width: context.sizeWidth(1),
                             child: ElevatedButton(
                               onPressed: () {
-                                ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                ref
+                                    .read(cartNotifierProvider.notifier)
+                                    .addToCartMethod(
                                   map: {
-                                    ProductTypeEnums.productId.name: widget.id.toString(),
+                                    ProductTypeEnums.productId.name:
+                                        widget.id.toString(),
                                     ProductTypeEnums.quantity.name: '1',
                                   },
                                 );
@@ -123,8 +134,13 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                     TextButton.icon(
                       onPressed: () {
                         if (wishListID != true) {
-                          ref.read(postToWishListNotifierProvider.notifier).postToWishListMethod(
-                            map: {ProductTypeEnums.productId.name: widget.id.toString()},
+                          ref
+                              .read(postToWishListNotifierProvider.notifier)
+                              .postToWishListMethod(
+                            map: {
+                              ProductTypeEnums.productId.name:
+                                  widget.id.toString()
+                            },
                           );
                         }
                       },
@@ -148,14 +164,16 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               subtitle: Text(
                 products.valueOrNull?.description ??
                     'The most delicate moment requires impeccable precision. At CallToInspiration we know perfectly well that this step is crucial, which is why we have collected all the examples to ensure that the purchase is like a work of art! Get inspired!',
-                style: context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
+                style:
+                    context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
               ).padSymmetric(vertical: 10),
             ),
 
             //PRODUCT SPECIFICATIONS SECTIONS
             Container(
               decoration: BoxDecoration(
-                border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+                border: Border.all(
+                    width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
@@ -210,7 +228,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               data: (data) {
                 return Container(
                   decoration: BoxDecoration(
-                    border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+                    border: Border.all(
+                        width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
@@ -218,7 +237,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                     children: [
                       //product specifications
                       Container(
-                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
                         decoration: const BoxDecoration(
                             border: Border(
                           bottom: BorderSide(width: 0.1),
@@ -251,7 +271,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                       //ratings card
                       ...List.generate(
                         data.productReview!.length > 2
-                            ? data.productReview!.length - (data.productReview!.length - 2)
+                            ? data.productReview!.length -
+                                (data.productReview!.length - 2)
                             : data.productReview!.length,
                         // data.productReview?.length  ?? 1,
                         (index) => ratingsCard(
@@ -315,7 +336,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
 
                       //TODO: REPLACE THE [0] WITH INDEX
                       context: context,
-                      image: relatedProducts[0].productImages?.last['image']['url'] ??
+                      image: relatedProducts[0].productImages?.last['image']
+                              ['url'] ??
                           noImagePlaceholderHttp,
                       onTap: () {
                         // navBarPush(
@@ -396,7 +418,10 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                     data: (data) {
                       var prices = data
                           .map((e) => e.product?.amount)
-                          .fold(0, (previousValue, element) => previousValue + element!)
+                          .fold(
+                              0,
+                              (previousValue, element) =>
+                                  previousValue + element!)
                           .toString();
 
                       return Column(
@@ -432,7 +457,9 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                 ref: ref,
                                 cartModel: cartModel,
                                 onDelete: () {
-                                  ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                                  ref
+                                      .read(cartNotifierProvider.notifier)
+                                      .deleteFromCartMethod(
                                     map: {
                                       ProductTypeEnums.productId.name:
                                           cartModel.product!.id.toString(),
@@ -456,7 +483,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                               ).padOnly(top: 30),
                               TextButton(
                                 onPressed: () {},
-                                child: const Text(TextConstant.continueShopping),
+                                child:
+                                    const Text(TextConstant.continueShopping),
                               )
                             ],
                           ).padOnly(bottom: 10)

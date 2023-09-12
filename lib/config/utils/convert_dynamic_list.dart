@@ -50,7 +50,8 @@ List<ProductSpecificationsModel> convertDynamicListToProductSpecificationsModel(
   List<ProductSpecificationsModel> modelList = [];
 
   for (var dynamicItem in dynamicList ?? []) {
-    ProductSpecificationsModel modelInstance = ProductSpecificationsModel.fromJson(dynamicItem);
+    ProductSpecificationsModel modelInstance =
+        ProductSpecificationsModel.fromJson(dynamicItem);
 
     modelList.add(modelInstance);
   }
@@ -64,7 +65,8 @@ List<ProductReviewsModel> convertDynamicListToProductReviewsModel(
   List<ProductReviewsModel> modelList = [];
 
   for (var dynamicItem in dynamicList) {
-    ProductReviewsModel modelInstance = ProductReviewsModel.fromJson(dynamicItem);
+    ProductReviewsModel modelInstance =
+        ProductReviewsModel.fromJson(dynamicItem);
 
     modelList.add(modelInstance);
   }
