@@ -23,3 +23,6 @@ export './account_widget/account_widget.dart';
 
 //CHECKOUT WIDGET
 export './checkout_widget/checkout_widget.dart';
+
+// SINGLE PRODUCT WIDGET
+export './single_product_widget/single_product_widget.dart';

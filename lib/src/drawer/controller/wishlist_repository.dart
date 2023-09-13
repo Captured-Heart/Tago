@@ -4,11 +4,12 @@ import 'package:tago/app.dart';
               FETCH WISHLIST METHOD
  -------------------------------------------------------------------*/
 
-Future<List<ProductsModel>> fetchWishListMethod() async {
+Future<List<ProductsModel>> fetchWishListMethod({
+  bool showSnackBar = true,
+}) async {
   // try {
   //post request executed
-  final Response response =
-      await NetworkHelper.getRequest(api: getWishListUrl, headers: {
+  final Response response = await NetworkHelper.getRequest(api: getWishListUrl, headers: {
     'Authorization': HiveHelper().getData(HiveKeys.token.name),
   });
 
@@ -28,7 +29,7 @@ Future<List<ProductsModel>> fetchWishListMethod() async {
         .map((e) => ProductsModel.fromJson(e))
         .toList();
 
-    showScaffoldSnackBarMessage(decodedData['message']);
+    showSnackBar ? showScaffoldSnackBarMessage(decodedData['message']) : null;
 
     return wishList;
   } else {

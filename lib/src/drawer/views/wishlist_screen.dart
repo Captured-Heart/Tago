@@ -5,7 +5,7 @@ class WishListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final wishList = ref.watch(fetchWishListProvider);
+    final wishList = ref.watch(fetchWishListProvider(false));
     var cartList = ref.watch(getCartListProvider(false));
     var wishListID = wishList.valueOrNull?.map((e) => e.id).toList();
     log('wishListID: $wishListID');

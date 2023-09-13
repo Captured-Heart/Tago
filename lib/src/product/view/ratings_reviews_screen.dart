@@ -1,16 +1,18 @@
 import 'package:tago/app.dart';
 
 class RatingsAndReviewsScreen extends ConsumerStatefulWidget {
-  const RatingsAndReviewsScreen({super.key});
+  final int id;
+  const RatingsAndReviewsScreen({super.key, required this.id});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RatingsAndReviewsState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RatingsAndReviewsState();
 }
 
 class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
   @override
   Widget build(BuildContext context) {
+    final products = ref.watch(getProductsProvider(widget.id.toString()));
+
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -51,8 +53,7 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                     )
                   ].rowInPadding(10)),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: 0.1,
@@ -100,34 +101,42 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
 
           // user comment
           Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      '${TextConstant.userComments}(15)',
-                      style: context.theme.textTheme.bodyLarge,
-                      textScaleFactor: 1.15,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                '${TextConstant.userComments}(${products.valueOrNull?.productReview?.length})',
+                style: context.theme.textTheme.bodyLarge,
+                textScaleFactor: 1.15,
+              ),
+              products.when(
+                data: (data) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 0.1,
-                            strokeAlign: BorderSide.strokeAlignInside),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // ratingsCard(context),
-                          // ratingsCard(context),
-                          // ratingsCard(context),
-                          // ratingsCard(context),
-                          // ratingsCard(context),
-                          // ratingsCard(context),
-                        ],
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ...List.generate(
+                          data.productReview?.length ?? 1,
+                          (index) => ratingsCard(
+                            context: context,
+                            productsModel: products,
+                            index: index,
+                          ),
+                        )
+                      ],
                     ),
-                  ].columnInPadding(15))
-              .padSymmetric(vertical: 20)
+                  );
+                },
+                error: (err, _) => Text(err.toString()),
+                loading: () => const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+              ),
+            ].columnInPadding(15),
+          ).padSymmetric(vertical: 20)
         ],
       ),
     );

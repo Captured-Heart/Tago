@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/product/models/domain/product_specifications_model.dart';
 
 class SingleProductPage extends ConsumerStatefulWidget {
   const SingleProductPage({
@@ -15,17 +16,16 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
   @override
   Widget build(BuildContext context) {
     final products = ref.watch(getProductsProvider(widget.id.toString()));
-    // log(products.valueOrNull?.relatedProducts.toString() ?? '');
-    var productSpec =
-        convertDynamicListToProductSpecificationsModel(products.valueOrNull!.productSpecification!);
-    var relatedProducts =
-        convertDynamicListToProductListModel(products.valueOrNull?.relatedProducts ?? []);
-    var wishlist = ref.watch(fetchWishListProvider);
-    var cartList = ref.watch(cartNotifierProvider);
 
-    var wishListID = wishlist.value!.map((e) => e.id).contains(widget.id);
-    log(cartList.toString());
+    var wishlist = ref.watch(fetchWishListProvider(false));
+    var cartList = ref.watch(getCartListProvider(false));
+    var wishListID = wishlist.value?.map((e) => e.id).contains(widget.id);
 
+    var cartListID =
+        cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList().contains(widget.id);
+    // var wishListID = checkIdenticalListsWithInt(list1: wishListList, int: widget.id);
+    final productSpecs = ref.watch(productSpecificationsProvider);
+    final relatedProducts = ref.watch(relatedProductsProvider);
     return FullScreenLoader(
       isLoading: ref.read(postToWishListNotifierProvider).isLoading ||
           ref.watch(cartNotifierProvider).isLoading,
@@ -46,7 +46,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                   topRight: Radius.circular(20),
                 )),
                 builder: (context) {
-                  return miniCartModalWIdget();
+                  return singleProductMiniCartModalWidget();
                 },
               );
             },
@@ -64,18 +64,17 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 children: [
                   Expanded(
                     child: cachedNetworkImageWidget(
-                        imgUrl: products.valueOrNull?.productImages?.first['image']['url'] ??
-                            noImagePlaceholderHttp,
+                        imgUrl: products.valueOrNull?.productImages?.first['image']['url'],
                         height: context.sizeHeight(1),
                         width: context.sizeWidth(1)),
                   ),
-                  singlePageProductListTile(
+                  singleProductListTileWidget(
                     context: context,
                     products: products,
                   ).padSymmetric(horizontal: 10, vertical: 5),
                   Column(
                       children: [
-                    ref.watch(cartNotifierProvider).hasError
+                    cartListID == true
                         ? ValueListenableBuilder(
                             valueListenable: ref.watch(valueNotifierProvider(0)),
                             builder: (context, value, child) {
@@ -115,7 +114,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                     ProductTypeEnums.productId.name: widget.id.toString(),
                                     ProductTypeEnums.quantity.name: '1',
                                   },
-                                );
+                                ).whenComplete(() => ref.invalidate(getCartListProvider(false)));
                               },
                               child: const Text(TextConstant.addtocart),
                             ),
@@ -147,122 +146,18 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               ),
               subtitle: Text(
                 products.valueOrNull?.description ??
-                    'The most delicate moment requires impeccable precision. At CallToInspiration we know perfectly well that this step is crucial, which is why we have collected all the examples to ensure that the purchase is like a work of art! Get inspired!',
+                    'The most delicate moment requires impeccable precision.',
                 style: context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
               ).padSymmetric(vertical: 10),
             ),
 
             //PRODUCT SPECIFICATIONS SECTIONS
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  //product specifications
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: const BoxDecoration(
-                        border: Border(
-                      bottom: BorderSide(width: 0.1),
-                    )),
-                    child: Text(
-                      TextConstant.productSpecifications,
-                      style: context.theme.textTheme.titleMedium,
-                    ),
-                  ),
-
-                  //weight
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: const BoxDecoration(
-                        border: Border(
-                      bottom: BorderSide(width: 0.1),
-                    )),
-                    child: Text(
-                      productSpec.first.title ?? 'Weight',
-                      style: context.theme.textTheme.bodyLarge,
-                    ),
-                  ),
-                  //SKU
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          TextConstant.sku,
-                          style: context.theme.textTheme.bodyLarge,
-                        ),
-                        const Text('1FDITDKCTU34565hj')
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ).padOnly(bottom: 20),
+            singleProductSpecificationsWidget(context, productSpecs).padOnly(bottom: 20),
 
             // RATINGS AND REVIEWS
             products.when(
               data: (data) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      //product specifications
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                          bottom: BorderSide(width: 0.1),
-                        )),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${TextConstant.ratingandReviews} (${data.productReview?.length})',
-                              style: context.theme.textTheme.titleMedium,
-                            ),
-                            TextButton(
-                                onPressed: () {
-                                  push(
-                                    context,
-                                    const RatingsAndReviewsScreen(),
-                                  );
-                                  // navBarPush(
-                                  //   context: context,
-                                  //   screen: const RatingsAndReviewsScreen(),
-                                  //   withNavBar: false,
-                                  // );
-                                },
-                                child: const Text(TextConstant.seeall))
-                          ],
-                        ),
-                      ),
-
-                      //ratings card
-                      ...List.generate(
-                        data.productReview!.length > 2
-                            ? data.productReview!.length - (data.productReview!.length - 2)
-                            : data.productReview!.length,
-                        // data.productReview?.length  ?? 1,
-                        (index) => ratingsCard(
-                          context: context,
-                          productsModel: products,
-                          index: index,
-                        ),
-                      )
-                    ],
-                  ),
-                );
+                return singleProductRatingsAndReviewsWidget(data, context, products);
               },
               error: (error, _) {
                 return Text(error.toString());
@@ -280,14 +175,14 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
             SizedBox(
               height: 220,
               child: ListView.builder(
-                itemCount: relatedProducts.length,
+                itemCount: products.valueOrNull?.relatedProducts?.length,
                 shrinkWrap: false,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return SizedBox(
                     width: context.sizeWidth(0.35),
-                    child: singlePageSimilarItemCard(
+                    child: singleProductSimilarItemCardWidget(
                       // index: index,
                       productsModel: relatedProducts[index],
 
@@ -316,213 +211,118 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     );
   }
 
-  Widget singlePageSimilarItemCard({
-    // required int index,
-    required ProductsModel? productsModel,
-    required BuildContext context,
-    VoidCallback? onTap,
-    required String image,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
+  Container singleProductSpecificationsWidget(
+      BuildContext context, List<ProductSpecificationsModel>? productSpec) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Card(
-            elevation: 0.3,
-            child: cachedNetworkImageWidget(
-              imgUrl: image,
-              height: 140,
+          //product specifications
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+                border: Border(
+              bottom: BorderSide(width: 0.1),
+            )),
+            child: Text(
+              TextConstant.productSpecifications,
+              style: context.theme.textTheme.titleMedium,
             ),
           ),
-          Text(
-            productsModel?.label ?? '',
-            textAlign: TextAlign.start,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: context.theme.textTheme.labelMedium?.copyWith(
-              fontSize: 12,
-              fontWeight: AppFontWeight.w500,
-              fontFamily: TextConstant.fontFamilyNormal,
+
+          //weight
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+                border: Border(
+              bottom: BorderSide(width: 0.1),
+            )),
+
+            //TODO: THE ERROR OF BAD STATE IS HERE
+            child: Text(
+              // ignore: sdk_version_since
+              productSpec?.firstOrNull?.title ?? 'Weight',
+              style: context.theme.textTheme.bodyLarge,
             ),
-          ).padSymmetric(vertical: 8),
-          Text(
-            '${TextConstant.nairaSign} ${productsModel?.amount.toString().toCommaPrices() ?? '1000'}',
-            style: context.theme.textTheme.titleMedium?.copyWith(
-              fontFamily: TextConstant.fontFamilyNormal,
-              fontSize: 12,
+          ),
+          //SKU
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  TextConstant.sku,
+                  style: context.theme.textTheme.bodyLarge,
+                ),
+                const Text('1FDITDKCTU34565hj')
+              ],
             ),
-            textAlign: TextAlign.start,
-          )
+          ),
         ],
       ),
     );
   }
 
-  Consumer miniCartModalWIdget() {
-    ScrollController controller = ScrollController();
-
-    return Consumer(
-      builder: (context, ref, _) {
-        final cartList = ref.watch(getCartListProvider(true));
-
-        return FullScreenLoader(
-          isLoading: ref.watch(cartNotifierProvider).isLoading,
-          child: Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: cartList
-                .when(
-                  data: (data) {
-                    var prices = data
-                        .map((e) => e.product?.amount)
-                        .fold(0, (previousValue, element) => previousValue + element!)
-                        .toString();
-
-                    return ListView(
-                      shrinkWrap: true,
-                      controller: controller,
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      // mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListTile(
-                          title: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(TextConstant.myCart),
-                              GestureDetector(
-                                onTap: () {
-                                  pop(context);
-                                },
-                                child: const Icon(Icons.close),
-                              )
-                            ],
-                          ),
-                          subtitle: Text(
-                            '${TextConstant.items} (${data.length})',
-                            style: context.theme.textTheme.bodyLarge,
-                          ),
-                        ),
-
-                        ListView.builder(
-                          itemCount: data.length,
-                          shrinkWrap: true,
-                          controller: controller,
-                          itemBuilder: (context, index) {
-                            var cartModel = data[index];
-                            return myCartListTile(
-                              context: context,
-                              ref: ref,
-                              cartModel: cartModel,
-                              onDelete: () {
-                                ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
-                                  map: {
-                                    ProductTypeEnums.productId.name:
-                                        cartModel.product!.id.toString(),
-                                  },
-                                ).whenComplete(
-                                  () => ref.invalidate(getCartListProvider),
-                                );
-                              },
-                            );
-                          },
-                        ),
-
-                        //
-                        Column(
-                          children: [
-                            SizedBox(
-                              width: context.sizeWidth(1),
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: Text(
-                                    '${TextConstant.checkout} ( ${TextConstant.nairaSign}${prices.toCommaPrices()} )'),
-                              ),
-                            ).padOnly(top: 30),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text(TextConstant.continueShopping),
-                            )
-                          ],
-                        ).padOnly(top: 10)
-                      ],
-                    );
-                  },
-                  error: (error, _) => Center(
-                    child: Text(error.toString()),
-                  ),
-                  loading: () => SizedBox(
-                    height: context.sizeHeight(0.6),
-                    child: const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    ),
-                  ),
-                )
-                .padSymmetric(horizontal: 10, vertical: 5),
-          ),
-        );
-      },
-    );
-  }
-
-  Column singlePageProductListTile({
-    required BuildContext context,
-    required AsyncValue<ProductsModel>? products,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        //title
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-                child: Text(
-              products!.valueOrNull?.label?.toTitleCase() ?? '',
-              style: context.theme.textTheme.labelMedium,
-            ).padOnly(right: 15)),
-            Container(
-              margin: EdgeInsets.zero,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: TagoDark.orange,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                'save ${products.valueOrNull?.savedPerc}%',
-                style: context.theme.textTheme.labelLarge?.copyWith(
-                  fontSize: 12,
+  Container singleProductRatingsAndReviewsWidget(
+      ProductsModel data, BuildContext context, AsyncValue<ProductsModel> products) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          //product specifications
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+            decoration: const BoxDecoration(
+                border: Border(
+              bottom: BorderSide(width: 0.1),
+            )),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${TextConstant.ratingandReviews} (${data.productReview?.length})',
+                  style: context.theme.textTheme.titleMedium,
                 ),
-              ),
-            )
-          ],
-        ),
+                TextButton(
+                    onPressed: () {
+                      navBarPush(
+                        context: context,
+                        screen: RatingsAndReviewsScreen(
+                          id: widget.id,
+                        ),
+                        withNavBar: false,
+                      );
+                    },
+                    child: const Text(TextConstant.seeall))
+              ],
+            ),
+          ),
 
-        //subtitle
-        Text(
-          TextConstant.nairaSign +
-              double.parse(products.valueOrNull?.amount.toString() ?? '0')
-                  .toString()
-                  .toCommaPrices(),
-          style: context.theme.textTheme.titleMedium,
-        ).padOnly(left: 10),
-
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Icon(
-              Icons.star,
-              color: TagoDark.orange,
-            ).padOnly(right: 6),
-            const Text('3.5')
-          ],
-        )
-      ].columnInPadding(5),
+          //ratings card
+          ...List.generate(
+            data.productReview!.length > 2
+                ? data.productReview!.length - (data.productReview!.length - 2)
+                : data.productReview!.length,
+            // data.productReview?.length  ?? 1,
+            (index) => ratingsCard(
+              context: context,
+              productsModel: products,
+              index: index,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

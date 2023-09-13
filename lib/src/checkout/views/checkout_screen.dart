@@ -165,15 +165,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         scheduleForTime: '',
                         items: [
                           PlaceOrderModel(
-                            productId: '4',
-                            //  widget.cartModel.product!.id.toString(),
+                            productId: widget.cartModel.product!.id.toString(),
                             quantity: '1',
                           ).toJson(),
-                          PlaceOrderModel(
-                            productId: '8',
-                            //  widget.cartModel.product!.id.toString(),
-                            quantity: '1',
-                          ).toJson(),
+                          // PlaceOrderModel(
+                          //   productId: '8',
+                          //   //  widget.cartModel.product!.id.toString(),
+                          //   quantity: '1',
+                          // ).toJson(),
                         ].toString(),
                       ).toJson(),
                     );
