@@ -12,12 +12,20 @@ final getAvailabileTimesProvider =
 
 //
 final getDeliveryFeeProvider = FutureProvider.autoDispose.family<String, int>((ref, amount) async {
-  final addressId = ref.watch(getAccountInfoProvider).value?.id;
-  return getDeliveryFeeMethod(addressId: addressId ?? 'dd', totalAmount: amount.toString());
+  final addressId = ref.watch(addressIdProvider);
+  return getDeliveryFeeMethod(
+    addressId: addressId,
+    totalAmount: amount.toString(),
+  );
 });
 
 //
 final getVoucherStreamProvider =
     StreamProvider.autoDispose.family<VoucherModel, String>((ref, code) async* {
   yield* getVoucherMethod(code: code);
+});
+
+//
+final checkoutNotifierProvider = StateNotifierProvider<CheckOutNotifier, AsyncValue>((ref) {
+  return CheckOutNotifier();
 });

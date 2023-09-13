@@ -11,3 +11,5 @@ export './controllers/checkout_providers.dart';
 export './loaders/cart_list_tile_loaders.dart';
 export './models/domain/voucher_model.dart';
 export './models/domain/place_order_item_models.dart';
+export './models/domain/checkout_model.dart';
+export './controllers/checkout_notifier.dart';

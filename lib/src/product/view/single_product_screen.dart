@@ -8,8 +8,7 @@ class SingleProductPage extends ConsumerStatefulWidget {
   final int id;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SingleProductPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SingleProductPageState();
 }
 
 class _SingleProductPageState extends ConsumerState<SingleProductPage> {
@@ -17,10 +16,10 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
   Widget build(BuildContext context) {
     final products = ref.watch(getProductsProvider(widget.id.toString()));
     // log(products.valueOrNull?.relatedProducts.toString() ?? '');
-    var productSpec = convertDynamicListToProductSpecificationsModel(
-        products.valueOrNull!.productSpecification!);
-    var relatedProducts = convertDynamicListToProductListModel(
-        products.valueOrNull?.relatedProducts ?? []);
+    var productSpec =
+        convertDynamicListToProductSpecificationsModel(products.valueOrNull!.productSpecification!);
+    var relatedProducts =
+        convertDynamicListToProductListModel(products.valueOrNull?.relatedProducts ?? []);
     var wishlist = ref.watch(fetchWishListProvider);
     var cartList = ref.watch(cartNotifierProvider);
 
@@ -65,8 +64,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 children: [
                   Expanded(
                     child: cachedNetworkImageWidget(
-                        imgUrl: products.valueOrNull?.productImages
-                                ?.first['image']['url'] ??
+                        imgUrl: products.valueOrNull?.productImages?.first['image']['url'] ??
                             noImagePlaceholderHttp,
                         height: context.sizeHeight(1),
                         width: context.sizeWidth(1)),
@@ -79,22 +77,18 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                       children: [
                     ref.watch(cartNotifierProvider).hasError
                         ? ValueListenableBuilder(
-                            valueListenable:
-                                ref.watch(valueNotifierProvider(0)),
+                            valueListenable: ref.watch(valueNotifierProvider(0)),
                             builder: (context, value, child) {
                               return Row(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   addMinusBTN(
                                     context: context,
                                     isMinus: true,
                                     onTap: () {
                                       if (value > 1) {
-                                        ref
-                                            .read(valueNotifierProvider(0))
-                                            .value--;
+                                        ref.read(valueNotifierProvider(0)).value--;
                                       }
                                     },
                                   ),
@@ -105,9 +99,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                   addMinusBTN(
                                     context: context,
                                     onTap: () {
-                                      ref
-                                          .read(valueNotifierProvider(0))
-                                          .value++;
+                                      ref.read(valueNotifierProvider(0)).value++;
                                     },
                                   ),
                                 ],
@@ -118,12 +110,9 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                             width: context.sizeWidth(1),
                             child: ElevatedButton(
                               onPressed: () {
-                                ref
-                                    .read(cartNotifierProvider.notifier)
-                                    .addToCartMethod(
+                                ref.read(cartNotifierProvider.notifier).addToCartMethod(
                                   map: {
-                                    ProductTypeEnums.productId.name:
-                                        widget.id.toString(),
+                                    ProductTypeEnums.productId.name: widget.id.toString(),
                                     ProductTypeEnums.quantity.name: '1',
                                   },
                                 );
@@ -134,13 +123,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                     TextButton.icon(
                       onPressed: () {
                         if (wishListID != true) {
-                          ref
-                              .read(postToWishListNotifierProvider.notifier)
-                              .postToWishListMethod(
-                            map: {
-                              ProductTypeEnums.productId.name:
-                                  widget.id.toString()
-                            },
+                          ref.read(postToWishListNotifierProvider.notifier).postToWishListMethod(
+                            map: {ProductTypeEnums.productId.name: widget.id.toString()},
                           );
                         }
                       },
@@ -164,16 +148,14 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               subtitle: Text(
                 products.valueOrNull?.description ??
                     'The most delicate moment requires impeccable precision. At CallToInspiration we know perfectly well that this step is crucial, which is why we have collected all the examples to ensure that the purchase is like a work of art! Get inspired!',
-                style:
-                    context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
+                style: context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
               ).padSymmetric(vertical: 10),
             ),
 
             //PRODUCT SPECIFICATIONS SECTIONS
             Container(
               decoration: BoxDecoration(
-                border: Border.all(
-                    width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+                border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
@@ -228,8 +210,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               data: (data) {
                 return Container(
                   decoration: BoxDecoration(
-                    border: Border.all(
-                        width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+                    border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
@@ -237,8 +218,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                     children: [
                       //product specifications
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                         decoration: const BoxDecoration(
                             border: Border(
                           bottom: BorderSide(width: 0.1),
@@ -271,8 +251,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                       //ratings card
                       ...List.generate(
                         data.productReview!.length > 2
-                            ? data.productReview!.length -
-                                (data.productReview!.length - 2)
+                            ? data.productReview!.length - (data.productReview!.length - 2)
                             : data.productReview!.length,
                         // data.productReview?.length  ?? 1,
                         (index) => ratingsCard(
@@ -298,28 +277,6 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               ),
             ),
 
-            // ...List.generate(
-            //   products.value?.relatedProducts?.length ?? 1,
-            //   (index) => SizedBox(
-            //     width: context.sizeWidth(0.35),
-            //     child: itemsNearYouCard(
-            //       // index: index,
-            //       productsModel: relatedProducts[index],
-            //       context: context,
-            //       image: noImagePlaceholderHttp,
-            //       onTap: () {
-            //         // navBarPush(
-            //         //   context: context,
-            //         //   screen: SingleProductPage(
-            //         //     appBarTitle: drinkTitle[index],
-            //         //     image: drinkImages[index],
-            //         //   ),
-            //         //   withNavBar: false,
-            //         // );
-            //       },
-            //     ),
-            //   ),
-            // ),
             SizedBox(
               height: 220,
               child: ListView.builder(
@@ -330,14 +287,13 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 itemBuilder: (context, index) {
                   return SizedBox(
                     width: context.sizeWidth(0.35),
-                    child: singlePageCard(
+                    child: singlePageSimilarItemCard(
                       // index: index,
                       productsModel: relatedProducts[index],
 
                       //TODO: REPLACE THE [0] WITH INDEX
                       context: context,
-                      image: relatedProducts[0].productImages?.last['image']
-                              ['url'] ??
+                      image: relatedProducts[0].productImages?.last['image']['url'] ??
                           noImagePlaceholderHttp,
                       onTap: () {
                         // navBarPush(
@@ -360,7 +316,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     );
   }
 
-  Widget singlePageCard({
+  Widget singlePageSimilarItemCard({
     // required int index,
     required ProductsModel? productsModel,
     required BuildContext context,
@@ -405,6 +361,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
   }
 
   Consumer miniCartModalWIdget() {
+    ScrollController controller = ScrollController();
+
     return Consumer(
       builder: (context, ref, _) {
         final cartList = ref.watch(getCartListProvider(true));
@@ -412,96 +370,97 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
         return FullScreenLoader(
           isLoading: ref.watch(cartNotifierProvider).isLoading,
           child: Container(
-              margin: const EdgeInsets.only(top: 20),
-              child: cartList
-                  .when(
-                    data: (data) {
-                      var prices = data
-                          .map((e) => e.product?.amount)
-                          .fold(
-                              0,
-                              (previousValue, element) =>
-                                  previousValue + element!)
-                          .toString();
+            margin: const EdgeInsets.only(top: 20),
+            child: cartList
+                .when(
+                  data: (data) {
+                    var prices = data
+                        .map((e) => e.product?.amount)
+                        .fold(0, (previousValue, element) => previousValue + element!)
+                        .toString();
 
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ListTile(
-                            title: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(TextConstant.myCart),
-                                GestureDetector(
-                                  onTap: () {
-                                    pop(context);
-                                  },
-                                  child: const Icon(Icons.close),
-                                )
-                              ],
-                            ),
-                            subtitle: Text(
-                              '${TextConstant.items} (${data.length})',
-                              style: context.theme.textTheme.bodyLarge,
-                            ),
-                          ),
-                          ListView.builder(
-                            itemCount: data.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              var cartModel = data[index];
-                              return myCartListTile(
-                                context: context,
-                                ref: ref,
-                                cartModel: cartModel,
-                                onDelete: () {
-                                  ref
-                                      .read(cartNotifierProvider.notifier)
-                                      .deleteFromCartMethod(
-                                    map: {
-                                      ProductTypeEnums.productId.name:
-                                          cartModel.product!.id.toString(),
-                                    },
-                                  ).whenComplete(
-                                    () => ref.invalidate(getCartListProvider),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                          Column(
+                    return ListView(
+                      shrinkWrap: true,
+                      controller: controller,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          title: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                width: context.sizeWidth(1),
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                      '${TextConstant.checkout} ( ${TextConstant.nairaSign}${prices.toCommaPrices()} )'),
-                                ),
-                              ).padOnly(top: 30),
-                              TextButton(
-                                onPressed: () {},
-                                child:
-                                    const Text(TextConstant.continueShopping),
+                              const Text(TextConstant.myCart),
+                              GestureDetector(
+                                onTap: () {
+                                  pop(context);
+                                },
+                                child: const Icon(Icons.close),
                               )
                             ],
-                          ).padOnly(bottom: 10)
-                        ],
-                      );
-                    },
-                    error: (error, _) => Center(
-                      child: Text(error.toString()),
+                          ),
+                          subtitle: Text(
+                            '${TextConstant.items} (${data.length})',
+                            style: context.theme.textTheme.bodyLarge,
+                          ),
+                        ),
+
+                        ListView.builder(
+                          itemCount: data.length,
+                          shrinkWrap: true,
+                          controller: controller,
+                          itemBuilder: (context, index) {
+                            var cartModel = data[index];
+                            return myCartListTile(
+                              context: context,
+                              ref: ref,
+                              cartModel: cartModel,
+                              onDelete: () {
+                                ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                                  map: {
+                                    ProductTypeEnums.productId.name:
+                                        cartModel.product!.id.toString(),
+                                  },
+                                ).whenComplete(
+                                  () => ref.invalidate(getCartListProvider),
+                                );
+                              },
+                            );
+                          },
+                        ),
+
+                        //
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: context.sizeWidth(1),
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                child: Text(
+                                    '${TextConstant.checkout} ( ${TextConstant.nairaSign}${prices.toCommaPrices()} )'),
+                              ),
+                            ).padOnly(top: 30),
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text(TextConstant.continueShopping),
+                            )
+                          ],
+                        ).padOnly(top: 10)
+                      ],
+                    );
+                  },
+                  error: (error, _) => Center(
+                    child: Text(error.toString()),
+                  ),
+                  loading: () => SizedBox(
+                    height: context.sizeHeight(0.6),
+                    child: const Center(
+                      child: CircularProgressIndicator.adaptive(),
                     ),
-                    loading: () => SizedBox(
-                      height: context.sizeHeight(0.6),
-                      child: const Center(
-                        child: CircularProgressIndicator.adaptive(),
-                      ),
-                    ),
-                  )
-                  .padSymmetric(horizontal: 10, vertical: 5)),
+                  ),
+                )
+                .padSymmetric(horizontal: 10, vertical: 5),
+          ),
         );
       },
     );

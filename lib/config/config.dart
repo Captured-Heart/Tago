@@ -3,6 +3,7 @@ export './utils/convert_dynamic_list.dart';
 export './utils/hive_local_storage.dart';
 export './utils/navigation.dart';
 export './utils/dialogs.dart';
+export './utils/date_formatter.dart';
 
 // enums
 export './utils/enums/auth_error_enums.dart';

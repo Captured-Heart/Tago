@@ -2,27 +2,27 @@
 
 import 'package:tago/app.dart';
 
+final addressIdProvider = StateProvider<String>((ref) {
+  return '';
+});
 /*------------------------------------------------------------------
                   GET ACCOUNT ADDRESS PROVIDER
  -------------------------------------------------------------------*/
-final getAccountAddressProvider =
-    FutureProvider.autoDispose<List<AddressModel>>((ref) async {
+final getAccountAddressProvider = FutureProvider.autoDispose<List<AddressModel>>((ref) async {
   return getAddressMethod();
 });
 
 /*------------------------------------------------------------------
                   GET ACCOUNT  PROVIDER
  -------------------------------------------------------------------*/
-final getAccountInfoProvider =
-    FutureProvider.autoDispose<AccountModel>((ref) async {
-  return getAccountInfoMethod();
+final getAccountInfoProvider = FutureProvider.autoDispose<AccountModel>((ref) async {
+  return getAccountInfoMethod(ref);
 });
 
 /*------------------------------------------------------------------
                  ACCOUNT ADDRESS STATE NOTIFIER PROVIDER
  -------------------------------------------------------------------*/
-final accountAddressProvider =
-    StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
+final accountAddressProvider = StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
   return AccountAddressNotifier();
 });
 
@@ -34,7 +34,7 @@ class AccountAddressNotifier extends StateNotifier<AsyncValue> {
 /*------------------------------------------------------------------
               ADD ADDRESS METHOD
  -------------------------------------------------------------------*/
-  Future<List<AddressModel>> addAddressMethod({
+  Future<String> addAddressMethod({
     required Map<String, dynamic> map,
     required BuildContext context,
     required WidgetRef ref,

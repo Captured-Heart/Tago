@@ -18,8 +18,12 @@ Future<List<CartModel>> getCartMethod({
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true) {
-    showSnackBar ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3) : null;
-    final addressList = (decodedData['data'] as List).map((e) => CartModel.fromJson(e)).toList();
+    showSnackBar
+        ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3)
+        : null;
+    final addressList = (decodedData['data'] as List)
+        .map((e) => CartModel.fromJson(e))
+        .toList();
     // log('get request for cart model:  ${decodedData['data']}'); //
 
     return addressList;
@@ -41,7 +45,7 @@ Stream<VoucherModel> getVoucherMethod({
   final Response response = await NetworkHelper.getRequestWithToken(
     api: url,
   );
-  log(url);
+  // log(url);
   // decoding the response
 
   String data = response.body;
@@ -55,8 +59,7 @@ Stream<VoucherModel> getVoucherMethod({
     log('get request for Search by code:  $vouchers'); //
 
     yield vouchers;
-  }
-  else {
+  } else {
     yield const VoucherModel(code: null, currency: null, amount: null);
   }
 }

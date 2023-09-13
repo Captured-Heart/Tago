@@ -32,7 +32,8 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                 itemCount: data.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  List<bool> checkBoxValues = List.generate(data.length, (index) => false);
+                  List<bool> checkBoxValues =
+                      List.generate(data.length, (index) => false);
 
                   var cartModel = data[index];
                   return myCartListTile(
@@ -43,7 +44,9 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                       // log(value.toString());
                       setState(() {
                         checkBoxValues[index] = value ?? false;
-                        ref.read(checkCartListProvider.notifier).update((state) => checkBoxValues);
+                        ref
+                            .read(checkCartListProvider.notifier)
+                            .update((state) => checkBoxValues);
                         // checkBoxValues.add(value);
                         checkBoxValueList.add(value ?? false);
                       });
@@ -60,9 +63,12 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                     ref: ref,
                     cartModel: cartModel,
                     onDelete: () {
-                      ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                      ref
+                          .read(cartNotifierProvider.notifier)
+                          .deleteFromCartMethod(
                         map: {
-                          ProductTypeEnums.productId.name: cartModel.product!.id.toString(),
+                          ProductTypeEnums.productId.name:
+                              cartModel.product!.id.toString(),
                         },
                       ).whenComplete(
                         () => ref.invalidate(getCartListProvider),

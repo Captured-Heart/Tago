@@ -20,3 +20,6 @@ export './rider_widget/rider_widget.dart';
 
 //ACCOUNT WIDGET
 export './account_widget/account_widget.dart';
+
+//CHECKOUT WIDGET
+export './checkout_widget/checkout_widget.dart';

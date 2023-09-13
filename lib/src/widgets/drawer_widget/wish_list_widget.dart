@@ -9,6 +9,7 @@ Widget wishlistWidget({
 }) {
   return Container(
     padding: const EdgeInsets.only(bottom: 10, top: 20),
+    width: context.sizeWidth(0.9),
     decoration: const BoxDecoration(
       border: Border(
         bottom: BorderSide(width: 0.1),

@@ -23,7 +23,7 @@ Future<List<CategoriesModel>> fetchCategoriesMethod() async {
     final categoriesList = (decodedData['data']['categories'] as List)
         .map((e) => CategoriesModel.fromJson(e))
         .toList();
-    log('get request for Categories:  $categoriesList'); //
+    // log('get request for Categories:  $categoriesList'); //
 
     return categoriesList;
   } else {
@@ -54,7 +54,7 @@ Future<List<ProductsModel>> fetchCategoriesByLabel(String label) async {
     final productList = (decodedData['data']['products'] as List)
         .map((e) => ProductsModel.fromJson(e))
         .toList();
-    log('get request for Categories by label:  $productList'); //
+    // log('get request for Categories by label:  $productList'); //
 
     return productList;
   } else {

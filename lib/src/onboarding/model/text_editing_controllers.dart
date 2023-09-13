@@ -19,7 +19,6 @@ class TextEditingControllerClass {
   TextEditingController voucherController = TextEditingController();
   TextEditingController instructionsController = TextEditingController();
 
-
   // TextEditingController otpCode = TextEditingController();
 
   void disposeControllers() {

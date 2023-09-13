@@ -17,8 +17,9 @@ Future<List<AvailabilityModel>> getAvailableDatesMethod() async {
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true || response.statusCode == 200) {
-    final availableTimes =
-        (decodedData['data'] as List).map((e) => AvailabilityModel.fromJson(e)).toList();
+    final availableTimes = (decodedData['data'] as List)
+        .map((e) => AvailabilityModel.fromJson(e))
+        .toList();
 
     log('get request for availibilty model:  ${decodedData['data']}');
 
@@ -57,8 +58,13 @@ Future<List<TimesModel>> getAvailableTimesMethod(int index) async {
   }
 }
 
-Future<String> getDeliveryFeeMethod({required String addressId, required String totalAmount}) async {
-  var url = '$checkOutUrl/delivery-fee?addressId=$addressId&totalAmount=$totalAmount';
+// /*------------------------------------------------------------------
+//              GET DELIVERY FEE METHOD
+//  -------------------------------------------------------------------*/
+Future<String> getDeliveryFeeMethod(
+    {required String addressId, required String totalAmount}) async {
+  var url =
+      '$checkOutUrl/delivery-fee?addressId=$addressId&totalAmount=$totalAmount';
   final Response response = await NetworkHelper.getRequestWithToken(
     api: url,
   );
