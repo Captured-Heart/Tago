@@ -124,7 +124,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                         if (wishListID != true) {
                           ref.read(postToWishListNotifierProvider.notifier).postToWishListMethod(
                             map: {ProductTypeEnums.productId.name: widget.id.toString()},
-                          );
+                          ).whenComplete(() => ref.watch(fetchWishListProvider(false)));
                         }
                       },
                       icon: wishListID == true

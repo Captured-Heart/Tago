@@ -1,52 +1,18 @@
 import 'package:tago/app.dart';
 
-class CheckBoxWidget extends ConsumerStatefulWidget {
-  final bool checkBoxValue;
-  final ValueChanged<bool> onChanged;
-  const CheckBoxWidget({
-    super.key,
-    required this.checkBoxValue,
-    required this.onChanged,
-  });
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => CheckBoxWidgetState();
-}
-
-class CheckBoxWidgetState extends ConsumerState<CheckBoxWidget> {
-  bool isChecked = false;
-  @override
-  Widget build(BuildContext context) {
-    return Checkbox.adaptive(
-      value: isChecked,
-      onChanged: (value) {
-        setState(() {
-          isChecked = value ?? false;
-          widget.onChanged(value ?? false);
-        });
-      },
-      tristate: true,
-      checkColor: TagoDark.primaryColor.withOpacity(0.6),
-      activeColor: TagoDark.primaryColor.withOpacity(0.2),
-    );
-  }
-}
-
 Widget myCartListTile(
     {required BuildContext context,
     required WidgetRef ref,
     required CartModel cartModel,
     required VoidCallback onDelete,
     VoidCallback? onTap,
-    Widget? checkbox,
-    bool? checkBoxValue,
-    Function(bool?)? onChanged,
     Key? key}) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
       key: key,
-      padding: const EdgeInsets.only(bottom: 10, top: 20),
+      width: context.sizeWidth(0.9),
+      padding: const EdgeInsets.only(bottom: 10, top: 20, left: 10),
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 0.1),
@@ -57,27 +23,9 @@ Widget myCartListTile(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Checkbox.adaptive(
-              //   value: checkBoxValue,
-              //   onChanged: onChanged,
-              //   tristate: true,
-              //   checkColor: TagoDark.primaryColor.withOpacity(0.6),
-              //   activeColor: TagoDark.primaryColor.withOpacity(0.2),
-              // ),
-              CheckBoxWidget(
-                checkBoxValue: checkBoxValue ?? false,
-                onChanged: onChanged ?? (value) {},
-              ),
-
-              cachedNetworkImageWidget(
-                imgUrl: cartModel.product?.productImages?.last['image']['url'],
-                height: 100,
-              ),
-            ],
+          cachedNetworkImageWidget(
+            imgUrl: cartModel.product?.productImages?.last['image']['url'],
+            height: 100,
           ),
           Expanded(
             child: ListTile(
@@ -97,8 +45,7 @@ Widget myCartListTile(
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    TextConstant.nairaSign +
-                        cartModel.product!.amount.toString(),
+                    TextConstant.nairaSign + cartModel.product!.amount.toString(),
                     // 'N1,879',
                     style: context.theme.textTheme.titleMedium,
                   ),
@@ -107,8 +54,7 @@ Widget myCartListTile(
 
               //subtitle
               subtitle: ValueListenableBuilder(
-                valueListenable:
-                    ref.watch(valueNotifierProvider(cartModel.quantity!)),
+                valueListenable: ref.watch(valueNotifierProvider(cartModel.quantity!)),
                 builder: (context, value, child) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -121,10 +67,7 @@ Widget myCartListTile(
                         isDelete: value < 2 ? true : false,
                         onTap: () {
                           if (value > 1) {
-                            ref
-                                .read(
-                                    valueNotifierProvider(cartModel.quantity!))
-                                .value--;
+                            ref.read(valueNotifierProvider(cartModel.quantity!)).value--;
                           } else {
                             onDelete();
                           }
@@ -138,9 +81,7 @@ Widget myCartListTile(
                         context: context,
                         isMinus: false,
                         onTap: () {
-                          ref
-                              .read(valueNotifierProvider(cartModel.quantity!))
-                              .value++;
+                          ref.read(valueNotifierProvider(cartModel.quantity!)).value++;
                         },
                       ),
                     ].rowInPadding(15),

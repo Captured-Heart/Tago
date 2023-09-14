@@ -4,7 +4,7 @@
 
 import 'package:tago/app.dart';
 
-Future<List<AddressModel>> getAddressMethod() async {
+Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) async {
   // try {
   //post request executed
   final Response response = await NetworkHelper.getRequestWithToken(
@@ -18,7 +18,8 @@ Future<List<AddressModel>> getAddressMethod() async {
   //the response and error handling
   if (decodedData['success'] == true) {
     final addressList = (decodedData['data'] as List).map((e) => AddressModel.fromJson(e)).toList();
-    log('get request for address:  ${decodedData['data']}'); //
+    // log('get request for address:  ${decodedData['data'][0]['userId']}'); //
+    ref.read(addressIdProvider.notifier).update((state) => '${decodedData['data'][0]['id']}');
 
     return addressList;
   } else {
@@ -29,7 +30,7 @@ Future<List<AddressModel>> getAddressMethod() async {
 /*------------------------------------------------------------------
              GET ACCOUNT INFO
  -------------------------------------------------------------------*/
-Future<AccountModel> getAccountInfoMethod(AutoDisposeFutureProviderRef ref) async {
+Future<AccountModel> getAccountInfoMethod() async {
   //post request executed
   final Response response = await NetworkHelper.getRequestWithToken(
     api: getAccountInfoUrl,
@@ -45,7 +46,6 @@ Future<AccountModel> getAccountInfoMethod(AutoDisposeFutureProviderRef ref) asyn
     // final addressInfo = (decodedData['data'] as List).map((e) => AccountModel.fromJson(e)).toList();
     final addressInfo = AccountModel.fromJson(decodedData['data']);
     // log('addressId from method: ${decodedData['data']['id']}');
-    ref.read(addressIdProvider.notifier).update((state) => decodedData['data']['id']);
     return addressInfo;
   } else {
     return decodedData['message'];

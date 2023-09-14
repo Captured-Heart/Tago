@@ -103,13 +103,14 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                           onTap: () {
                             navBarPush(
                               context: context,
-                              screen: const SingleProductPage(
+                              screen: SingleProductPage(
                                 // appBarTitle: productModel.label ?? '',
                                 // image: productModel.productImages?.first['imgUrl'] ??
                                 //     noImagePlaceholderHttp,
                                 //TODO: REPLACE THE ID
-                                id: 13,
-                                //  productModel.id ?? 1,
+                                id:
+                                    // 13,
+                                    productModel.id ?? 1,
                               ),
                               withNavBar: false,
                             );

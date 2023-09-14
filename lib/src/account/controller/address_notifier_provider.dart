@@ -9,14 +9,14 @@ final addressIdProvider = StateProvider<String>((ref) {
                   GET ACCOUNT ADDRESS PROVIDER
  -------------------------------------------------------------------*/
 final getAccountAddressProvider = FutureProvider.autoDispose<List<AddressModel>>((ref) async {
-  return getAddressMethod();
+  return getAddressMethod(ref);
 });
 
 /*------------------------------------------------------------------
                   GET ACCOUNT  PROVIDER
  -------------------------------------------------------------------*/
 final getAccountInfoProvider = FutureProvider.autoDispose<AccountModel>((ref) async {
-  return getAccountInfoMethod(ref);
+  return getAccountInfoMethod();
 });
 
 /*------------------------------------------------------------------

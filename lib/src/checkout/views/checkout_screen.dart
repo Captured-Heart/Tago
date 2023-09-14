@@ -34,6 +34,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 100)
             .round();
     final addressId = ref.watch(addressIdProvider);
+    log(addressId);
     log(widget.cartModel.product!.id.toString());
     return FullScreenLoader(
       isLoading: ref.watch(checkoutNotifierProvider).isLoading,
@@ -154,27 +155,41 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             //! confirm order btn
             ElevatedButton(
               onPressed: () {
+
+                log('token: ${HiveHelper().getData(HiveKeys.token.name)}');
+                var checkModel = CheckoutModel(
+                    addressId: addressId,
+                    deliveryType: DeliveryType.instant.name,
+                    paymentMethod: PaymentMethodsType.card.message,
+                    instructions: controller.instructionsController.text,
+                    voucherCode: controller.voucherController.text,
+                    scheduleForDate: DateTime.now().toIso8601String(),
+                    scheduleForTime: '11',
+                    items: jsonEncode([
+                      PlaceOrderModel(
+                        productId: '10',
+                        quantity: '1',
+                      )
+                    ])
+
+                    // [
+                    //   PlaceOrderModel(
+                    //     productId: widget.cartModel.product!.id.toString(),
+                    //     quantity: '1',
+                    //   ).toJson(),
+                    //   PlaceOrderModel(
+                    //     productId: widget.cartModel.product!.id.toString(),
+                    //     quantity: '1',
+                    //   ).toJson(),
+                    //   PlaceOrderModel(
+                    //     productId: widget.cartModel.product!.id.toString(),
+                    //     quantity: '1',
+                    //   ).toJson(),
+                    // ].toString(),
+                    ).toJson();
+                log(checkModel.toString());
                 ref.read(checkoutNotifierProvider.notifier).createAnOrderMethod(
-                      map: CheckoutModel(
-                        addressId: addressId,
-                        deliveryType: DeliveryType.instant.name,
-                        paymentMethod: PaymentMethodsType.card.message,
-                        instructions: controller.instructionsController.text,
-                        voucherCode: controller.voucherController.text,
-                        scheduleForDate: DateTime.now().toIso8601String(),
-                        scheduleForTime: '',
-                        items: [
-                          PlaceOrderModel(
-                            productId: widget.cartModel.product!.id.toString(),
-                            quantity: '1',
-                          ).toJson(),
-                          // PlaceOrderModel(
-                          //   productId: '8',
-                          //   //  widget.cartModel.product!.id.toString(),
-                          //   quantity: '1',
-                          // ).toJson(),
-                        ].toString(),
-                      ).toJson(),
+                      map: checkModel,
                     );
               },
               child: const Text(TextConstant.confirmOrder),

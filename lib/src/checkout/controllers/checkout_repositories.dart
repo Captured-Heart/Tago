@@ -21,7 +21,7 @@ Future<List<AvailabilityModel>> getAvailableDatesMethod() async {
         .map((e) => AvailabilityModel.fromJson(e))
         .toList();
 
-    log('get request for availibilty model:  ${decodedData['data']}');
+    // log('get request for availibilty model:  ${decodedData['data']}');
 
     return availableTimes;
   } else {

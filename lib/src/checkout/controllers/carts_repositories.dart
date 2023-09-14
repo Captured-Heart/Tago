@@ -56,7 +56,7 @@ Stream<VoucherModel> getVoucherMethod({
     log('get request for Categories:  $decodedData'); //
 
     final vouchers = VoucherModel.fromJson(decodedData['data']);
-    log('get request for Search by code:  $vouchers'); //
+    // log('get request for Search by code:  $vouchers'); //
 
     yield vouchers;
   } else {

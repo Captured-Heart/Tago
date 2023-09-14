@@ -27,7 +27,7 @@ Future<List<CategoriesModel>> fetchCategoriesMethod() async {
 
     return categoriesList;
   } else {
-    return decodedData['message'];
+    return [];
   }
 }
 
@@ -51,13 +51,13 @@ Future<List<ProductsModel>> fetchCategoriesByLabel(String label) async {
   if (response.statusCode == 200) {
     // log('get request for Categories:  $decodedData'); //
 
-    final productList = (decodedData['data']['products'] as List)
-        .map((e) => ProductsModel.fromJson(e))
-        .toList();
+    final productList =
+        (decodedData['data']['products'] as List).map((e) => ProductsModel.fromJson(e)).toList();
     // log('get request for Categories by label:  $productList'); //
 
     return productList;
   } else {
-    return decodedData['message'];
+    return [];
+    // decodedData['message'];
   }
 }

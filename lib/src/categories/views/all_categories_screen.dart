@@ -4,8 +4,7 @@ class AllCategoriesScreen extends ConsumerStatefulWidget {
   const AllCategoriesScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AllCategoriesScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AllCategoriesScreenState();
 }
 
 class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
@@ -34,6 +33,9 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
                     growable: true,
                     (index) => GestureDetector(
                       onTap: () {
+                        ref
+                            .read(categoryLabelProvider.notifier)
+                            .update((state) => data[index].label ?? '');
                         var subList = data[index].subCategories;
                         log(subList.toString());
                         push(
@@ -54,6 +56,7 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
                     ),
                   ));
             },
+            //TODO: ADD CACHED MODEL HERE
             error: (error, stackTrace) => Text(error.toString()),
             loading: () => const Center(
               child: CircularProgressIndicator(),
