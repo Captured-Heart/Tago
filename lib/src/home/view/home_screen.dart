@@ -32,6 +32,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             isError: false,
             readOnly: true,
             onTap: () {
+
               push(context, SearchScreen());
             },
             filled: true,

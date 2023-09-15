@@ -44,19 +44,19 @@ class HiveHelper {
                  FOR BOX ('SEARCH')
  -------------------------------------------------------------------*/
 
-  ///     save data
-  Future<void> saveDataSearch(dynamic value) async {
-    log('savedData: $value');
-    await _boxSearch.add(value);
-  }
+  // ///     save data
+  // Future<void> saveDataSearch(dynamic value) async {
+  //   log('savedData: $value');
+  //   await _boxSearch.add(value);
+  // }
 
   //      get data
-  dynamic getDataSearch(String key) {
+  dynamic getDataSearch({String ? key, dynamic defaultValue}) {
     log('getData: $key');
-    return _boxSearch.get(key);
+    return _boxSearch.get(key, defaultValue: defaultValue);
   }
 
-  ValueListenable getSearchListenable() {
+  ValueListenable<Box<dynamic>> getSearchListenable() {
     return _boxSearch.listenable();
   }
 
@@ -67,5 +67,25 @@ class HiveHelper {
   // close box
   Future<void> closeBoxSearch() async {
     await _boxSearch.close();
+  }
+
+  // clear box
+  Future<void> clearBoxSearch() async {
+    await _boxSearch.clear();
+  }
+   // delete at index 
+  Future<void> deleteSearchAtIndex(int index) async {
+    await _boxSearch.deleteAt(index);
+  }
+
+//check if it contains data
+  bool containsSearchData(dynamic key) {
+    return _boxSearch.containsKey(key);
+  }
+
+  Future<dynamic> saveSearchData(String key, List<String> value) async {
+    log('save data: $value');
+
+    return await _boxSearch.put(key, value);
   }
 }

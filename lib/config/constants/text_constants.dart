@@ -149,6 +149,9 @@ FRUITS AND VEGETABLES SCREEN
   static const packagedFruitsAndveg = 'Packaged Fruits & Veg.';
   static const allFruitsAndVegetables = 'All Fruits & Vegetables';
   static const all = 'All ';
+  static const recentSearches = 'Recent Searches ';
+  static const clear = 'Clear ';
+
 
   static const freeDelivery = 'Free delivery';
 
