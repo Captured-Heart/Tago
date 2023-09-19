@@ -6,6 +6,7 @@ CachedNetworkImage cachedNetworkImageWidget({
   required String? imgUrl,
   required double height,
   double? width,
+  bool? isProgressIndicator = false,
   // double? loaderHeight,
   // double? loaderWidth,
 }) {
@@ -26,14 +27,18 @@ CachedNetworkImage cachedNetworkImageWidget({
     //   );
     // },
     progressIndicatorBuilder: (context, string, progress) {
-      return shimmerWidget(
-        child: Container(
-          alignment: Alignment.center,
-          height: height,
-          width: context.sizeWidth(1),
-          color: TagoLight.indicatorActiveColor,
-        ),
-      );
+      return isProgressIndicator == true
+          ? const Center(
+              child: CircularProgressIndicator.adaptive(),
+            )
+          : shimmerWidget(
+              child: Container(
+                alignment: Alignment.center,
+                height: height,
+                width: context.sizeWidth(1),
+                color: TagoLight.indicatorActiveColor,
+              ),
+            );
     },
     errorWidget: (context, url, error) {
       return Container(

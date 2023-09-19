@@ -51,10 +51,9 @@ Consumer singleProductMiniCartModalWidget() {
                         controller: controller,
                         itemBuilder: (context, index) {
                           var cartModel = data[index];
-                          return myCartListTile(
-                            context: context,
-                            ref: ref,
+                          return MyCartListTileWidget(
                             cartModel: cartModel,
+                            cartModelList: data,
                             onDelete: () {
                               ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
                                 map: {
@@ -64,7 +63,23 @@ Consumer singleProductMiniCartModalWidget() {
                                 () => ref.invalidate(getCartListProvider),
                               );
                             },
+                            onTap: () {},
+                            subtitleWidget: SizedBox(),
                           );
+                          // myCartListTile(
+                          //   context: context,
+                          //   ref: ref,
+                          //   cartModel: cartModel,
+                          //   onDelete: () {
+                          //     ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                          //       map: {
+                          //         ProductTypeEnums.productId.name: cartModel.product!.id.toString(),
+                          //       },
+                          //     ).whenComplete(
+                          //       () => ref.invalidate(getCartListProvider),
+                          //     );
+                          //   },
+                          // );
                         },
                       ),
 

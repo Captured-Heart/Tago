@@ -5,8 +5,10 @@ class SingleProductPage extends ConsumerStatefulWidget {
   const SingleProductPage({
     super.key,
     required this.id,
+    required this.productsModel,
   });
   final int id;
+  final ProductsModel productsModel;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SingleProductPageState();
@@ -64,10 +66,13 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 children: [
                   Expanded(
                     child: cachedNetworkImageWidget(
-                        imgUrl: products.valueOrNull?.productImages?.first['image']['url'],
-                        height: context.sizeHeight(1),
-                        width: context.sizeWidth(1)),
+                      imgUrl: products.valueOrNull?.productImages?.first['image']['url'],
+                      isProgressIndicator: true,
+                      height: context.sizeHeight(1),
+                      width: context.sizeWidth(1),
+                    ),
                   ),
+                  Text('quantity: ${widget.productsModel.availableQuantity.toString()}'),
                   singleProductListTileWidget(
                     context: context,
                     products: products,
@@ -87,7 +92,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                     isMinus: true,
                                     onTap: () {
                                       if (value > 1) {
-                                        ref.read(valueNotifierProvider(0)).value--;
+                                        // ref.read(valueNotifierProvider(0)).value--;
                                       }
                                     },
                                   ),
@@ -98,7 +103,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                   addMinusBTN(
                                     context: context,
                                     onTap: () {
-                                      ref.read(valueNotifierProvider(0)).value++;
+                                      // ref.read(valueNotifierProvider(0)).value++;
                                     },
                                   ),
                                 ],
@@ -107,33 +112,57 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                           )
                         : SizedBox(
                             width: context.sizeWidth(1),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                ref.read(cartNotifierProvider.notifier).addToCartMethod(
-                                  map: {
-                                    ProductTypeEnums.productId.name: widget.id.toString(),
-                                    ProductTypeEnums.quantity.name: '1',
-                                  },
-                                ).whenComplete(() => ref.invalidate(getCartListProvider(false)));
-                              },
-                              child: const Text(TextConstant.addtocart),
-                            ),
+                            child: widget.productsModel.availableQuantity! < 1
+                                ? ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: TagoLight.textFieldBorder,
+                                      elevation: 0,
+                                    ),
+                                    child: const Text(TextConstant.addtocart),
+                                  )
+                                : ElevatedButton(
+                                    onPressed: () {
+                                      ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                        map: {
+                                          ProductTypeEnums.productId.name: widget.id.toString(),
+                                          ProductTypeEnums.quantity.name: '1',
+                                        },
+                                      ).whenComplete(
+                                          () => ref.invalidate(getCartListProvider(false)));
+                                    },
+                                    child: const Text(TextConstant.addtocart),
+                                  ),
                           ),
-                    TextButton.icon(
-                      onPressed: () {
-                        if (wishListID != true) {
-                          ref.read(postToWishListNotifierProvider.notifier).postToWishListMethod(
-                            map: {ProductTypeEnums.productId.name: widget.id.toString()},
-                          ).whenComplete(() => ref.watch(fetchWishListProvider(false)));
-                        }
-                      },
-                      icon: wishListID == true
-                          ? const Icon(Icons.favorite)
-                          : const Icon(Icons.favorite_border_outlined),
-                      label: wishListID == true
-                          ? const Text(TextConstant.saved)
-                          : const Text(TextConstant.saveforlater),
-                    )
+                    widget.productsModel.availableQuantity! < 1
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(Icons.favorite_outline),
+                              Text(
+                                TextConstant.saveforlater,
+                                textScaleFactor: 1.2,
+                                textAlign: TextAlign.center,
+                              ),
+                            ].rowInPadding(8))
+                        : TextButton.icon(
+                            onPressed: () {
+                              if (wishListID != true) {
+                                ref
+                                    .read(postToWishListNotifierProvider.notifier)
+                                    .postToWishListMethod(
+                                  map: {ProductTypeEnums.productId.name: widget.id.toString()},
+                                ).whenComplete(() => ref.watch(fetchWishListProvider(false)));
+                              }
+                            },
+                            icon: wishListID == true
+                                ? const Icon(Icons.favorite)
+                                : const Icon(Icons.favorite_border_outlined),
+                            label: wishListID == true
+                                ? const Text(TextConstant.saved)
+                                : const Text(TextConstant.saveforlater),
+                          )
                   ].columnInPadding(10)),
                 ],
               ),

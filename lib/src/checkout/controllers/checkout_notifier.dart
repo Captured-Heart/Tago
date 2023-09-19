@@ -15,6 +15,7 @@ class CheckOutNotifier extends StateNotifier<AsyncValue> {
     final Response response = await NetworkHelper.postRequestWithToken(
       api: createAnOrderUrl,
       map: map,
+      state: state,
     )
         .timeout(const Duration(seconds: 10), onTimeout: () {
           showScaffoldSnackBarMessage(NetworkErrorEnums.operationTimeOut.message);

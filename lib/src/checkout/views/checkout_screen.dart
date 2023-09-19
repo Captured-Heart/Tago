@@ -8,9 +8,14 @@ class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({
     super.key,
     required this.cartModel,
+    required this.totalAmount,
+    required this.placeOrderModel,
   });
 
-  final CartModel cartModel;
+  final List<CartModel> cartModel;
+  final List<PlaceOrderModel> placeOrderModel;
+
+  final int? totalAmount;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CheckoutScreenState();
@@ -18,7 +23,7 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   final TextEditingControllerClass controller = TextEditingControllerClass();
-
+  final ScrollController scrollController = ScrollController();
   bool isInstant = true;
 
   @override
@@ -27,15 +32,12 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final code = ref.watch(voucherCodeProvider);
 
     final voucherCode = ref.watch(getVoucherStreamProvider(code));
-    final deliveryfee = ref.watch(getDeliveryFeeProvider(widget.cartModel.product?.amount ?? 0));
+    final deliveryfee = ref.watch(getDeliveryFeeProvider(widget.totalAmount ?? 0));
     log(deliveryfee.toString());
     var perc =
-        ((int.parse('${voucherCode.value?.amount ?? '0'}') / widget.cartModel.product!.amount!) *
-                100)
-            .round();
+        ((int.parse('${voucherCode.value?.amount ?? '0'}') / (widget.totalAmount ?? 0) ) * 100).round();
     final addressId = ref.watch(addressIdProvider);
-    log(addressId);
-    log(widget.cartModel.product!.id.toString());
+    log(widget.placeOrderModel.toString());
     return FullScreenLoader(
       isLoading: ref.watch(checkoutNotifierProvider).isLoading,
       child: Scaffold(
@@ -46,6 +48,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         ),
         body: ListView(
           padding: const EdgeInsets.all(20),
+          controller: scrollController,
           children: [
             //! delivering to
             checkoutDeliveryToWidget(context, accountInfo),
@@ -91,10 +94,25 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             checkoutPaymentMethodWidget(context).padOnly(top: 20),
 
             //! REVIEW ITEMS
-            checkOutReviewItemsWidget(
-              context: context,
-              cartModel: widget.cartModel,
-            ).padOnly(top: 25),
+            Text(
+              TextConstant.reviewItems,
+              style: context.theme.textTheme.titleLarge,
+            ).padOnly(top: 20, bottom: 10),
+            ListView.builder(
+              itemCount: widget.cartModel.length,
+              shrinkWrap: true,
+              controller: scrollController,
+              itemBuilder: (context, index) {
+                return checkOutReviewItemsWidget(
+                  context: context,
+                  cartModel: widget.cartModel[index],
+                );
+              },
+            ),
+            // checkOutReviewItemsWidget(
+            //   context: context,
+            //   cartModel: widget.cartModel[0],
+            // ).padOnly(top: 25),
 
             //! delivery instructions and voucher code
             checkOutDeliveryInstructionsAndVoucherWidget(
@@ -112,12 +130,12 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     context: context,
                     leading: TextConstant.allitems,
                     trailing:
-                        ' ${TextConstant.nairaSign} ${widget.cartModel.product?.amount.toString().toCommaPrices() ?? '0'}',
+                        ' ${TextConstant.nairaSign} ${widget.totalAmount.toString().toCommaPrices() ?? '0'}',
                   ),
                   checkOutALLItemsRowWidget(
                     context: context,
                     leading: TextConstant.deliveryfee,
-                    trailing: '₦${deliveryfee.value?.toCommaPrices() ?? 0}',
+                    trailing: '₦${deliveryfee.valueOrNull?.toCommaPrices() ?? 0}',
                   ),
                   checkOutALLItemsRowWidget(
                     context: context,
@@ -136,7 +154,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         ),
                         Text(
                           TextConstant.nairaSign +
-                              ((widget.cartModel.product?.amount ?? 0) +
+                              ((widget.totalAmount ?? 0) +
                                       int.parse(deliveryfee.value ?? '0') -
                                       int.parse(
                                         voucherCode.value?.amount == null
@@ -155,38 +173,22 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             //! confirm order btn
             ElevatedButton(
               onPressed: () {
-
                 log('token: ${HiveHelper().getData(HiveKeys.token.name)}');
                 var checkModel = CheckoutModel(
-                    addressId: addressId,
-                    deliveryType: DeliveryType.instant.name,
-                    paymentMethod: PaymentMethodsType.card.message,
-                    instructions: controller.instructionsController.text,
-                    voucherCode: controller.voucherController.text,
-                    scheduleForDate: DateTime.now().toIso8601String(),
-                    scheduleForTime: '11',
-                    items: jsonEncode([
-                      PlaceOrderModel(
-                        productId: '10',
-                        quantity: '1',
-                      )
-                    ])
-
-                    // [
-                    //   PlaceOrderModel(
-                    //     productId: widget.cartModel.product!.id.toString(),
-                    //     quantity: '1',
-                    //   ).toJson(),
-                    //   PlaceOrderModel(
-                    //     productId: widget.cartModel.product!.id.toString(),
-                    //     quantity: '1',
-                    //   ).toJson(),
-                    //   PlaceOrderModel(
-                    //     productId: widget.cartModel.product!.id.toString(),
-                    //     quantity: '1',
-                    //   ).toJson(),
-                    // ].toString(),
-                    ).toJson();
+                  
+                  addressId: addressId,
+                  deliveryType: DeliveryType.instant.name,
+                  paymentMethod: PaymentMethodsType.card.message,
+                  instructions: controller.instructionsController.text,
+                  voucherCode: controller.voucherController.text,
+                  scheduleForDate: '',
+                  // '2023-08-23T00:00:00.000Z',
+                  // DateTime.now().toIso8601String(),
+                  scheduleForTime: '12',
+                  items: jsonEncode(
+                    widget.placeOrderModel,
+                  ),
+                ).toJson();
                 log(checkModel.toString());
                 ref.read(checkoutNotifierProvider.notifier).createAnOrderMethod(
                       map: checkModel,

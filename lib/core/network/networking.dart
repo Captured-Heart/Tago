@@ -127,9 +127,11 @@ class NetworkHelper {
   static Future<dynamic> postRequestWithToken({
     required Map<String, dynamic> map,
     required String api,
+    AsyncValue? state,
   }) async {
     try {
-      final response = await http.post(
+      final response = await http
+          .post(
         Uri.parse('$baseUrl$api'),
         headers: {
           'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',

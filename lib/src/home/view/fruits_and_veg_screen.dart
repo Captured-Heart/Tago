@@ -104,13 +104,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                             navBarPush(
                               context: context,
                               screen: SingleProductPage(
-                                // appBarTitle: productModel.label ?? '',
-                                // image: productModel.productImages?.first['imgUrl'] ??
-                                //     noImagePlaceholderHttp,
-                                //TODO: REPLACE THE ID
-                                id:
-                                    // 13,
-                                    productModel.id ?? 1,
+                                productsModel: productModel,
+                                id: productModel.id!,
                               ),
                               withNavBar: false,
                             );
@@ -123,12 +118,18 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                                   context: context,
                                   isFreeDelivery: true,
                                   addToCartBTN: () {
-                                    ref.read(cartNotifierProvider.notifier).addToCartMethod(
-                                      map: {
-                                        ProductTypeEnums.productId.name: productModel.id.toString(),
-                                        ProductTypeEnums.quantity.name: '1',
-                                      },
-                                    );
+                                    if (productModel.availableQuantity! > 1) {
+                                      ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                        map: {
+                                          ProductTypeEnums.productId.name:
+                                              productModel.id.toString(),
+                                          ProductTypeEnums.quantity.name: '1',
+                                        },
+                                      );
+                                    } else {
+                                      showScaffoldSnackBarMessage('Product is out of stock',
+                                          isError: true);
+                                    }
                                   },
                                   productImagesList: data[index].productImages,
                                   indexList: [

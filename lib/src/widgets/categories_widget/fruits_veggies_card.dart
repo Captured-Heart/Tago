@@ -66,7 +66,7 @@ Column fruitsAndVeggiesCard({
         ),
       ),
       Text(
-        productModel.name ?? '',
+        productModel.name ?? '' ,
         textAlign: TextAlign.center,
         overflow: TextOverflow.ellipsis,
         style: context.theme.textTheme.labelMedium?.copyWith(

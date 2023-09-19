@@ -21,7 +21,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(fetchCategoriesProvider);
-
+    final accountInfo = ref.watch(getAccountInfoProvider);
     return Scaffold(
       appBar: homescreenAppbar(context),
       body: ListView(
@@ -32,7 +32,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             isError: false,
             readOnly: true,
             onTap: () {
-
               push(context, SearchScreen());
             },
             filled: true,
@@ -40,48 +39,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             prefixIcon: const Icon(Icons.search),
             fillColor: TagoLight.textFieldFilledColor,
           ).padSymmetric(horizontal: context.sizeWidth(0.07), vertical: 15),
-          homeScreenOrderStatusWidget(context: context, ref: ref),
+
+          //! home screen order status
+          // homeScreenOrderStatusWidget(context: context, ref: ref),
 
 // deliver to
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.directions_bike_sharp,
-                    color: TagoLight.textHint,
-                  ).padOnly(right: 8),
-                  Text(
-                    TextConstant.deliverto,
-                    style: context.theme.textTheme.bodyLarge,
-                  )
-                ],
-              ).padOnly(left: 20, top: 10),
-              ListTile(
-                minLeadingWidth: 1,
-                dense: true,
-                shape: const Border(bottom: BorderSide(width: 0.1)),
-                leading: const Icon(
-                  Icons.location_on,
-                  color: TagoDark.primaryColor,
-                ),
-                trailing: TextButton(
-                  onPressed: () {
-                    HiveHelper().deleteData(HiveKeys.token.keys);
-                  },
-                  child: const Text(TextConstant.edit),
-                ),
-                title: Text(
-                  '12, Adesemonye Avenue, Ikeja',
-                  style: context.theme.textTheme.titleLarge?.copyWith(
-                    fontSize: 12,
-                  ),
-                ),
-              )
-            ],
-          ),
+          // homeScreenAddressWidget(context, accountInfo),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -94,7 +57,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 style: context.theme.textTheme.titleLarge,
               )
             ],
-          ).padOnly(top: 20, left: 20, bottom: 5),
+          ).padOnly(top: 1, left: 20, bottom: 5),
           //! HOT DEALS CATEGORY
           Column(
             children: [
@@ -108,9 +71,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     viewportFraction: 0.99,
                     enlargeFactor: 0,
                     onPageChanged: (index, reason) {
-                      ref
-                          .read(currentCarouselIndexProvider.notifier)
-                          .update((state) => index);
+                      ref.read(currentCarouselIndexProvider.notifier).update((state) => index);
                     }),
               ),
               // .padOnly(bottom: 10),
@@ -119,8 +80,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: List.generate(
                   carouselWidgetList(context).length,
                   (index) => GestureDetector(
-                    onTap: () =>
-                        ref.read(carouselSliderProvider).animateToPage(index),
+                    onTap: () => ref.read(carouselSliderProvider).animateToPage(index),
                     child: Container(
                       width: 6.0,
                       height: 6.0,
@@ -134,9 +94,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ? TagoLight.indicatorInactiveColor
                                 : TagoLight.indicatorActiveColor)
                             .withOpacity(
-                          ref.watch(currentCarouselIndexProvider) == index
-                              ? 0.9
-                              : 0.4,
+                          ref.watch(currentCarouselIndexProvider) == index ? 0.9 : 0.4,
                         ),
                       ),
                     ),
@@ -159,88 +117,89 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
 
-          categories.when(
-            data: (data) {
-              return GridView.count(
-                crossAxisCount: 5,
-                shrinkWrap: true,
-                childAspectRatio: 0.65,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                children: List.generate(
-                  data.length - (data.length - 9),
-                  // data.length,
-                  growable: true,
-                  (index) => GestureDetector(
-                    onTap: () {
-                      ref
-                          .read(categoryLabelProvider.notifier)
-                          .update((state) => data[index].label ?? '');
-                      var subList = data[index].subCategories;
+          categories
+              .when(
+                data: (data) {
+                  return GridView.count(
+                    crossAxisCount: 5,
+                    shrinkWrap: true,
+                    childAspectRatio: 0.65,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    children: List.generate(
+                      data.length - (data.length - 9),
+                      // data.length,
+                      growable: true,
+                      (index) => GestureDetector(
+                        onTap: () {
+                          ref
+                              .read(categoryLabelProvider.notifier)
+                              .update((state) => data[index].label ?? '');
+                          var subList = data[index].subCategories;
 
-                      push(
-                        context,
-                        FruitsAndVegetablesScreen(
-                          subCategoriesList: subList!,
-                          appBarTitle: data[index].name ?? 'Product name',
+                          push(
+                            context,
+                            FruitsAndVegetablesScreen(
+                              subCategoriesList: subList!,
+                              appBarTitle: data[index].name ?? 'Product name',
+                            ),
+                          );
+                        },
+                        child: categoryCard(
+                          context: context,
+                          index: index,
+                          width: context.sizeWidth(0.155),
+                          height: 70,
+                          categoriesModel: data[index],
                         ),
-                      );
-                    },
-                    child: categoryCard(
-                      context: context,
-                      index: index,
-                      width: context.sizeWidth(0.155),
-                      height: 70,
-                      categoriesModel: data[index],
+                      ),
                     ),
+                  );
+                  //  Wrap(
+                  //   runSpacing: 20,
+                  //   spacing: 10,
+                  //   alignment: WrapAlignment.start,
+                  //   // runAlignment: WrapAlignment.start,
+                  //   crossAxisAlignment: WrapCrossAlignment.start,
+                  //   children: List.generate(
+                  //     data.length - (data.length - 9),
+                  //     // data.length,
+                  //     growable: true,
+                  //     (index) => GestureDetector(
+                  //       onTap: () {
+                  //         ref
+                  //             .read(categoryLabelProvider.notifier)
+                  //             .update((state) => data[index].label ?? '');
+                  //         var subList = data[index].subCategories;
+
+                  //         push(
+                  //           context,
+                  //           FruitsAndVegetablesScreen(
+                  //             subCategoriesList: subList!,
+                  //             appBarTitle: data[index].name ?? 'Product name',
+                  //           ),
+                  //         );
+                  //       },
+                  //       child: categoryCard(
+                  //         context: context,
+                  //         index: index,
+                  //         width: context.sizeWidth(0.155),
+                  //         height: 70,
+                  //         categoriesModel: data[index],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ).padSymmetric(horizontal: 15);
+                },
+                error: (error, stackTrace) => Center(
+                  child: Text(
+                    NetworkErrorEnums.checkYourNetwork.message,
+                    textAlign: TextAlign.center,
                   ),
                 ),
-              );
-              //  Wrap(
-              //   runSpacing: 20,
-              //   spacing: 10,
-              //   alignment: WrapAlignment.start,
-              //   // runAlignment: WrapAlignment.start,
-              //   crossAxisAlignment: WrapCrossAlignment.start,
-              //   children: List.generate(
-              //     data.length - (data.length - 9),
-              //     // data.length,
-              //     growable: true,
-              //     (index) => GestureDetector(
-              //       onTap: () {
-              //         ref
-              //             .read(categoryLabelProvider.notifier)
-              //             .update((state) => data[index].label ?? '');
-              //         var subList = data[index].subCategories;
-
-              //         push(
-              //           context,
-              //           FruitsAndVegetablesScreen(
-              //             subCategoriesList: subList!,
-              //             appBarTitle: data[index].name ?? 'Product name',
-              //           ),
-              //         );
-              //       },
-              //       child: categoryCard(
-              //         context: context,
-              //         index: index,
-              //         width: context.sizeWidth(0.155),
-              //         height: 70,
-              //         categoriesModel: data[index],
-              //       ),
-              //     ),
-              //   ),
-              // ).padSymmetric(horizontal: 15);
-            },
-            error: (error, stackTrace) => Center(
-              child: Text(
-                NetworkErrorEnums.checkYourNetwork.message,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            loading: () => categoryCardLoaders(context: context)
-                .padSymmetric(horizontal: 20),
-          ),
+                loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
+              )
+              .padOnly(left: 5),
 //items near you
           ListTile(
             title: const Text(
@@ -311,6 +270,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Column homeScreenAddressWidget(BuildContext context, AsyncValue<AccountModel> accountInfo) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Icon(
+              Icons.directions_bike_sharp,
+              color: TagoLight.textHint,
+            ).padOnly(right: 8),
+            Text(
+              TextConstant.deliverto,
+              style: context.theme.textTheme.bodyLarge,
+            )
+          ],
+        ).padOnly(left: 20, top: 10),
+        ListTile(
+          minLeadingWidth: 1,
+          dense: true,
+          shape: const Border(bottom: BorderSide(width: 0.1)),
+          leading: const Icon(
+            Icons.location_on,
+            color: TagoDark.primaryColor,
+          ),
+          trailing: TextButton(
+            onPressed: () {
+              HiveHelper().deleteData(HiveKeys.token.keys);
+            },
+            child: const Text(TextConstant.edit),
+          ),
+          title: Text(
+            '${accountInfo.valueOrNull?.address?.apartmentNumber}, ${accountInfo.valueOrNull?.address!.streetAddress}',
+            style: context.theme.textTheme.titleLarge?.copyWith(
+              fontSize: 12,
+            ),
+          ),
+        )
+      ],
     );
   }
 }

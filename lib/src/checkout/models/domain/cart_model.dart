@@ -1,10 +1,11 @@
 import 'package:tago/app.dart';
 
+// ignore: must_be_immutable
 class CartModel extends Equatable {
-  final int? quantity;
-  final ProductsModel? product;
+     int? quantity;
+   ProductsModel? product;
 
-  const CartModel({this.quantity, this.product});
+   CartModel({this.quantity, this.product});
 
   factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
         quantity: json['quantity'] as int?,
