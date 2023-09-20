@@ -34,7 +34,7 @@ class CheckOutNotifier extends StateNotifier<AsyncValue> {
       state = AsyncValue.data(decodedData['data']);
       var createdOrder = CheckoutModel.fromJson(decodedData['data']);
       showScaffoldSnackBarMessage(decodedData['message']);
-
+      HiveHelper().saveData(HiveKeys.createOrder.keys, decodedData['data']);
       return createdOrder;
     } else {
       showScaffoldSnackBarMessage(decodedData['message'], isError: true);

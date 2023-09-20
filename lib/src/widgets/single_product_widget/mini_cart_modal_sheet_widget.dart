@@ -63,7 +63,6 @@ Consumer singleProductMiniCartModalWidget() {
                                 () => ref.invalidate(getCartListProvider),
                               );
                             },
-                            onTap: () {},
                             subtitleWidget: SizedBox(),
                           );
                           // myCartListTile(

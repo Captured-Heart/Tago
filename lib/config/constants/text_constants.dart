@@ -309,9 +309,10 @@ RIDER SECTION
   static const successful = 'Successful';
   static const signOut = 'Sign Out';
   static const km = 'km';
-  // static const geBack = 'Go back';
-  // static const geBack = 'Go back';
-  // static const geBack = 'Go back';
+  static const youWillReceiveAnEmail = 'You will receive an email confirmation shortly';
+  static const orderPlaced = 'Order Placed';
+  static const seeOrderDetails = 'See Order Details';
+  static const shopForAnotherItem = 'Shop for another item';
   // static const geBack = 'Go back';
 }
 

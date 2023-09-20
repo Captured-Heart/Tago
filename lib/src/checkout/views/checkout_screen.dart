@@ -35,9 +35,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final deliveryfee = ref.watch(getDeliveryFeeProvider(widget.totalAmount ?? 0));
     log(deliveryfee.toString());
     var perc =
-        ((int.parse('${voucherCode.value?.amount ?? '0'}') / (widget.totalAmount ?? 0) ) * 100).round();
+        ((int.parse('${voucherCode.valueOrNull?.amount ?? '0'}') / (widget.totalAmount ?? 0)) * 100)
+            .round();
     final addressId = ref.watch(addressIdProvider);
-    log(widget.placeOrderModel.toString());
+    // log(widget.placeOrderModel.toString());
     return FullScreenLoader(
       isLoading: ref.watch(checkoutNotifierProvider).isLoading,
       child: Scaffold(
@@ -175,16 +176,15 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               onPressed: () {
                 log('token: ${HiveHelper().getData(HiveKeys.token.name)}');
                 var checkModel = CheckoutModel(
-                  
                   addressId: addressId,
                   deliveryType: DeliveryType.instant.name,
                   paymentMethod: PaymentMethodsType.card.message,
                   instructions: controller.instructionsController.text,
                   voucherCode: controller.voucherController.text,
-                  scheduleForDate: '',
+                  // scheduleForDate: '',
                   // '2023-08-23T00:00:00.000Z',
                   // DateTime.now().toIso8601String(),
-                  scheduleForTime: '12',
+                  // scheduleForTime: '',
                   items: jsonEncode(
                     widget.placeOrderModel,
                   ),

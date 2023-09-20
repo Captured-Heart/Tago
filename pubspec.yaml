@@ -9,10 +9,10 @@ environment:
 dependencies:
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1
-  # device_preview: ^1.1.0
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_dash: ^1.0.0
   flutter_riverpod: ^2.3.6
   font_awesome_flutter: ^10.3.0
   form_field_validator: ^1.1.0

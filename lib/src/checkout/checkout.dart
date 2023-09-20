@@ -13,3 +13,5 @@ export './models/domain/voucher_model.dart';
 export './models/domain/place_order_item_models.dart';
 export './models/domain/checkout_model.dart';
 export './controllers/checkout_notifier.dart';
+export './views/orders_placed_screen.dart';
+export './views/orders_detail_screen.dart';

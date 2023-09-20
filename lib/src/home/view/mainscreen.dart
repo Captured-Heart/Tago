@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/checkout/views/orders_placed_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
@@ -40,7 +41,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         screens: const [
           HomeScreen(),
           AllCategoriesScreen(),
-          OrdersScreen(),
+          // OrdersScreen(),
+          OrdersDetailScreen(),
           MyAccountScreen(),
         ],
         decoration: const NavBarDecoration(

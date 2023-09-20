@@ -6,14 +6,12 @@ class MyCartListTileWidget extends ConsumerStatefulWidget {
     required this.cartModel,
     required this.cartModelList,
     required this.onDelete,
-    required this.onTap,
     required this.subtitleWidget,
   });
   final CartModel cartModel;
   final List<CartModel> cartModelList;
 
   final VoidCallback onDelete;
-  final VoidCallback? onTap;
   final Widget subtitleWidget;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _MyCartListTileWidgetState();
@@ -30,60 +28,57 @@ class _MyCartListTileWidgetState extends ConsumerState<MyCartListTileWidget> {
     return ValueListenableBuilder(
         valueListenable: cartItemsNotifier,
         builder: (context, value, _) {
-          return GestureDetector(
-            onTap: widget.onTap,
-            child: Container(
-              width: context.sizeWidth(0.9),
-              padding: const EdgeInsets.only(bottom: 10, top: 20, left: 10),
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 0.1),
+          return Container(
+            width: context.sizeWidth(0.9),
+            padding: const EdgeInsets.only(bottom: 10, top: 20, left: 10),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 0.1),
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                cachedNetworkImageWidget(
+                  imgUrl: widget.cartModel.product?.productImages?.last['image']['url'],
+                  height: 100,
+                  width: 100,
                 ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  cachedNetworkImageWidget(
-                    imgUrl: widget.cartModel.product?.productImages?.last['image']['url'],
-                    height: 100,
-                    width: 100,
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      minLeadingWidth: 80,
-                      // contentPadding: EdgeInsets.zero,
-                      visualDensity: VisualDensity.adaptivePlatformDensity,
-                      isThreeLine: true,
+                Expanded(
+                  child: ListTile(
+                    minLeadingWidth: 80,
+                    // contentPadding: EdgeInsets.zero,
+                    visualDensity: VisualDensity.adaptivePlatformDensity,
+                    isThreeLine: true,
 
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.cartModel.product!.name!,
-                            // 'Fanta Drink - 50cl Pet x 12 Fanta Drink Fanta Drink',
-                            style: context.theme.textTheme.bodySmall,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            TextConstant.nairaSign +
-                                (widget.cartModel.product!.amount! * value)
-                                    .toString()
-                                    .toCommaPrices(),
-                            // 'N1,879',
-                            style: context.theme.textTheme.titleMedium,
-                          ),
-                        ].columnInPadding(10),
-                      ),
-
-                      //subtitle
-                      subtitle: widget.subtitleWidget,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.cartModel.product!.name!,
+                          // 'Fanta Drink - 50cl Pet x 12 Fanta Drink Fanta Drink',
+                          style: context.theme.textTheme.bodySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          TextConstant.nairaSign +
+                              (widget.cartModel.product!.amount! * value)
+                                  .toString()
+                                  .toCommaPrices(),
+                          // 'N1,879',
+                          style: context.theme.textTheme.titleMedium,
+                        ),
+                      ].columnInPadding(10),
                     ),
+
+                    //subtitle
+                    subtitle: widget.subtitleWidget,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         });
