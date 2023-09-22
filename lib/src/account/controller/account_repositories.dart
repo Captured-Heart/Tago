@@ -48,6 +48,8 @@ Future<AccountModel> getAccountInfoMethod() async {
     // log('addressId from method: ${decodedData['data']['id']}');
     return addressInfo;
   } else {
-    return decodedData['message'];
+    return const AccountModel();
+    // throw UnimplementedError(decodedData['message']);
+    // return decodedData['message'];
   }
 }

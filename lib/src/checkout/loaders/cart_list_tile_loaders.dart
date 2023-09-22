@@ -35,14 +35,9 @@ Widget myCartListTileLoader(BuildContext context) {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '${TextConstant.nairaSign} 1,000',
-                        style: context.theme.textTheme.titleMedium,
-                      ),
-                    ].rowInPadding(5),
+                  Text(
+                    '${TextConstant.nairaSign} 1,000',
+                    style: context.theme.textTheme.titleMedium,
                   ),
                 ].columnInPadding(10),
               ),
@@ -65,22 +60,23 @@ Widget myCartListTileLoader(BuildContext context) {
                         '1',
                         style: context.theme.textTheme.titleLarge,
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            shape: const CircleBorder(),
-                            elevation: 0,
-                            shadowColor: Colors.transparent,
-                            visualDensity: VisualDensity.compact,
-                            fixedSize: const Size.fromRadius(15),
-                            minimumSize: const Size.fromRadius(15),
-                            padding: EdgeInsets.zero,
-                            backgroundColor:
-                                TagoLight.primaryColor.withOpacity(0.15)),
-                        child: const Icon(
-                          Icons.add,
-                          color: TagoDark.primaryColor,
-                          size: 22,
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              elevation: 0,
+                              shadowColor: Colors.transparent,
+                              visualDensity: VisualDensity.compact,
+                              fixedSize: const Size.fromRadius(15),
+                              minimumSize: const Size.fromRadius(15),
+                              padding: EdgeInsets.zero,
+                              backgroundColor: TagoLight.primaryColor.withOpacity(0.15)),
+                          child: const Icon(
+                            Icons.add,
+                            color: TagoDark.primaryColor,
+                            size: 22,
+                          ),
                         ),
                       ),
                     ].rowInPadding(30),

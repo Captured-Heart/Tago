@@ -22,8 +22,10 @@ class OrderPlacedScreen extends ConsumerWidget {
                 size: 48,
               ),
               ListTile(
-                title: const Center(child: Text(TextConstant.orderPlaced)).padOnly(bottom: 10),
-                subtitle: const Center(child: Text(TextConstant.youWillReceiveAnEmail)),
+                title: const Center(child: Text(TextConstant.orderPlaced))
+                    .padOnly(bottom: 10),
+                subtitle: const Center(
+                    child: Text(TextConstant.youWillReceiveAnEmail)),
               ),
             ],
           ),

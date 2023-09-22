@@ -47,7 +47,13 @@ const String getAvailabilityUrl = '/account/user/checkout/availability';
 const String checkOutUrl = '/account/user/checkout';
 const String voucherUrl = '/account/user/checkout/voucher';
 const String createAnOrderUrl = '/account/user/checkout/order';
+const String getListOfOrdersUrl = '/account/user/checkout/orders';
+const String getOrderStatusUrl = '/account/user/checkout/order_status';
 //
+
+//RIDER 
+const String riderListOfOrdersUrl = '/account/rider/orders';
+
 const googleAPIKey = 'AIzaSyDhKg6wsJbCyYLdjRj5m2bf5b_uUJfN8iE';
 
 //                       //! HTTP HELPER
@@ -130,8 +136,7 @@ class NetworkHelper {
     AsyncValue? state,
   }) async {
     try {
-      final response = await http
-          .post(
+      final response = await http.post(
         Uri.parse('$baseUrl$api'),
         headers: {
           'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',

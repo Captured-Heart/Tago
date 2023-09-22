@@ -1,15 +1,15 @@
 import 'package:tago/app.dart';
-
 /*------------------------------------------------------------------
-             GET LIST OF CART METHOD
+             GET LIST OF ORDERS METHOD
  -------------------------------------------------------------------*/
-Future<List<CartModel>> getCartMethod({
+
+Future<List<OrderListModel>> getListOfOrderMethod({
   bool showSnackBar = true,
 }) async {
   // try {
   //post request executed
   final Response response = await NetworkHelper.getRequestWithToken(
-    api: getCartsUrl,
+    api: getListOfOrdersUrl,
   );
 
   // decoding the response
@@ -18,50 +18,41 @@ Future<List<CartModel>> getCartMethod({
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true) {
-    showSnackBar == true
-        ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3)
-        : null;
-    final addressList = (decodedData['data'] as List)
-        .map((e) => CartModel.fromJson(e))
-        .toList();
+    showSnackBar ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3) : null;
+    final orderList = (decodedData['data'] as List).map((e) => OrderListModel.fromJson(e)).toList();
     // log('get request for cart model:  ${decodedData['data']}'); //
 
-    return addressList;
+    return orderList;
   } else {
     return [];
   }
 }
 
 /*------------------------------------------------------------------
-             GET VOUCHER METHOD
+             GET ORDER STATUS METHOD
  -------------------------------------------------------------------*/
-Stream<VoucherModel> getVoucherMethod({
-  required String code,
-}) async* {
+Future<OrderListModel> getOrderStatusMethod({
+ required String orderId,
+}) async {
+  var url = '$getOrderStatusUrl?orderId=$orderId';
   // try {
   //post request executed
-  // /account/user/checkout/voucher?code=MT7663G
-  var url = '$voucherUrl?code=$code';
   final Response response = await NetworkHelper.getRequestWithToken(
     api: url,
   );
-  // log(url);
+
   // decoding the response
 
   String data = response.body;
   var decodedData = jsonDecode(data);
-
-  log(response.statusCode.toString());
   //the response and error handling
-  if (response.statusCode == 200 || decodedData['success'] == true) {
-    log('get request for Categories:  $decodedData'); //
+  if (decodedData['success'] == true) {
+    final orderStatus = OrderListModel.fromJson(decodedData['data']);
+    // log('get request for cart model:  ${decodedData['data']}'); //
 
-    final vouchers = VoucherModel.fromJson(decodedData['data']);
-    // log('get request for Search by code:  $vouchers'); //
-
-    yield vouchers;
+    return orderStatus;
   } else {
-    log('not successful');
-    yield const VoucherModel(code: null, currency: null, amount: null);
+    throw UnimplementedError();
+    // return OrderListModel();
   }
 }

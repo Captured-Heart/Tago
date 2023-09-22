@@ -25,6 +25,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
       return omm;
     }
 
+    // log(HiveHelper().getData(HiveKeys.createOrder.keys).toString());
     return FullScreenLoader(
       isLoading: cartList.isLoading,
       child: Scaffold(
@@ -39,7 +40,26 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
             cartList.when(
               data: (data) {
                 List<CartModel> placeOrderModel = [...data];
-
+                if (data.isEmpty) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        FontAwesomeIcons.cartArrowDown,
+                        size: 84,
+                        color: TagoLight.textHint,
+                      ),
+                      Text(
+                        TextConstant.cartIsEmpty,
+                        style: context.theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: AppFontWeight.w100,
+                          fontFamily: TextConstant.fontFamilyLight,
+                        ),
+                      )
+                    ].columnInPadding(20),
+                  ).padOnly(top: 50);
+                }
                 //
                 return Column(
                   children: [
@@ -51,123 +71,123 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
 
                         var quantity = data[index].quantity;
                         return ValueListenableBuilder(
-                            valueListenable: cartItemsNotifier,
-                            builder: (context, value, _) {
-                              var foo = cartItemsNotifier.value[index];
-                              void updateQuantity(int newQuantity) {
+                          valueListenable: cartItemsNotifier,
+                          builder: (context, value, _) {
+                            var foo = cartItemsNotifier.value[index];
+                            void updateQuantity(int newQuantity) {
+                              foo = cartModel.copyWith(
+                                  quantity: newQuantity, product: ProductsModel(amount: 5000));
+                              setState(() {
+                                // foo.quantity = newQuantity;
+                                // totalPrice = newQuantity * (cartModel.product!.amount)!;
                                 foo = cartModel.copyWith(
                                     quantity: newQuantity, product: ProductsModel(amount: 5000));
-                                setState(() {
-                                  // foo.quantity = newQuantity;
-                                  // totalPrice = newQuantity * (cartModel.product!.amount)!;
-                                  foo = cartModel.copyWith(
-                                      quantity: newQuantity, product: ProductsModel(amount: 5000));
-                                });
-                              }
+                              });
+                            }
 
-                              // double _calculateTotalPrice() {
-                              //   double total = 0.0;
-                              //   for (var item in cartItemsNotifier.value) {
-                              //     total += item.quantity! * item.product!.amount!;
-                              //   }
-                              //   return total;
-                              // }
+                            // double _calculateTotalPrice() {
+                            //   double total = 0.0;
+                            //   for (var item in cartItemsNotifier.value) {
+                            //     total += item.quantity! * item.product!.amount!;
+                            //   }
+                            //   return total;
+                            // }
 
-                              return Container(
-                                width: context.sizeWidth(0.9),
-                                padding: const EdgeInsets.only(bottom: 10, top: 20, left: 10),
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(width: 0.1),
-                                  ),
+                            return Container(
+                              width: context.sizeWidth(0.9),
+                              padding: const EdgeInsets.only(bottom: 10, top: 20, left: 10),
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(width: 0.1),
                                 ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    cachedNetworkImageWidget(
-                                      imgUrl: cartModel.product?.productImages?.last['image']
-                                          ['url'],
-                                      height: 100,
-                                      width: 100,
-                                    ),
-                                    Expanded(
-                                      child: ListTile(
-                                        minLeadingWidth: 80,
-                                        // contentPadding: EdgeInsets.zero,
-                                        visualDensity: VisualDensity.adaptivePlatformDensity,
-                                        isThreeLine: true,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  cachedNetworkImageWidget(
+                                    imgUrl: cartModel.product?.productImages?.last['image']['url'],
+                                    height: 100,
+                                    width: 100,
+                                  ),
+                                  Expanded(
+                                    child: ListTile(
+                                      minLeadingWidth: 80,
+                                      // contentPadding: EdgeInsets.zero,
+                                      visualDensity: VisualDensity.adaptivePlatformDensity,
+                                      isThreeLine: true,
 
-                                        title: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              cartModel.product!.name!,
-                                              // 'Fanta Drink - 50cl Pet x 12 Fanta Drink Fanta Drink',
-                                              style: context.theme.textTheme.bodySmall,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            Text(
-                                              TextConstant.nairaSign +
-                                                  (cartModel.product!.amount! * 1)
-                                                      .toString()
-                                                      .toCommaPrices(),
-                                              // 'N1,879',
-                                              style: context.theme.textTheme.titleMedium,
-                                            ),
-                                          ].columnInPadding(10),
-                                        ),
+                                      title: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            cartModel.product!.name!,
+                                            // 'Fanta Drink - 50cl Pet x 12 Fanta Drink Fanta Drink',
+                                            style: context.theme.textTheme.bodySmall,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            TextConstant.nairaSign +
+                                                (cartModel.product!.amount! * 1)
+                                                    .toString()
+                                                    .toCommaPrices(),
+                                            // 'N1,879',
+                                            style: context.theme.textTheme.titleMedium,
+                                          ),
+                                        ].columnInPadding(10),
+                                      ),
 
-                                        //subtitle
-                                        subtitle: Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            addMinusBTN(
-                                              context: context,
-                                              isMinus: true,
-                                              isDelete: quantity! < 2 ? true : false,
-                                              onTap: () {
-                                                if (quantity > 1) {
-                                                  updateQuantity((foo.quantity!) - 1);
-                                                } else {
-                                                  ref
-                                                      .read(cartNotifierProvider.notifier)
-                                                      .deleteFromCartMethod(
-                                                    map: {
-                                                      ProductTypeEnums.productId.name:
-                                                          cartModel.product!.id.toString(),
-                                                    },
-                                                  ).whenComplete(
-                                                    () => ref.invalidate(getCartListProvider),
-                                                  );
-                                                }
-                                              },
-                                            ),
-                                            Text(
-                                              foo.quantity.toString(),
-                                              style: context.theme.textTheme.titleLarge,
-                                            ),
-                                            addMinusBTN(
-                                              context: context,
-                                              isMinus: false,
-                                              onTap: () {
-                                                log(placeOrderModel[index].quantity.toString());
-                                                updateQuantity((foo.quantity)! + 1);
-                                                // updateQuantity(index, (cartModel.quantity!) + 1);
-                                              },
-                                            ),
-                                          ].rowInPadding(15),
-                                        ),
+                                      //subtitle
+                                      subtitle: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          addMinusBTN(
+                                            context: context,
+                                            isMinus: true,
+                                            isDelete: quantity! < 2 ? true : false,
+                                            onTap: () {
+                                              if (quantity > 1) {
+                                                updateQuantity((foo.quantity!) - 1);
+                                              } else {
+                                                ref
+                                                    .read(cartNotifierProvider.notifier)
+                                                    .deleteFromCartMethod(
+                                                  map: {
+                                                    ProductTypeEnums.productId.name:
+                                                        cartModel.product!.id.toString(),
+                                                  },
+                                                ).whenComplete(
+                                                  () => ref.invalidate(getCartListProvider),
+                                                );
+                                              }
+                                            },
+                                          ),
+                                          Text(
+                                            foo.quantity.toString(),
+                                            style: context.theme.textTheme.titleLarge,
+                                          ),
+                                          addMinusBTN(
+                                            context: context,
+                                            isMinus: false,
+                                            onTap: () {
+                                              log(placeOrderModel[index].quantity.toString());
+                                              updateQuantity((foo.quantity)! + 1);
+                                              // updateQuantity(index, (cartModel.quantity!) + 1);
+                                            },
+                                          ),
+                                        ].rowInPadding(15),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              );
-                            });
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
 
                         //   myCartListTile(
                         //     context: context,
@@ -201,7 +221,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                                 (index) {
                                   return PlaceOrderModel(
                                     productId: '${data[index].product?.id}',
-                                    quantity: '${data[index].quantity}',
+                                    quantity: data[index].quantity,
                                   );
                                 },
                               ),
@@ -224,17 +244,13 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                 ).toList(),
               ),
             ),
-
-            Text(HiveHelper().getData(HiveKeys.createOrder.keys) ?? 'addacecw')
+            Text(HiveHelper().getData(HiveKeys.createOrder.keys).toString() ?? 'addacecw')
           ],
         ),
       ),
     );
   }
 }
-
-
-
 
 //  MyCartListTileWidget(
 //                           cartModel: cartModel,

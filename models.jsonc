@@ -1,28 +1,40 @@
 {
-    "__className": "checkout_model", // <- The base class name of the object.
-    "__path": "/lib/src/checkout/models/domain", // <- override default path with a new one by adding '__path' key.
-    "addressId": "", // To mark as required value, change "id" to "r@id".
-    "deliveryType": "", // To mark as a default value, change "title" to "d@title".
+    "__className": "order_list_model", // <- The base class name of the object.
+    "__path": "/lib/src/orders/model/domain", // <- override default path with a new one by adding '__path' key.
+    "id": "", // To mark as required value, change "id" to "r@id".
+    "name": "", // To mark as a default value, change "title" to "d@title".
+    "userId": "",
+    "addressId": "",
+    "deliveryType": "",
     "paymentMethod": "",
     "instructions": "",
+    "itemsTotalAmount": 0,
+    "fee": 0,
+    "totalAmount": 0,
     "voucherCode": "",
+    "discountPerc": 1.44,
+    "discountAmount":0,
     "scheduleForDate": "",
-    "scheduleForTime": "",
-    "items": [],
-    "orderId": "",
-    "url": ""
-    // "phoneNumber": "",
-    // "lname": "",
-    // "email": "",
-    // "role":"",
-    // "emailVerifiedAt": "",
-    // "phoneVerifiedAt":"",
+    "scheduleForTime":"",
+    "placedAt": "",
+    "receivedAt": "",
+    "confirmedAt": "",
+    "cancelledAt":"",
+    "pickedUpAt": "",
+    "deliveredAt":"",
+    "currentPosition": "",
+    "riderId": "",
+    "updatedAt": "",
+    "deletedAt":"",
+    "orderItems": [],
+    "status": 0,
+    "fulfillmentHubId": ""
     // "address": {}
+    // "address": {}
+    // "address": {}
+    // "address": {}
+
     
 
   }
-//   "data": {
-//     "code": "MT7663G",
-//     "currency": "NGN",
-//     "amount": 3000
-// }
+

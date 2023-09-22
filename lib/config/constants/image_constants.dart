@@ -12,6 +12,8 @@ const String splashVideo = 'assets/images/Splash_screen.mp4';
 const String splashVideoGif = 'assets/images/splash_screen.gif';
 const String noImagePlaceholderHttp =
     'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/660px-No-Image-Placeholder.svg.png?20200912122019';
+
+
 const List categoriesFrame = [
   'assets/images/Frame_3.png',
   'assets/images/Frame_1.png',

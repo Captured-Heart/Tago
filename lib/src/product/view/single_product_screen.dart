@@ -11,7 +11,8 @@ class SingleProductPage extends ConsumerStatefulWidget {
   final ProductsModel productsModel;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SingleProductPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SingleProductPageState();
 }
 
 class _SingleProductPageState extends ConsumerState<SingleProductPage> {
@@ -23,8 +24,10 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     var cartList = ref.watch(getCartListProvider(false));
     var wishListID = wishlist.value?.map((e) => e.id).contains(widget.id);
 
-    var cartListID =
-        cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList().contains(widget.id);
+    var cartListID = cartList.valueOrNull
+        ?.map((e) => e.product?.id ?? 0)
+        .toList()
+        .contains(widget.id);
     // var wishListID = checkIdenticalListsWithInt(list1: wishListList, int: widget.id);
     final productSpecs = ref.watch(productSpecificationsProvider);
     final relatedProducts = ref.watch(relatedProductsProvider);
@@ -66,13 +69,15 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 children: [
                   Expanded(
                     child: cachedNetworkImageWidget(
-                      imgUrl: products.valueOrNull?.productImages?.first['image']['url'],
+                      imgUrl: products
+                          .valueOrNull?.productImages?.first['image']['url'],
                       isProgressIndicator: true,
                       height: context.sizeHeight(1),
                       width: context.sizeWidth(1),
                     ),
                   ),
-                  Text('quantity: ${widget.productsModel.availableQuantity.toString()}'),
+                  Text(
+                      'quantity: ${widget.productsModel.availableQuantity.toString()}'),
                   singleProductListTileWidget(
                     context: context,
                     products: products,
@@ -81,11 +86,13 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                       children: [
                     cartListID == true
                         ? ValueListenableBuilder(
-                            valueListenable: ref.watch(valueNotifierProvider(0)),
+                            valueListenable:
+                                ref.watch(valueNotifierProvider(0)),
                             builder: (context, value, child) {
                               return Row(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   addMinusBTN(
                                     context: context,
@@ -116,20 +123,24 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                 ? ElevatedButton(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: TagoLight.textFieldBorder,
+                                      backgroundColor:
+                                          TagoLight.textFieldBorder,
                                       elevation: 0,
                                     ),
                                     child: const Text(TextConstant.addtocart),
                                   )
                                 : ElevatedButton(
                                     onPressed: () {
-                                      ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                      ref
+                                          .read(cartNotifierProvider.notifier)
+                                          .addToCartMethod(
                                         map: {
-                                          ProductTypeEnums.productId.name: widget.id.toString(),
+                                          ProductTypeEnums.productId.name:
+                                              widget.id.toString(),
                                           ProductTypeEnums.quantity.name: '1',
                                         },
-                                      ).whenComplete(
-                                          () => ref.invalidate(getCartListProvider(false)));
+                                      ).whenComplete(() => ref.invalidate(
+                                              getCartListProvider(false)));
                                     },
                                     child: const Text(TextConstant.addtocart),
                                   ),
@@ -150,10 +161,15 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                             onPressed: () {
                               if (wishListID != true) {
                                 ref
-                                    .read(postToWishListNotifierProvider.notifier)
+                                    .read(
+                                        postToWishListNotifierProvider.notifier)
                                     .postToWishListMethod(
-                                  map: {ProductTypeEnums.productId.name: widget.id.toString()},
-                                ).whenComplete(() => ref.watch(fetchWishListProvider(false)));
+                                  map: {
+                                    ProductTypeEnums.productId.name:
+                                        widget.id.toString()
+                                  },
+                                ).whenComplete(() => ref
+                                        .watch(fetchWishListProvider(false)));
                               }
                             },
                             icon: wishListID == true
@@ -176,17 +192,20 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               subtitle: Text(
                 products.valueOrNull?.description ??
                     'The most delicate moment requires impeccable precision.',
-                style: context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
+                style:
+                    context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
               ).padSymmetric(vertical: 10),
             ),
 
             //PRODUCT SPECIFICATIONS SECTIONS
-            singleProductSpecificationsWidget(context, productSpecs).padOnly(bottom: 20),
+            singleProductSpecificationsWidget(context, productSpecs)
+                .padOnly(bottom: 20),
 
             // RATINGS AND REVIEWS
             products.when(
               data: (data) {
-                return singleProductRatingsAndReviewsWidget(data, context, products);
+                return singleProductRatingsAndReviewsWidget(
+                    data, context, products);
               },
               error: (error, _) {
                 return Text(error.toString());
@@ -217,7 +236,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
 
                       //TODO: REPLACE THE [0] WITH INDEX
                       context: context,
-                      image: relatedProducts[0].productImages?.last['image']['url'] ??
+                      image: relatedProducts[0].productImages?.last['image']
+                              ['url'] ??
                           noImagePlaceholderHttp,
                       onTap: () {
                         // navBarPush(
@@ -244,7 +264,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
       BuildContext context, List<ProductSpecificationsModel>? productSpec) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+        border:
+            Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -298,11 +319,12 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     );
   }
 
-  Container singleProductRatingsAndReviewsWidget(
-      ProductsModel data, BuildContext context, AsyncValue<ProductsModel> products) {
+  Container singleProductRatingsAndReviewsWidget(ProductsModel data,
+      BuildContext context, AsyncValue<ProductsModel> products) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+        border:
+            Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(

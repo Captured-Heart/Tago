@@ -55,10 +55,12 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                 prefixIcon: const Icon(Icons.search),
                 fillColor: TagoLight.textFieldFilledColor,
               ),
-              Text(
-                TextConstant.chooseSubCategory,
-                style: context.theme.textTheme.bodyLarge,
-              ),
+              widget.subCategoriesList.isEmpty
+                  ? const SizedBox.shrink()
+                  : Text(
+                      TextConstant.chooseSubCategory,
+                      style: context.theme.textTheme.bodyLarge,
+                    ),
               Wrap(
                 runSpacing: 20,
                 spacing: 10,
@@ -87,6 +89,14 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
               ),
               categoryByLabel.when(
                 data: (data) {
+                  if (data.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        TextConstant.sorryNoProductsInCategory,
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }
                   return GridView.count(
                     controller: controller,
                     crossAxisCount: 2,

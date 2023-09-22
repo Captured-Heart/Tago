@@ -21,9 +21,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(fetchCategoriesProvider);
+    final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
     final accountInfo = ref.watch(getAccountInfoProvider);
+    log(HiveHelper().getData(HiveKeys.token.keys));
     return Scaffold(
-      appBar: homescreenAppbar(context),
+      appBar: homescreenAppbar(
+        context: context,
+        isBadgeVisible: cartList?.isNotEmpty ?? false,
+      ),
       body: ListView(
         children: [
           authTextFieldWithError(

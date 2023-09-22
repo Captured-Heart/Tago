@@ -11,8 +11,7 @@ abstract class TextConstant {
   sign up screen
 -----------------------------------------------------------------------*/
   static const welcometotago = 'Welcome to Tago';
-  static const groceriesDeliveryInMins =
-      'Grocery delivery in minutes, right to you';
+  static const groceriesDeliveryInMins = 'Grocery delivery in minutes, right to you';
   static const fullname = 'Full Name';
   static const phoneno = 'Phone Number';
   static const createpassword = 'Create a password';
@@ -52,8 +51,7 @@ Add address screen
   static const noAddressFound = 'No address found';
   static const addressDetails = 'Address Details';
   static const addressLabel = 'Address Label';
-  static const thishelpsTagotofind =
-      'This helps Tago find the closest items to your location';
+  static const thishelpsTagotofind = 'This helps Tago find the closest items to your location';
   static const usemycurrentlocation = 'Use my current location';
   static const typeaddressmanually = 'Type address manually';
   static const save = 'Save';
@@ -72,8 +70,7 @@ Add address screen
 /*----------------------------------------------------------------------
 forgot password
 -----------------------------------------------------------------------*/
-  static const enterthePhoneno =
-      'Enter the phone number used to create an account';
+  static const enterthePhoneno = 'Enter the phone number used to create an account';
   static const sendResetcode = 'Send Reset Code';
   static const confirmResetcode = 'Confirm Reset Code';
   static const confirmBytypingthecode = 'Confirm by typing the code below';
@@ -151,8 +148,8 @@ FRUITS AND VEGETABLES SCREEN
   static const all = 'All ';
   static const recentSearches = 'Recent Searches ';
   static const clear = 'Clear ';
-
-
+  static const sorryNoProductsInCategory =
+      'Sorry, there are no products available in this category at the moment. Kindly Try Again later.';
   static const freeDelivery = 'Free delivery';
 
 /*----------------------------------------------------------------------
@@ -176,11 +173,14 @@ ORDERS SCREEN
   static const serachYourOrders = 'Search Your Orders';
   static const activeOrders = 'Active Orders';
   static const orders = 'Orders';
+  static const orderDetails = 'Order Details';
   static const completedOrders = 'Completed Orders';
   static const inTransit = 'In Transit';
+  static const pending = 'Pending';
   static const cancelled = 'Cancelled';
   static const cancel = 'Cancel';
   static const delivered = 'Delivered';
+  static const deliveredTo = 'Delivered to';
   static const processing = 'Processing';
   static const orderID = 'Order ID';
   static const youHaveNoActiveOrders = 'You have no active orders';
@@ -188,8 +188,7 @@ ORDERS SCREEN
 /*----------------------------------------------------------------------
  VOUCHERS SCREEN
 -----------------------------------------------------------------------*/
-  static const vouchersWillAppear =
-      'Vouchers will appear here when you receive them';
+  static const vouchersWillAppear = 'Vouchers will appear here when you receive them';
 
 /*----------------------------------------------------------------------
 WISHLIST SCREEN
@@ -210,8 +209,7 @@ WISHLIST SCREEN
   static const savedAddress = 'Saved Addresses';
   static const savedCards = 'Saved Cards';
   static const help = 'Help';
-  static const areSureYouWantToDelete =
-      'Are you sure you want to delete this address?';
+  static const areSureYouWantToDelete = 'Are you sure you want to delete this address?';
 
   static const addnewCard = 'Add New Card ';
   static const firstandlastname = 'First & Last Name';
@@ -231,6 +229,8 @@ SINGLE PRODUCT PAGE
   static const verifiedRatings = 'Verified ratings';
   static const verifiedPurchase = 'Verified Purchase';
   static const myCart = 'My Cart';
+  static const cartIsEmpty = 'Your Cart is empty';
+
   static const items = 'Items';
   static const checkout = 'Checkout';
   static const continueShopping = 'Continue Shopping';
@@ -259,8 +259,7 @@ CHECKOUT SECTION
   static const notselected = 'Not selected';
   static const choose = 'Choose';
   static const reviewItems = 'Review Items';
-  static const deliveryInstructionsOptional =
-      'Delivery Instructions (Optional)';
+  static const deliveryInstructionsOptional = 'Delivery Instructions (Optional)';
   static const voucherCode = 'Voucher Code';
   static const writeaNoteHint = 'Write a note (e.g., Estate Gate Code)';
   static const pastevoucherCode = 'Paste Voucher code';
@@ -269,10 +268,12 @@ CHECKOUT SECTION
   static const total = 'Total';
   static const confirmOrder = 'Confirm Order';
   static const discount = 'Discount';
+  static const deliveryComplete = 'Delivery Complete';
   static const choosePaymentMethod = 'Choose Payment Method';
-
   static const paywithcash = 'Pay with cash (Cash on Delivery)';
   static const paywithcard = 'Pay with Card';
+  static const pleaseTakeAMoment = 'Please take a moment to review the item(s) you received';
+  static const sendReview = 'Send Review';
   static const paywithbank = 'Pay with Bank Transfer';
 
 /*----------------------------------------------------------------------
@@ -294,14 +295,11 @@ RIDER SECTION
   static const pickupLocation = 'Pickup Location';
   static const deliveryLocation = 'Delivery Location';
   static const ordercompleted = 'Order Completed!';
-  static const yousuccessfulCompletedanorder =
-      'You successfully completed an order';
+  static const yousuccessfulCompletedanorder = 'You successfully completed an order';
   static const backHome = 'Back Home';
   static const geBack = 'Go back';
-  static const doyouwantTodeclinethisdelivery =
-      'Do you want to decline this delivery request';
-  static const doyouwantToAcceptthisdelivery =
-      'Do you want to accept this delivery request';
+  static const doyouwantTodeclinethisdelivery = 'Do you want to decline this delivery request';
+  static const doyouwantToAcceptthisdelivery = 'Do you want to accept this delivery request';
   static const declinerequests = 'Decline Request?';
   static const pleaseconfirmthebuyerhasreceived =
       'Please confirm the buyer has received their products';
@@ -311,9 +309,26 @@ RIDER SECTION
   static const km = 'km';
   static const youWillReceiveAnEmail = 'You will receive an email confirmation shortly';
   static const orderPlaced = 'Order Placed';
+  static const goToMyOrder = 'Go to My Orders';
   static const seeOrderDetails = 'See Order Details';
   static const shopForAnotherItem = 'Shop for another item';
-  // static const geBack = 'Go back';
+  static const yourOrderWasPlacedSuccessfully =
+      'Your order was placed successfully and will be reviewed';
+  static const orderReceived = 'Order Received';
+  static const orderReceivedFulfilmentCenter =
+      'Your order has been received by the fulfilment center close to you';
+  static const orderConfirmed = 'Order Confirmed';
+  static const orderConfirmedDeliveryWillBegin =
+      'Your order has been confirmed and delivery will begin';
+  static const pickedUp = 'Picked Up';
+  static const itemHasBeenPickedUpCourier =
+      'Your item has been picked up by our courier and will get to you soon!';
+  static const delivery = 'Delivery';
+  static const minsLeft = 'minutes left';
+  static const itemsInYourOrder = 'Items in your order';
+  static const awaitingPickup = 'Awaiting Pickup';
+  static const goHome = 'Go Home';
+  static const tapStarsToGiveRatings = 'Tap the stars to give a rating';
 }
 
 const List categoriesFooters = [

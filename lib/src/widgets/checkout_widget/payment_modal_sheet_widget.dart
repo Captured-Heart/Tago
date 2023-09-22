@@ -26,14 +26,18 @@ Column checkOutChoosePaymentModalSheet(BuildContext context) {
         title: TextConstant.paywithcash,
         onTap: () {},
       ),
-      paymentMethodListTile( context: context,
+      paymentMethodListTile(
+        context: context,
         leading: FontAwesomeIcons.ccMastercard,
         title: TextConstant.paywithcard,
-        onTap: () {},),
-      paymentMethodListTile( context: context,
-        leading:   Icons.north_east_outlined,
-        title:  TextConstant.paywithbank,
-        onTap: () {},),
+        onTap: () {},
+      ),
+      paymentMethodListTile(
+        context: context,
+        leading: Icons.north_east_outlined,
+        title: TextConstant.paywithbank,
+        onTap: () {},
+      ),
 
       // ListTile(
       //   minLeadingWidth: 25,
@@ -93,7 +97,8 @@ ListTile paymentMethodListTile(
     ),
     title: Text(
       title,
-      style: context.theme.textTheme.titleMedium?.copyWith(fontWeight: AppFontWeight.w500),
+      style: context.theme.textTheme.titleMedium
+          ?.copyWith(fontWeight: AppFontWeight.w500),
     ),
     trailing: const Icon(
       Icons.chevron_right_rounded,

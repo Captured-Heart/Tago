@@ -1,7 +1,10 @@
 import 'package:tago/app.dart';
 
 // home screen appp bar
-AppBar homescreenAppbar(BuildContext context) {
+AppBar homescreenAppbar({
+  required BuildContext context,
+  required bool isBadgeVisible,
+}) {
   return AppBar(
     elevation: 0,
     centerTitle: true,
@@ -40,14 +43,22 @@ AppBar homescreenAppbar(BuildContext context) {
             withNavBar: false,
           );
         },
-        icon: const Icon(Icons.shopping_cart_outlined),
+        icon: Badge(
+          backgroundColor: TagoLight.orange,
+          smallSize: 10,
+          isLabelVisible: isBadgeVisible,
+          child: const Icon(Icons.shopping_cart_outlined),
+        ),
       )
     ],
   );
 }
 
 //categories app bar
-AppBar categoriesAppbar(context) {
+AppBar categoriesAppbar({
+  required BuildContext context,
+  required bool isBadgeVisible,
+}) {
   return AppBar(
     elevation: 0,
     centerTitle: true,
@@ -71,14 +82,22 @@ AppBar categoriesAppbar(context) {
             withNavBar: false,
           );
         },
-        icon: const Icon(Icons.shopping_cart_outlined),
+        icon: Badge(
+          backgroundColor: TagoLight.orange,
+          smallSize: 10,
+          isLabelVisible: isBadgeVisible,
+          child: const Icon(Icons.shopping_cart_outlined),
+        ),
       )
     ],
   );
 }
 
 // Orders app bar
-AppBar ordersAppbar(BuildContext context) {
+AppBar ordersAppbar({
+  required BuildContext context,
+  required bool isBadgeVisible,
+}) {
   return AppBar(
     leading: IconButton(
       onPressed: () {
@@ -99,8 +118,19 @@ AppBar ordersAppbar(BuildContext context) {
     ),
     actions: [
       IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.shopping_cart_outlined),
+        onPressed: () {
+          navBarPush(
+            context: context,
+            screen: const MyCartScreen(),
+            withNavBar: false,
+          );
+        },
+        icon: Badge(
+          backgroundColor: TagoLight.orange,
+          smallSize: 10,
+          isLabelVisible: isBadgeVisible,
+          child: const Icon(Icons.shopping_cart_outlined),
+        ),
       )
     ],
     bottom: TabBar(
@@ -135,9 +165,3 @@ AppBar myAccountAppbar(context) {
     ),
   );
 }
-// appBarWidget(
-//         context: context,
-//         title: TextConstant.myaccounts,
-//         isLeading: true,
-//         hasDrawer: true,
-//       );

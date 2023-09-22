@@ -7,7 +7,6 @@ Column checkOutReviewItemsWidget({
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-     
       Text(
         cartModel.product?.label?.toTitleCase() ?? TextConstant.product,
         // 'Coca-cola drink - pack of 6 can',

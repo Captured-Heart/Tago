@@ -21,11 +21,12 @@ Widget wishlistWidget({
         cachedNetworkImageWidget(
           imgUrl: productsModel.productImages?.first['image']['url'],
           height: 100,
+          width: 100,
         ),
         Expanded(
           child: ListTile(
-            minLeadingWidth: 80,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
+            // minLeadingWidth: 80,
+            visualDensity: VisualDensity.compact,
             isThreeLine: true,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,17 +42,17 @@ Widget wishlistWidget({
                     productsModel.savedPerc != null
                         ? Text(
                             productsModel.amount.toString().toCommaPrices(),
-                            style: context.theme.textTheme.bodyMedium?.copyWith(
-                                decoration: TextDecoration.lineThrough),
+                            style: context.theme.textTheme.bodyMedium
+                                ?.copyWith(decoration: TextDecoration.lineThrough),
                           )
                         : const SizedBox.shrink(),
-                    Text(
-                      productsModel.originalAmount == null
-                          ? productsModel.amount.toString().toCommaPrices()
-                          : productsModel.originalAmount
-                              .toString()
-                              .toCommaPrices(),
-                      style: context.theme.textTheme.titleMedium,
+                    Expanded(
+                      child: Text(
+                        productsModel.originalAmount == null
+                            ? productsModel.amount.toString().toCommaPrices()
+                            : productsModel.originalAmount.toString().toCommaPrices(),
+                        style: context.theme.textTheme.titleMedium,
+                      ),
                     ),
                   ].rowInPadding(5),
                 ),
@@ -83,8 +84,7 @@ Widget wishlistWidget({
                             fixedSize: const Size.fromHeight(25),
                             visualDensity: VisualDensity.compact,
                             foregroundColor: TagoLight.primaryColor,
-                            backgroundColor:
-                                TagoLight.textError.withOpacity(0.15)),
+                            backgroundColor: TagoLight.textError.withOpacity(0.15)),
                         child: Text(
                           TextConstant.deleteFromcart,
                           style: context.theme.textTheme.bodyLarge?.copyWith(

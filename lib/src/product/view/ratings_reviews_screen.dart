@@ -5,7 +5,8 @@ class RatingsAndReviewsScreen extends ConsumerStatefulWidget {
   const RatingsAndReviewsScreen({super.key, required this.id});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _RatingsAndReviewsState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RatingsAndReviewsState();
 }
 
 class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
@@ -53,7 +54,8 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                     )
                   ].rowInPadding(10)),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: 0.1,
@@ -112,7 +114,9 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                 data: (data) {
                   return Container(
                     decoration: BoxDecoration(
-                      border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+                      border: Border.all(
+                          width: 0.1,
+                          strokeAlign: BorderSide.strokeAlignInside),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(

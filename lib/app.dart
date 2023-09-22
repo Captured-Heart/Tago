@@ -16,6 +16,7 @@ export 'package:google_maps_flutter/google_maps_flutter.dart';
 export 'package:shimmer/shimmer.dart';
 export 'package:carousel_slider/carousel_slider.dart';
 export 'package:intl/intl.dart' hide TextDirection;
+export 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 // config
 export './config/config.dart';

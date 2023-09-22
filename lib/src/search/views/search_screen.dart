@@ -17,8 +17,8 @@ class SearchScreen extends ConsumerWidget {
   final List<String> recentStrings = [];
 
   void _addStringToList(String value) {
-    final myData = HiveHelper()
-        .getDataSearch(key: HiveKeys.search.keys, defaultValue: recentStrings) as List<String>;
+    final myData = HiveHelper().getDataSearch(
+        key: HiveKeys.search.keys, defaultValue: recentStrings) as List<String>;
     log('myData: $myData');
     // recentStrings.add(value);
     final updatedData = [...myData, value];
@@ -26,8 +26,8 @@ class SearchScreen extends ConsumerWidget {
   }
 
   Future<void> deleteDataAtIndex(int index) async {
-    final myData = HiveHelper()
-        .getDataSearch(key: HiveKeys.search.keys, defaultValue: recentStrings) as List<String>;
+    final myData = HiveHelper().getDataSearch(
+        key: HiveKeys.search.keys, defaultValue: recentStrings) as List<String>;
 
     if (index >= 0 && index < myData.length) {
       myData.removeAt(index);
@@ -57,7 +57,9 @@ class SearchScreen extends ConsumerWidget {
                 autoFocus: true,
                 filled: true,
                 onChanged: (value) {
-                  ref.read(searchTextProvider.notifier).update((state) => value);
+                  ref
+                      .read(searchTextProvider.notifier)
+                      .update((state) => value);
                 },
                 suffixIcon: IconButton.outlined(
                   onPressed: () {
@@ -113,7 +115,8 @@ class SearchScreen extends ConsumerWidget {
                 ),
                 loading: () {
                   if (keyWord.isNotEmpty && keyWord.length > 2) {
-                    return const Center(child: CircularProgressIndicator.adaptive());
+                    return const Center(
+                        child: CircularProgressIndicator.adaptive());
                   } else if (keyWord.isNotEmpty && keyWord.length < 3) {
                     return const Text(
                       'Search keyword must be greater than 3 characters',
@@ -121,18 +124,21 @@ class SearchScreen extends ConsumerWidget {
                     );
                   } else {
 // if it contains in hive data
-                    if (HiveHelper().containsSearchData(HiveKeys.search.keys) == true) {
+                    if (HiveHelper().containsSearchData(HiveKeys.search.keys) ==
+                        true) {
                       return Column(children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Expanded(child: Text(TextConstant.recentSearches)),
+                            const Expanded(
+                                child: Text(TextConstant.recentSearches)),
                             TextButton(
                               onPressed: () {
                                 log('message');
                                 HiveHelper().clearBoxSearch();
                               },
-                              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                              style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero),
                               child: Text(TextConstant.clear),
                             )
                           ],
@@ -141,7 +147,8 @@ class SearchScreen extends ConsumerWidget {
                         //valueable listener for hive searches
                         ValueListenableBuilder(
                           valueListenable: HiveHelper().getSearchListenable(),
-                          builder: (BuildContext context, Box box, Widget? child) {
+                          builder:
+                              (BuildContext context, Box box, Widget? child) {
                             final myData = HiveHelper().getDataSearch(
                                 key: HiveKeys.search.keys,
                                 defaultValue: recentStrings) as List<String>;
@@ -163,7 +170,8 @@ class SearchScreen extends ConsumerWidget {
                                       ),
                                     ),
                                     minLeadingWidth: 1,
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
                                     trailing: GestureDetector(
                                       onTap: () {
                                         deleteDataAtIndex(index);

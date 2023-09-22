@@ -18,7 +18,8 @@ class CheckOutNotifier extends StateNotifier<AsyncValue> {
       state: state,
     )
         .timeout(const Duration(seconds: 10), onTimeout: () {
-          showScaffoldSnackBarMessage(NetworkErrorEnums.operationTimeOut.message);
+          showScaffoldSnackBarMessage(
+              NetworkErrorEnums.operationTimeOut.message);
           state = const AsyncValue.data(null);
         })
         .onError((error, stackTrace) => state = const AsyncValue.data(null))

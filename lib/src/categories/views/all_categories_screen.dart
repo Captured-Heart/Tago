@@ -12,8 +12,13 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(fetchCategoriesProvider);
+    final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
+
     return Scaffold(
-      appBar: categoriesAppbar(context),
+      appBar: categoriesAppbar(
+        context: context,
+        isBadgeVisible: cartList?.isNotEmpty ?? false,
+      ),
       body: ListView(
         controller: controller,
         padding: const EdgeInsets.symmetric(horizontal: 10),

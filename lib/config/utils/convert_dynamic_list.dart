@@ -29,6 +29,19 @@ List<ProductsModel> convertDynamicListToProductListModel(
 
   return modelList;
 }
+List<PlaceOrderModel> convertDynamicListToPlaceOrderModel(
+  List<dynamic> dynamicList,
+) {
+  List<PlaceOrderModel> modelList = [];
+
+  for (var dynamicItem in dynamicList) {
+    PlaceOrderModel modelInstance = PlaceOrderModel.fromJson(dynamicItem);
+
+    modelList.add(modelInstance);
+  }
+
+  return modelList;
+}
 
 List<TimesModel> convertDynamicListToTimesListModel(
   List<dynamic> dynamicList,

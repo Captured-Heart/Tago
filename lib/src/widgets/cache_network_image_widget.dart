@@ -35,13 +35,15 @@ CachedNetworkImage cachedNetworkImageWidget({
               child: Container(
                 alignment: Alignment.center,
                 height: height,
-                width: context.sizeWidth(1),
+                width: width ?? context.sizeWidth(1),
                 color: TagoLight.indicatorActiveColor,
               ),
             );
     },
     errorWidget: (context, url, error) {
       return Container(
+        width: width,
+        height: height,
         decoration: const BoxDecoration(
           shape: BoxShape.rectangle,
           image: DecorationImage(

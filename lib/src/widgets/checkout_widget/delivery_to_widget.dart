@@ -1,6 +1,7 @@
 import 'package:tago/app.dart';
 
-Column checkoutDeliveryToWidget(BuildContext context, AsyncValue<AccountModel> accountInfo) {
+Column checkoutDeliveryToWidget(
+    BuildContext context, AsyncValue<AccountModel> accountInfo) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisSize: MainAxisSize.min,
@@ -18,7 +19,8 @@ Column checkoutDeliveryToWidget(BuildContext context, AsyncValue<AccountModel> a
           color: TagoDark.primaryColor,
         ),
         title: Text(
-          accountInfo.valueOrNull?.address?.streetAddress ?? TextConstant.noAddressFound,
+          accountInfo.valueOrNull?.address?.streetAddress ??
+              TextConstant.noAddressFound,
           style: context.theme.textTheme.labelMedium,
         ),
         trailing: TextButton(

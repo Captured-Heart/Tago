@@ -14,13 +14,15 @@ class MyCartListTileWidget extends ConsumerStatefulWidget {
   final VoidCallback onDelete;
   final Widget subtitleWidget;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MyCartListTileWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _MyCartListTileWidgetState();
 }
 
 class _MyCartListTileWidgetState extends ConsumerState<MyCartListTileWidget> {
   @override
   Widget build(BuildContext context) {
-    ValueNotifier<int> cartItemsNotifier = ValueNotifier<int>(widget.cartModel.quantity!);
+    ValueNotifier<int> cartItemsNotifier =
+        ValueNotifier<int>(widget.cartModel.quantity!);
     // var totalAmount = widget.cartModelList
     //     .map((e) => e.product!.amount)
     //     .fold(0, (previousValue, element) => previousValue + element!);
@@ -42,7 +44,8 @@ class _MyCartListTileWidgetState extends ConsumerState<MyCartListTileWidget> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 cachedNetworkImageWidget(
-                  imgUrl: widget.cartModel.product?.productImages?.last['image']['url'],
+                  imgUrl: widget.cartModel.product?.productImages?.last['image']
+                      ['url'],
                   height: 100,
                   width: 100,
                 ),

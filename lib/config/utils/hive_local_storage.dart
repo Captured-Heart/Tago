@@ -51,7 +51,7 @@ class HiveHelper {
   // }
 
   //      get data
-  dynamic getDataSearch({String ? key, dynamic defaultValue}) {
+  dynamic getDataSearch({String? key, dynamic defaultValue}) {
     log('getData: $key');
     return _boxSearch.get(key, defaultValue: defaultValue);
   }
@@ -73,7 +73,8 @@ class HiveHelper {
   Future<void> clearBoxSearch() async {
     await _boxSearch.clear();
   }
-   // delete at index 
+
+  // delete at index
   Future<void> deleteSearchAtIndex(int index) async {
     await _boxSearch.deleteAt(index);
   }

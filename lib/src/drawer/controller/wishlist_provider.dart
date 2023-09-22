@@ -1,7 +1,7 @@
 import 'package:tago/app.dart';
 
-final fetchWishListProvider =
-    FutureProvider.autoDispose.family<List<ProductsModel>, bool>((ref, showSnackBar) async {
+final fetchWishListProvider = FutureProvider.autoDispose
+    .family<List<ProductsModel>, bool>((ref, showSnackBar) async {
   return fetchWishListMethod(showSnackBar: showSnackBar);
 });
 

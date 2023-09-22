@@ -4,10 +4,12 @@ class CheckOutDayAndTimesWidget extends ConsumerStatefulWidget {
   const CheckOutDayAndTimesWidget({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CheckOutDayAndTimesWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CheckOutDayAndTimesWidgetState();
 }
 
-class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesWidget> {
+class _CheckOutDayAndTimesWidgetState
+    extends ConsumerState<CheckOutDayAndTimesWidget> {
   int? selectedValue;
   int selectedIndex = 0;
 
@@ -22,7 +24,8 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
   @override
   Widget build(BuildContext context) {
     final availabileDate = ref.watch(getAvailabileDateProvider);
-    final availabileTimes = ref.watch(getAvailabileTimesProvider(selectedIndex));
+    final availabileTimes =
+        ref.watch(getAvailabileTimesProvider(selectedIndex));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,7 +51,8 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(18),
-                                margin: const EdgeInsets.symmetric(horizontal: 5),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5),
                                 decoration: BoxDecoration(
                                   color: getColor(selectedIndex, index),
                                   borderRadius: BorderRadius.circular(8),
@@ -61,8 +65,10 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
                                       getDayOfWeek(data[index].date!),
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
-                                      style: AppTextStyle.hintTextStyleLight.copyWith(
-                                        color: context.theme.scaffoldBackgroundColor,
+                                      style: AppTextStyle.hintTextStyleLight
+                                          .copyWith(
+                                        color: context
+                                            .theme.scaffoldBackgroundColor,
                                         fontWeight: AppFontWeight.w700,
                                       ),
                                     ),
@@ -70,8 +76,10 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
                                       dateFormatted2(data[index].date!),
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
-                                      style: AppTextStyle.hintTextStyleLight.copyWith(
-                                        color: context.theme.scaffoldBackgroundColor,
+                                      style: AppTextStyle.hintTextStyleLight
+                                          .copyWith(
+                                        color: context
+                                            .theme.scaffoldBackgroundColor,
                                         fontWeight: AppFontWeight.w700,
                                       ),
                                     ),

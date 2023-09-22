@@ -16,7 +16,8 @@ Consumer singleProductMiniCartModalWidget() {
                 data: (data) {
                   var prices = data
                       .map((e) => e.product?.amount)
-                      .fold(0, (previousValue, element) => previousValue + element!)
+                      .fold(0,
+                          (previousValue, element) => previousValue + element!)
                       .toString();
 
                   return ListView(
@@ -55,9 +56,12 @@ Consumer singleProductMiniCartModalWidget() {
                             cartModel: cartModel,
                             cartModelList: data,
                             onDelete: () {
-                              ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                              ref
+                                  .read(cartNotifierProvider.notifier)
+                                  .deleteFromCartMethod(
                                 map: {
-                                  ProductTypeEnums.productId.name: cartModel.product!.id.toString(),
+                                  ProductTypeEnums.productId.name:
+                                      cartModel.product!.id.toString(),
                                 },
                               ).whenComplete(
                                 () => ref.invalidate(getCartListProvider),

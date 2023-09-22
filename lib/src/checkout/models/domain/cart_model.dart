@@ -19,7 +19,6 @@ class CartModel extends Equatable {
         'product': product?.toJson(),
       };
 
-      
   CartModel copyWith({
     int? quantity,
     ProductsModel? product,
@@ -33,4 +32,3 @@ class CartModel extends Equatable {
   @override
   List<Object?> get props => [quantity, product];
 }
-

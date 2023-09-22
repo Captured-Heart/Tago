@@ -16,7 +16,9 @@ Row deliveryTypeRowButtons({
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isInstant == true ? TagoLight.orange : TagoLight.textFieldBorder,
+                color: isInstant == true
+                    ? TagoLight.orange
+                    : TagoLight.textFieldBorder,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -45,11 +47,12 @@ Row deliveryTypeRowButtons({
         Expanded(
           child: GestureDetector(
             onTap: onTapScheduleDelivering,
-           
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isInstant == true ? TagoLight.textFieldBorder : TagoLight.orange,
+                color: isInstant == true
+                    ? TagoLight.textFieldBorder
+                    : TagoLight.orange,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
