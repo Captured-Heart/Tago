@@ -1,6 +1,7 @@
 import 'package:tago/app.dart';
 import 'package:tago/src/product/models/domain/product_reviews_model.dart';
 import 'package:tago/src/product/models/domain/product_specifications_model.dart';
+import 'package:tago/src/rider/models/domain/rider_order_item_model.dart';
 
 List<SubCategoriesModel> convertDynamicListToSubCategoryListModel(
   List<dynamic> dynamicList,
@@ -37,6 +38,19 @@ List<PlaceOrderModel> convertDynamicListToPlaceOrderModel(
 
   for (var dynamicItem in dynamicList) {
     PlaceOrderModel modelInstance = PlaceOrderModel.fromJson(dynamicItem);
+
+    modelList.add(modelInstance);
+  }
+
+  return modelList;
+}
+List<RiderOrderItemsModel> convertDynamicListToRiderOrderItemModel(
+  List<dynamic> dynamicList,
+) {
+  List<RiderOrderItemsModel> modelList = [];
+
+  for (var dynamicItem in dynamicList) {
+    RiderOrderItemsModel modelInstance = RiderOrderItemsModel.fromJson(dynamicItem);
 
     modelList.add(modelInstance);
   }

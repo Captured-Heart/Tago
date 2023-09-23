@@ -10,3 +10,4 @@ export 'controller/rider_order_provider.dart';
 export './controller/delivery_requests_repositories.dart';
 export './loaders/delivery_requests_loaders.dart';
 export './controller/rider_order_repository.dart';
+export './models/domain/delivery_requests_model.dart';

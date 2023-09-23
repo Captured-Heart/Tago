@@ -9,24 +9,44 @@ import 'package:tago/app.dart';
 // 9 - delivered
 class OrdersDetailScreen extends ConsumerWidget {
   final OrderListModel orderListModel;
+  final int? orderStatusFromOrderScreen;
 
   const OrdersDetailScreen({
     super.key,
     required this.orderListModel,
+    this.orderStatusFromOrderScreen,
   });
+
+  bool isFaded({required int status, required OrderStatus orderStatus}) {
+    if (orderStatus.status == status || orderStatus.status <= status) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final accountInfo = ref.watch(getAccountInfoProvider);
-    final orderStatus =
-        ref.watch(orderStatusProvider(orderListModel.id.toString()));
-    log(orderStatus.valueOrNull.toString());
+
+    final orderStatus = ref
+        .watch(orderStatusProvider(orderListModel.id.toString()))
+        .valueOrNull;
+    log(orderListModel.id!.toString());
+// log(orderStatus!.status.toString());
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
           title: const Text(TextConstant.orderDetails),
           centerTitle: true,
           automaticallyImplyLeading: true,
+          leading: tagoBackButton(
+            context: context,
+            onTapBack: () {
+              pop(context);
+              ref.invalidate(orderListProvider);
+            },
+          ),
         ),
         body: ListView(
           children: [
@@ -52,24 +72,40 @@ class OrdersDetailScreen extends ConsumerWidget {
               iconData: Icons.check_circle_outline_sharp,
               title: TextConstant.orderPlaced,
               subtitle: TextConstant.yourOrderWasPlacedSuccessfully,
+              isFaded: isFaded(
+                orderStatus: OrderStatus.placed,
+                status: orderStatus?.status ?? orderStatusFromOrderScreen!,
+              ),
             ),
             customStepperWidget(
               context: context,
               iconData: Icons.home_outlined,
               title: TextConstant.orderReceived,
               subtitle: TextConstant.orderReceivedFulfilmentCenter,
+              isFaded: isFaded(
+                orderStatus: OrderStatus.received,
+                status: orderStatus?.status ?? orderStatusFromOrderScreen!,
+              ),
             ),
             customStepperWidget(
               context: context,
               iconData: Icons.checklist,
               title: TextConstant.orderConfirmed,
               subtitle: TextConstant.youWillReceiveAnEmail,
+              isFaded: isFaded(
+                orderStatus: OrderStatus.processing,
+                status: orderStatus?.status! ?? orderStatusFromOrderScreen!,
+              ),
             ),
             customStepperWidget(
               context: context,
               iconData: Icons.directions_bike,
               title: TextConstant.pickedUp,
               subtitle: TextConstant.itemHasBeenPickedUpCourier,
+              isFaded: isFaded(
+                orderStatus: OrderStatus.pickedUp,
+                status: orderStatus?.status! ?? orderStatusFromOrderScreen!,
+              ),
             ),
             customStepperWidget(
               context: context,
@@ -77,6 +113,10 @@ class OrdersDetailScreen extends ConsumerWidget {
               title: TextConstant.delivery,
               subtitle: '30 ${TextConstant.minsLeft}',
               hideDash: true,
+              isFaded: isFaded(
+                orderStatus: OrderStatus.delivered,
+                status: orderStatus?.status! ?? orderStatusFromOrderScreen!,
+              ),
             ),
             const Divider(
               thickness: 0.8,
@@ -85,9 +125,16 @@ class OrdersDetailScreen extends ConsumerWidget {
               TextConstant.itemsInYourOrder,
               style: context.theme.textTheme.titleMedium,
             ).padSymmetric(vertical: 8),
-            orderReviewItemsWidget(
-              context: context,
-              orderListModel: orderListModel,
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: orderListModel.orderItems!.length,
+              itemBuilder: (context, index) {
+                var ordersList = orderListModel.orderItems![index];
+                return orderReviewItemsWidget(
+                  context: context,
+                  orderListModel: ordersList,
+                );
+              },
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -103,27 +150,21 @@ class OrdersDetailScreen extends ConsumerWidget {
 
   Column orderReviewItemsWidget({
     required BuildContext context,
-    required OrderListModel orderListModel,
+    required dynamic orderListModel,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          orderListModel.name ?? TextConstant.product,
-          // 'Coca-cola drink - pack of 6 can',
+          orderListModel['product']['name'] +
+                  ' (x${orderListModel['quantity'].toString()})' ??
+              TextConstant.product,
           style: context.theme.textTheme.labelMedium?.copyWith(
             fontWeight: AppFontWeight.w400,
           ),
         ),
-        // const Divider(thickness: 1),
-        // Text(
-        //   'Coca-cola drink - pack of 6 can',
-        //   style: context.theme.textTheme.labelMedium?.copyWith(
-        //     fontWeight: AppFontWeight.w400,
-        //   ),
-        // ),
         Text(
-          '${TextConstant.nairaSign} ${orderListModel.totalAmount.toString().toCommaPrices() ?? '0'}',
+          '${TextConstant.nairaSign} ${orderListModel['amount'].toString().toCommaPrices()}',
           style: context.theme.textTheme.labelMedium,
         ),
         const Divider(thickness: 1)
@@ -146,7 +187,9 @@ class OrdersDetailScreen extends ConsumerWidget {
           children: [
             Icon(
               iconData,
-              color: TagoLight.primaryColor,
+              color: isFaded == true
+                  ? TagoLight.indicatorActiveColor
+                  : TagoLight.primaryColor,
             ),
             !hideDash
                 ? const Dash(

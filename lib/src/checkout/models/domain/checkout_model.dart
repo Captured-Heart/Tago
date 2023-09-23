@@ -50,6 +50,17 @@ class CheckoutModel extends Equatable {
         // 'orderId': orderId,
         // 'url': url,
       };
+  Map<String, dynamic> toJsonWithoutVocher() => {
+        'addressId': addressId,
+        'deliveryType': deliveryType,
+        'paymentMethod': paymentMethod,
+        'instructions': instructions,
+        // 'scheduleForDate': scheduleForDate,
+        // 'scheduleForTime': scheduleForTime,
+        'items': items,
+        // 'orderId': orderId,
+        // 'url': url,
+      };
 
   @override
   List<Object?> get props {

@@ -183,10 +183,12 @@ ORDERS SCREEN
   static const cancelled = 'Cancelled';
   static const cancel = 'Cancel';
   static const delivered = 'Delivered';
+  static const placed = 'Placed';
   static const deliveredTo = 'Delivered to';
   static const processing = 'Processing';
   static const orderID = 'Order ID';
   static const youHaveNoActiveOrders = 'You have no active orders';
+  static const youHaveNoCompletedOrders = 'You have no completed orders';
 
 /*----------------------------------------------------------------------
  VOUCHERS SCREEN

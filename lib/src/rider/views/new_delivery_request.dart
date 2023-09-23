@@ -4,12 +4,10 @@ class NewDeliveryRequestScreen extends ConsumerStatefulWidget {
   const NewDeliveryRequestScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _NewDeliveryRequestScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _NewDeliveryRequestScreenState();
 }
 
-class _NewDeliveryRequestScreenState
-    extends ConsumerState<NewDeliveryRequestScreen> {
+class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScreen> {
   @override
   void initState() {
     ref.read(getCurrentLocationProvider);
@@ -21,6 +19,12 @@ class _NewDeliveryRequestScreenState
   Widget build(BuildContext context) {
     final currentPosition = ref.watch(getCurrentLocationProvider);
     return Scaffold(
+      appBar: appBarWidget(
+        context: context,
+        title: TextConstant.newDeliveryRequests,
+        centerTitle: false,
+        isLeading: true,
+      ),
       body: Column(
         // padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [

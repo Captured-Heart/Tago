@@ -38,3 +38,17 @@ AppBar appBarWidget({
     actions: [suffixIcon ?? const SizedBox.shrink()],
   );
 }
+
+IconButton tagoBackButton({
+  required BuildContext context,
+  VoidCallback? onTapBack,
+}) {
+  return IconButton(
+    onPressed: onTapBack ??
+        () {
+          pop(context);
+        },
+    icon: const Icon(Icons.arrow_back),
+    color: TagoLight.textBold,
+  );
+}

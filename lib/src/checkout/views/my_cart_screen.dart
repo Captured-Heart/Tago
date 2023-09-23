@@ -76,7 +76,8 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
 
                         return Container(
                           width: context.sizeWidth(0.9),
-                          padding: const EdgeInsets.only(bottom: 10, top: 20, left: 10),
+                          padding: const EdgeInsets.only(
+                              bottom: 10, top: 20, left: 10),
                           decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(width: 0.1),
@@ -88,7 +89,8 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               cachedNetworkImageWidget(
-                                imgUrl: cartModel.product?.productImages?.last['image']['url'],
+                                imgUrl: cartModel.product?.productImages
+                                    ?.last['image']['url'],
                                 height: 100,
                                 width: 100,
                               ),
@@ -96,25 +98,31 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                                 child: ListTile(
                                   minLeadingWidth: 80,
                                   // contentPadding: EdgeInsets.zero,
-                                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                                  visualDensity:
+                                      VisualDensity.adaptivePlatformDensity,
                                   isThreeLine: true,
 
                                   title: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         cartModel.product!.name!,
                                         // 'Fanta Drink - 50cl Pet x 12 Fanta Drink Fanta Drink',
-                                        style: context.theme.textTheme.bodySmall,
+                                        style:
+                                            context.theme.textTheme.bodySmall,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       Text(
                                         TextConstant.nairaSign +
                                             // updatePrice()
-                                            (cartModel.product!.amount!).toString().toCommaPrices(),
+                                            (cartModel.product!.amount!)
+                                                .toString()
+                                                .toCommaPrices(),
                                         // 'N1,879',
-                                        style: context.theme.textTheme.titleMedium,
+                                        style:
+                                            context.theme.textTheme.titleMedium,
                                       ),
                                     ].columnInPadding(10),
                                   ),
@@ -122,7 +130,8 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                                   //subtitle
                                   subtitle: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       // minus and delete button
@@ -141,21 +150,25 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                                           } else {
                                             // delete from cart
                                             ref
-                                                .read(cartNotifierProvider.notifier)
+                                                .read(cartNotifierProvider
+                                                    .notifier)
                                                 .deleteFromCartMethod(
                                               map: {
                                                 ProductTypeEnums.productId.name:
-                                                    cartModel.product!.id.toString(),
+                                                    cartModel.product!.id
+                                                        .toString(),
                                               },
                                             ).whenComplete(
-                                              () => ref.invalidate(getCartListProvider),
+                                              () => ref.invalidate(
+                                                  getCartListProvider),
                                             );
                                           }
                                         },
                                       ),
                                       Text(
                                         cartModel.quantity.toString(),
-                                        style: context.theme.textTheme.titleLarge,
+                                        style:
+                                            context.theme.textTheme.titleLarge,
                                       ),
 
                                       //add button
@@ -163,7 +176,8 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                                         context: context,
                                         isMinus: false,
                                         onTap: () {
-                                          if (quantity < product!.availableQuantity!) {
+                                          if (quantity <
+                                              product!.availableQuantity!) {
                                             setState(() {
                                               data[index] = cartModel.copyWith(
                                                 quantity: quantity + 1,
@@ -217,7 +231,8 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                             context,
                             CheckoutScreen(
                               cartModel: data,
-                              totalAmount: int.tryParse(calculateTotalPrice().toString()),
+                              totalAmount: int.tryParse(
+                                  calculateTotalPrice().toString()),
                               placeOrderModel: List.generate(
                                 data.length,
                                 (index) {

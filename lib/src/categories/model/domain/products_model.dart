@@ -57,10 +57,12 @@ class ProductsModel extends Equatable {
         brand: json['brand'] as String?,
         category: json['category'] == null
             ? null
-            : CategoriesModel.fromJson(json['category'] as Map<String, dynamic>),
+            : CategoriesModel.fromJson(
+                json['category'] as Map<String, dynamic>),
         subCategory: json['subCategory'] == null
             ? null
-            : SubCategoriesModel.fromJson(json['subCategory'] as Map<String, dynamic>),
+            : SubCategoriesModel.fromJson(
+                json['subCategory'] as Map<String, dynamic>),
         originalAmount: json['originalAmount'] as int?,
         savedPerc: (json['savedPerc'] as num?)?.toDouble(),
         availableQuantity: json['availableQuantity'] as int?,

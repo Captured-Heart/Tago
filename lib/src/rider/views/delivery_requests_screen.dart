@@ -4,8 +4,7 @@ class DeliveryRequestScreen extends ConsumerStatefulWidget {
   const DeliveryRequestScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DeliveryRequestScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _DeliveryRequestScreenState();
 }
 
 class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {
@@ -26,11 +25,22 @@ class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {
               return Column(
                 children: List.generate(
                   data.length,
-                  (index) => riderOrdersListTile(
-                    context: context,
-                    orderStatus: OrderStatus.delivered,
-                    isDeliveryRequests: true,
-                  ),
+                  (index) {
+                    var riderOrder = data[index];
+                    return riderOrdersListTile(
+                      context: context,
+                      orderStatus: OrderStatus.delivered,
+                      isDeliveryRequests: true,
+                      riderOrderModel: riderOrder,
+                      orderItems: riderOrder.order?.orderItems,
+                      onViewDetails: () {
+                        push(
+                          context,
+                          const NewDeliveryRequestScreen(),
+                        );
+                      },
+                    );
+                  },
                 ),
               );
             },

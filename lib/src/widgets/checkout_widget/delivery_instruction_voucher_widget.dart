@@ -55,15 +55,15 @@ Column checkOutDeliveryInstructionsAndVoucherWidget({
         context: context,
         isError: false,
         hintText: TextConstant.pastevoucherCode,
-        validator: MultiValidator(
-          [
-            RequiredValidator(errorText: requiredValue),
-            MinLengthValidator(
-              6,
-              errorText: passwordMustBeAtleast,
-            ),
-          ],
-        ),
+        // validator: MultiValidator(
+        //   [
+        //     RequiredValidator(errorText: requiredValue),
+        //     MinLengthValidator(
+        //       6,
+        //       errorText: passwordMustBeAtleast,
+        //     ),
+        //   ],
+        // ),
         onChanged: (value) {
           ref.read(voucherCodeProvider.notifier).update((state) => value);
         },

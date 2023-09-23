@@ -1,7 +1,7 @@
 import 'package:tago/app.dart';
 
 final deliveryRequestsProvider =
-    FutureProvider.autoDispose<List<OrderModel>>((ref) async {
+    FutureProvider.autoDispose<List<DeliveryRequestsModel>>((ref) async {
   return getDeliveryRequestsMethod();
 });
 

@@ -1,21 +1,27 @@
 import 'package:tago/app.dart';
 
 class OrderPlacedScreen extends ConsumerWidget {
-  const OrderPlacedScreen({super.key});
+  const OrderPlacedScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var orderId =
+        HiveHelper().getData(HiveKeys.createOrder.keys)['orderId'].toString();
+    final orderList = ref.watch(orderListByIDProvider(orderId)).valueOrNull;
+
+    // log(orderList.valueOrNull.toString());
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
           automaticallyImplyLeading: true,
-          leading: IconButton(
-            onPressed: () {
+          leading: tagoBackButton(
+            context: context,
+            onTapBack: () {
               pop(context);
               pop(context);
             },
-            icon: const Icon(Icons.arrow_back),
-            color: TagoLight.textBold,
           ),
         ),
         body: Column(
@@ -23,6 +29,8 @@ class OrderPlacedScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           // mainAxisSize: MainAxisSize.max,
           children: [
+            // Text(HiveHelper().getData(HiveKeys.createOrder.keys).toString() ?? 'addacecw'),
+
             Column(
               children: [
                 const Icon(
@@ -31,8 +39,10 @@ class OrderPlacedScreen extends ConsumerWidget {
                   size: 48,
                 ),
                 ListTile(
-                  title: const Center(child: Text(TextConstant.orderPlaced)).padOnly(bottom: 10),
-                  subtitle: const Center(child: Text(TextConstant.youWillReceiveAnEmail)),
+                  title: const Center(child: Text(TextConstant.orderPlaced))
+                      .padOnly(bottom: 10),
+                  subtitle: const Center(
+                      child: Text(TextConstant.youWillReceiveAnEmail)),
                 ),
               ],
             ),
@@ -41,12 +51,21 @@ class OrderPlacedScreen extends ConsumerWidget {
                 SizedBox(
                   width: context.sizeWidth(0.9),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      navBarPush(
+                        context: context,
+                        screen: OrdersDetailScreen(
+                            orderListModel: orderList!.first),
+                        withNavBar: false,
+                      );
+                    },
                     child: const Text(TextConstant.seeOrderDetails),
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    popToMain(context);
+                  },
                   child: const Text(TextConstant.shopForAnotherItem),
                 )
               ],

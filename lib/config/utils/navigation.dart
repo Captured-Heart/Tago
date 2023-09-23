@@ -25,6 +25,7 @@ void popToMain(BuildContext context) =>
 
 //.ofContext POP
 void pop(BuildContext context) => Navigator.of(context).pop();
+
 //.oFContext with rootNavigator POP
 void popRootNavigatorTrue(BuildContext context) =>
     Navigator.of(context, rootNavigator: true).pop();

@@ -2,11 +2,13 @@ import 'package:tago/app.dart';
 
 enum OrderStatus {
   pending(0),
+  received(4),
   processing(6),
   delivered(9),
   cancelled(2),
   successful(9),
-  active(1);
+  pickedUp(7),
+  placed(1);
 
   const OrderStatus(this.status);
   final int status;
@@ -26,18 +28,20 @@ class OrdersScreen extends ConsumerStatefulWidget {
 }
 
 class _OrdersScreenState extends ConsumerState<OrdersScreen> {
-  @override
-  void initState() {
-    ref.read(orderListProvider);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   ref.read(orderListProvider(false));
+  //   log('on init state');
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final orderList = ref.watch(orderListProvider);
-    final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
-    log(orderList.valueOrNull?.map((e) => e.id).toList().toString() ?? '');
-    log('status: ${orderList.valueOrNull?.map((e) => e.status)}');
+    final orderList = ref.watch(orderListProvider(false));
+    final cartList = ref
+        .watch(getCartListProvider(false).select((value) => value.valueOrNull));
+    // log(orderList.valueOrNull?.map((e) => e.id).toList().toString() ?? '');
+    log('status: ${orderList.valueOrNull?.map((e) => e.status).toList()}');
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -46,8 +50,9 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
           context: context,
           isBadgeVisible: cartList?.isNotEmpty ?? false,
         ),
-        body: TabBarView(children: [
-          ListView(
+        body: TabBarView(
+          children: [
+            ListView(
               padding: const EdgeInsets.symmetric(vertical: 30),
               children: [
                 orderList.when(
@@ -80,12 +85,15 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                             onTap: () {
                               navBarPush(
                                 context: context,
-                                screen: 9 == OrderStatus.delivered.status
+                                screen: OrderStatus.delivered.status ==
+                                        orderModel.status
                                     ? DeliveryCompleteScreen(
                                         orderListModel: orderModel,
                                       )
                                     : OrdersDetailScreen(
                                         orderListModel: orderModel,
+                                        orderStatusFromOrderScreen:
+                                            orderModel.status,
                                       ),
                                 withNavBar: false,
                               );
@@ -107,13 +115,51 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                     child: CircularProgressIndicator.adaptive(),
                   ),
                 ),
-              ]),
+              ],
+            ),
 
-          //completed tab
-          ListView(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            children: [
-              Column(
+            //!Second screen ___     //completed tab
+            ListView(
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              children: [
+                orderList.when(
+                  data: (data) {
+                    if (data
+                        .map((e) => e.status)
+                        .contains(OrderStatus.successful.status)) {
+                      return Column(
+                        children: List.generate(
+                          data.length,
+                          (index) {
+                            var orderModel = data[index];
+                            return GestureDetector(
+                              onTap: () {
+                                navBarPush(
+                                  context: context,
+                                  screen: OrderStatus.delivered.status ==
+                                          orderModel.status
+                                      ? DeliveryCompleteScreen(
+                                          orderListModel: orderModel,
+                                        )
+                                      : OrdersDetailScreen(
+                                          orderListModel: orderModel,
+                                          orderStatusFromOrderScreen:
+                                              orderModel.status,
+                                        ),
+                                  withNavBar: false,
+                                );
+                              },
+                              child: activeOrdersCard(
+                                context: context,
+                                orderStatus: orderModel.status ?? 0,
+                                orderModel: orderModel,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(
@@ -122,19 +168,26 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                           color: TagoLight.textHint,
                         ),
                         Text(
-                          TextConstant.youHaveNoActiveOrders,
+                          TextConstant.youHaveNoCompletedOrders,
                           style: context.theme.textTheme.titleLarge?.copyWith(
                             fontWeight: AppFontWeight.w100,
                             fontFamily: TextConstant.fontFamilyLight,
                           ),
                         )
-                      ].columnInPadding(20))
-                  .padOnly(
-                top: context.sizeHeight(0.1),
-              )
-            ],
-          ),
-        ]),
+                      ].columnInPadding(20),
+                    ).padOnly(top: 50);
+                  },
+                  error: (error, _) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -145,15 +198,14 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     required OrderListModel orderModel,
   }) {
     var product = convertDynamicListToPlaceOrderModel(orderModel.orderItems!);
+
     getOrderStatusColor(int status) {
       if (status == OrderStatus.cancelled.status) {
         return TagoLight.textError;
-      } else if (status == OrderStatus.successful.status ||
-          status == OrderStatus.delivered.status ||
-          status == OrderStatus.active.status) {
-        return TagoLight.primaryColor;
-      } else {
+      } else if (status == OrderStatus.pending.status) {
         return TagoLight.orange;
+      } else {
+        return TagoLight.primaryColor;
       }
     }
 
@@ -164,6 +216,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
         return TextConstant.pending;
       } else if (status == OrderStatus.delivered.status) {
         return TextConstant.delivered;
+      } else if (status == OrderStatus.placed.status) {
+        return TextConstant.placed;
       } else {
         return TextConstant.processing;
       }
