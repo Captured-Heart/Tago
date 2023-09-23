@@ -36,8 +36,10 @@ const String getWishListUrl = '/account/user/wishlist';
 
 //DELIVERY REQUESTS
 const String getDeliveryRequestUrl = '/account/rider/delivery_requests';
-const String declineDeliveryRequestUrl = '/account/rider/delivery_request/decline';
-const String acceptDeliveryRequestUrl = '/account/rider/delivery_request/accept';
+const String declineDeliveryRequestUrl =
+    '/account/rider/delivery_request/decline';
+const String acceptDeliveryRequestUrl =
+    '/account/rider/delivery_request/accept';
 
 // CARTS URL
 const String getCartsUrl = '/account/user/cart';
@@ -51,7 +53,7 @@ const String getListOfOrdersUrl = '/account/user/checkout/orders';
 const String getOrderStatusUrl = '/account/user/checkout/order_status';
 //
 
-//RIDER 
+//RIDER
 const String riderListOfOrdersUrl = '/account/rider/orders';
 
 const googleAPIKey = 'AIzaSyDhKg6wsJbCyYLdjRj5m2bf5b_uUJfN8iE';
@@ -110,7 +112,8 @@ class NetworkHelper {
       final response = await http.get(
         Uri.parse(url),
         headers: {
-          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',
@@ -139,7 +142,8 @@ class NetworkHelper {
       final response = await http.post(
         Uri.parse('$baseUrl$api'),
         headers: {
-          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           // HiveHelper().getData(HiveKeys.token.keys) ?? '',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
@@ -174,7 +178,8 @@ class NetworkHelper {
         Uri.parse('$baseUrl$api'),
         body: map,
         headers: {
-          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',
@@ -204,7 +209,8 @@ class NetworkHelper {
         Uri.parse(url),
         body: map,
         headers: {
-          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',

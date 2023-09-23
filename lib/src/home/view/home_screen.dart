@@ -23,7 +23,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final categories = ref.watch(fetchCategoriesProvider);
     final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
     final accountInfo = ref.watch(getAccountInfoProvider);
-    log(HiveHelper().getData(HiveKeys.token.keys));
+    // log(HiveHelper().getData(HiveKeys.token.keys));
     return Scaffold(
       appBar: homescreenAppbar(
         context: context,
@@ -76,7 +76,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     viewportFraction: 0.99,
                     enlargeFactor: 0,
                     onPageChanged: (index, reason) {
-                      ref.read(currentCarouselIndexProvider.notifier).update((state) => index);
+                      ref
+                          .read(currentCarouselIndexProvider.notifier)
+                          .update((state) => index);
                     }),
               ),
               // .padOnly(bottom: 10),
@@ -85,7 +87,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: List.generate(
                   carouselWidgetList(context).length,
                   (index) => GestureDetector(
-                    onTap: () => ref.read(carouselSliderProvider).animateToPage(index),
+                    onTap: () =>
+                        ref.read(carouselSliderProvider).animateToPage(index),
                     child: Container(
                       width: 6.0,
                       height: 6.0,
@@ -99,7 +102,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ? TagoLight.indicatorInactiveColor
                                 : TagoLight.indicatorActiveColor)
                             .withOpacity(
-                          ref.watch(currentCarouselIndexProvider) == index ? 0.9 : 0.4,
+                          ref.watch(currentCarouselIndexProvider) == index
+                              ? 0.9
+                              : 0.4,
                         ),
                       ),
                     ),
@@ -202,7 +207,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
+                loading: () => categoryCardLoaders(context: context)
+                    .padSymmetric(horizontal: 20),
               )
               .padOnly(left: 5),
 //items near you
@@ -278,7 +284,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Column homeScreenAddressWidget(BuildContext context, AsyncValue<AccountModel> accountInfo) {
+  Column homeScreenAddressWidget(
+      BuildContext context, AsyncValue<AccountModel> accountInfo) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

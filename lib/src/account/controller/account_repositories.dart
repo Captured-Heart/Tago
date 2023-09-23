@@ -4,7 +4,8 @@
 
 import 'package:tago/app.dart';
 
-Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) async {
+Future<List<AddressModel>> getAddressMethod(
+    AutoDisposeFutureProviderRef ref) async {
   // try {
   //post request executed
   final Response response = await NetworkHelper.getRequestWithToken(
@@ -17,9 +18,13 @@ Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) as
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true) {
-    final addressList = (decodedData['data'] as List).map((e) => AddressModel.fromJson(e)).toList();
+    final addressList = (decodedData['data'] as List)
+        .map((e) => AddressModel.fromJson(e))
+        .toList();
     // log('get request for address:  ${decodedData['data'][0]['userId']}'); //
-    ref.read(addressIdProvider.notifier).update((state) => '${decodedData['data'][0]['id']}');
+    ref
+        .read(addressIdProvider.notifier)
+        .update((state) => '${decodedData['data'][0]['id']}');
 
     return addressList;
   } else {

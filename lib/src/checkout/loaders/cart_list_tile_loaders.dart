@@ -71,7 +71,8 @@ Widget myCartListTileLoader(BuildContext context) {
                               fixedSize: const Size.fromRadius(15),
                               minimumSize: const Size.fromRadius(15),
                               padding: EdgeInsets.zero,
-                              backgroundColor: TagoLight.primaryColor.withOpacity(0.15)),
+                              backgroundColor:
+                                  TagoLight.primaryColor.withOpacity(0.15)),
                           child: const Icon(
                             Icons.add,
                             color: TagoDark.primaryColor,

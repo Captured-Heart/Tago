@@ -18,8 +18,12 @@ Future<List<OrderListModel>> getListOfOrderMethod({
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true) {
-    showSnackBar ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3) : null;
-    final orderList = (decodedData['data'] as List).map((e) => OrderListModel.fromJson(e)).toList();
+    showSnackBar
+        ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3)
+        : null;
+    final orderList = (decodedData['data'] as List)
+        .map((e) => OrderListModel.fromJson(e))
+        .toList();
     // log('get request for cart model:  ${decodedData['data']}'); //
 
     return orderList;
@@ -32,7 +36,7 @@ Future<List<OrderListModel>> getListOfOrderMethod({
              GET ORDER STATUS METHOD
  -------------------------------------------------------------------*/
 Future<OrderListModel> getOrderStatusMethod({
- required String orderId,
+  required String orderId,
 }) async {
   var url = '$getOrderStatusUrl?orderId=$orderId';
   // try {

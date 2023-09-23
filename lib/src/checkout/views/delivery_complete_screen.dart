@@ -30,7 +30,8 @@ class DeliveryCompleteScreen extends ConsumerWidget {
                       size: 48,
                     ),
                     ListTile(
-                      title: const Center(child: Text(TextConstant.deliveryComplete))
+                      title: const Center(
+                              child: Text(TextConstant.deliveryComplete))
                           .padOnly(bottom: 10),
                       subtitle: Center(
                         child: SizedBox(
@@ -61,7 +62,9 @@ class DeliveryCompleteScreen extends ConsumerWidget {
                       child: Container(
                         width: context.sizeWidth(0.9),
                         decoration: BoxDecoration(
-                          border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignCenter),
+                          border: Border.all(
+                              width: 0.1,
+                              strokeAlign: BorderSide.strokeAlignCenter),
                           borderRadius: BorderRadius.circular(3),
                         ),
                         child: Container(
@@ -74,7 +77,9 @@ class DeliveryCompleteScreen extends ConsumerWidget {
                               ),
                               Text(
                                 TextConstant.nairaSign +
-                                    orderListModel.totalAmount.toString().toCommaPrices(),
+                                    orderListModel.totalAmount
+                                        .toString()
+                                        .toCommaPrices(),
                                 style: context.theme.textTheme.titleMedium,
                               ),
                             ].columnInPadding(5),

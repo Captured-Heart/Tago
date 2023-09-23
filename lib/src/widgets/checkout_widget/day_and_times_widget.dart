@@ -4,12 +4,10 @@ class CheckOutDayAndTimesWidget extends ConsumerStatefulWidget {
   const CheckOutDayAndTimesWidget({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CheckOutDayAndTimesWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CheckOutDayAndTimesWidgetState();
 }
 
-class _CheckOutDayAndTimesWidgetState
-    extends ConsumerState<CheckOutDayAndTimesWidget> {
+class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesWidget> {
   int? selectedValue;
   int selectedIndex = 0;
 
@@ -24,8 +22,7 @@ class _CheckOutDayAndTimesWidgetState
   @override
   Widget build(BuildContext context) {
     final availabileDate = ref.watch(getAvailabileDateProvider);
-    final availabileTimes =
-        ref.watch(getAvailabileTimesProvider(selectedIndex));
+    final availabileTimes = ref.watch(getAvailabileTimesProvider(selectedIndex));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -39,6 +36,9 @@ class _CheckOutDayAndTimesWidgetState
               ),
               availabileDate.when(
                 data: (data) {
+                  if (data.isEmpty) {
+                    return const Center(child: Text('No available day, at the moment'));
+                  }
                   return Row(
                     children: List.generate(
                         data.length,
@@ -51,8 +51,7 @@ class _CheckOutDayAndTimesWidgetState
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(18),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 5),
+                                margin: const EdgeInsets.symmetric(horizontal: 5),
                                 decoration: BoxDecoration(
                                   color: getColor(selectedIndex, index),
                                   borderRadius: BorderRadius.circular(8),
@@ -65,10 +64,8 @@ class _CheckOutDayAndTimesWidgetState
                                       getDayOfWeek(data[index].date!),
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
-                                      style: AppTextStyle.hintTextStyleLight
-                                          .copyWith(
-                                        color: context
-                                            .theme.scaffoldBackgroundColor,
+                                      style: AppTextStyle.hintTextStyleLight.copyWith(
+                                        color: context.theme.scaffoldBackgroundColor,
                                         fontWeight: AppFontWeight.w700,
                                       ),
                                     ),
@@ -76,10 +73,8 @@ class _CheckOutDayAndTimesWidgetState
                                       dateFormatted2(data[index].date!),
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
-                                      style: AppTextStyle.hintTextStyleLight
-                                          .copyWith(
-                                        color: context
-                                            .theme.scaffoldBackgroundColor,
+                                      style: AppTextStyle.hintTextStyleLight.copyWith(
+                                        color: context.theme.scaffoldBackgroundColor,
                                         fontWeight: AppFontWeight.w700,
                                       ),
                                     ),
@@ -129,7 +124,7 @@ class _CheckOutDayAndTimesWidgetState
                   ).toList(),
                 );
               },
-              error: (error, _) => Text(error.toString()),
+              error: (error, _) => const Center(child: Text('No available time, at the moment')),
               loading: () => const Center(
                 child: CircularProgressIndicator.adaptive(),
               ),

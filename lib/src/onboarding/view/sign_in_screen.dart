@@ -1,6 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/onboarding/controllers/auth_user_async_notifier.dart';
-import 'package:tago/src/widgets/app_loader.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   static const String routeName = 'signIn';

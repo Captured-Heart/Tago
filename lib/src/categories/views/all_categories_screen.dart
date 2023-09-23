@@ -4,7 +4,8 @@ class AllCategoriesScreen extends ConsumerStatefulWidget {
   const AllCategoriesScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AllCategoriesScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AllCategoriesScreenState();
 }
 
 class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {

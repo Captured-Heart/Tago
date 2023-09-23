@@ -9,16 +9,21 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
   });
   final String appBarTitle;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _FruitsAndVegetablesScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _FruitsAndVegetablesScreenState();
 }
 
-class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesScreen> {
+class _FruitsAndVegetablesScreenState
+    extends ConsumerState<FruitsAndVegetablesScreen> {
   //
   final ScrollController controller = ScrollController();
-  final TextEditingControllerClass editingController = TextEditingControllerClass();
+  final TextEditingControllerClass editingController =
+      TextEditingControllerClass();
   @override
   Widget build(BuildContext context) {
     final categoryByLabel = ref.watch(fetchCategoryByLabelProvider);
+    final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
+
     // final subCategory = widget.subCategoriesList;
     return FullScreenLoader(
       isLoading: ref.watch(cartNotifierProvider).isLoading,
@@ -38,7 +43,12 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                   withNavBar: false,
                 );
               },
-              icon: const Icon(Icons.shopping_cart_outlined),
+              icon: Badge(
+                backgroundColor: TagoLight.orange,
+                smallSize: 10,
+                isLabelVisible: cartList?.isNotEmpty ?? false,
+                child: const Icon(Icons.shopping_cart_outlined),
+              ),
             )
           ],
         ),
@@ -129,7 +139,9 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                                   isFreeDelivery: true,
                                   addToCartBTN: () {
                                     if (productModel.availableQuantity! > 1) {
-                                      ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                      ref
+                                          .read(cartNotifierProvider.notifier)
+                                          .addToCartMethod(
                                         map: {
                                           ProductTypeEnums.productId.name:
                                               productModel.id.toString(),
@@ -137,7 +149,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                                         },
                                       );
                                     } else {
-                                      showScaffoldSnackBarMessage('Product is out of stock',
+                                      showScaffoldSnackBarMessage(
+                                          'Product is out of stock',
                                           isError: true);
                                     }
                                   },

@@ -1,11 +1,10 @@
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:tago/app.dart';
 
-
-// 0 - pending 
-// 1 - placed 
-// 2 - cancelled 
-// 4&6  - processing 
+// 0 - pending
+// 1 - placed
+// 2 - cancelled
+// 4&6  - processing
 // 7 -  picked up
 // 9 - delivered
 class OrdersDetailScreen extends ConsumerWidget {
@@ -19,7 +18,8 @@ class OrdersDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final accountInfo = ref.watch(getAccountInfoProvider);
-    final orderStatus = ref.watch(orderStatusProvider(orderListModel.id.toString()));
+    final orderStatus =
+        ref.watch(orderStatusProvider(orderListModel.id.toString()));
     log(orderStatus.valueOrNull.toString());
     return Scaffold(
         appBar: AppBar(
@@ -93,7 +93,8 @@ class OrdersDetailScreen extends ConsumerWidget {
               contentPadding: EdgeInsets.zero,
               title: const Text(TextConstant.deliveredTo),
               subtitle: Text(
-                accountInfo.valueOrNull?.address?.streetAddress ?? TextConstant.noAddressFound,
+                accountInfo.valueOrNull?.address?.streetAddress ??
+                    TextConstant.noAddressFound,
               ),
             )
           ],
@@ -164,7 +165,9 @@ class OrdersDetailScreen extends ConsumerWidget {
                     Text(
                       title,
                       style: context.theme.textTheme.titleMedium?.copyWith(
-                        color: isFaded == true ? TagoLight.indicatorActiveColor : null,
+                        color: isFaded == true
+                            ? TagoLight.indicatorActiveColor
+                            : null,
                       ),
                     ),
                     SizedBox(
@@ -174,7 +177,9 @@ class OrdersDetailScreen extends ConsumerWidget {
                         maxLines: 2,
                         style: context.theme.textTheme.titleSmall?.copyWith(
                           fontWeight: AppFontWeight.w100,
-                          color: isFaded == true ? TagoLight.indicatorActiveColor : null,
+                          color: isFaded == true
+                              ? TagoLight.indicatorActiveColor
+                              : null,
                         ),
                       ),
                     )

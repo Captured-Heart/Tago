@@ -4,7 +4,8 @@ class RiderHomeScreen extends ConsumerStatefulWidget {
   const RiderHomeScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _RiderHomeScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RiderHomeScreenState();
 }
 
 class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
@@ -13,7 +14,7 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
     final accountInfo = ref.watch(getAccountInfoProvider);
     final orderList = ref.watch(ridersOrderProvider);
     final deliveryRequests = ref.watch(deliveryRequestsProvider).valueOrNull;
-    log(deliveryRequests?.map((e) => e.id) .toList().toString() ?? '');
+    log(deliveryRequests?.map((e) => e.id).toList().toString() ?? '');
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -58,11 +59,13 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: TagoDark.primaryColor.withOpacity(0.1),
+                                    color:
+                                        TagoDark.primaryColor.withOpacity(0.1),
                                   ),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       const Icon(
                                         Icons.receipt,
@@ -71,7 +74,9 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                                       ),
                                       Text(
                                         '0',
-                                        style: context.theme.textTheme.titleLarge?.copyWith(
+                                        style: context
+                                            .theme.textTheme.titleLarge
+                                            ?.copyWith(
                                           color: TagoDark.primaryColor,
                                           fontWeight: AppFontWeight.w500,
                                         ),

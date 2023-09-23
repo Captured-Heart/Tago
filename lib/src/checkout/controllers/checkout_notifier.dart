@@ -9,6 +9,7 @@ class CheckOutNotifier extends StateNotifier<AsyncValue> {
 
   Future<dynamic> createAnOrderMethod({
     required Map<String, dynamic> map,
+    required Function onNavigation,
   }) async {
     state = const AsyncValue.loading();
     // post request executed
@@ -18,8 +19,7 @@ class CheckOutNotifier extends StateNotifier<AsyncValue> {
       state: state,
     )
         .timeout(const Duration(seconds: 10), onTimeout: () {
-          showScaffoldSnackBarMessage(
-              NetworkErrorEnums.operationTimeOut.message);
+          showScaffoldSnackBarMessage(NetworkErrorEnums.operationTimeOut.message);
           state = const AsyncValue.data(null);
         })
         .onError((error, stackTrace) => state = const AsyncValue.data(null))
@@ -36,6 +36,7 @@ class CheckOutNotifier extends StateNotifier<AsyncValue> {
       var createdOrder = CheckoutModel.fromJson(decodedData['data']);
       showScaffoldSnackBarMessage(decodedData['message']);
       HiveHelper().saveData(HiveKeys.createOrder.keys, decodedData['data']);
+      onNavigation();
       return createdOrder;
     } else {
       showScaffoldSnackBarMessage(decodedData['message'], isError: true);
