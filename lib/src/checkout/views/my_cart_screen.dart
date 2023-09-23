@@ -8,7 +8,6 @@ class MyCartScreen extends ConsumerStatefulWidget {
 }
 
 class _MyCartScreenState extends ConsumerState<MyCartScreen> {
-
   int totalPrice = 0;
 
   @override
@@ -155,8 +154,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                                         },
                                       ),
                                       Text(
-                                        cartModel.quantity.toString() +
-                                            '(${product!.availableQuantity.toString()})',
+                                        cartModel.quantity.toString(),
                                         style: context.theme.textTheme.titleLarge,
                                       ),
 
@@ -165,7 +163,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                                         context: context,
                                         isMinus: false,
                                         onTap: () {
-                                          if (quantity < product.availableQuantity!) {
+                                          if (quantity < product!.availableQuantity!) {
                                             setState(() {
                                               data[index] = cartModel.copyWith(
                                                 quantity: quantity + 1,
