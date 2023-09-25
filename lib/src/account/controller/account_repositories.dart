@@ -2,6 +2,8 @@
               FETCH ADDRESS METHOD
  -------------------------------------------------------------------*/
 
+import 'dart:convert';
+
 import 'package:tago/app.dart';
 
 Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) async {

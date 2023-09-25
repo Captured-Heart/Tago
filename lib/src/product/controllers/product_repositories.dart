@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tago/app.dart';
 
 import '../models/domain/product_specifications_model.dart';

@@ -293,6 +293,81 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               )
               .padOnly(bottom: 20),
           ListTile(
+            title: const Text(
+              TextConstant.itemsNearYou,
+            ),
+            trailing: TextButton(
+              onPressed: () {
+                log(ref.watch(categoryLabelProvider));
+              },
+              child: const Text(TextConstant.seeall),
+            ),
+          ),
+          categoriesGroup
+              .when(
+                data: (data) {
+                  if (data!.showcaseProductTag == null) {
+                    return const SizedBox();
+                  }
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          data.showcaseProductTag!.name,
+                          style: context.theme.textTheme.titleLarge,
+                        ),
+                        trailing: TextButton(
+                          onPressed: () {},
+                          child: const Text(TextConstant.seeall),
+                        ),
+                      ).padOnly(bottom: 10),
+                      Stack(
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: data.showcaseProductTag!.imageUrl!,
+                            fit: BoxFit.fill,
+                            width: double.infinity,
+                            height: 320,
+                          ),
+                          SizedBox(
+                            height: 320,
+                            child: ListView.builder(
+                              padding: const EdgeInsets.only(left: 170.0, top: 10, bottom: 10),
+                              itemCount: data.showcaseProductTag!.products!.length,
+                              shrinkWrap: false,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return productCard(
+                                  productModel: data.showcaseProductTag!.products![index],
+                                  context: context,
+                                  addToCartBTN: () {
+                                    ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                      map: {
+                                        ProductTypeEnums.productId.name:
+                                            data.showcaseProductTag!.products![index].id.toString(),
+                                        ProductTypeEnums.quantity.name: '1',
+                                      },
+                                    );
+                                  },
+                                ).padOnly(left: 10);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  );
+                },
+                error: (error, stackTrace) => Center(
+                  child: Text(
+                    NetworkErrorEnums.checkYourNetwork.message,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
+              )
+              .padOnly(bottom: 20),
+          ListTile(
             title: Text(
               TextConstant.recentlyViewed,
               style: context.theme.textTheme.titleLarge,
