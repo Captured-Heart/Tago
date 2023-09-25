@@ -29,10 +29,8 @@ class OrdersDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final accountInfo = ref.watch(getAccountInfoProvider);
 
-    final orderStatus = ref
-        .watch(orderStatusProvider(orderListModel.id.toString()))
-        .valueOrNull;
-    log(orderListModel.id!.toString());
+    final orderStatus = ref.watch(orderStatusProvider(orderListModel.id.toString())).valueOrNull;
+    // log(orderListModel.id!.toString());
 // log(orderStatus!.status.toString());
     return Scaffold(
         appBar: AppBar(
@@ -140,8 +138,7 @@ class OrdersDetailScreen extends ConsumerWidget {
               contentPadding: EdgeInsets.zero,
               title: const Text(TextConstant.deliveredTo),
               subtitle: Text(
-                accountInfo.valueOrNull?.address?.streetAddress ??
-                    TextConstant.noAddressFound,
+                accountInfo.valueOrNull?.address?.streetAddress ?? TextConstant.noAddressFound,
               ),
             )
           ],
@@ -156,8 +153,7 @@ class OrdersDetailScreen extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          orderListModel['product']['name'] +
-                  ' (x${orderListModel['quantity'].toString()})' ??
+          orderListModel['product']['name'] + ' (x${orderListModel['quantity'].toString()})' ??
               TextConstant.product,
           style: context.theme.textTheme.labelMedium?.copyWith(
             fontWeight: AppFontWeight.w400,
@@ -169,67 +165,6 @@ class OrdersDetailScreen extends ConsumerWidget {
         ),
         const Divider(thickness: 1)
       ].columnInPadding(8),
-    );
-  }
-
-  Row customStepperWidget({
-    required BuildContext context,
-    required IconData iconData,
-    required String title,
-    required String subtitle,
-    bool? isFaded = false,
-    bool hideDash = false,
-  }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          children: [
-            Icon(
-              iconData,
-              color: isFaded == true
-                  ? TagoLight.indicatorActiveColor
-                  : TagoLight.primaryColor,
-            ),
-            !hideDash
-                ? const Dash(
-                    length: 40,
-                    dashLength: 6,
-                    direction: Axis.vertical,
-                    dashColor: TagoLight.indicatorActiveColor,
-                  ).padSymmetric(vertical: 5)
-                : const SizedBox.shrink()
-          ].columnInPadding(5),
-        ),
-        Expanded(
-          child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: context.theme.textTheme.titleMedium?.copyWith(
-                        color: isFaded == true
-                            ? TagoLight.indicatorActiveColor
-                            : null,
-                      ),
-                    ),
-                    SizedBox(
-                      width: context.sizeWidth(0.65),
-                      child: Text(
-                        subtitle,
-                        maxLines: 2,
-                        style: context.theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: AppFontWeight.w100,
-                          color: isFaded == true
-                              ? TagoLight.indicatorActiveColor
-                              : null,
-                        ),
-                      ),
-                    )
-                  ].columnInPadding(5))
-              .padOnly(top: 4, left: 10),
-        )
-      ],
     );
   }
 }

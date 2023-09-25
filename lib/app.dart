@@ -17,6 +17,7 @@ export 'package:shimmer/shimmer.dart';
 export 'package:carousel_slider/carousel_slider.dart';
 export 'package:intl/intl.dart' hide TextDirection;
 export 'package:flutter_rating_bar/flutter_rating_bar.dart';
+export 'package:flutter_dash/flutter_dash.dart';
 
 // config
 export './config/config.dart';

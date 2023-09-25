@@ -17,7 +17,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   // final _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(fetchCategoriesProvider);
@@ -30,6 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         isBadgeVisible: cartList?.isNotEmpty ?? false,
       ),
       body: ListView(
+        controller: scrollController,
         children: [
           authTextFieldWithError(
             controller: TextEditingController(),
@@ -76,40 +77,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     viewportFraction: 0.99,
                     enlargeFactor: 0,
                     onPageChanged: (index, reason) {
-                      ref
-                          .read(currentCarouselIndexProvider.notifier)
-                          .update((state) => index);
+                      ref.read(currentCarouselIndexProvider.notifier).update((state) => index);
                     }),
               ),
               // .padOnly(bottom: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  carouselWidgetList(context).length,
-                  (index) => GestureDetector(
-                    onTap: () =>
-                        ref.read(carouselSliderProvider).animateToPage(index),
-                    child: Container(
-                      width: 6.0,
-                      height: 6.0,
-                      margin: const EdgeInsets.symmetric(
-                        // vertical: 8.0,
-                        horizontal: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: (Theme.of(context).brightness == Brightness.dark
-                                ? TagoLight.indicatorInactiveColor
-                                : TagoLight.indicatorActiveColor)
-                            .withOpacity(
-                          ref.watch(currentCarouselIndexProvider) == index
-                              ? 0.9
-                              : 0.4,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              carouselIndicator(
+                context,
+                carouselWidgetList(context).length,
+                ref,
               ),
             ],
           ).padSymmetric(vertical: 7),
@@ -132,6 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 data: (data) {
                   return GridView.count(
                     crossAxisCount: 5,
+                    controller: scrollController,
                     shrinkWrap: true,
                     childAspectRatio: 0.65,
                     crossAxisSpacing: 10,
@@ -207,8 +183,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                loading: () => categoryCardLoaders(context: context)
-                    .padSymmetric(horizontal: 20),
+                loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
               )
               .padOnly(left: 5),
 //items near you
@@ -284,8 +259,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Column homeScreenAddressWidget(
-      BuildContext context, AsyncValue<AccountModel> accountInfo) {
+  Column homeScreenAddressWidget(BuildContext context, AsyncValue<AccountModel> accountInfo) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

@@ -16,7 +16,7 @@ Column singleProductListTileWidget({
         children: [
           Expanded(
               child: Text(
-            products!.valueOrNull?.label?.toTitleCase() ?? '',
+            products?.valueOrNull?.label?.toTitleCase() ?? '',
             style: context.theme.textTheme.labelMedium,
           ).padOnly(right: 15)),
           Container(
@@ -27,7 +27,7 @@ Column singleProductListTileWidget({
               borderRadius: BorderRadius.circular(5),
             ),
             child: Text(
-              'save ${products.valueOrNull?.savedPerc}%',
+              'save ${products?.valueOrNull?.savedPerc ?? 0}%',
               style: context.theme.textTheme.labelLarge?.copyWith(
                 fontSize: 12,
               ),
@@ -39,7 +39,7 @@ Column singleProductListTileWidget({
       //subtitle
       Text(
         TextConstant.nairaSign +
-            double.parse(products.valueOrNull?.amount.toString() ?? '0')
+            double.parse(products?.valueOrNull?.amount.toString() ?? '0')
                 .toString()
                 .toCommaPrices(),
         style: context.theme.textTheme.titleMedium,

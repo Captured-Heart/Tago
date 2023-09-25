@@ -19,6 +19,7 @@ class TextEditingControllerClass {
   TextEditingController voucherController = TextEditingController();
   TextEditingController instructionsController = TextEditingController();
 
+  FocusNode ordersFocusNode = FocusNode();
   // TextEditingController otpCode = TextEditingController();
 
   void disposeControllers() {

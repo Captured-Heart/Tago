@@ -97,8 +97,10 @@ AppBar categoriesAppbar({
 AppBar ordersAppbar({
   required BuildContext context,
   required bool isBadgeVisible,
+  required TextEditingControllerClass controllerClass,
 }) {
   return AppBar(
+    toolbarHeight: kToolbarHeight * 1.5,
     leading: IconButton(
       onPressed: () {
         Scaffold.of(context).openDrawer();
@@ -112,13 +114,16 @@ AppBar ordersAppbar({
       context: context,
       isError: false,
       filled: true,
-      hintText: TextConstant.searchInFruitsAndVeg,
+      hintText: TextConstant.serachYourOrders,
       prefixIcon: const Icon(Icons.search),
       fillColor: TagoLight.textFieldFilledColor,
+      autoFocus: false,
+      focusNode: controllerClass.ordersFocusNode,
     ),
     actions: [
       IconButton(
         onPressed: () {
+          controllerClass.ordersFocusNode.unfocus();
           navBarPush(
             context: context,
             screen: const MyCartScreen(),

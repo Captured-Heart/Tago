@@ -7,10 +7,9 @@ class OrderPlacedScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var orderId =
-        HiveHelper().getData(HiveKeys.createOrder.keys)['orderId'].toString();
+    var orderId = HiveHelper().getData(HiveKeys.createOrder.keys)['orderId'].toString();
     final orderList = ref.watch(orderListByIDProvider(orderId)).valueOrNull;
-
+    var orderListModel = orderList?.first;
     // log(orderList.valueOrNull.toString());
     return Scaffold(
         appBar: AppBar(
@@ -39,10 +38,8 @@ class OrderPlacedScreen extends ConsumerWidget {
                   size: 48,
                 ),
                 ListTile(
-                  title: const Center(child: Text(TextConstant.orderPlaced))
-                      .padOnly(bottom: 10),
-                  subtitle: const Center(
-                      child: Text(TextConstant.youWillReceiveAnEmail)),
+                  title: const Center(child: Text(TextConstant.orderPlaced)).padOnly(bottom: 10),
+                  subtitle: const Center(child: Text(TextConstant.youWillReceiveAnEmail)),
                 ),
               ],
             ),
@@ -55,7 +52,9 @@ class OrderPlacedScreen extends ConsumerWidget {
                       navBarPush(
                         context: context,
                         screen: OrdersDetailScreen(
-                            orderListModel: orderList!.first),
+                          orderListModel: orderListModel ?? OrderListModel(),
+                          orderStatusFromOrderScreen: orderListModel?.status,
+                        ),
                         withNavBar: false,
                       );
                     },

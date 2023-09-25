@@ -7,7 +7,7 @@ Widget riderOrdersListTile({
   VoidCallback? onAcceptRequest,
   VoidCallback? onViewDetails,
   DeliveryRequestsModel? riderOrderModel,
-  List<dynamic>? orderItems,
+  List<RiderOrderItemsModel>? riderOrder,
 }) {
   getOrderStatusColor(Enum status) {
     if (status == OrderStatus.cancelled) {
@@ -30,8 +30,8 @@ Widget riderOrdersListTile({
   }
 
   var address = riderOrderModel?.order?.address;
-  var riderOrder =
-      convertDynamicListToRiderOrderItemModel(riderOrderModel!.order!.orderItems ?? []);
+  // var riderOrder =
+  //     convertDynamicListToRiderOrderItemModel(riderOrderModel!.order!.orderItems ?? []);
   return Container(
     padding: const EdgeInsets.only(bottom: 10, top: 20, left: 10),
     decoration: const BoxDecoration(
@@ -43,7 +43,7 @@ Widget riderOrdersListTile({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         cachedNetworkImageWidget(
-          imgUrl: riderOrder.first.product?.productImages?.first['image']['url'] ??
+          imgUrl: riderOrder?.first.product?.productImages?.first['image']['url'] ??
               noImagePlaceholderHttp,
           height: 100,
           width: 100,

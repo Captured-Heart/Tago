@@ -2,7 +2,8 @@ export './cart_list_tile.dart';
 export './ratings_card.dart';
 export './app_loader.dart';
 export './cache_network_image_widget.dart';
-
+export './custom_stepper_widget.dart';
+export './carousel_dot_indicator.dart';
 //DRAWERS
 export './drawer_widget/drawer_widget.dart';
 

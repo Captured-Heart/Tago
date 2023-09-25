@@ -11,8 +11,7 @@ class SingleProductPage extends ConsumerStatefulWidget {
   final ProductsModel productsModel;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SingleProductPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SingleProductPageState();
 }
 
 class _SingleProductPageState extends ConsumerState<SingleProductPage> {
@@ -24,10 +23,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     var cartList = ref.watch(getCartListProvider(false));
     var wishListID = wishlist.value?.map((e) => e.id).contains(widget.id);
 
-    var cartListID = cartList.valueOrNull
-        ?.map((e) => e.product?.id ?? 0)
-        .toList()
-        .contains(widget.id);
+    var cartListID =
+        cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList().contains(widget.id);
     // var wishListID = checkIdenticalListsWithInt(list1: wishListList, int: widget.id);
     final productSpecs = ref.watch(productSpecificationsProvider);
     final relatedProducts = ref.watch(relatedProductsProvider);
@@ -51,7 +48,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                   topRight: Radius.circular(20),
                 )),
                 builder: (context) {
-                  return singleProductMiniCartModalWidget();
+                  return const SingleProductMiniCartModalWidget();
                 },
               );
             },
@@ -68,16 +65,43 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(
-                    child: cachedNetworkImageWidget(
-                      imgUrl: products
-                          .valueOrNull?.productImages?.first['image']['url'],
-                      isProgressIndicator: true,
-                      height: context.sizeHeight(1),
-                      width: context.sizeWidth(1),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: CarouselSlider(
+                            items: List.generate(
+                              widget.productsModel.productImages!.length,
+                              (index) => cachedNetworkImageWidget(
+                                imgUrl: widget.productsModel.productImages?[index]['image']['url'],
+                                //  products.valueOrNull?.productImages?.first['image']['url'],
+                                isProgressIndicator: true,
+                                height: context.sizeHeight(1),
+                                width: context.sizeWidth(1),
+                              ),
+                            ),
+                            carouselController: ref.watch(carouselSliderProvider),
+                            options: CarouselOptions(
+                              autoPlay: false,
+                              // aspectRatio: 20 / 9,
+                              enlargeCenterPage: false,
+                              enableInfiniteScroll: false,
+                              viewportFraction: 0.99,
+                              enlargeFactor: 3,
+                              onPageChanged: (index, reason) {
+                                ref
+                                    .read(currentCarouselIndexProvider.notifier)
+                                    .update((state) => index);
+                              },
+                            ),
+                          ),
+                        ),
+                        carouselIndicator(context, widget.productsModel.productImages!.length, ref)
+                            .padOnly(top: 10),
+                      ],
                     ),
                   ),
-                  Text(
-                      'quantity: ${widget.productsModel.availableQuantity.toString()}'),
+                  // Text('id: ${widget.productsModel.availableQuantity.toString()}'),
                   singleProductListTileWidget(
                     context: context,
                     products: products,
@@ -85,91 +109,80 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                   Column(
                       children: [
                     cartListID == true
-                        ? ValueListenableBuilder(
-                            valueListenable:
-                                ref.watch(valueNotifierProvider(0)),
-                            builder: (context, value, child) {
-                              return Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  addMinusBTN(
-                                    context: context,
-                                    isMinus: true,
-                                    onTap: () {
-                                      if (value > 1) {
-                                        // ref.read(valueNotifierProvider(0)).value--;
-                                      }
-                                    },
-                                  ),
-                                  Text(
-                                    value.toString(),
-                                    style: context.theme.textTheme.titleMedium,
-                                  ),
-                                  addMinusBTN(
-                                    context: context,
-                                    onTap: () {
-                                      // ref.read(valueNotifierProvider(0)).value++;
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
+                        ? SizedBox(
+                            width: context.sizeWidth(1),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  // fixedSize: const Size.fromHeight(25),
+                                  visualDensity: VisualDensity.compact,
+                                  // foregroundColor: TagoLight.primaryColor,
+                                  backgroundColor: TagoLight.primaryColor.withOpacity(0.15)),
+                              child: Text(
+                                TextConstant.savedToCart,
+                                style: context.theme.textTheme.titleMedium?.copyWith(
+                                  color: TagoDark.textError.withOpacity(0.6),
+                                ),
+                              ),
+                            ),
                           )
                         : SizedBox(
                             width: context.sizeWidth(1),
                             child: widget.productsModel.availableQuantity! < 1
                                 ? ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showScaffoldSnackBarMessage(TextConstant.productIsOutOfStock,
+                                          isError: true);
+                                    },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          TagoLight.textFieldBorder,
+                                      backgroundColor: TagoLight.textFieldBorder,
                                       elevation: 0,
                                     ),
                                     child: const Text(TextConstant.addtocart),
                                   )
                                 : ElevatedButton(
                                     onPressed: () {
-                                      ref
-                                          .read(cartNotifierProvider.notifier)
-                                          .addToCartMethod(
+                                      ref.read(cartNotifierProvider.notifier).addToCartMethod(
                                         map: {
-                                          ProductTypeEnums.productId.name:
-                                              widget.id.toString(),
+                                          ProductTypeEnums.productId.name: widget.id.toString(),
                                           ProductTypeEnums.quantity.name: '1',
                                         },
-                                      ).whenComplete(() => ref.invalidate(
-                                              getCartListProvider(false)));
+                                      ).whenComplete(
+                                          () => ref.invalidate(getCartListProvider(false)));
                                     },
                                     child: const Text(TextConstant.addtocart),
                                   ),
                           ),
                     widget.productsModel.availableQuantity! < 1
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(Icons.favorite_outline),
-                              Text(
-                                TextConstant.saveforlater,
-                                textScaleFactor: 1.2,
-                                textAlign: TextAlign.center,
-                              ),
-                            ].rowInPadding(8))
+                        ? GestureDetector(
+                            onTap: () {
+                              showScaffoldSnackBarMessage(
+                                TextConstant.productIsOutOfStock,
+                                isError: true,
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Icon(Icons.favorite_outline),
+                                Text(
+                                  TextConstant.saveforlater,
+                                  textScaleFactor: 1.2,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ].rowInPadding(8),
+                            ),
+                          )
                         : TextButton.icon(
                             onPressed: () {
                               if (wishListID != true) {
                                 ref
-                                    .read(
-                                        postToWishListNotifierProvider.notifier)
+                                    .read(postToWishListNotifierProvider.notifier)
                                     .postToWishListMethod(
-                                  map: {
-                                    ProductTypeEnums.productId.name:
-                                        widget.id.toString()
-                                  },
-                                ).whenComplete(() => ref
-                                        .watch(fetchWishListProvider(false)));
+                                  map: {ProductTypeEnums.productId.name: widget.id.toString()},
+                                ).whenComplete(() => ref.watch(fetchWishListProvider(false)));
                               }
                             },
                             icon: wishListID == true
@@ -192,20 +205,17 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               subtitle: Text(
                 products.valueOrNull?.description ??
                     'The most delicate moment requires impeccable precision.',
-                style:
-                    context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
+                style: context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
               ).padSymmetric(vertical: 10),
             ),
 
             //PRODUCT SPECIFICATIONS SECTIONS
-            singleProductSpecificationsWidget(context, productSpecs)
-                .padOnly(bottom: 20),
+            singleProductSpecificationsWidget(context, productSpecs).padOnly(bottom: 20),
 
             // RATINGS AND REVIEWS
             products.when(
               data: (data) {
-                return singleProductRatingsAndReviewsWidget(
-                    data, context, products);
+                return singleProductRatingsAndReviewsWidget(data, context, products);
               },
               error: (error, _) {
                 return Text(error.toString());
@@ -236,8 +246,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
 
                       //TODO: REPLACE THE [0] WITH INDEX
                       context: context,
-                      image: relatedProducts[0].productImages?.last['image']
-                              ['url'] ??
+                      image: relatedProducts[0].productImages?.last['image']['url'] ??
                           noImagePlaceholderHttp,
                       onTap: () {
                         // navBarPush(
@@ -264,8 +273,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
       BuildContext context, List<ProductSpecificationsModel>? productSpec) {
     return Container(
       decoration: BoxDecoration(
-        border:
-            Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+        border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -319,12 +327,11 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     );
   }
 
-  Container singleProductRatingsAndReviewsWidget(ProductsModel data,
-      BuildContext context, AsyncValue<ProductsModel> products) {
+  Container singleProductRatingsAndReviewsWidget(
+      ProductsModel data, BuildContext context, AsyncValue<ProductsModel> products) {
     return Container(
       decoration: BoxDecoration(
-        border:
-            Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
+        border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(

@@ -28,18 +28,22 @@ class OrdersScreen extends ConsumerStatefulWidget {
 }
 
 class _OrdersScreenState extends ConsumerState<OrdersScreen> {
-  // @override
-  // void initState() {
-  //   ref.read(orderListProvider(false));
-  //   log('on init state');
-  //   super.initState();
-  // }
+  final TextEditingControllerClass controllerClass = TextEditingControllerClass();
+  @override
+  void initState() {
+    controllerClass.ordersFocusNode.unfocus();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    controllerClass.ordersFocusNode.addListener(() {
+      if (!controllerClass.ordersFocusNode.hasFocus) {
+        controllerClass.ordersFocusNode.unfocus();
+      }
+    });
     final orderList = ref.watch(orderListProvider(false));
-    final cartList = ref
-        .watch(getCartListProvider(false).select((value) => value.valueOrNull));
+    final cartList = ref.watch(getCartListProvider(false).select((value) => value.valueOrNull));
     // log(orderList.valueOrNull?.map((e) => e.id).toList().toString() ?? '');
     log('status: ${orderList.valueOrNull?.map((e) => e.status).toList()}');
     return DefaultTabController(
@@ -49,6 +53,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
         appBar: ordersAppbar(
           context: context,
           isBadgeVisible: cartList?.isNotEmpty ?? false,
+          controllerClass: controllerClass,
         ),
         body: TabBarView(
           children: [
@@ -85,15 +90,13 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                             onTap: () {
                               navBarPush(
                                 context: context,
-                                screen: OrderStatus.delivered.status ==
-                                        orderModel.status
+                                screen: OrderStatus.delivered.status == orderModel.status
                                     ? DeliveryCompleteScreen(
                                         orderListModel: orderModel,
                                       )
                                     : OrdersDetailScreen(
                                         orderListModel: orderModel,
-                                        orderStatusFromOrderScreen:
-                                            orderModel.status,
+                                        orderStatusFromOrderScreen: orderModel.status,
                                       ),
                                 withNavBar: false,
                               );
@@ -124,9 +127,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
               children: [
                 orderList.when(
                   data: (data) {
-                    if (data
-                        .map((e) => e.status)
-                        .contains(OrderStatus.successful.status)) {
+                    if (data.map((e) => e.status).contains(OrderStatus.successful.status)) {
                       return Column(
                         children: List.generate(
                           data.length,
@@ -136,15 +137,13 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                               onTap: () {
                                 navBarPush(
                                   context: context,
-                                  screen: OrderStatus.delivered.status ==
-                                          orderModel.status
+                                  screen: OrderStatus.delivered.status == orderModel.status
                                       ? DeliveryCompleteScreen(
                                           orderListModel: orderModel,
                                         )
                                       : OrdersDetailScreen(
                                           orderListModel: orderModel,
-                                          orderStatusFromOrderScreen:
-                                              orderModel.status,
+                                          orderStatusFromOrderScreen: orderModel.status,
                                         ),
                                   withNavBar: false,
                                 );
@@ -254,8 +253,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                       style: context.theme.textTheme.bodyMedium
                           ?.copyWith(fontWeight: AppFontWeight.w600)),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                     decoration: BoxDecoration(
                       color: getOrderStatusColor(orderStatus).withOpacity(0.1),
                     ),

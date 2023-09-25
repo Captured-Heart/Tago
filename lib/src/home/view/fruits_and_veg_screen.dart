@@ -9,16 +9,13 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
   });
   final String appBarTitle;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _FruitsAndVegetablesScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _FruitsAndVegetablesScreenState();
 }
 
-class _FruitsAndVegetablesScreenState
-    extends ConsumerState<FruitsAndVegetablesScreen> {
+class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesScreen> {
   //
   final ScrollController controller = ScrollController();
-  final TextEditingControllerClass editingController =
-      TextEditingControllerClass();
+  final TextEditingControllerClass editingController = TextEditingControllerClass();
   @override
   Widget build(BuildContext context) {
     final categoryByLabel = ref.watch(fetchCategoryByLabelProvider);
@@ -139,9 +136,7 @@ class _FruitsAndVegetablesScreenState
                                   isFreeDelivery: true,
                                   addToCartBTN: () {
                                     if (productModel.availableQuantity! > 1) {
-                                      ref
-                                          .read(cartNotifierProvider.notifier)
-                                          .addToCartMethod(
+                                      ref.read(cartNotifierProvider.notifier).addToCartMethod(
                                         map: {
                                           ProductTypeEnums.productId.name:
                                               productModel.id.toString(),
@@ -150,8 +145,9 @@ class _FruitsAndVegetablesScreenState
                                       );
                                     } else {
                                       showScaffoldSnackBarMessage(
-                                          'Product is out of stock',
-                                          isError: true);
+                                        TextConstant.productIsOutOfStock,
+                                        isError: true,
+                                      );
                                     }
                                   },
                                   productImagesList: data[index].productImages,

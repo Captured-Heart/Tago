@@ -39,7 +39,7 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                         trailing: GestureDetector(
                           onTap: () {
                             push(context, const RiderAccountScreen());
-                            log(accountInfo.valueOrNull!.id!.toString());
+                            log(accountInfo.valueOrNull?.id!.toString() ?? 'nothing');
                             // HiveHelper().deleteData(HiveKeys.token.keys);
                           },
                           child: const Icon(

@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/rider/views/custom_sliver.dart';
 
 class DeliveryRequestScreen extends ConsumerStatefulWidget {
   const DeliveryRequestScreen({super.key});
@@ -27,16 +28,22 @@ class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {
                   data.length,
                   (index) {
                     var riderOrder = data[index];
+                    var riderOrderItemModel = convertDynamicListToRiderOrderItemModel(
+                        data[index].order?.orderItems ?? []);
                     return riderOrdersListTile(
                       context: context,
                       orderStatus: OrderStatus.delivered,
                       isDeliveryRequests: true,
                       riderOrderModel: riderOrder,
-                      orderItems: riderOrder.order?.orderItems,
+                      riderOrder: riderOrderItemModel,
                       onViewDetails: () {
                         push(
                           context,
-                          const NewDeliveryRequestScreen(),
+                          // CustomSliverScreen(),
+                          NewDeliveryRequestScreen(
+                            riderOrderModel: riderOrderItemModel,
+                            orders: riderOrder.order,
+                          ),
                         );
                       },
                     );
