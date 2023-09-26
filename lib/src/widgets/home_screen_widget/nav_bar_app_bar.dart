@@ -1,28 +1,30 @@
 import 'package:tago/app.dart';
 
 // home screen appp bar
-AppBar homescreenAppbar({
-  required BuildContext context,
-  required bool isBadgeVisible,
-}) {
+AppBar homescreenAppbar(
+    {required BuildContext context,
+    required bool isBadgeVisible,
+    required bool showSearchIcon}) {
   return AppBar(
     elevation: 0,
     centerTitle: true,
+    backgroundColor: TagoDark.primaryColor,
     leading: IconButton(
       onPressed: () {
         Scaffold.of(context).openDrawer();
       },
       icon: const Icon(
         Icons.menu,
+        color: Colors.white,
       ),
     ),
     title: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset(
-          logoMedium,
-          height: 23,
-          width: 23,
+          logoMediumLight,
+          height: 40,
+          width: 28,
         ).padOnly(right: 5),
         Text(
           TextConstant.title.toLowerCase(),
@@ -30,6 +32,22 @@ AppBar homescreenAppbar({
             fontSize: 20,
             fontFamily: TextConstant.fontFamilyBold,
             fontWeight: AppFontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(
+          width: 30,
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: !showSearchIcon
+                ? GestureDetector(
+                    onTap: () => push(context, SearchScreen()),
+                    child: const Icon(
+                      Icons.search_outlined,
+                      color: Colors.white,
+                    ),
+                  )
+                : const SizedBox(),
           ),
         ),
       ],
@@ -47,7 +65,10 @@ AppBar homescreenAppbar({
           backgroundColor: TagoLight.orange,
           smallSize: 10,
           isLabelVisible: isBadgeVisible,
-          child: const Icon(Icons.shopping_cart_outlined),
+          child: const Icon(
+            Icons.shopping_cart_outlined,
+            color: Colors.white,
+          ),
         ),
       )
     ],

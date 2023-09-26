@@ -1,6 +1,22 @@
 import 'package:tago/app.dart';
 
-Column checkoutPaymentMethodWidget(BuildContext context) {
+Column checkoutPaymentMethodWidget(BuildContext context,
+    Function updatePaymentMethod, PaymentMethodsType selectedMethod) {
+  var selectedText = "";
+  switch (selectedMethod) {
+    case PaymentMethodsType.card:
+      selectedText = "Pay with card";
+      break;
+    case PaymentMethodsType.cash:
+      selectedText = "Pay with cash (on delivery)";
+      break;
+    case PaymentMethodsType.bankTransfer:
+      selectedText = "Pay with bank transfer";
+      break;
+    case PaymentMethodsType.notSelected:
+      selectedText = TextConstant.notselected;
+      break;
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -17,7 +33,7 @@ Column checkoutPaymentMethodWidget(BuildContext context) {
           size: 18,
         ),
         title: Text(
-          TextConstant.notselected,
+          selectedText,
           style: context.theme.textTheme.titleMedium?.copyWith(
             fontWeight: AppFontWeight.w500,
             color: TagoDark.textHint,
@@ -27,8 +43,8 @@ Column checkoutPaymentMethodWidget(BuildContext context) {
           style: TextButton.styleFrom(
             textStyle: AppTextStyle.textButtonW600_12,
           ),
-          onPressed: () {
-            showModalBottomSheet(
+          onPressed: () async {
+            var selected = await showModalBottomSheet(
               context: context,
               isDismissible: false,
               // isScrollControlled: true,
@@ -41,6 +57,7 @@ Column checkoutPaymentMethodWidget(BuildContext context) {
                 return checkOutChoosePaymentModalSheet(context).padAll(20);
               },
             );
+            updatePaymentMethod(selected);
           },
           child: const Text(TextConstant.choose),
         ),

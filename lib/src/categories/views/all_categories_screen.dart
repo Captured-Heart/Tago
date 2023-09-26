@@ -12,7 +12,7 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
   final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
-    final categories = ref.watch(fetchCategoriesProvider);
+    final categoriesGroup = ref.watch(fetchCategoriesProvider);
     final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
 
     return Scaffold(
@@ -24,7 +24,7 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
         controller: controller,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
-          categories.when(
+          categoriesGroup.when(
             data: (data) {
               return GridView.count(
                   controller: controller,
@@ -35,20 +35,19 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
                   // padding: const EdgeInsets.symmetric(horizontal: 5),
                   shrinkWrap: true,
                   children: List.generate(
-                    data.length,
+                    data!.categories.length,
                     growable: true,
                     (index) => GestureDetector(
                       onTap: () {
-                        ref
-                            .read(categoryLabelProvider.notifier)
-                            .update((state) => data[index].label ?? '');
-                        var subList = data[index].subCategories;
-                        log(subList.toString());
+                        ref.read(categoryLabelProvider.notifier).update(
+                            (state) => data.categories[index].label ?? '');
                         push(
                           context,
                           FruitsAndVegetablesScreen(
-                            subCategoriesList: subList!,
-                            appBarTitle: data[index].name ?? 'Product Name',
+                            subCategoriesList:
+                                data.categories[index].subCategories,
+                            appBarTitle:
+                                data.categories[index].name ?? 'Product Name',
                           ),
                         );
                       },
@@ -57,7 +56,7 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
                         index: index,
                         width: context.sizeWidth(0.28),
                         height: 100,
-                        categoriesModel: data[index],
+                        categoriesModel: data.categories[index],
                       ),
                     ),
                   ));

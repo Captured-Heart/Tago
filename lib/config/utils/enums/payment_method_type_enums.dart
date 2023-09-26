@@ -1,7 +1,9 @@
 enum PaymentMethodsType {
   bankTransfer('bank-transfer'),
   card('card'),
-  cash('cash');
+  cash('cash'),
+  notSelected('not-selected');
+
   // bank-transfer, card, cash
 
   const PaymentMethodsType(this.message);

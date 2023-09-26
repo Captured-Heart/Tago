@@ -1,5 +1,6 @@
 const String onBoardBG = 'assets/images/onboard_bg.png';
 const String logoMedium = 'assets/images/logo_medium.png';
+const String logoMediumLight = 'assets/images/logo_medium_light.png';
 const String logoLarge = 'assets/images/logo_large.png';
 const String addAdressImage = 'assets/images/address_icon.png';
 const String frame2 = 'assets/images/Frame_13.png';
