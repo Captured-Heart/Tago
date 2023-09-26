@@ -1,6 +1,9 @@
 import 'package:tago/app.dart';
 
-Widget tagoHomeDrawer(BuildContext context) {
+Widget tagoHomeDrawer(
+  BuildContext context,
+  AccountModel ? accountModel,
+) {
   return Drawer(
       child: SafeArea(
     minimum: EdgeInsets.only(
@@ -22,7 +25,7 @@ Widget tagoHomeDrawer(BuildContext context) {
               ),
             ),
             Text(
-              'Hello, Samuel ',
+              'Hello, ${accountModel?.fname} ',
               style: context.theme.textTheme.titleLarge,
             ),
           ].rowInPadding(10))
@@ -79,8 +82,7 @@ Widget tagoHomeDrawer(BuildContext context) {
               });
             },
             iconColor: TagoLight.textError,
-            textStyle: context.theme.textTheme.titleSmall
-                ?.copyWith(color: TagoLight.textError)),
+            textStyle: context.theme.textTheme.titleSmall?.copyWith(color: TagoLight.textError)),
       ],
     ),
   ));

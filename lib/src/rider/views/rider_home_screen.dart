@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/rider/views/rider_completed_order_screen.dart';
 
 class RiderHomeScreen extends ConsumerStatefulWidget {
   const RiderHomeScreen({super.key});
@@ -11,11 +12,10 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider);
-    final orderList = ref.watch(ridersOrderProvider);
     final deliveryRequests = ref.watch(deliveryRequestsProvider).valueOrNull;
-    log(orderList.toString());
+    // log(orderList.toString());
     // log(deliveryRequests.toString());
-    log(HiveHelper().getData(HiveKeys.token.keys).toString());
+    // log(HiveHelper().getData(HiveKeys.token.keys).toString());
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -39,7 +39,7 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                         trailing: GestureDetector(
                           onTap: () {
                             push(context, const RiderAccountScreen());
-                            log(accountInfo.valueOrNull!.id!.toString());
+                            log(accountInfo.valueOrNull?.id!.toString() ?? 'nothing');
                             // HiveHelper().deleteData(HiveKeys.token.keys);
                           },
                           child: const Icon(
@@ -109,34 +109,13 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
               ],
             ),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
-              ListView(
-                children: [
-                  // riderOrdersListTile(
-                  //   context: context,
-                  //   orderStatus: OrderStatus.placed,
-                  // ),
-                  // riderOrdersListTile(
-                  //   context: context,
-                  //   orderStatus: OrderStatus.cancelled,
-                  // ),
-                ],
-              ),
+              //active order screen
+              RiderActiveOrderScreen(),
 
               // completed section
-              ListView(
-                children: [
-                  // riderOrdersListTile(
-                  //   context: context,
-                  //   orderStatus: OrderStatus.successful,
-                  // ),
-                  // riderOrdersListTile(
-                  //   context: context,
-                  //   orderStatus: OrderStatus.cancelled,
-                  // ),
-                ],
-              ),
+              RiderCompletedOrderScreen()
             ],
           )
 

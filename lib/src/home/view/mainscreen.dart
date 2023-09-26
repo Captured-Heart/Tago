@@ -17,9 +17,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final accountInfo = ref.watch(getAccountInfoProvider).valueOrNull;
+    ref.watch(getCartListProvider(false));
     return Scaffold(
       key: ref.watch(scaffoldKeyProvider),
-      drawer: tagoHomeDrawer(context),
+      drawer: tagoHomeDrawer(context, accountInfo),
       body: PersistentTabView(
         context,
         padding: const NavBarPadding.symmetric(horizontal: 10, vertical: 15),

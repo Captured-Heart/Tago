@@ -13,7 +13,7 @@ class ProductsModel extends Equatable {
   final int? categoryId;
   final int? subCategoryId;
   final int? amount;
-  final String? brand;
+  final Map<String, dynamic>? brand;
   final CategoriesModel? category;
   final SubCategoriesModel? subCategory;
   final int? originalAmount;
@@ -103,7 +103,7 @@ class ProductsModel extends Equatable {
     int? categoryId,
     int? subCategoryId,
     int? amount,
-    String? brand,
+    Map<String, dynamic>? brand,
     CategoriesModel? category,
     SubCategoriesModel? subCategory,
     int? originalAmount,

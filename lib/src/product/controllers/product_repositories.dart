@@ -21,7 +21,7 @@ Future<ProductsModel> getProductsMethod(
   final Response response = await NetworkHelper.getRequestWithToken(
     api: '$getProductsUrl=$label',
   );
-  log('$getCategoryUrl=$label');
+  log('$getProductsUrl=$label');
   // decoding the response
 
   String data = response.body;

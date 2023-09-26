@@ -7,7 +7,7 @@ class MyAccountScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final accountInfo = ref.watch(getAccountInfoProvider);
     return Scaffold(
-      drawer: tagoHomeDrawer(context),
+      drawer: tagoHomeDrawer(context, accountInfo.valueOrNull),
       appBar: myAccountAppbar(context),
       body: ListView(
         padding: const EdgeInsets.all(15),

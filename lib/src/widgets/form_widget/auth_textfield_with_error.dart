@@ -35,6 +35,7 @@ Widget authTextFieldWithError(
       keyboardType: keyboardType,
       onChanged: onChanged,
       maxLength: maxLength,
+      
       textInputAction: textInputAction ?? TextInputAction.next,
       cursorColor: TagoDark.primaryColor,
       autovalidateMode: AutovalidateMode.onUserInteraction,

@@ -5,8 +5,10 @@ class RiderAccountScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final accountInfo = ref.watch(getAccountInfoProvider).valueOrNull;
+
     return Scaffold(
-      drawer: tagoHomeDrawer(context),
+      drawer: tagoHomeDrawer(context, accountInfo),
       appBar: myAccountAppbar(context),
       body: ListView(
         padding: const EdgeInsets.all(15),
@@ -74,7 +76,7 @@ class RiderAccountScreen extends ConsumerWidget {
                 iconColor: TagoDark.textBold,
                 title: TextConstant.help,
                 onTap: () {
-                  push(context, const NewDeliveryRequestScreen());
+                  // push(context, const NewDeliveryRequestScreen());
                 },
                 textStyle: context.theme.textTheme.bodySmall?.copyWith(
                   fontSize: 14,

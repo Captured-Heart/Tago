@@ -4,7 +4,7 @@ export './utils/hive_local_storage.dart';
 export './utils/navigation.dart';
 export './utils/dialogs.dart';
 export './utils/date_formatter.dart';
-
+export './utils/url_options.dart';
 // enums
 export './utils/enums/auth_error_enums.dart';
 export './utils/enums/auth_type_enums.dart';

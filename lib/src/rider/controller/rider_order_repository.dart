@@ -21,9 +21,8 @@ Future<List<OrderListModel>> getRiderListOfOrderMethod({
   if (decodedData['success'] == true) {
     log('entered here');
     // showSnackBar ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3) : null;
-    final orderList = (decodedData['data'] as List)
-        .map((e) => OrderListModel.fromJson(e))
-        .toList();
+    final orderList = (decodedData['data'] as List).map((e) => OrderListModel.fromJson(e)).toList();
+    orderList.sort((a, b) => b.status!.compareTo(a.status!));
     // log('get request for cart model:  ${decodedData['data']}'); //
 
     return orderList;

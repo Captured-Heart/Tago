@@ -3,6 +3,10 @@ import 'dart:math';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tago/app.dart';
 
+final searchFruitProvider = StateProvider(
+  (ref) => '',
+);
+
 class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
   final List<SubCategoryModel>? subCategoriesList;
   const FruitsAndVegetablesScreen({

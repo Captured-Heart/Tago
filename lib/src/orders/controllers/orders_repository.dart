@@ -18,12 +18,8 @@ Future<List<OrderListModel>> getListOfOrderMethod({
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true) {
-    showSnackBar
-        ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3)
-        : null;
-    final orderList = (decodedData['data'] as List)
-        .map((e) => OrderListModel.fromJson(e))
-        .toList();
+    showSnackBar ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3) : null;
+    final orderList = (decodedData['data'] as List).map((e) => OrderListModel.fromJson(e)).toList();
     // log('get request for cart model:  ${decodedData['data']}'); //
     orderList.sort((a, b) => b.status!.compareTo(a.status!));
     return orderList;
@@ -36,7 +32,7 @@ Future<List<OrderListModel>> getListOfOrderMethod({
  -------------------------------------------------------------------*/
 
 Future<List<OrderListModel>> getListOfOrderByIDMethod({
-  bool showSnackBar = true,
+  bool showSnackBar = false,
   required String id,
 }) async {
   // try {
@@ -51,9 +47,7 @@ Future<List<OrderListModel>> getListOfOrderByIDMethod({
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true) {
-    showSnackBar
-        ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3)
-        : null;
+    showSnackBar ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3) : null;
     final orderList = (decodedData['data'] as List)
         .map((e) => OrderListModel.fromJson(e))
         .where((element) => element.id == id)
@@ -90,7 +84,8 @@ Future<OrderListModel> getOrderStatusMethod({
 
     return orderStatus;
   } else {
-    throw UnimplementedError();
+    // throw UnimplementedError();
+    return [] as OrderListModel;
     // return OrderListModel();
   }
 }
