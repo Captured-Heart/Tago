@@ -29,7 +29,7 @@ class _CompletedOrderScreenState extends ConsumerState<CompletedOrderScreen> {
                       onTap: () {
                         navBarPush(
                           context: context,
-                          screen: orderModel.status == OrderStatus.delivered.status
+                          screen: OrderStatus.delivered.status == orderModel.status
                               ? DeliveryCompleteScreen(
                                   orderListModel: orderModel,
                                 )
@@ -69,7 +69,7 @@ class _CompletedOrderScreenState extends ConsumerState<CompletedOrderScreen> {
             ).padOnly(top: 50);
           },
           error: (error, _) {
-            return Center(child: Text(NetworkErrorEnums.checkYourNetwork.message));
+            return Text(error.toString());
           },
           loading: () => const Center(
             child: CircularProgressIndicator.adaptive(),

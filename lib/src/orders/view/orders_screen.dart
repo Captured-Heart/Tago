@@ -46,8 +46,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     });
     final orderList = ref.watch(orderListProvider(false));
     final cartList = ref.watch(getCartListProvider(false).select((value) => value.valueOrNull));
-    // log(orderList.valueOrNull?.map((e) => e.id).toList().toString() ?? '');
-    log('status: ${orderList.valueOrNull?.map((e) => e.status).toList()}');
+    log(orderList.valueOrNull?.map((e) => e.status).toList().toString() ?? '');
+    log('status: ${orderList.valueOrNull?.map((e) => e.id).toList()}');
     return DefaultTabController(
       length: 2,
       child: Scaffold(
