@@ -238,27 +238,32 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return SizedBox(
-                    width: context.sizeWidth(0.35),
-                    child: singleProductSimilarItemCardWidget(
-                      // index: index,
-                      productsModel: relatedProducts[index],
+                  if (products.value?.relatedProducts != null) {
+                    return SizedBox(
+                      width: context.sizeWidth(0.38),
+                      child: singleProductSimilarItemCardWidget(
+                        // index: index,
+                        productsModel: relatedProducts[index],
 
-                      //TODO: REPLACE THE [0] WITH INDEX
-                      context: context,
-                      image: relatedProducts[0].productImages?.last['image']['url'] ??
-                          noImagePlaceholderHttp,
-                      onTap: () {
-                        // navBarPush(
-                        //   context: context,
-                        //   screen: SingleProductPage(
-                        //     appBarTitle: drinkTitle[index],
-                        //     image: drinkImages[index],
-                        //   ),
-                        //   withNavBar: false,
-                        // );
-                      },
-                    ),
+                        //TODO: REPLACE THE [0] WITH INDEX
+                        context: context,
+                        image: relatedProducts[0].productImages?.last['image']['url'] ??
+                            noImagePlaceholderHttp,
+                        onTap: () {
+                          // navBarPush(
+                          //   context: context,
+                          //   screen: SingleProductPage(
+                          //     appBarTitle: drinkTitle[index],
+                          //     image: drinkImages[index],
+                          //   ),
+                          //   withNavBar: false,
+                          // );
+                        },
+                      ),
+                    );
+                  }
+                  return const Center(
+                    child: Text(TextConstant.sorryNoProductsInCategory),
                   );
                 },
               ),

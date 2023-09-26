@@ -54,12 +54,16 @@ class WishListScreen extends ConsumerWidget {
                       productsModel: wishListIndex,
                       isInCartAlready: isInCartAlready,
                       onAddToCart: () {
-                        ref.read(cartNotifierProvider.notifier).addToCartMethod(
-                          map: {
-                            ProductTypeEnums.productId.name: wishListIndex.id.toString(),
-                            ProductTypeEnums.quantity.name: '1',
-                          },
-                        ).whenComplete(() => ref.invalidate(getCartListProvider));
+                        if (wishListIndex.availableQuantity! < 1) {
+                          showScaffoldSnackBarMessage(TextConstant.productIsOutOfStock, isError: true);
+                        } else {
+                          ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                            map: {
+                              ProductTypeEnums.productId.name: wishListIndex.id.toString(),
+                              ProductTypeEnums.quantity.name: '1',
+                            },
+                          ).whenComplete(() => ref.invalidate(getCartListProvider));
+                        }
                       },
                       deleteFromCart: () {
                         ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(

@@ -40,6 +40,6 @@ Widget singleProductSimilarItemCardWidget({
           textAlign: TextAlign.start,
         )
       ],
-    ),
+    ).padSymmetric(horizontal: 3)
   );
 }

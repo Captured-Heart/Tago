@@ -12,3 +12,6 @@ export './loaders/delivery_requests_loaders.dart';
 export './controller/rider_order_repository.dart';
 export './models/domain/delivery_requests_model.dart';
 export './models/domain/rider_order_item_model.dart';
+export './controller/rider_notifiers.dart';
+export './controller/riders_notifier_providers.dart';
+export './views/rider_active_order_screen.dart';

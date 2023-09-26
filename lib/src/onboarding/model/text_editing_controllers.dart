@@ -16,6 +16,8 @@ class TextEditingControllerClass {
   TextEditingController apartmentNoController = TextEditingController();
   TextEditingController addressLabelController = TextEditingController();
   TextEditingController searchProductController = TextEditingController();
+  TextEditingController searchFruitsController = TextEditingController();
+
   TextEditingController voucherController = TextEditingController();
   TextEditingController instructionsController = TextEditingController();
 

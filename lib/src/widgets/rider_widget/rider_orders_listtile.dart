@@ -99,23 +99,39 @@ Widget riderOrdersListTile({
                       ? Row(
                           children: [
                           Expanded(
-                            child: GestureDetector(
-                              onTap: onAcceptRequest,
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    color: TagoLight.primaryColor,
-                                    borderRadius: BorderRadius.circular(7)),
-                                child: Text(
-                                  TextConstant.acceptRequest,
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyle.listTileTitleLight.copyWith(
-                                    color: TagoLight.scaffoldBackgroundColor,
-                                    fontSize: 12,
+                            child: riderOrderModel!.status! > 0
+                                ? Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: TagoLight.primaryColor.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                    child: Text(
+                                      TextConstant.accepted,
+                                      textAlign: TextAlign.center,
+                                      style: AppTextStyle.listTileTitleLight.copyWith(
+                                        color: TagoLight.primaryColor,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    onTap: onAcceptRequest,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          color: TagoLight.primaryColor,
+                                          borderRadius: BorderRadius.circular(7)),
+                                      child: Text(
+                                        TextConstant.acceptRequest,
+                                        textAlign: TextAlign.center,
+                                        style: AppTextStyle.listTileTitleLight.copyWith(
+                                          color: TagoLight.scaffoldBackgroundColor,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
                           ),
                           Expanded(
                             child: GestureDetector(

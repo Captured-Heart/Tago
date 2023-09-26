@@ -5,3 +5,5 @@ export './model/domain/order_list_model.dart';
 export './view/orders_detail_screen.dart';
 export './view/orders_placed_screen.dart';
 export './view/review_items_screen.dart';
+export './view/active_order_screen.dart';
+export './view/completed_order_screen.dart';

@@ -1,4 +1,3 @@
-import 'package:flutter_dash/flutter_dash.dart';
 import 'package:tago/app.dart';
 
 // 0 - pending

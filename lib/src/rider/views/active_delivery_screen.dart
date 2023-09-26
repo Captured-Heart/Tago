@@ -1,7 +1,7 @@
 import 'package:tago/app.dart';
 
-class NewDeliveryRequestScreen extends ConsumerStatefulWidget {
-  const NewDeliveryRequestScreen({
+class ActiveDeliveryScreen extends ConsumerStatefulWidget {
+  const ActiveDeliveryScreen({
     super.key,
     required this.riderOrderModel,
     required this.riderOrder,
@@ -9,14 +9,22 @@ class NewDeliveryRequestScreen extends ConsumerStatefulWidget {
   final List<RiderOrderItemsModel> riderOrderModel;
   final DeliveryRequestsModel? riderOrder;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _NewDeliveryRequestScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ActiveDeliveryScreenState();
 }
 
-class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScreen> {
+class _ActiveDeliveryScreenState extends ConsumerState<ActiveDeliveryScreen> {
   @override
   void initState() {
     ref.read(getCurrentLocationProvider);
     super.initState();
+  }
+
+  bool isFaded({required int status, required OrderStatus orderStatus}) {
+    if (orderStatus.status == status || orderStatus.status <= status) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   final ScrollController scrollController = ScrollController();
@@ -27,8 +35,11 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
     var fulfillmentHub = orders?.fulfillmentHub;
     final currentPosition = ref.watch(getCurrentLocationProvider);
     final isLoading = ref.watch(riderAcceptDeclineNotifierProvider).isLoading;
-    // log(orders!.toString());
-    log(widget.riderOrder!.status.toString());
+    final orderList = ref.watch(ridersOrderProvider).valueOrNull;
+    var checkedID = orderList?.where((element) => element.id == orders?.id).single;
+    log(checkedID!.status.toString());
+    // log(widget.riderOrder!.order!.id.toString());
+    // log(widget.riderOrder!.status.toString());
     return FullScreenLoader(
       isLoading: isLoading,
       child: Scaffold(
@@ -47,7 +58,7 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                       children: [
                         appBarWidget(
                           context: context,
-                          title: TextConstant.newDeliveryRequests,
+                          title: TextConstant.activeDelivery,
                           centerTitle: false,
                           isLeading: true,
                         ),
@@ -101,8 +112,28 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                           context: context,
                           icon: Icons.pedal_bike,
                           title: TextConstant.pickupLocation,
+                          bTNText: checkedID.status == 7
+                              ? TextConstant.pickedUp
+                              : TextConstant.iHavePickedUp,
                           subtitle1: ' ${fulfillmentHub?.address}',
                           subtitle2: '${fulfillmentHub?.position ?? 0} km away',
+                          hasButton: true,
+                          isFaded: false,
+                          isPickedUp: checkedID.status! >= 7 ? true : false,
+                          //pick up btn
+                          onTap: () {
+                            if (checkedID.status != 7) {
+                              ref
+                                  .read(riderAcceptDeclineNotifierProvider.notifier)
+                                  .riderPickUpMethod(
+                                onNavigation: () {
+                                  ref.invalidate(deliveryRequestsProvider);
+                                  ref.invalidate(ridersOrderProvider);
+                                },
+                                map: {HiveKeys.createOrder.keys: orders.id},
+                              );
+                            }
+                          },
                         ),
 
                         //delivery location
@@ -110,67 +141,36 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                           fulfillmentHub: fulfillmentHub,
                           context: context,
                           icon: Icons.location_on,
-                          title: TextConstant.deliveryLocation,
+                          title: TextConstant.delivery,
+                          bTNText: TextConstant.complete,
                           subtitle1:
                               ' ${address?.apartmentNumber} ${address?.streetAddress}, ${address?.city}, ${address?.state} ',
                           subtitle2: '${address?.position ?? 0}km away',
+                          hasButton: true,
+                          isFaded: checkedID.status! >= 7 ? false : true,
+                          isPickedUp: checkedID.status! > 7 ? true : false,
+
+                          //complete btn
+                          onTap: () {
+                            if (checkedID.status == 7) {
+                              ref
+                                  .read(riderAcceptDeclineNotifierProvider.notifier)
+                                  .riderDeliveredMethod(
+                                onNavigation: () {
+                                  ref.invalidate(deliveryRequestsProvider);
+                                  ref.invalidate(ridersOrderProvider);
+                                },
+                                map: {HiveKeys.createOrder.keys: orders.id},
+                              );
+                            }
+                          },
                         ),
-                      ],
-                    ),
+                      ].columnInPadding(8),
+                    ).padOnly(left: 15),
                   )
                 ],
               ),
             ),
-            widget.riderOrder!.status! > 0
-                ? const SizedBox.shrink()
-                : Column(
-                    children: [
-                      SizedBox(
-                        width: context.sizeWidth(0.9),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            ref
-                                .read(riderAcceptDeclineNotifierProvider.notifier)
-                                .riderAcceptReqestMethod(
-                              map: {
-                                HiveKeys.createOrder.keys: orders.id,
-                              },
-                              onNavigation: () {
-                                ref.invalidate(deliveryRequestsProvider);
-
-                                pop(context);
-                              },
-                            );
-                          },
-                          child: const Text(TextConstant.acceptRequest),
-                        ),
-                      ),
-                      SizedBox(
-                        width: context.sizeWidth(0.9),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            ref
-                                .read(riderAcceptDeclineNotifierProvider.notifier)
-                                .riderDeleteReqestMethod(
-                              map: {
-                                HiveKeys.createOrder.keys: orders.id,
-                              },
-                              onNavigation: () {
-                                ref.invalidate(deliveryRequestsProvider);
-                              },
-                            );
-                            ref.invalidate(deliveryRequestsProvider);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            foregroundColor: TagoLight.textError.withOpacity(0.8),
-                            backgroundColor: TagoLight.textError.withOpacity(0.1),
-                          ),
-                          child: const Text(TextConstant.decline),
-                        ),
-                      ),
-                    ].columnInPadding(10),
-                  ).padOnly(bottom: 30, top: 5)
           ],
         ),
       ),

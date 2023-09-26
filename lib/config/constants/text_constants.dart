@@ -5,7 +5,8 @@ abstract class TextConstant {
   static const fontFamilyLight = 'Firma_Light';
   static const createAcct = 'Create an account';
   static const signIn = 'Sign In';
-  static const nairaSign = '₦';
+  static const nairaSign = '\u20A6';
+  // '₦';
 
 /*----------------------------------------------------------------------
   sign up screen
@@ -182,6 +183,8 @@ ORDERS SCREEN
   static const cancel = 'Cancel';
   static const delivered = 'Delivered';
   static const placed = 'Placed';
+  static const received = 'Received';
+
   static const deliveredTo = 'Delivered to';
   static const processing = 'Processing';
   static const orderID = 'Order ID';
@@ -295,7 +298,10 @@ RIDER SECTION
   static const timeTraveled = 'Time Traveled';
   static const deliveryRequests = 'Delivery Requests';
   static const acceptRequest = 'Accept Request';
+  static const accepted = 'Accepted';
   static const newDeliveryRequests = 'New Delivery Request';
+  static const activeDelivery = 'Active Delivery';
+
   static const decline = 'Decline';
   static const pickupLocation = 'Pickup Location';
   static const deliveryLocation = 'Delivery Location';
@@ -314,6 +320,8 @@ RIDER SECTION
   static const km = 'km';
   static const youWillReceiveAnEmail = 'You will receive an email confirmation shortly';
   static const orderPlaced = 'Order Placed';
+  static const orderPickUp = 'Order Pick Up';
+
   static const goToMyOrder = 'Go to My Orders';
   static const seeOrderDetails = 'See Order Details';
   static const shopForAnotherItem = 'Shop for another item';
@@ -326,6 +334,8 @@ RIDER SECTION
   static const orderConfirmedDeliveryWillBegin =
       'Your order has been confirmed and delivery will begin';
   static const pickedUp = 'Picked Up';
+  static const iHavePickedUp = 'I have picked up';
+  static const complete = 'Complete';
   static const itemHasBeenPickedUpCourier =
       'Your item has been picked up by our courier and will get to you soon!';
   static const delivery = 'Delivery';
