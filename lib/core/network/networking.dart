@@ -16,6 +16,8 @@ const String verifyPhoneNumberUrl = '/verification/phone-number';
 // CATEGORY URL
 const String getCategoriesUrl = '/public/categories';
 const String getCategoryUrl = '/public/category?label';
+const String getCategoryWithSubcategoriesUrl =
+    '/public/category/subcategories?label';
 
 //PRODUCT URL
 const String getProductsUrl = '/public/product?label';

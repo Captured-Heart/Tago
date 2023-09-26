@@ -30,7 +30,7 @@ class TagoDark {
   // #1D38E4
 
   //background 1D38E4
-  static const Color scaffoldBackgroundColor = Color(0xFFffffff);
+  static const Color scaffoldBackgroundColor = Color(0xFFF7F7F7);
   static const Color primaryColor = Color(0xff2DBE5B);
   static const Color orange = Color(0xffF28A3E);
 }

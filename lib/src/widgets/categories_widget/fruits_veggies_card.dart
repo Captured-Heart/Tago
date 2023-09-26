@@ -128,50 +128,114 @@ Widget fruitsAndVeggiesCardLoader({
 }) {
   // var products = convertDynamicListToProductListModel(productImagesList!);
   return shimmerWidget(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Card(
-          elevation: 0.3,
-          child: Stack(
-            children: [
-              Container(
-                height: 120,
-                // color: TagoLight.indicatorActiveColor,
-              ),
-              Positioned(
-                // alignment: Alignment.bottomRight,
-                bottom: 10,
-                right: -1,
-                child: addMinusBTN(
-                  context: context,
-                  onTap: () {},
-                  isMinus: false,
-                ),
-              )
-            ],
-          ),
+      child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        "Fruit and Vegetable",
+        style: context.theme.textTheme.titleLarge,
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      GridView.count(
+          crossAxisCount: 2,
+          shrinkWrap: true,
+          childAspectRatio: 0.6,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          physics: const NeverScrollableScrollPhysics(),
+          children: List.generate(
+              4,
+              (index) => Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                    ),
+                    width: 180,
+                    height: 80,
+                    padding: const EdgeInsets.all(8),
+                  ))),
+    ],
+  ).padOnly(bottom: 35));
+}
+
+Widget productCard({
+  required BuildContext context,
+  required ProductsModel productModel,
+  required VoidCallback addToCartBTN,
+}) {
+  return GestureDetector(
+    onTap: () {
+      navBarPush(
+        context: context,
+        screen: SingleProductPage(
+          id: productModel.id!,
+          productsModel: productModel,
         ),
-        Text(
-          'Product',
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          style: context.theme.textTheme.labelMedium?.copyWith(
-            fontSize: 12,
-            fontWeight: AppFontWeight.w400,
-            fontFamily: TextConstant.fontFamilyNormal,
-          ),
-        ).padSymmetric(vertical: 8),
-        Text(
-          'N-Amount',
-          style: context.theme.textTheme.titleMedium?.copyWith(
-            fontFamily: TextConstant.fontFamilyNormal,
-            fontSize: 12,
-          ),
-          textAlign: TextAlign.start,
-        )
-      ],
-    ),
+        withNavBar: false,
+      );
+    },
+    child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.white,
+        ),
+        width: 180,
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            cachedNetworkImageWidget(
+              imgUrl: productModel.productImages!.first['image']['url'],
+              height: 140,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              productModel.name ?? '',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: context.theme.textTheme.labelMedium?.copyWith(
+                fontSize: 14,
+                fontWeight: AppFontWeight.w500,
+                fontFamily: TextConstant.fontFamilyNormal,
+              ),
+            ),
+            Expanded(
+              child: Container(),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${TextConstant.nairaSign} ${productModel.amount}',
+                  style: context.theme.textTheme.titleLarge?.copyWith(
+                    fontFamily: TextConstant.fontFamilyNormal,
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7.0),
+                      border: Border.all(color: TagoDark.primaryColor)),
+                  child: GestureDetector(
+                    onTap: addToCartBTN,
+                    child: Text(
+                      'Add',
+                      style: context.theme.textTheme.titleMedium?.copyWith(
+                          fontFamily: TextConstant.fontFamilyNormal,
+                          fontSize: 12,
+                          color: TagoDark.orange),
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        )),
   );
 }

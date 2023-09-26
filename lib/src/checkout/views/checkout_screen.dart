@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/orders/view/orders_make_payment_screen.dart';
 
 final voucherCodeProvider = StateProvider<String>((ref) {
   return '';
@@ -25,6 +26,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   final TextEditingControllerClass controller = TextEditingControllerClass();
   final ScrollController scrollController = ScrollController();
   bool isInstant = true;
+  // payment method
+  PaymentMethodsType paymentMethodType = PaymentMethodsType.notSelected;
+  updatePaymentMethod(PaymentMethodsType paymentMethod) {
+    log(paymentMethod.toString());
+    setState(() {
+      paymentMethodType = paymentMethod;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +105,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             checkoutPhoneNumberWidget(context, accountInfo),
 
             //!payment method
-            checkoutPaymentMethodWidget(context).padOnly(top: 20),
+            checkoutPaymentMethodWidget(
+                    context, updatePaymentMethod, paymentMethodType)
+                .padOnly(top: 20),
 
             //! REVIEW ITEMS
             Text(
@@ -177,6 +188,12 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             //! confirm order btn
             ElevatedButton(
               onPressed: () {
+                // check if payment is selected
+                if (paymentMethodType == PaymentMethodsType.notSelected) {
+                  showScaffoldSnackBarMessage("Please select a payment method");
+                  return;
+                }
+
                 if (controller.voucherController.text.isNotEmpty) {
                   log('token: ${HiveHelper().getData(HiveKeys.token.name)}');
                   var checkModel = CheckoutModel(
@@ -211,7 +228,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   var checkModel = CheckoutModel(
                     addressId: addressId,
                     deliveryType: DeliveryType.instant.name,
-                    paymentMethod: PaymentMethodsType.cash.message,
+                    paymentMethod: paymentMethodType.message,
                     instructions: controller.instructionsController.text,
                     // scheduleForDate: '',
                     // '2023-08-23T00:00:00.000Z',
@@ -228,11 +245,19 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       .createAnOrderMethod(
                         map: checkModel,
                         onNavigation: () {
-                          navBarPush(
-                            context: context,
-                            screen: const OrderPlacedScreen(),
-                            withNavBar: false,
-                          );
+                          if (paymentMethodType == PaymentMethodsType.cash) {
+                            navBarPush(
+                              context: context,
+                              screen: const OrderPlacedScreen(),
+                              withNavBar: false,
+                            );
+                          } else {
+                            navBarPush(
+                              context: context,
+                              screen: const OrderPaymentScreen(),
+                              withNavBar: false,
+                            );
+                          }
                         },
                       );
                 }

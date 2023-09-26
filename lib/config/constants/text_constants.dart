@@ -342,6 +342,11 @@ RIDER SECTION
   static const awaitingPickup = 'Awaiting Pickup';
   static const goHome = 'Go Home';
   static const tapStarsToGiveRatings = 'Tap the stars to give a rating';
+
+  static const didNotFind = "Didn't find \nwhat you had \nin mind? 😕";
+  static const suggestSomething = "Suggest something and we will look into it";
+  static const suggest = "Suggest a product";
+  static const shortcuts = 'Shortcuts';
 }
 
 const List categoriesFooters = [

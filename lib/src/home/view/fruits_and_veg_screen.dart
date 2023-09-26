@@ -1,7 +1,10 @@
+import 'dart:math';
+
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tago/app.dart';
 
 class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
-  final List<dynamic> subCategoriesList;
+  final List<SubCategoryModel>? subCategoriesList;
   const FruitsAndVegetablesScreen({
     super.key,
     required this.subCategoriesList,
@@ -16,175 +19,210 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
 class _FruitsAndVegetablesScreenState
     extends ConsumerState<FruitsAndVegetablesScreen> {
   //
-  final ScrollController controller = ScrollController();
   final TextEditingControllerClass editingController =
       TextEditingControllerClass();
+
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
+
+  var currentPosition = 0;
+
+  void _scrollToItem(int index) {
+    itemScrollController.scrollTo(
+        index: index,
+        duration: const Duration(seconds: 2),
+        curve: Curves.easeInOutCubic);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    itemPositionsListener.itemPositions.addListener(() {
+      ItemPosition? itemPosition =
+          itemPositionsListener.itemPositions.value.first;
+      setState(() {
+        currentPosition = itemPosition.index;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final categoryByLabel = ref.watch(fetchCategoryByLabelProvider);
+    final categoryWithSubcategories =
+        ref.watch(fetchCategoryWithSubcategoriesByLabelProvider);
     final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
 
-    // final subCategory = widget.subCategoriesList;
     return FullScreenLoader(
       isLoading: ref.watch(cartNotifierProvider).isLoading,
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            widget.appBarTitle,
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                navBarPush(
-                  context: context,
-                  screen: const MyCartScreen(),
-                  withNavBar: false,
-                );
-              },
-              icon: Badge(
-                backgroundColor: TagoLight.orange,
-                smallSize: 10,
-                isLabelVisible: cartList?.isNotEmpty ?? false,
-                child: const Icon(Icons.shopping_cart_outlined),
-              ),
-            )
-          ],
-        ),
-        body: ListView(
-            controller: controller,
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            children: [
-              authTextFieldWithError(
-                controller: editingController.searchProductController,
-                context: context,
-                isError: false,
-                filled: true,
-                hintText: TextConstant.searchIn + widget.appBarTitle,
-                prefixIcon: const Icon(Icons.search),
-                fillColor: TagoLight.textFieldFilledColor,
-              ),
-              widget.subCategoriesList.isEmpty
-                  ? const SizedBox.shrink()
-                  : Text(
-                      TextConstant.chooseSubCategory,
-                      style: context.theme.textTheme.bodyLarge,
-                    ),
-              Wrap(
-                runSpacing: 20,
-                spacing: 10,
-                alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                children: List.generate(
-                  widget.subCategoriesList.length,
-                  growable: true,
-                  (index) {
-                    return GestureDetector(
-                      onTap: () {},
-                      child: subCategoryCard(
-                        context: context,
-                        index: index,
-                        width: context.sizeWidth(0.155),
-                        height: 70,
-                        subCategoriesModel: widget.subCategoriesList,
-                      ),
-                    );
-                  },
+          appBar: AppBar(
+            elevation: 0,
+            centerTitle: true,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.appBarTitle,
                 ),
-              ).padSymmetric(horizontal: 5),
-              Text(
-                '${TextConstant.all}${widget.appBarTitle}',
-                style: context.theme.textTheme.bodyLarge,
-              ),
-              categoryByLabel.when(
-                data: (data) {
-                  if (data.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        TextConstant.sorryNoProductsInCategory,
-                        textAlign: TextAlign.center,
+                GestureDetector(
+                    onTap: () => push(context, SearchScreen()),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.search_outlined,
                       ),
-                    );
-                  }
-                  return GridView.count(
-                    controller: controller,
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 15,
-                    childAspectRatio: 0.85,
-                    children: List.generate(
-                      data.length,
-                      growable: true,
-                      (index) {
-                        var productModel = data[index];
-                        return GestureDetector(
-                          onTap: () {
-                            navBarPush(
-                              context: context,
-                              screen: SingleProductPage(
-                                productsModel: productModel,
-                                id: productModel.id!,
-                              ),
-                              withNavBar: false,
-                            );
-                          },
-                          child: SizedBox(
-                              width: context.sizeWidth(0.4),
-                              child: fruitsAndVeggiesCard(
-                                  index: index,
-                                  productModel: productModel,
-                                  context: context,
-                                  isFreeDelivery: true,
-                                  addToCartBTN: () {
-                                    if (productModel.availableQuantity! > 1) {
-                                      ref
-                                          .read(cartNotifierProvider.notifier)
-                                          .addToCartMethod(
-                                        map: {
-                                          ProductTypeEnums.productId.name:
-                                              productModel.id.toString(),
-                                          ProductTypeEnums.quantity.name: '1',
-                                        },
-                                      );
-                                    } else {
-                                      showScaffoldSnackBarMessage(
-                                          'Product is out of stock',
-                                          isError: true);
-                                    }
-                                  },
-                                  productImagesList: data[index].productImages,
-                                  indexList: [
-                                    0,
-                                    1,
-                                    4,
-                                  ])
-                              // .debugBorder()
-                              ),
-                        );
-                      },
-                    ),
+                    )),
+              ],
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  navBarPush(
+                    context: context,
+                    screen: const MyCartScreen(),
+                    withNavBar: false,
                   );
                 },
-                error: (error, _) => Center(
-                  child: Text(error.toString()),
-                ),
-                loading: () => GridView.count(
-                  controller: controller,
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  mainAxisSpacing: 5,
-                  crossAxisSpacing: 15,
-                  childAspectRatio: 0.85,
-                  children: List.generate(
-                    5,
-                    (index) => fruitsAndVeggiesCardLoader(context: context),
-                  ),
+                icon: Badge(
+                  backgroundColor: TagoLight.orange,
+                  smallSize: 10,
+                  isLabelVisible: cartList?.isNotEmpty ?? false,
+                  child: const Icon(Icons.shopping_cart_outlined),
                 ),
               )
-            ].columnInPadding(15)),
-      ),
+            ],
+          ),
+          body: Container(
+            color: TagoDark.scaffoldBackgroundColor,
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(12),
+                  height: 50,
+                  child: ListView.builder(
+                    itemCount: widget.subCategoriesList!.length,
+                    shrinkWrap: false,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                          onTap: () {
+                            _scrollToItem(index);
+                          },
+                          child: subCategoryCardItem(
+                              widget.subCategoriesList![index].name, index));
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                    child: categoryWithSubcategories.when(
+                      data: (data) {
+                        if (data.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              TextConstant.sorryNoProductsInCategory,
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        }
+                        return ScrollablePositionedList.builder(
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            bool isLast = index == data.length - 1;
+
+                            return subCategoryWithProductsCard(data[index],
+                                isLast: isLast);
+                          },
+                          itemScrollController: itemScrollController,
+                          itemPositionsListener: itemPositionsListener,
+                        );
+                      },
+                      error: (error, _) => Center(
+                        child: Text(error.toString()),
+                      ),
+                      loading: () => ListView.builder(
+                        itemCount: 2,
+                        shrinkWrap: false,
+                        itemBuilder: (context, index) {
+                          return fruitsAndVeggiesCardLoader(context: context);
+                        },
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )),
     );
+  }
+
+  subCategoryCardItem(String name, int index) {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7.0),
+          color: currentPosition == index ? TagoDark.primaryColor : null,
+          border: Border.all(
+              color: currentPosition == index
+                  ? TagoDark.primaryColor
+                  : Colors.black87)),
+      child: Text(
+        name,
+        style: context.theme.textTheme.titleSmall?.copyWith(
+            fontFamily: TextConstant.fontFamilyNormal,
+            fontSize: 12,
+            color: currentPosition == index ? Colors.white : TagoDark.textBold),
+      ),
+    ).padOnly(left: 10);
+  }
+
+  subCategoryWithProductsCard(SubCategoryModel subCategoryModel,
+      {bool isLast = false}) {
+    return subCategoryModel.products!.isNotEmpty
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                subCategoryModel.name,
+                style: context.theme.textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                childAspectRatio: 0.6,
+                crossAxisSpacing: 14,
+                mainAxisSpacing: 14,
+                physics: const NeverScrollableScrollPhysics(),
+                children: List.generate(
+                  subCategoryModel.products!.length,
+                  (index) => productCard(
+                    productModel: subCategoryModel.products![index],
+                    context: context,
+                    addToCartBTN: () {
+                      ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                        map: {
+                          ProductTypeEnums.productId.name:
+                              subCategoryModel.products![index].id.toString(),
+                          ProductTypeEnums.quantity.name: '1',
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ).padOnly(bottom: isLast ? 350 : 35)
+        : const SizedBox();
   }
 }
