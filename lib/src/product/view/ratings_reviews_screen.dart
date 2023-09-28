@@ -69,8 +69,6 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-
                     //! TODO: USE A LIST VIEW BUILDER HERE (FIXEDDDDDDDDDD)
                     ratingsIndicatorRowWithStar(
                       context: context,
@@ -102,7 +100,7 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                       context: context,
                       starValue: 3,
                       ratingsPeopleNumber:
-                          getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 2.5 )
+                          getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 2.5)
                               .length,
                       indicatorValue: getPercentageOfReviews(
                         totalNoOfReviews: listOfRatings?.length ?? 0,
@@ -119,9 +117,9 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                               .length,
                       indicatorValue: getPercentageOfReviews(
                         totalNoOfReviews: listOfRatings?.length ?? 0,
-                        noOfReviews:
-                            getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 1.5)
-                                .length,
+                        noOfReviews: getListOfIndividualRating(
+                                listOfDoubles: listOfRatings, ratingsValue: 1.5)
+                            .length,
                       ),
                     ),
                     ratingsIndicatorRowWithStar(
@@ -132,9 +130,9 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                               .length,
                       indicatorValue: getPercentageOfReviews(
                         totalNoOfReviews: listOfRatings?.length ?? 0,
-                        noOfReviews:
-                            getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 0.5)
-                                .length,
+                        noOfReviews: getListOfIndividualRating(
+                                listOfDoubles: listOfRatings, ratingsValue: 0.5)
+                            .length,
                       ),
                     ),
                     ratingsIndicatorRowWithStar(
