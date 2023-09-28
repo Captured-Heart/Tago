@@ -77,10 +77,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           8,
                           errorText: passwordMustBeAtleast,
                         ),
-                        PatternValidator(
-                          r'(?=.*?[#?!@$%^&*-])',
-                          errorText: passwordMustHaveaSymbol,
-                        )
+                        // PatternValidator(
+                        //   r'(?=.*?[#?!@$%^&*-])',
+                        //   errorText: passwordMustHaveaSymbol,
+                        // )
                       ],
                     ),
                   ),

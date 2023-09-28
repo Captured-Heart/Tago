@@ -30,17 +30,17 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider);
     final code = ref.watch(voucherCodeProvider);
+    final address = ref.watch(getAccountAddressProvider).valueOrNull;
 
     final voucherCode = ref.watch(getVoucherStreamProvider(code));
-    final deliveryfee =
-        ref.watch(getDeliveryFeeProvider(widget.totalAmount ?? 0));
-    log(deliveryfee.toString());
-    var perc = ((int.parse('${voucherCode.valueOrNull?.amount ?? '0'}') /
-                (widget.totalAmount ?? 0)) *
-            100)
-        .round();
+    final deliveryfee = ref.watch(getDeliveryFeeProvider(widget.totalAmount ?? 0));
+    // log(" address : $accountInfo!.toString()");
+    var deliveryFeeValue = deliveryfee.valueOrNull ?? '0';
+    var perc =
+        ((int.parse('${voucherCode.valueOrNull?.amount ?? '0'}') / (widget.totalAmount ?? 0)) * 100)
+            .round();
     final addressId = ref.watch(addressIdProvider);
-    // log(widget.placeOrderModel.toString());
+    // log(HiveHelper().getData(HiveKeys.addressId.keys).toString());
     return FullScreenLoader(
       isLoading: ref.watch(checkoutNotifierProvider).isLoading,
       child: Scaffold(
@@ -54,7 +54,12 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           controller: scrollController,
           children: [
             //! delivering to
-            checkoutDeliveryToWidget(context, accountInfo),
+            checkoutDeliveryToWidget(
+              context,
+              address != null && address.isNotEmpty
+                  ? address[HiveHelper().getAddressIndex(HiveKeys.addressId.keys)]
+                  : const AddressModel(),
+            ),
 
             //! select delivery type
             Column(
@@ -74,6 +79,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     log(isInstant.toString());
                   },
                   onTapInstantSchedule: () {
+                    // HiveHelper().saveData(HiveKeys.addressId.keys, 0);
                     setState(() {
                       isInstant = true;
                     });
@@ -86,9 +92,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 ),
 
                 //DAY && TIMES WIDGET
-                isInstant == true
-                    ? const SizedBox.shrink()
-                    : const CheckOutDayAndTimesWidget(),
+                isInstant == true ? const SizedBox.shrink() : const CheckOutDayAndTimesWidget(),
               ].columnInPadding(10),
             ).padOnly(top: 25),
 
@@ -136,14 +140,12 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   checkOutALLItemsRowWidget(
                     context: context,
                     leading: TextConstant.deliveryfee,
-                    trailing:
-                        '₦${deliveryfee.valueOrNull?.toCommaPrices() ?? 0}',
+                    trailing: '₦${deliveryFeeValue.toCommaPrices()}',
                   ),
                   checkOutALLItemsRowWidget(
                     context: context,
                     leading: '${TextConstant.discount} ($perc%)',
-                    trailing:
-                        '- ${TextConstant.nairaSign}${voucherCode.valueOrNull?.amount ?? 0}',
+                    trailing: '- ${TextConstant.nairaSign}${voucherCode.valueOrNull?.amount ?? 0}',
                   ),
                   const Divider(thickness: 1),
 
@@ -158,12 +160,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         Text(
                           TextConstant.nairaSign +
                               ((widget.totalAmount ?? 0) +
-                                      int.parse(deliveryfee.value ?? '0') -
+                                      int.parse(deliveryFeeValue) -
                                       int.parse(
                                         voucherCode.value?.amount == null
                                             ? '0'
-                                            : voucherCode.value!.amount
-                                                .toString(),
+                                            : voucherCode.value!.amount.toString(),
                                       ))
                                   .toString()
                                   .toCommaPrices(),
@@ -195,9 +196,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ).toJson();
                   log(checkModel.toString());
                   //
-                  ref
-                      .read(checkoutNotifierProvider.notifier)
-                      .createAnOrderMethod(
+                  ref.read(checkoutNotifierProvider.notifier).createAnOrderMethod(
                         map: checkModel,
                         onNavigation: () {
                           navBarPush(
@@ -223,9 +222,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ).toJsonWithoutVocher();
                   log(checkModel.toString());
                   //
-                  ref
-                      .read(checkoutNotifierProvider.notifier)
-                      .createAnOrderMethod(
+                  ref.read(checkoutNotifierProvider.notifier).createAnOrderMethod(
                         map: checkModel,
                         onNavigation: () {
                           navBarPush(

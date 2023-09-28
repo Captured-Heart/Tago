@@ -24,7 +24,7 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
   Widget build(BuildContext context) {
     final categoryByLabel = ref.watch(fetchCategoryByLabelProvider);
     final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
-    final search = ref.watch(searchFruitProvider);
+    // final search = ref.watch(searchFruitProvider);
     // final subCategory = widget.subCategoriesList;
     return FullScreenLoader(
       isLoading: ref.watch(cartNotifierProvider).isLoading,
@@ -154,6 +154,7 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                                         ProductTypeEnums.quantity.name: '1',
                                       },
                                     );
+                                    ref.invalidate(getCartListProvider(false));
                                   } else {
                                     showScaffoldSnackBarMessage(
                                       TextConstant.productIsOutOfStock,

@@ -13,6 +13,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
   @override
   Widget build(BuildContext context) {
     final cartList = ref.watch(getCartListProvider(true));
+    // log(cartList.value!.map((e) => e.product!.amount).toString());
 
     int calculateTotalPrice() {
       int total = 0;
@@ -22,6 +23,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
       return total;
     }
 
+    // log(calculateTotalPrice().toString());
     // log(HiveHelper().getData(HiveKeys.createOrder.keys).toString());
     return FullScreenLoader(
       isLoading: cartList.isLoading,
@@ -105,9 +107,6 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                               setState(() {
                                 data[index] = cartModel.copyWith(
                                   quantity: quantity + 1,
-                                  // product: product?.copyWith(
-                                  //   amount: updatePrice(),
-                                  // ),
                                 );
                               });
                             }

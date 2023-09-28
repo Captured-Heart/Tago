@@ -37,6 +37,7 @@ class MainAppState extends ConsumerState<MainApp> {
     return MaterialApp(
       onGenerateTitle: (context) => TextConstant.title,
       restorationScopeId: 'app',
+      
       // useInheritedMediaQuery: true,
       // builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
@@ -61,7 +62,7 @@ class MainAppState extends ConsumerState<MainApp> {
               case AddAddressScreen.routeName:
                 return const AddAddressScreen();
               case AddAddressManuallyScreen.routeName:
-                return const AddAddressManuallyScreen();
+                return  AddAddressManuallyScreen();
               default:
                 return const OnBoardScreen();
             }
