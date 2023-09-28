@@ -180,6 +180,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               onPressed: () {
                 if (controller.voucherController.text.isNotEmpty) {
                   log('token: ${HiveHelper().getData(HiveKeys.token.name)}');
+
                   var checkModel = CheckoutModel(
                     addressId: addressId,
                     deliveryType: DeliveryType.instant.name,
@@ -204,6 +205,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             screen: const OrderPlacedScreen(),
                             withNavBar: false,
                           );
+                          ref.refresh(getCartListProvider(false));
                         },
                       );
                 } else {
@@ -230,6 +232,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             screen: const OrderPlacedScreen(),
                             withNavBar: false,
                           );
+                          ref.refresh(getCartListProvider(false));
                         },
                       );
                 }

@@ -49,7 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           //! home screen order status
           // homeScreenOrderStatusWidget(context: context, ref: ref),
 
-// deliver to
+//deliver to
           // homeScreenAddressWidget(context, accountInfo),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,

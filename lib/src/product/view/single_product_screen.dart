@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/product/models/domain/product_specifications_model.dart';
 
 class SingleProductPage extends ConsumerStatefulWidget {
   const SingleProductPage({
@@ -29,7 +28,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     // var wishListID = checkIdenticalListsWithInt(list1: wishListList, int: widget.id);
     final productSpecs = ref.watch(productSpecificationsProvider);
 
-    log('preducts Specs: $productSpecs');
+    log('preducts Specs: ${products.valueOrNull?.productReview!.map((e) => e['rating']).toList()}');
     final relatedProducts = ref.watch(relatedProductsProvider);
     return FullScreenLoader(
       isLoading: ref.read(postToWishListNotifierProvider).isLoading ||
@@ -46,10 +45,11 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 isDismissible: false,
                 isScrollControlled: true,
                 shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                )),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
                 builder: (context) {
                   return const SingleProductMiniCartModalWidget();
                 },
@@ -71,10 +71,12 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               width: context.sizeWidth(1),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: CarouselSlider(

@@ -18,8 +18,7 @@ class OrderPlacedScreen extends ConsumerWidget {
           leading: tagoBackButton(
             context: context,
             onTapBack: () {
-              pop(context);
-              pop(context);
+              popToMain(context);
             },
           ),
         ),

@@ -51,6 +51,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+   
         appBar: ordersAppbar(
           context: context,
           isBadgeVisible: cartList?.isNotEmpty ?? false,
