@@ -67,6 +67,7 @@ Add address screen
   static const addressBook = 'Address Book';
   static const appartmentsuite = '  Apartment / Suite / Floor number';
   static const egOffice = '  (e.g., Office)';
+  static const pleaseProvideFullAddress = 'Please provide full street address';
 
 /*----------------------------------------------------------------------
 forgot password
@@ -121,7 +122,7 @@ HOME PAGE
   static const similiarItems = 'Similar Items';
   static const itemsNearYou = 'Items near you';
   static const itemsDetails = 'Item Details';
-
+  static const scheduleLaterNotAvailable = 'Schedule later is currently not available';
   static const recentlyViewed = 'Recently Viewed';
 
 /*----------------------------------------------------------------------

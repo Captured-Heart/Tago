@@ -1,7 +1,6 @@
 import 'package:tago/app.dart';
 
-Column checkoutDeliveryToWidget(
-    BuildContext context, AsyncValue<AccountModel> accountInfo) {
+Column checkoutDeliveryToWidget(BuildContext context, AddressModel? address) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisSize: MainAxisSize.min,
@@ -19,8 +18,7 @@ Column checkoutDeliveryToWidget(
           color: TagoDark.primaryColor,
         ),
         title: Text(
-          accountInfo.valueOrNull?.address?.streetAddress ??
-              TextConstant.noAddressFound,
+          '${address?.apartmentNumber ?? ''}, ${address?.streetAddress ?? TextConstant.noAddressFound}, ${address?.city ?? ''}, ${address?.state ?? ''}',
           style: context.theme.textTheme.labelMedium,
         ),
         trailing: TextButton(
@@ -28,16 +26,16 @@ Column checkoutDeliveryToWidget(
             textStyle: AppTextStyle.textButtonW600_12,
           ),
           onPressed: () {
-            if (accountInfo.valueOrNull?.address == null) {
+            if (address?.streetAddress == null) {
               push(context, const AddNewAddressScreen());
             } else {
+              HiveHelper().saveData(HiveKeys.fromCheckout.keys, HiveKeys.fromCheckout.keys);
+
               push(context, const AddressBookScreen());
             }
           },
           child: Text(
-            accountInfo.valueOrNull?.address == null
-                ? TextConstant.addAdress
-                : TextConstant.editAddress,
+            address?.streetAddress == null ? TextConstant.addAdress : TextConstant.editAddress,
           ),
         ),
       ),

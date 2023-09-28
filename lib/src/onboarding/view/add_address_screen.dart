@@ -22,8 +22,15 @@ class AddAddressScreen extends ConsumerWidget {
       appBar: appBarWidget(
         context: context,
         title: TextConstant.addAdress,
-        suffixIcon:
-            TextButton(onPressed: () {}, child: const Text(TextConstant.skip)),
+        suffixIcon: TextButton(
+          onPressed: () {
+            pushNamed(
+              context,
+              AddAddressManuallyScreen.routeName,
+            );
+          },
+          child: const Text(TextConstant.skip),
+        ),
       ),
       body: Column(
         children: [
@@ -66,7 +73,10 @@ class AddAddressScreen extends ConsumerWidget {
           const Spacer(),
           TextButton(
             onPressed: () {
-              // pushNamed(context, AddAddressManuallyScreen.routeName);
+              pushNamed(
+                context,
+                AddAddressManuallyScreen.routeName,
+              );
               // searchAddress();
             },
             child: const Text(TextConstant.typeaddressmanually),

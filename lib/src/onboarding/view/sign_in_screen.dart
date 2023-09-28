@@ -12,6 +12,7 @@ class SignInScreen extends ConsumerStatefulWidget {
 class _SignUpScreenState extends ConsumerState<SignInScreen> {
   final TextEditingControllerClass controller = TextEditingControllerClass();
   final HiveHelper hive = HiveHelper();
+  bool isVisible = false;
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authAsyncNotifierProvider);
@@ -57,8 +58,20 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                     controller: controller.passWordController,
                     context: context,
                     isError: false,
+                    obscureText: isVisible,
                     hintText: TextConstant.password,
                     textInputAction: TextInputAction.done,
+                    suffixIcon: IconButton(
+                      color: TagoLight.textBold.withOpacity(0.7),
+                      onPressed: () {
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
+                      },
+                      icon: isVisible == false
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
+                    ),
                     validator: MultiValidator(
                       [
                         RequiredValidator(errorText: passwordIsRequired),
@@ -94,17 +107,14 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
               child: ElevatedButton(
                 onPressed: () async {
                   if (controller.signInformKey.currentState!.validate()) {
-                    ref
-                        .read(authAsyncNotifierProvider.notifier)
-                        .signInAsyncMethod(
+                    ref.read(authAsyncNotifierProvider.notifier).signInAsyncMethod(
                       map: {
                         'password': controller.passWordController.text,
                         'phoneNumber': controller.phoneNoController.text,
                       },
                       context: context,
                       onNavigation: () {
-                        if (HiveHelper().getData(HiveKeys.role.name) ==
-                            AuthRoleType.user.name) {
+                        if (HiveHelper().getData(HiveKeys.role.name) == AuthRoleType.user.name) {
                           pushReplacement(
                             context,
                             const MainScreen(),

@@ -60,8 +60,9 @@ Container activeOrdersCard({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-               TextConstant.nairaSign ,
-                  // orderModel.name ?? '',
+                  //  TextConstant.nairaSign ,
+
+                  orderModel.name ?? '',
                   style:
                       context.theme.textTheme.titleMedium?.copyWith(fontWeight: AppFontWeight.w300),
                 ).padOnly(bottom: 5),

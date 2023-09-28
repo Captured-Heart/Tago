@@ -40,6 +40,10 @@ class HiveHelper {
     await _boxTago.close();
   }
 
+  int getAddressIndex(String key) {
+    log('getData: $key');
+    return _boxTago.get(key) ?? 0;
+  }
   /*------------------------------------------------------------------
                  FOR BOX ('SEARCH')
  -------------------------------------------------------------------*/

@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/product/models/domain/product_specifications_model.dart';
 
 class SingleProductPage extends ConsumerStatefulWidget {
   const SingleProductPage({
@@ -22,11 +21,14 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     var wishlist = ref.watch(fetchWishListProvider(false));
     var cartList = ref.watch(getCartListProvider(false));
     var wishListID = wishlist.value?.map((e) => e.id).contains(widget.id);
+    var cartListLength = cartList.valueOrNull;
 
     var cartListID =
         cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList().contains(widget.id);
     // var wishListID = checkIdenticalListsWithInt(list1: wishListList, int: widget.id);
     final productSpecs = ref.watch(productSpecificationsProvider);
+
+    log('preducts Specs: ${products.valueOrNull?.productReview!.map((e) => e['rating']).toList()}');
     final relatedProducts = ref.watch(relatedProductsProvider);
     return FullScreenLoader(
       isLoading: ref.read(postToWishListNotifierProvider).isLoading ||
@@ -34,7 +36,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
       child: Scaffold(
         appBar: appBarWidget(
           context: context,
-          title: products.valueOrNull?.label?.toTitleCase() ?? '',
+          title: products.valueOrNull?.name?.toTitleCase() ?? '',
           isLeading: true,
           suffixIcon: IconButton(
             onPressed: () {
@@ -43,16 +45,22 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 isDismissible: false,
                 isScrollControlled: true,
                 shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                )),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
                 builder: (context) {
                   return const SingleProductMiniCartModalWidget();
                 },
               );
             },
-            icon: const Icon(Icons.shopping_cart_outlined),
+            icon: Badge(
+              isLabelVisible: cartListLength?.isNotEmpty ?? false,
+              backgroundColor: TagoLight.orange,
+              smallSize: 10,
+              child: const Icon(Icons.shopping_cart_outlined),
+            ),
           ),
         ),
         body: ListView(
@@ -63,10 +71,12 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               width: context.sizeWidth(1),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: CarouselSlider(
@@ -96,8 +106,11 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                             ),
                           ),
                         ),
-                        carouselIndicator(context, widget.productsModel.productImages!.length, ref)
-                            .padOnly(top: 10),
+                        widget.productsModel.productImages!.length < 2
+                            ? const SizedBox.shrink()
+                            : carouselIndicator(
+                                    context, widget.productsModel.productImages!.length, ref)
+                                .padOnly(top: 10),
                       ],
                     ),
                   ),
@@ -154,44 +167,19 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                     child: const Text(TextConstant.addtocart),
                                   ),
                           ),
-                    widget.productsModel.availableQuantity! < 1
-                        ? GestureDetector(
-                            onTap: () {
-                              showScaffoldSnackBarMessage(
-                                TextConstant.productIsOutOfStock,
-                                isError: true,
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Icon(Icons.favorite_outline),
-                                Text(
-                                  TextConstant.saveforlater,
-                                  textScaleFactor: 1.2,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ].rowInPadding(8),
-                            ),
-                          )
-                        : TextButton.icon(
-                            onPressed: () {
-                              if (wishListID != true) {
-                                ref
-                                    .read(postToWishListNotifierProvider.notifier)
-                                    .postToWishListMethod(
-                                  map: {ProductTypeEnums.productId.name: widget.id.toString()},
-                                ).whenComplete(() => ref.watch(fetchWishListProvider(false)));
-                              }
-                            },
-                            icon: wishListID == true
-                                ? const Icon(Icons.favorite)
-                                : const Icon(Icons.favorite_border_outlined),
-                            label: wishListID == true
-                                ? const Text(TextConstant.saved)
-                                : const Text(TextConstant.saveforlater),
-                          )
+                    TextButton.icon(
+                      onPressed: () {
+                        ref.read(postToWishListNotifierProvider.notifier).postToWishListMethod(
+                          map: {ProductTypeEnums.productId.name: widget.id.toString()},
+                        ).whenComplete(() => ref.invalidate(fetchWishListProvider(false)));
+                      },
+                      icon: wishListID == true
+                          ? const Icon(Icons.favorite)
+                          : const Icon(Icons.favorite_border_outlined),
+                      label: wishListID == true
+                          ? const Text(TextConstant.saved)
+                          : const Text(TextConstant.saveforlater),
+                    )
                   ].columnInPadding(10)),
                 ],
               ),
