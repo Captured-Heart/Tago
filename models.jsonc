@@ -1,34 +1,34 @@
 {
-    "__className": "order_list_model", // <- The base class name of the object.
-    "__path": "/lib/src/orders/model/domain", // <- override default path with a new one by adding '__path' key.
-    "id": "", // To mark as required value, change "id" to "r@id".
-    "name": "", // To mark as a default value, change "title" to "d@title".
-    "userId": "",
-    "addressId": "",
-    "deliveryType": "",
-    "paymentMethod": "",
-    "instructions": "",
-    "itemsTotalAmount": 0,
-    "fee": 0,
-    "totalAmount": 0,
-    "voucherCode": "",
-    "discountPerc": 1.44,
-    "discountAmount":0,
-    "scheduleForDate": "",
-    "scheduleForTime":"",
-    "placedAt": "",
-    "receivedAt": "",
+    "__className": "delivery_requests_model", // <- The base class name of the object.
+    "__path": "/lib/src/rider/models/domain", // <- override default path with a new one by adding '__path' key.
+    "id": 1, // To mark as required value, change "id" to "r@id".
+    "status": 0, // To mark as a default value, change "title" to "d@title".
     "confirmedAt": "",
-    "cancelledAt":"",
-    "pickedUpAt": "",
-    "deliveredAt":"",
-    "currentPosition": "",
-    "riderId": "",
-    "updatedAt": "",
-    "deletedAt":"",
-    "orderItems": [],
-    "status": 0,
-    "fulfillmentHubId": ""
+    "createdAt": "",
+    "order": {}
+    // "productSpecification": [],
+    // "productReview": [],
+    // "productTags": [],
+    // "relatedProducts": [],
+    // "categoryId": 0,
+    // "subCategoryId": "",
+    // "amount": 1,
+    // "brand":"",
+    // "category": {},
+    // "subCategory":{},
+    // "originalAmount": 0,
+    // "savedPerc": 2.33,
+    // "availableQuantity": 1
+    // "cancelledAt":"",
+    // "pickedUpAt": "",
+    // "deliveredAt":"",
+    // "currentPosition": "",
+    // "riderId": "",
+    // "updatedAt": "",
+    // "deletedAt":"",
+    // "orderItems": [],
+    // "status": 0,
+    // "fulfillmentHubId": ""
     // "address": {}
     // "address": {}
     // "address": {}
@@ -38,3 +38,18 @@
 
   }
 
+
+
+  // final List<dynamic>? productImages,
+  //     productSpecification,
+  //     productReview,
+  //     productTags,
+  //     relatedProducts;
+  // final int? categoryId;
+  // final int? subCategoryId;
+  // final int? amount;
+  // final String? brand;
+  // final Map<String, dynamic>? category, subCategory;
+  // final int? originalAmount;
+  // final double? savedPerc;
+  // final int? availableQuantity;
