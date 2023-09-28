@@ -53,7 +53,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
     final categoryWithSubcategories =
         ref.watch(fetchCategoryWithSubcategoriesByLabelProvider);
     final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
-
+    // final search = ref.watch(searchFruitProvider);
+    // final subCategory = widget.subCategoriesList;
     return FullScreenLoader(
       isLoading: ref.watch(cartNotifierProvider).isLoading,
       child: Scaffold(

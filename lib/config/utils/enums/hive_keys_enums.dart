@@ -5,6 +5,7 @@ enum HiveKeys {
   createOrder('orderId'),
   fromCheckout('fromCheckout'),
   createOrderUrl('url'),
+  fromCheckout('fromCheckout'),
   search('search');
 
   const HiveKeys(this.keys);

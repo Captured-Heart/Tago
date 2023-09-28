@@ -31,8 +31,6 @@ void showScaffoldSnackBarMessage(
       ),
     );
 
-    
-
 void warningDialogs({
   required BuildContext context,
   required String errorMessage,
