@@ -7,18 +7,16 @@ class OrderPaymentScreen extends StatefulWidget {
   const OrderPaymentScreen({super.key});
 
   @override
-  _OrderPaymentScreenState createState() => _OrderPaymentScreenState();
+  OrderPaymentScreenState createState() => OrderPaymentScreenState();
 }
 
-class _OrderPaymentScreenState extends State<OrderPaymentScreen> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+class OrderPaymentScreenState extends State<OrderPaymentScreen> {
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
   bool _hasReachedSpecificLink = false;
 
   @override
   Widget build(BuildContext context) {
-    var url =
-        HiveHelper().getData(HiveKeys.createOrderUrl.keys)['url'].toString();
+    var url = HiveHelper().getData(HiveKeys.createOrderUrl.keys)['url'].toString();
     return Scaffold(
         appBar: AppBar(
           elevation: 0,

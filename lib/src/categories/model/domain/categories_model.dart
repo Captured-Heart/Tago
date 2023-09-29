@@ -79,7 +79,7 @@ class DealsModel extends Equatable {
   List<Object?> get props => [name, id, label, image, link];
 }
 
-class CategoriesGroupModel {
+class CategoriesGroupModel  extends Equatable{
   final List<CategoriesModel> categories;
   final List<DealsModel> deals;
   final ProductTagModel? showcaseProductTag;
