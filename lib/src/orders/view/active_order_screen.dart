@@ -50,18 +50,19 @@ class _ActiveOrderScreenState extends ConsumerState<ActiveOrderScreen> {
                   var orderModel = data[index];
                   return GestureDetector(
                     onTap: () {
-                      // navBarPush(
-                      //   context: context,
-                      //   screen: OrderStatus.delivered.status == orderModel.status
-                      //       ? DeliveryCompleteScreen(
-                      //           orderListModel: orderModel,
-                      //         )
-                      //       : OrdersDetailScreen(
-                      //           orderListModel: orderModel,
-                      //           orderStatusFromOrderScreen: orderModel.status,
-                      //         ),
-                      //   withNavBar: false,
-                      // );
+                      log(orderModel.status.toString());
+                      navBarPush(
+                        context: context,
+                        screen: orderModel.status == OrderStatus.delivered.status
+                            ? DeliveryCompleteScreen(
+                                orderListModel: orderModel,
+                              )
+                            : OrdersDetailScreen(
+                                orderListModel: orderModel,
+                                orderStatusFromOrderScreen: orderModel.status,
+                              ),
+                        withNavBar: false,
+                      );
                     },
                     child: activeOrdersCard(
                       context: context,
@@ -74,7 +75,7 @@ class _ActiveOrderScreenState extends ConsumerState<ActiveOrderScreen> {
             );
           },
           error: (error, _) {
-            return Text(error.toString());
+            return Center(child: Text(NetworkErrorEnums.checkYourNetwork.message));
           },
           loading: () => const Center(
             child: CircularProgressIndicator.adaptive(),

@@ -13,6 +13,7 @@ class AddressModel extends Equatable {
   final String? createdAt;
   final String? updatedAt;
   final String? deletedAt;
+  
 
   const AddressModel({
     this.userId,

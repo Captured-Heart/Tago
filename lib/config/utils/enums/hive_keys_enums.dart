@@ -3,7 +3,7 @@ enum HiveKeys {
   role('role'),
   addressId('addressId'),
   createOrder('orderId'),
-
+  fromCheckout('fromCheckout'),
   search('search');
 
   const HiveKeys(this.keys);

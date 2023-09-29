@@ -8,11 +8,18 @@ class MyCartScreen extends ConsumerStatefulWidget {
 }
 
 class _MyCartScreenState extends ConsumerState<MyCartScreen> {
+  @override
+  void initState() {
+    ref.read(getCartListProvider(true));
+    super.initState();
+  }
+
   int totalPrice = 0;
 
   @override
   Widget build(BuildContext context) {
     final cartList = ref.watch(getCartListProvider(true));
+    // log(cartList.value!.map((e) => e.product!.amount).toString());
 
     int calculateTotalPrice() {
       int total = 0;
@@ -22,6 +29,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
       return total;
     }
 
+    // log(calculateTotalPrice().toString());
     // log(HiveHelper().getData(HiveKeys.createOrder.keys).toString());
     return FullScreenLoader(
       isLoading: cartList.isLoading,
@@ -67,13 +75,6 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                         var quantity = data[index].quantity;
                         var product = data[index].product;
 
-                        int updatePrice() {
-                          setState(() {});
-
-                          var newPrice = quantity! * (product?.amount ?? 1);
-                          return newPrice;
-                        }
-
                         return myCartListTile(
                           context: context,
                           cartModel: cartModel,
@@ -86,7 +87,6 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                               setState(() {
                                 data[index] = cartModel.copyWith(
                                   quantity: quantity - 1,
-                                  // product: product?.copyWith(amount: decreasePrice()),
                                 );
                               });
                             } else {
@@ -96,7 +96,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                                   ProductTypeEnums.productId.name: cartModel.product!.id.toString(),
                                 },
                               ).whenComplete(
-                                () => ref.invalidate(getCartListProvider),
+                                () => ref.invalidate(getCartListProvider(false)),
                               );
                             }
                           },
@@ -105,20 +105,9 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                               setState(() {
                                 data[index] = cartModel.copyWith(
                                   quantity: quantity + 1,
-                                  // product: product?.copyWith(
-                                  //   amount: updatePrice(),
-                                  // ),
                                 );
                               });
                             }
-
-                            // else {
-                            //   showScaffoldSnackBarMessage(
-                            //     '${cartModel.product!.name} is less than the available quantity of (${product.availableQuantity})',
-                            //     isError: true,
-                            //     duration: 2,
-                            //   );
-                            // }
                           },
                         );
                       },

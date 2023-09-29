@@ -31,8 +31,6 @@ void showScaffoldSnackBarMessage(
       ),
     );
 
-    
-
 void warningDialogs({
   required BuildContext context,
   required String errorMessage,
@@ -68,12 +66,9 @@ void warningDialogs({
                     () {
                       pop(context);
                     },
-                style:
-                    TextButton.styleFrom(foregroundColor: TagoLight.textError),
+                style: TextButton.styleFrom(foregroundColor: TagoLight.textError),
                 child: const Text(TextConstant.cancel)),
-            TextButton(
-                onPressed: onPostiveAction,
-                child: const Text(TextConstant.confirm))
+            TextButton(onPressed: onPostiveAction, child: const Text(TextConstant.confirm))
           ],
           // Column(
           //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -184,3 +179,7 @@ Future<void> showAuthBottomSheet({
 //       ),
 //     );
 //   }
+String nairaSignString() {
+  var format = NumberFormat.simpleCurrency(name: 'NGN');
+  return format.currencySymbol;
+}

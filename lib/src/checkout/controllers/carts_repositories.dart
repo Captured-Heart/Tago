@@ -21,12 +21,12 @@ Future<List<CartModel>> getCartMethod({
     showSnackBar == true
         ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3)
         : null;
-    final addressList = (decodedData['data'] as List)
+    final cartList = (decodedData['data'] as List)
         .map((e) => CartModel.fromJson(e))
         .toList();
     // log('get request for cart model:  ${decodedData['data']}'); //
 
-    return addressList;
+    return cartList;
   } else {
     return [];
   }
