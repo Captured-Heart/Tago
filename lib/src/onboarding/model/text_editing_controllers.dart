@@ -3,6 +3,8 @@ import 'package:tago/app.dart';
 class TextEditingControllerClass {
   final GlobalKey<FormState> signUpformKey = GlobalKey<FormState>();
   final GlobalKey<FormState> signInformKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> fruitsSearchKey = GlobalKey<FormState>();
+
 
   TextEditingController passWordController = TextEditingController();
   TextEditingController passWordController2 = TextEditingController();

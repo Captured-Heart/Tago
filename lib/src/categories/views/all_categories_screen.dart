@@ -62,7 +62,7 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
                   ));
             },
             //TODO: ADD CACHED MODEL HERE
-            error: (error, stackTrace) => Text(error.toString()),
+            error: (error, stackTrace) => Center(child: Text(NetworkErrorEnums.checkYourNetwork.message)),
             loading: () => const Center(
               child: CircularProgressIndicator(),
             ),

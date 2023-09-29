@@ -36,7 +36,10 @@ CachedNetworkImage cachedNetworkImageWidget({
                 alignment: Alignment.center,
                 height: height,
                 width: width ?? context.sizeWidth(1),
-                color: TagoLight.indicatorActiveColor,
+                decoration: BoxDecoration(
+                  color: TagoLight.indicatorActiveColor,
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             );
     },

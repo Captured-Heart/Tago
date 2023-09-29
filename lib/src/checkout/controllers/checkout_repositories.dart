@@ -50,14 +50,15 @@ Future<List<TimesModel>> getAvailableTimesMethod(int index) async {
 
   //the response and error handling
   if (decodedData['success'] == true || response.statusCode == 200) {
-    //  if (index != null) {
+    if ((decodedData['data'] as List).isNotEmpty) {
+      var availableTimes = (decodedData['data'] as List)[index]['times'];
+      var convertedList = convertDynamicListToTimesListModel(availableTimes);
+      log('get request for availibilty times:  $availableTimes');
 
-    //  }
-    var availableTimes = (decodedData['data'] as List)[index]['times'];
-    var convertedList = convertDynamicListToTimesListModel(availableTimes);
-    log('get request for availibilty times:  $availableTimes');
-
-    return convertedList;
+      return convertedList;
+    } else {
+      return [];
+    }
   } else {
     return [decodedData['message']];
   }

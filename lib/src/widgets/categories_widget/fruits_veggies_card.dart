@@ -1,8 +1,6 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/widgets/shimmer_widget.dart';
 
-Widget getFreeDeliveryDesign(
-    List<int> indexList, int index, BuildContext context) {
+Widget getFreeDeliveryDesign(List<int> indexList, int index, BuildContext context) {
   if (indexList.contains(index)) {
     return Align(
       alignment: Alignment.topLeft,
@@ -15,8 +13,7 @@ Widget getFreeDeliveryDesign(
         child: Text(
           'Free delivery',
           style: context.theme.textTheme.labelMedium?.copyWith(
-              color: TagoLight.scaffoldBackgroundColor,
-              fontFamily: TextConstant.fontFamilyBold),
+              color: TagoLight.scaffoldBackgroundColor, fontFamily: TextConstant.fontFamilyBold),
         ).padAll(5),
       ),
     );
@@ -105,9 +102,8 @@ Widget addMinusBTN({
       maximumSize: const Size.fromRadius(15),
       minimumSize: const Size.fromRadius(5),
       padding: EdgeInsets.zero,
-      backgroundColor: isMinus == true
-          ? TagoLight.primaryColor.withOpacity(0.15)
-          : TagoLight.primaryColor,
+      backgroundColor:
+          isMinus == true ? TagoLight.primaryColor.withOpacity(0.15) : TagoLight.primaryColor,
     ),
     child: Icon(
       isDelete == true
@@ -115,9 +111,7 @@ Widget addMinusBTN({
           : isMinus == true
               ? Icons.remove
               : Icons.add,
-      color: isMinus == true
-          ? TagoDark.primaryColor
-          : TagoDark.scaffoldBackgroundColor,
+      color: isMinus == true ? TagoDark.primaryColor : TagoDark.scaffoldBackgroundColor,
       size: 20,
     ),
   );
@@ -165,8 +159,25 @@ Widget productCard({
   required ProductsModel productModel,
   required VoidCallback addToCartBTN,
 }) {
+  final List<ProductsModel> recentProducts = [];
+
+  void addRecentlyViewedToStorage(ProductsModel productModel) {
+    final myData =
+        HiveHelper().getRecentlyViewed(defaultValue: recentProducts) as List<ProductsModel>;
+    // log('myData: $myData');
+
+    if (myData.map((e) => e.id).contains(productModel.id) == false) {
+      final updatedData = [...myData, productModel];
+      log(updatedData.toString());
+      HiveHelper().saveRecentData(updatedData);
+    }
+  }
+
   return GestureDetector(
     onTap: () {
+      addRecentlyViewedToStorage(productModel);
+      // HiveHelper().clearBoxRecent();
+
       navBarPush(
         context: context,
         screen: SingleProductPage(

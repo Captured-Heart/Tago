@@ -14,6 +14,7 @@ class SingleProductPage extends ConsumerStatefulWidget {
 }
 
 class _SingleProductPageState extends ConsumerState<SingleProductPage> {
+  final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     final products = ref.watch(getProductsProvider(widget.id.toString()));
@@ -30,6 +31,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
 
     log('preducts Specs: ${products.valueOrNull?.productReview!.map((e) => e['rating']).toList()}');
     final relatedProducts = ref.watch(relatedProductsProvider);
+
     return FullScreenLoader(
       isLoading: ref.read(postToWishListNotifierProvider).isLoading ||
           ref.watch(cartNotifierProvider).isLoading,
@@ -186,15 +188,30 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
             ),
 
             //
+
             ListTile(
               title: const Text(
                 TextConstant.itemsDetails,
               ),
-              subtitle: Text(
-                products.valueOrNull?.description ??
-                    'The most delicate moment requires impeccable precision.',
-                style: context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
-              ).padSymmetric(vertical: 10),
+              subtitle: products.isLoading
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(
+                        4,
+                        (index) => shimmerWidget(
+                          child: SizedBox(
+                            width: context.sizeWidth(0.95),
+                            child: const LinearProgressIndicator(
+                              minHeight: 12,
+                            ).padSymmetric(vertical: 3, horizontal: 10),
+                          ),
+                        ),
+                      ),
+                    ).padSymmetric(vertical: 10)
+                  : Text(
+                      products.valueOrNull?.description ?? '',
+                      style: context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
+                    ).padSymmetric(vertical: 10),
             ),
 
             //PRODUCT SPECIFICATIONS SECTIONS
@@ -218,44 +235,49 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               ),
             ),
 
-            SizedBox(
-              height: 220,
-              child: ListView.builder(
-                itemCount: products.valueOrNull?.relatedProducts?.length,
-                shrinkWrap: false,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  if (products.value?.relatedProducts != null) {
-                    return SizedBox(
-                      width: context.sizeWidth(0.38),
-                      child: singleProductSimilarItemCardWidget(
-                        // index: index,
-                        productsModel: relatedProducts[index],
+            products.value?.relatedProducts == null
+                ? const SizedBox.shrink()
+                : SizedBox(
+                    height: 220,
+                    width: context.sizeWidth(1),
+                    child: ListView.builder(
+                      itemCount: relatedProducts.length,
+                      shrinkWrap: false,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      scrollDirection: Axis.horizontal,
+                      controller: controller,
+                      itemBuilder: (context, index) {
+                        if (products.value?.relatedProducts != null) {
+                          return SizedBox(
+                            width: context.sizeWidth(0.38),
+                            child: singleProductSimilarItemCardWidget(
+                              // index: index,
+                              productsModel: relatedProducts[index],
 
-                        //TODO: REPLACE THE [0] WITH INDEX
-                        context: context,
-                        image: relatedProducts[0].productImages?.last['image']['url'] ??
-                            noImagePlaceholderHttp,
-                        onTap: () {
-                          // navBarPush(
-                          //   context: context,
-                          //   screen: SingleProductPage(
-                          //     appBarTitle: drinkTitle[index],
-                          //     image: drinkImages[index],
-                          //   ),
-                          //   withNavBar: false,
-                          // );
-                        },
-                      ),
-                    );
-                  }
-                  return const Center(
-                    child: Text(TextConstant.sorryNoProductsInCategory),
-                  );
-                },
-              ),
-            ),
+                              context: context,
+                              image: relatedProducts[index].productImages!.isNotEmpty
+                                  ? relatedProducts[index].productImages?.first['image']['url']
+                                  : noImagePlaceholderHttp,
+                              onTap: () {
+                                navBarPush(
+                                  context: context,
+                                  popFirst: true,
+                                  screen: SingleProductPage(
+                                    id: relatedProducts[index].id!,
+                                    productsModel: relatedProducts[index],
+                                  ),
+                                  withNavBar: false,
+                                );
+                              },
+                            ),
+                          );
+                        }
+                        return const Center(
+                          child: Text(TextConstant.sorryNoProductsInCategory),
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

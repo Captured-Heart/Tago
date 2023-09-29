@@ -118,10 +118,17 @@ bool checkIdenticalListsWithInt({
 double? getAverageOfRatings({
   required List<dynamic>? listOfDoubles,
 }) {
-  var number = listOfDoubles?.fold(0.0, (previousValue, element) => previousValue + element);
-  double finalNumber = (number ?? 0.0) / (listOfDoubles?.length ?? 1);
-
-  return finalNumber;
+  // log('list of doubles:' + listOfDoubles.toString());
+  if (listOfDoubles!.isNotEmpty) {
+    var number = listOfDoubles.fold(0.0, (previousValue, element) => previousValue + element);
+    double finalNumber = (number) / (listOfDoubles.length);
+    return finalNumber;
+  } else {
+    return 0.0;
+  }
+  // var number = listOfDoubles?.fold(0.0, (previousValue, element) => previousValue + element) ?? 0.0;
+  // double finalNumber = (number ) / (listOfDoubles?.length ?? 1);
+  // return finalNumber;
 }
 
 double getPercentageOfReviews({

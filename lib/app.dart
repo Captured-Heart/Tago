@@ -46,7 +46,7 @@ export 'src/onboarding/onboarding.dart';
 export 'src/rider/rider.dart';
 export 'src/product/product.dart';
 export 'src/orders/order.dart';
-export 'src/categories/categories.dart';
+export 'src/categories/categories.dart' hide ProductsModel;
 export 'src/drawer/drawer.dart';
 export './src/search/search.dart';
 export './src/checkout/checkout.dart';

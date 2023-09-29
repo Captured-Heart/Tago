@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:tago/app.dart';
 import 'package:tago/src/orders/view/orders_make_payment_screen.dart';
@@ -111,8 +110,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             checkoutPhoneNumberWidget(context, accountInfo),
 
             //!payment method
-            checkoutPaymentMethodWidget(
-                    context, updatePaymentMethod, paymentMethodType)
+            checkoutPaymentMethodWidget(context, updatePaymentMethod, paymentMethodType)
                 .padOnly(top: 20),
 
             //! REVIEW ITEMS
@@ -224,7 +222,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             screen: const OrderPlacedScreen(),
                             withNavBar: false,
                           );
-                          ref.refresh(getCartListProvider(false));
+                          return ref.refresh(getCartListProvider(false));
                         },
                       );
                 } else {

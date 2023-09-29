@@ -3,7 +3,7 @@ import 'package:tago/app.dart';
 Widget itemsNearYouCard({
   required BuildContext context,
   VoidCallback? onTap,
-  required String image,
+  required ProductsModel products,
 }) {
   return GestureDetector(
     onTap: onTap,
@@ -14,12 +14,12 @@ Widget itemsNearYouCard({
         Card(
           elevation: 0.3,
           child: cachedNetworkImageWidget(
-            imgUrl: image,
+            imgUrl: products.productImages?.first['image']['url'],
             height: 140,
           ),
         ),
         Text(
-          TextConstant.acceptRequest,
+         products.name ?? '',
           textAlign: TextAlign.start,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
@@ -30,7 +30,7 @@ Widget itemsNearYouCard({
           ),
         ).padSymmetric(vertical: 8),
         Text(
-          '${TextConstant.nairaSign} 1,000',
+          '${TextConstant.nairaSign} ${products.amount}',
           style: context.theme.textTheme.titleMedium?.copyWith(
             fontFamily: TextConstant.fontFamilyNormal,
             fontSize: 12,

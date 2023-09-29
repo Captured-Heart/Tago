@@ -1,3 +1,4 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tago/app.dart';
 import 'package:tago/src/home/loaders/category_card_loaders.dart';
 import 'package:tago/src/widgets/shortcut_widget.dart';
@@ -50,16 +51,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // log(HiveHelper().getData(HiveKeys.token.keys));
     return Scaffold(
       appBar: homescreenAppbar(
-          context: context,
-          isBadgeVisible: cartList?.isNotEmpty ?? false,
-          showSearchIcon: showSearchAddressWidget),
+        context: context,
+        isBadgeVisible: cartList?.isNotEmpty ?? false,
+        showSearchIcon: showSearchAddressWidget,
+      ),
       body: ListView(
         controller: _controller,
         children: [
           showSearchAddressWidget
               ? searchBoxAndAddressWidget(context, accountInfo)
               : const SizedBox(),
-
           Container(
             padding: const EdgeInsets.only(right: 18, left: 18, bottom: 10, top: 10),
             child: Column(
@@ -136,7 +137,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
+                  loading: () => hotDealsLoaders(context: context).padSymmetric(horizontal: 1),
                 ),
 
                 //! Categories section
@@ -292,17 +293,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
               )
               .padOnly(bottom: 20),
-          ListTile(
-            title: const Text(
-              TextConstant.itemsNearYou,
-            ),
-            trailing: TextButton(
-              onPressed: () {
-                log(ref.watch(categoryLabelProvider));
-              },
-              child: const Text(TextConstant.seeall),
-            ),
-          ),
+          // ListTile(
+          //   title: const Text(
+          //     TextConstant.itemsNearYou,
+          //   ),
+          //   trailing: TextButton(
+          //     onPressed: () {
+          //       log(ref.watch(categoryLabelProvider));
+          //     },
+          //     child: const Text(TextConstant.seeall),
+          //   ),
+          // ),
           categoriesGroup
               .when(
                 data: (data) {
@@ -367,37 +368,81 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
               )
               .padOnly(bottom: 20),
-          ListTile(
-            title: Text(
-              TextConstant.recentlyViewed,
-              style: context.theme.textTheme.titleLarge,
-            ),
-            trailing: TextButton(
-              onPressed: () {},
-              child: const Text(
-                TextConstant.seeall,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 220,
-            child: ListView.builder(
-              itemCount: drinkImages.length - 3,
-              shrinkWrap: false,
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  width: context.sizeWidth(0.35),
-                  child: itemsNearYouCard(
-                    // index: index,
-                    context: context,
-                    image: noImagePlaceholderHttp,
-                  ),
+          // ListTile(
+          //   title: Text(
+          //     TextConstant.recentlyViewed,
+          //     style: context.theme.textTheme.titleLarge,
+          //   ),
+          //   trailing: TextButton(
+          //     onPressed: () {},
+          //     child: const Text(
+          //       TextConstant.seeall,
+          //     ),
+          //   ),
+          // ),
+
+          ValueListenableBuilder(
+            valueListenable: HiveHelper().getRecentlyViewedListenable(),
+            builder: (BuildContext context, Box box, Widget? child) {
+              if (HiveHelper().getRecentlyViewed() != null) {
+                final myData =
+                    HiveHelper().getRecentlyViewed(defaultValue: []) as List<ProductsModel>;
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      title: Text(
+                        TextConstant.recentlyViewed,
+                        style: context.theme.textTheme.titleLarge,
+                      ),
+                      trailing: TextButton(
+                        onPressed: () {
+                          HiveHelper().clearBoxRecent();
+                        },
+                        child: const Text(
+                          TextConstant.seeall,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 220,
+                      child: ListView.builder(
+                        itemCount: myData.length,
+                        shrinkWrap: false,
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          var product = myData[index];
+
+                          return SizedBox(
+                            width: context.sizeWidth(0.35),
+                            child: itemsNearYouCard(
+                              onTap: () {
+                                // HiveHelper().clearBoxRecent();
+                                navBarPush(
+                                  context: context,
+                                  screen: SingleProductPage(
+                                    id: product.id!,
+                                    productsModel: product,
+                                  ),
+                                  withNavBar: false,
+                                );
+                              },
+                              products: product,
+                              context: context,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 );
-              },
-            ),
-          ).padOnly(bottom: 20),
+              }
+              return const SizedBox.shrink();
+            },
+          ),
           Container(
             color: Colors.grey.shade200,
             padding: const EdgeInsets.all(30),
@@ -435,256 +480,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ).padOnly(bottom: 100),
-
-          // authTextFieldWithError(
-          //   controller: TextEditingController(),
-          //   context: context,
-          //   isError: false,
-          //   readOnly: true,
-          //   onTap: () {
-          //     push(context, SearchScreen());
-          //   },
-          //   filled: true,
-          //   hintText: TextConstant.whatdoYouNeedToday,
-          //   prefixIcon: const Icon(Icons.search),
-          //   fillColor: TagoLight.textFieldFilledColor,
-          // ).padSymmetric(horizontal: context.sizeWidth(0.07), vertical: 15),
-
-          // //! home screen order status
-          // homeScreenOrderStatusWidget(context: context, ref: ref),
-
-          // deliver to
-          // homeScreenAddressWidget(context, accountInfo),
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     const Text(
-          //       '🔥',
-          //       textScaleFactor: 2,
-          //     ).padOnly(right: 5),
-          //     Text(
-          //       TextConstant.hotdeals,
-          //       style: context.theme.textTheme.titleLarge,
-          //     )
-          //   ],
-          // ).padOnly(top: 1, left: 20, bottom: 5),
-          // //! HOT DEALS CATEGORY
-          // Column(
-          //   children: [
-          //     CarouselSlider(
-          //       items: carouselWidgetList(context),
-          //       carouselController: ref.watch(carouselSliderProvider),
-          //       options: CarouselOptions(
-          //           autoPlay: true,
-          //           aspectRatio: 20 / 9,
-          //           enlargeCenterPage: false,
-          //           viewportFraction: 0.99,
-          //           enlargeFactor: 0,
-          //           onPageChanged: (index, reason) {
-          //             ref
-          //                 .read(currentCarouselIndexProvider.notifier)
-          //                 .update((state) => index);
-          //           }),
-          //     ),
-          //     // .padOnly(bottom: 10),
-          //     Row(
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: List.generate(
-          //         carouselWidgetList(context).length,
-          //         (index) => GestureDetector(
-          //           onTap: () =>
-          //               ref.read(carouselSliderProvider).animateToPage(index),
-          //           child: Container(
-          //             width: 6.0,
-          //             height: 6.0,
-          //             margin: const EdgeInsets.symmetric(
-          //               // vertical: 8.0,
-          //               horizontal: 4.0,
-          //             ),
-          //             decoration: BoxDecoration(
-          //               shape: BoxShape.circle,
-          //               color: (Theme.of(context).brightness == Brightness.dark
-          //                       ? TagoLight.indicatorInactiveColor
-          //                       : TagoLight.indicatorActiveColor)
-          //                   .withOpacity(
-          //                 ref.watch(currentCarouselIndexProvider) == index
-          //                     ? 0.9
-          //                     : 0.4,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ).padSymmetric(vertical: 7),
-
-          //! Categories section
-//           ListTile(
-//             title: const Text(
-//               TextConstant.categories,
-//             ),
-//             trailing: TextButton(
-//               onPressed: () {
-//                 ref.read(bottomNavControllerProvider).jumpToTab(1);
-//               },
-//               child: const Text(TextConstant.seeall),
-//             ),
-//           ),
-
-//           categories
-//               .when(
-//                 data: (data) {
-//                   return GridView.count(
-//                     crossAxisCount: 5,
-//                     shrinkWrap: true,
-//                     childAspectRatio: 0.65,
-//                     crossAxisSpacing: 10,
-//                     mainAxisSpacing: 10,
-//                     children: List.generate(
-//                       data.length - (data.length - 9),
-//                       // data.length,
-//                       growable: true,
-//                       (index) => GestureDetector(
-//                         onTap: () {
-//                           ref
-//                               .read(categoryLabelProvider.notifier)
-//                               .update((state) => data[index].label ?? '');
-//                           var subList = data[index].subCategories;
-
-//                           push(
-//                             context,
-//                             FruitsAndVegetablesScreen(
-//                               subCategoriesList: subList!,
-//                               appBarTitle: data[index].name ?? 'Product name',
-//                             ),
-//                           );
-//                         },
-//                         child: categoryCard(
-//                           context: context,
-//                           index: index,
-//                           width: context.sizeWidth(0.155),
-//                           height: 70,
-//                           categoriesModel: data[index],
-//                         ),
-//                       ),
-//                     ),
-//                   );
-//                   //  Wrap(
-//                   //   runSpacing: 20,
-//                   //   spacing: 10,
-//                   //   alignment: WrapAlignment.start,
-//                   //   // runAlignment: WrapAlignment.start,
-//                   //   crossAxisAlignment: WrapCrossAlignment.start,
-//                   //   children: List.generate(
-//                   //     data.length - (data.length - 9),
-//                   //     // data.length,
-//                   //     growable: true,
-//                   //     (index) => GestureDetector(
-//                   //       onTap: () {
-//                   //         ref
-//                   //             .read(categoryLabelProvider.notifier)
-//                   //             .update((state) => data[index].label ?? '');
-//                   //         var subList = data[index].subCategories;
-
-//                   //         push(
-//                   //           context,
-//                   //           FruitsAndVegetablesScreen(
-//                   //             subCategoriesList: subList!,
-//                   //             appBarTitle: data[index].name ?? 'Product name',
-//                   //           ),
-//                   //         );
-//                   //       },
-//                   //       child: categoryCard(
-//                   //         context: context,
-//                   //         index: index,
-//                   //         width: context.sizeWidth(0.155),
-//                   //         height: 70,
-//                   //         categoriesModel: data[index],
-//                   //       ),
-//                   //     ),
-//                   //   ),
-//                   // ).padSymmetric(horizontal: 15);
-//                 },
-//                 error: (error, stackTrace) => Center(
-//                   child: Text(
-//                     NetworkErrorEnums.checkYourNetwork.message,
-//                     textAlign: TextAlign.center,
-//                   ),
-//                 ),
-//                 loading: () => categoryCardLoaders(context: context)
-//                     .padSymmetric(horizontal: 20),
-//               )
-//               .padOnly(left: 5),
-// //items near you
-//           ListTile(
-//             title: const Text(
-//               TextConstant.itemsNearYou,
-//             ),
-//             trailing: TextButton(
-//               onPressed: () {
-//                 log(ref.watch(categoryLabelProvider));
-//               },
-//               child: const Text(TextConstant.seeall),
-//             ),
-//           ),
-
-//           SizedBox(
-//             height: 220,
-//             child: ListView.builder(
-//               itemCount: drinkImages.length - 3,
-//               shrinkWrap: false,
-//               padding: const EdgeInsets.symmetric(horizontal: 15),
-//               scrollDirection: Axis.horizontal,
-//               itemBuilder: (context, index) {
-//                 return SizedBox(
-//                   width: context.sizeWidth(0.35),
-//                   child: itemsNearYouCard(
-//                     context: context,
-//                     image: noImagePlaceholderHttp,
-//                     onTap: () {
-//                       // navBarPush(
-//                       //   context: context,
-//                       //   screen: SingleProductPage(
-//                       //    productsModel: ProductsModel(),
-//                       //   ),
-//                       //   withNavBar: false,
-//                       // );
-//                     },
-//                   ),
-//                 );
-//               },
-//             ),
-//           ),
-//           ListTile(
-//             title: const Text(
-//               TextConstant.recentlyViewed,
-//             ),
-//             trailing: TextButton(
-//               onPressed: () {},
-//               child: const Text(TextConstant.seeall),
-//             ),
-//           ),
-//           SizedBox(
-//             height: 220,
-//             child: ListView.builder(
-//               itemCount: drinkImages.length - 3,
-//               shrinkWrap: false,
-//               padding: const EdgeInsets.symmetric(horizontal: 15),
-//               scrollDirection: Axis.horizontal,
-//               itemBuilder: (context, index) {
-//                 return SizedBox(
-//                   width: context.sizeWidth(0.35),
-//                   child: itemsNearYouCard(
-//                     // index: index,
-//                     context: context,
-//                     image: noImagePlaceholderHttp,
-//                   ),
-//                 );
-//               },
-//             ),
-//           ),
         ],
       ),
     );
@@ -733,7 +528,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 }
 
-searchBoxAndAddressWidget(BuildContext context, AsyncValue<AccountModel> accountInfo) {
+searchBoxAndAddressWidget(
+  BuildContext context,
+  AsyncValue<AccountModel> accountInfo,
+) {
   var address = accountInfo.valueOrNull?.address;
 
   return Container(
@@ -772,26 +570,37 @@ searchBoxAndAddressWidget(BuildContext context, AsyncValue<AccountModel> account
         const SizedBox(
           height: 8,
         ),
-        Row(
-          children: [
-            const Icon(
-              Icons.location_on,
-              color: Colors.white,
-            ),
-            Text(
-              address != null
-                  ? '${address.apartmentNumber}, ${address.streetAddress}'
-                  : 'Add your address',
-              style: context.theme.textTheme.titleLarge?.copyWith(
-                fontSize: 12,
+        GestureDetector(
+          onTap: () {
+            if (address == null) {
+              push(context, const AddNewAddressScreen());
+            } else {
+              HiveHelper().saveData(HiveKeys.fromCheckout.keys, HiveKeys.fromCheckout.keys);
+
+              push(context, const AddressBookScreen());
+            }
+          },
+          child: Row(
+            children: [
+              const Icon(
+                Icons.location_on,
                 color: Colors.white,
               ),
-            ),
-            const Icon(
-              Icons.chevron_right,
-              color: Colors.white,
-            ),
-          ],
+              Text(
+                address != null
+                    ? '${address.apartmentNumber}, ${address.streetAddress}'
+                    : 'Add your address',
+                style: context.theme.textTheme.titleLarge?.copyWith(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              ),
+              const Icon(
+                Icons.chevron_right,
+                color: Colors.white,
+              ),
+            ],
+          ),
         )
       ],
     ),

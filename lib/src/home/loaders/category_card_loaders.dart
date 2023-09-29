@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/widgets/shimmer_widget.dart';
 
 Widget categoryCardLoaders({
   required BuildContext context,
@@ -39,6 +38,30 @@ Widget categoryCardLoaders({
           ),
         ),
       ),
+    ),
+  );
+}
+
+Widget hotDealsLoaders({
+  required BuildContext context,
+}) {
+  return SizedBox(
+    height: 200,
+    child: ListView.builder(
+      itemCount: 3,
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        return shimmerWidget(
+          child: Container(
+            height: 150,
+            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            width: context.sizeWidth(0.9),
+            decoration: BoxDecoration(
+                color: TagoLight.indicatorActiveColor, borderRadius: BorderRadius.circular(20)),
+          ).padOnly(bottom: 4),
+        );
+      },
     ),
   );
 }

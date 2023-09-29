@@ -5,16 +5,21 @@ import 'package:tago/app.dart';
 class HiveHelper {
   final _boxTago = Hive.box('tago');
   final _boxSearch = Hive.box('search');
+  final _boxRecentlyViewed = Hive.box('recently');
 
   static Future<void> init() async {
+    log('enterrr');
     await Hive.initFlutter();
     await Hive.openBox('tago');
     await Hive.openBox('search');
+    await Hive.openBox('recently');
+    Hive.registerAdapter(ProductsModelAdapter());
   }
 
 /*------------------------------------------------------------------
                  FOR BOX('TAGO')
  -------------------------------------------------------------------*/
+
   Future<void> saveData(String key, dynamic value) async {
     log('savedData: $value');
     await _boxTago.put(key, value);
@@ -44,15 +49,36 @@ class HiveHelper {
     log('getData: $key');
     return _boxTago.get(key) ?? 0;
   }
+
+  /*------------------------------------------------------------------
+                 FOR BOX ('RECENTLY VIEWED')
+ -------------------------------------------------------------------*/
+  ValueListenable<Box<dynamic>> getRecentlyViewedListenable() {
+    return _boxRecentlyViewed.listenable();
+  }
+
+// save task
+  void saveRecentData(List<ProductsModel> product) async {
+    log('the product saved/viewed $product');
+    return await _boxRecentlyViewed.put(HiveKeys.recentlyViewed.keys, product);
+  }
+
+  dynamic getRecentlyViewed({
+    dynamic defaultValue,
+  }) {
+    return _boxRecentlyViewed.get(
+      HiveKeys.recentlyViewed.keys,
+      defaultValue: defaultValue,
+    );
+  }
+
+  // clear box
+  Future<void> clearBoxRecent() async {
+    await _boxRecentlyViewed.clear();
+  }
   /*------------------------------------------------------------------
                  FOR BOX ('SEARCH')
  -------------------------------------------------------------------*/
-
-  // ///     save data
-  // Future<void> saveDataSearch(dynamic value) async {
-  //   log('savedData: $value');
-  //   await _boxSearch.add(value);
-  // }
 
   //      get data
   dynamic getDataSearch({String? key, dynamic defaultValue}) {

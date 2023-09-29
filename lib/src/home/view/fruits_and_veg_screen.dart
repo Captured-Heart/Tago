@@ -1,4 +1,3 @@
-
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:tago/app.dart';
 
@@ -20,28 +19,23 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
 
 class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesScreen> {
   //
-  final TextEditingControllerClass editingController =
-      TextEditingControllerClass();
+  final TextEditingControllerClass editingController = TextEditingControllerClass();
 
   final ItemScrollController itemScrollController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener =
-      ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   var currentPosition = 0;
 
   void _scrollToItem(int index) {
     itemScrollController.scrollTo(
-        index: index,
-        duration: const Duration(seconds: 2),
-        curve: Curves.easeInOutCubic);
+        index: index, duration: const Duration(seconds: 2), curve: Curves.easeInOutCubic);
   }
 
   @override
   void initState() {
     super.initState();
     itemPositionsListener.itemPositions.addListener(() {
-      ItemPosition? itemPosition =
-          itemPositionsListener.itemPositions.value.first;
+      ItemPosition? itemPosition = itemPositionsListener.itemPositions.value.first;
       setState(() {
         currentPosition = itemPosition.index;
       });
@@ -50,8 +44,7 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
 
   @override
   Widget build(BuildContext context) {
-    final categoryWithSubcategories =
-        ref.watch(fetchCategoryWithSubcategoriesByLabelProvider);
+    final categoryWithSubcategories = ref.watch(fetchCategoryWithSubcategoriesByLabelProvider);
     final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
     // final search = ref.watch(searchFruitProvider);
     // final subCategory = widget.subCategoriesList;
@@ -110,11 +103,11 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                          onTap: () {
-                            _scrollToItem(index);
-                          },
-                          child: subCategoryCardItem(
-                              widget.subCategoriesList![index].name, index));
+                        onTap: () {
+                          _scrollToItem(index);
+                        },
+                        child: subCategoryCardItem(widget.subCategoriesList![index].name, index),
+                      );
                     },
                   ),
                 ),
@@ -123,8 +116,7 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                 ),
                 Expanded(
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                     child: categoryWithSubcategories.when(
                       data: (data) {
                         if (data.isEmpty) {
@@ -140,15 +132,14 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                           itemBuilder: (context, index) {
                             bool isLast = index == data.length - 1;
 
-                            return subCategoryWithProductsCard(data[index],
-                                isLast: isLast);
+                            return subCategoryWithProductsCard(data[index], isLast: isLast);
                           },
                           itemScrollController: itemScrollController,
                           itemPositionsListener: itemPositionsListener,
                         );
                       },
                       error: (error, _) => Center(
-                        child: Text(error.toString()),
+                        child: Text(NetworkErrorEnums.checkYourNetwork.message),
                       ),
                       loading: () => ListView.builder(
                         itemCount: 2,
@@ -172,10 +163,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7.0),
           color: currentPosition == index ? TagoDark.primaryColor : null,
-          border: Border.all(
-              color: currentPosition == index
-                  ? TagoDark.primaryColor
-                  : Colors.black87)),
+          border:
+              Border.all(color: currentPosition == index ? TagoDark.primaryColor : Colors.black87)),
       child: Text(
         name,
         style: context.theme.textTheme.titleSmall?.copyWith(
@@ -186,8 +175,7 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
     ).padOnly(left: 10);
   }
 
-  subCategoryWithProductsCard(SubCategoryModel subCategoryModel,
-      {bool isLast = false}) {
+  subCategoryWithProductsCard(SubCategoryModel subCategoryModel, {bool isLast = false}) {
     return subCategoryModel.products!.isNotEmpty
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,6 +207,7 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                           ProductTypeEnums.quantity.name: '1',
                         },
                       );
+                      ref.invalidate(getCartListProvider(false));
                     },
                   ),
                 ),
