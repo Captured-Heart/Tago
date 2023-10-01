@@ -90,7 +90,7 @@ class HiveHelper {
   /*------------------------------------------------------------------
                  FOR BOX ('CARTS SECTION')
  -------------------------------------------------------------------*/
-  ValueListenable<Box<dynamic>> getCartsListenable() {
+  ValueListenable<Box<CartModel>> getCartsListenable() {
     return _boxCarts.listenable();
   }
 

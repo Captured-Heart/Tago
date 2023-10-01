@@ -33,6 +33,40 @@ class _SingleProductMiniCartModalWidgetState
             child: cartList
                 .when(
                   data: (data) {
+                    if (data.isEmpty) {
+                      return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  pop(context);
+                                },
+                                child: const Icon(Icons.close),
+                              ),
+                            ).padOnly(right: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.cartArrowDown,
+                                  size: 44,
+                                  color: TagoLight.textHint,
+                                ),
+                                Text(
+                                  TextConstant.cartIsEmpty,
+                                  style: context.theme.textTheme.titleLarge?.copyWith(
+                                    fontWeight: AppFontWeight.w100,
+                                    fontFamily: TextConstant.fontFamilyLight,
+                                  ),
+                                )
+                              ].columnInPadding(20),
+                            ).padSymmetric(vertical: 30)
+                          ]);
+                    }
                     return ListView(
                       shrinkWrap: true,
                       controller: controller,
@@ -174,7 +208,7 @@ class _SingleProductMiniCartModalWidgetState
                     child: Text(error.toString()),
                   ),
                   loading: () => SizedBox(
-                    height: context.sizeHeight(0.6),
+                    height: context.sizeHeight(0.4),
                     child: const Center(
                       child: CircularProgressIndicator.adaptive(),
                     ),

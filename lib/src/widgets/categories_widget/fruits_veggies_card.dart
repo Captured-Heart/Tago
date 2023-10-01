@@ -159,7 +159,7 @@ Widget productCard({
   required ProductsModel productModel,
   required VoidCallback addToCartBTN,
 }) {
-  final List<ProductsModel> recentProducts = [];
+  // final List<ProductsModel> recentProducts = [];
 
   // void addRecentlyViewedToStorage(ProductsModel productModel) {
   //   final myData = HiveHelper().getRecentlyViewed(defaultValue: recentProducts);

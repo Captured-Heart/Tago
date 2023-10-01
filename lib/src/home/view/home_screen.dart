@@ -368,18 +368,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
               )
               .padOnly(bottom: 20),
-          // ListTile(
-          //   title: Text(
-          //     TextConstant.recentlyViewed,
-          //     style: context.theme.textTheme.titleLarge,
-          //   ),
-          //   trailing: TextButton(
-          //     onPressed: () {},
-          //     child: const Text(
-          //       TextConstant.seeall,
-          //     ),
-          //   ),
-          // ),
+         
 
           ValueListenableBuilder(
             valueListenable: HiveHelper().getRecentlyViewedListenable(),

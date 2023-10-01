@@ -158,6 +158,8 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                   )
                                 : ElevatedButton(
                                     onPressed: () {
+                                      //TODO: ADD TO CART IN HIVE HERE
+                                        // HiveHelper().saveCartsToList(products.valueOrNull);
                                       ref.read(cartNotifierProvider.notifier).addToCartMethod(
                                         map: {
                                           ProductTypeEnums.productId.name: widget.id.toString(),
