@@ -1,5 +1,4 @@
 // import 'package:tago/app.dart';
-import 'package:hive/hive.dart';
 import 'package:tago/app.dart';
 part 'hive_product_model.g.dart';
 

@@ -8,7 +8,7 @@ part of 'hive_cart_model.dart';
 
 class CartModelAdapter extends TypeAdapter<CartModel> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
   CartModel read(BinaryReader reader) {

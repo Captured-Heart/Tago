@@ -47,7 +47,7 @@ Widget tagoHomeDrawer(
           title: TextConstant.wishlist,
           onTap: () {
             pop(context);
-            push(context, const WishListScreen());
+            push(context,  WishListScreen());
           },
         ),
         drawerListTile(

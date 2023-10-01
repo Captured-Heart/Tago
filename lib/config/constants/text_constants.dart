@@ -155,12 +155,9 @@ FRUITS AND VEGETABLES SCREEN
   static const sorryNoProductsInCategory =
       'Sorry, there are no products available in this category at the moment. Kindly Try Again later.';
   static const freeDelivery = 'Free delivery';
-  static const productIsOutOfStock = 'Product is out of stock'; 
-  static const searchResultsFor = 'Search results for '; 
-  static const filters = 'Filters '; 
-
-
-
+  static const productIsOutOfStock = 'Product is out of stock';
+  static const searchResultsFor = 'Search results for ';
+  static const filters = 'Filters ';
 
 /*----------------------------------------------------------------------
 DRAWER
@@ -239,7 +236,8 @@ SINGLE PRODUCT PAGE
   static const productSpecifications = 'Product Specifications';
   static const product = 'Product';
   static const productNotFound = 'Product not found';
-
+  static const productDeletedFromCartSuccessfully = 'Product deleted from cart successfully';
+  static const productAddedToCartSuccessfully = 'Product added to cart successfully';
   static const weight = 'Weight (kg): ';
   static const sku = 'SKU: ';
   static const ratingandReviews = 'Ratings & Reviews ';

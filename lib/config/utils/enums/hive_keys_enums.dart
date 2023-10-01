@@ -6,6 +6,10 @@ enum HiveKeys {
   fromCheckout('fromCheckout'),
   createOrderUrl('url'),
   recentlyViewed('Recently Viewed'),
+  recentlyId('RecentlyID'),
+
+  cartsKey('carts key'),
+
   search('search');
 
   const HiveKeys(this.keys);

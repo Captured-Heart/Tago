@@ -1,26 +1,24 @@
 import 'package:flutter/foundation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tago/app.dart';
 
 class HiveHelper {
   final _boxTago = Hive.box('tago');
   final _boxSearch = Hive.box('search');
-
-  final _boxRecentlyViewed = Hive.box<ProductsModel>('recently');
-
-  final _boxCarts = Hive.box<CartModel>('carts');
+  final _boxRecentlyID = Hive.box('recentId');
+  final _boxRecentlyViewed = Hive.box<List>('recently');
+  final _boxCarts = Hive.box<List>('carts');
 
   static Future<void> init() async {
-    Hive.registerAdapter(ProductsModelAdapter());
     Hive.registerAdapter(CartModelAdapter());
+    Hive.registerAdapter(ProductsModelAdapter());
+
     log('enterrr');
     await Hive.initFlutter();
     await Hive.openBox('tago');
     await Hive.openBox('search');
-
-    await Hive.openBox<ProductsModel>('recently');
-    await Hive.openBox<CartModel>('carts');
-    // Hive.deleteBoxFromDisk('recently');
+    await Hive.openBox('recentId');
+    await Hive.openBox<List>('recently');
+    await Hive.openBox<List>('carts');
   }
 
 /*------------------------------------------------------------------
@@ -48,7 +46,7 @@ class HiveHelper {
     return _boxTago.keys.toList();
   }
 
-  Future<void> closeBox() async {
+  Future<void> closeTagoBox() async {
     await _boxTago.close();
   }
 
@@ -57,25 +55,50 @@ class HiveHelper {
     return _boxTago.get(key) ?? 0;
   }
 
+/*------------------------------------------------------------------
+                 FOR BOX ('RECENTLY ID')
+ -------------------------------------------------------------------*/
+  saveRecentIdData(int id) async {
+    log('the product saved/viewed $id');
+    return await _boxRecentlyID.add(id);
+  }
+
+  ValueListenable<Box<dynamic>> getRecentIdData() {
+    // log('the product saved/viewed $id');
+    return _boxRecentlyID.listenable();
+  }
+
+  clearRecentId() {
+    return _boxRecentlyID.clear();
+  }
+
   /*------------------------------------------------------------------
                  FOR BOX ('RECENTLY VIEWED')
  -------------------------------------------------------------------*/
-  ValueListenable<Box<ProductsModel>> getRecentlyViewedListenable() {
+  ValueListenable<Box<List>> getRecentlyViewedListenable() {
     return _boxRecentlyViewed.listenable();
   }
 
 // save task
-  void saveRecentData(ProductsModel product) async {
+  saveRecentData(List<ProductsModel> product) async {
     log('the product saved/viewed $product');
-    return await _boxRecentlyViewed.put(HiveKeys.recentlyViewed.keys, product);
+    return await _boxRecentlyViewed.add(product);
+    // return await _boxRecentlyViewed.put(HiveKeys.recentlyViewed.keys, product);
   }
 
-  ProductsModel? getRecentlyViewed({
-    dynamic defaultValue,
+  List<ProductsModel>? getRecentlyViewed({
+    List<ProductsModel>? defaultValue,
   }) {
-    return _boxRecentlyViewed.get(
+    var opp = _boxRecentlyViewed.get(
       HiveKeys.recentlyViewed.keys,
-    );
+      defaultValue: defaultValue,
+    ) as List<ProductsModel>;
+
+    return opp;
+  }
+
+  List<ProductsModel>? getAtRecently(int index) {
+    return _boxRecentlyViewed.getAt(index) as List<ProductsModel>;
   }
 
   // clear box
@@ -90,29 +113,38 @@ class HiveHelper {
   /*------------------------------------------------------------------
                  FOR BOX ('CARTS SECTION')
  -------------------------------------------------------------------*/
-  ValueListenable<Box<CartModel>> getCartsListenable() {
+  ValueListenable<Box<List>> getCartsListenable() {
     return _boxCarts.listenable();
   }
 
 // save task
-  void saveCartsToList(CartModel cartProduct) async {
+  saveCartsToList(List<CartModel> cartProduct) async {
     log('the product saved/viewed $cartProduct');
-    return await _boxCarts.put(HiveKeys.recentlyViewed.keys, cartProduct);
+    return await _boxCarts.add(cartProduct);
   }
 
-  CartModel? getCartsList({
+  deleteAtFromCart(int index) {
+    return _boxCarts.deleteAt(index);
+  }
+
+  List<CartModel>? getCartsList({
     dynamic defaultValue,
   }) {
     return _boxCarts.get(
-      HiveKeys.recentlyViewed.keys,
+      HiveKeys.cartsKey.keys,
       defaultValue: defaultValue,
-    );
+    ) as List<CartModel>;
+  }
+
+  Future<void> closeCartsBox() async {
+    return await _boxCarts.close();
   }
 
   // clear box
   Future<void> clearCartList() async {
     await _boxCarts.clear();
   }
+
   /*------------------------------------------------------------------
                  FOR BOX ('SEARCH')
  -------------------------------------------------------------------*/

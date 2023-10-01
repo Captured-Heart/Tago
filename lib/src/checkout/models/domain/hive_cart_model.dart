@@ -1,10 +1,9 @@
 import 'package:tago/app.dart';
 
-import 'package:hive/hive.dart';
 part 'hive_cart_model.g.dart';
 
-@HiveType(typeId: 2)
-class CartModel {
+@HiveType(typeId: 3)
+class CartModel extends HiveObject {
   @HiveField(0)
   int? quantity;
   @HiveField(1)

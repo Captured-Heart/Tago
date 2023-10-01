@@ -44,8 +44,8 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
           children: [
             ValueListenableBuilder(
               valueListenable: HiveHelper().getCartsListenable(),
-              builder: (BuildContext context, Box<CartModel> box, Widget? child) {
-                if (HiveHelper().getCartsList() != null) {
+              builder: (BuildContext context, Box<List> box, Widget? child) {
+                if (box.isNotEmpty) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -72,11 +72,11 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            var cartList = box.values.toList();
+                            var cartList = box.values.toList() as List<CartModel>;
                             var product = cartList[index].product;
                             var cartModel = cartList[index];
 
-                            var quantity = box.values.toList()[index].quantity;
+                            var quantity = box.values.toList()[index][0];
                             return myCartListTile(
                               context: context,
                               cartModel: cartModel,
@@ -105,7 +105,6 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                               },
                               onAddFN: () {
                                 if (quantity! < product!.availableQuantity!) {
-                                
                                   setState(() {
                                     cartList[index] = cartModel.copyWith(
                                       quantity: quantity + 1,

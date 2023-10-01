@@ -49,6 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
     final accountInfo = ref.watch(getAccountInfoProvider);
     // log(HiveHelper().getData(HiveKeys.token.keys));
+    // HiveHelper().clearBoxRecent();
     return Scaffold(
       appBar: homescreenAppbar(
         context: context,
@@ -197,7 +198,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
+                  loading: () => categoryCardLoaders(context: context),
                 ),
 
                 // shortcut
@@ -290,7 +291,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
+                loading: () => categoryCardLoaders(context: context),
               )
               .padOnly(bottom: 20),
           // ListTile(
@@ -365,17 +366,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
+                loading: () => categoryCardLoaders(context: context),
               )
               .padOnly(bottom: 20),
-         
 
           ValueListenableBuilder(
             valueListenable: HiveHelper().getRecentlyViewedListenable(),
-            builder: (BuildContext context, Box<ProductsModel> box, Widget? child) {
-              if (HiveHelper().getRecentlyViewed() != null) {
-                // final myData =  HiveHelper().getRecentlyViewed();
-
+            builder: (BuildContext context, Box<List> box, Widget? child) {
+              // if (HiveHelper().getRecentlyViewed() != null) {
+              if (box.isNotEmpty) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -387,7 +386,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       trailing: TextButton(
                         onPressed: () {
-                          HiveHelper().clearBoxRecent();
+                          // HiveHelper().clearBoxRecent();
+                          // HiveHelper().clearRecentId();
                         },
                         child: const Text(
                           TextConstant.seeall,
@@ -402,8 +402,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          var product = box.values.toList()[index];
-
+                          // var product = box.getAt(index) as List<ProductsModel>;
+                          var product = (box.values.toList())[index];
                           return SizedBox(
                             width: context.sizeWidth(0.35),
                             child: itemsNearYouCard(
@@ -412,13 +412,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 navBarPush(
                                   context: context,
                                   screen: SingleProductPage(
-                                    id: product.id!,
-                                    productsModel: product,
+                                    id: product[index].id!,
+                                    productsModel: product[index],
                                   ),
                                   withNavBar: false,
                                 );
                               },
-                              products: product,
+                              products: product[0],
                               context: context,
                             ),
                           );

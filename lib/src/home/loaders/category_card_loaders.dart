@@ -10,18 +10,21 @@ Widget categoryCardLoaders({
     // runAlignment: WrapAlignment.start,
     crossAxisAlignment: WrapCrossAlignment.start,
     children: List.generate(
-      9,
+      4,
       (index) => shimmerWidget(
         child: SizedBox(
-          width: context.sizeWidth(0.155),
+          width: 80,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 70,
-                width: 70,
-                color: TagoLight.indicatorActiveColor,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: TagoLight.indicatorActiveColor,
+                ),
+                height: 85,
+                padding: const EdgeInsets.all(8),
               ).padOnly(bottom: 4),
               Text(
                 ' Categories',
