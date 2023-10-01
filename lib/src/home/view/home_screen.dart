@@ -383,10 +383,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
           ValueListenableBuilder(
             valueListenable: HiveHelper().getRecentlyViewedListenable(),
-            builder: (BuildContext context, Box box, Widget? child) {
+            builder: (BuildContext context, Box<ProductsModel> box, Widget? child) {
               if (HiveHelper().getRecentlyViewed() != null) {
-                final myData =
-                    HiveHelper().getRecentlyViewed(defaultValue: []) as List<ProductsModel>;
+                // final myData =  HiveHelper().getRecentlyViewed();
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -409,12 +408,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     SizedBox(
                       height: 220,
                       child: ListView.builder(
-                        itemCount: myData.length,
+                        itemCount: box.length,
                         shrinkWrap: false,
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          var product = myData[index];
+                          var product = box.values.toList()[index];
 
                           return SizedBox(
                             width: context.sizeWidth(0.35),

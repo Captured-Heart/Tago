@@ -4,7 +4,7 @@ import 'package:tago/app.dart';
 part 'hive_product_model.g.dart';
 
 @HiveType(typeId: 1)
-class ProductsModel {
+class ProductsModel extends HiveObject {
   @HiveField(0)
   final int? id;
   @HiveField(1)
@@ -42,7 +42,7 @@ class ProductsModel {
   @HiveField(17)
   final int? availableQuantity;
 
-  const ProductsModel({
+  ProductsModel({
     this.id,
     this.name,
     this.label,

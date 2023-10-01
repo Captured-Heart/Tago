@@ -161,21 +161,22 @@ Widget productCard({
 }) {
   final List<ProductsModel> recentProducts = [];
 
-  void addRecentlyViewedToStorage(ProductsModel productModel) {
-    final myData =
-        HiveHelper().getRecentlyViewed(defaultValue: recentProducts) as List<ProductsModel>;
-    // log('myData: $myData');
+  // void addRecentlyViewedToStorage(ProductsModel productModel) {
+  //   final myData = HiveHelper().getRecentlyViewed(defaultValue: recentProducts);
+  //   // log('myData: $myData');
 
-    if (myData.map((e) => e.id).contains(productModel.id) == false) {
-      final updatedData = [...myData, productModel];
-      log(updatedData.toString());
-      HiveHelper().saveRecentData(updatedData);
-    }
-  }
+  //   if (myData?.map((e) => e.id).contains(productModel.id) == false) {
+  //     final updatedData = [...myData!, productModel];
+  //     log(updatedData.toString());
+  //     HiveHelper().saveRecentData(updatedData);
+  //   }
+  // }
 
   return GestureDetector(
     onTap: () {
-      addRecentlyViewedToStorage(productModel);
+      HiveHelper().saveRecentData(productModel);
+
+      // addRecentlyViewedToStorage(productModel);
       // HiveHelper().clearBoxRecent();
 
       navBarPush(
