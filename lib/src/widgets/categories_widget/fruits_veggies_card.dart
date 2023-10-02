@@ -90,7 +90,6 @@ Widget addMinusBTN({
   bool? isMinus,
   required BuildContext context,
   required VoidCallback onTap,
-  bool? isDelete,
 }) {
   return ElevatedButton(
     onPressed: onTap,
@@ -106,11 +105,7 @@ Widget addMinusBTN({
           isMinus == true ? TagoLight.primaryColor.withOpacity(0.15) : TagoLight.primaryColor,
     ),
     child: Icon(
-      isDelete == true
-          ? Symbols.delete
-          : isMinus == true
-              ? Icons.remove
-              : Icons.add,
+      isMinus == true ? Icons.remove : Icons.add,
       color: isMinus == true ? TagoDark.primaryColor : TagoDark.scaffoldBackgroundColor,
       size: 20,
     ),
@@ -164,7 +159,7 @@ Widget productCard({
   void addRecentlyViewedToStorage(ProductsModel productModel) {
     final myData =
         HiveHelper().getRecentlyViewed(defaultValue: recentProducts) as List<ProductsModel>;
-
+    log('recentDataList: $myData');
     var op = HiveHelper().getRecentIdData();
 
     if (op.value.values.contains(productModel.id) == false) {

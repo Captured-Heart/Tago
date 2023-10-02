@@ -106,8 +106,7 @@ class _SingleProductMiniCartModalWidgetState
                               context: context,
                               cartModel: cartModel,
                               quantity: quantity,
-                              data: data,
-                              index: index,
+                             
                               product: product,
                               onDeleteFN: () {
                                 if (quantity! > 1) {

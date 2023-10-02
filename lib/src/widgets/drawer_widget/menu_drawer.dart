@@ -2,7 +2,7 @@ import 'package:tago/app.dart';
 
 Widget tagoHomeDrawer(
   BuildContext context,
-  AccountModel ? accountModel,
+  AccountModel? accountModel,
 ) {
   return Drawer(
       child: SafeArea(
@@ -47,7 +47,7 @@ Widget tagoHomeDrawer(
           title: TextConstant.wishlist,
           onTap: () {
             pop(context);
-            push(context,  WishListScreen());
+            push(context, const WishListScreen());
           },
         ),
         drawerListTile(

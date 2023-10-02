@@ -1,4 +1,3 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tago/app.dart';
 import 'package:tago/src/home/loaders/category_card_loaders.dart';
 import 'package:tago/src/widgets/shortcut_widget.dart';
@@ -386,8 +385,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       trailing: TextButton(
                         onPressed: () {
-                          // HiveHelper().clearBoxRecent();
-                          // HiveHelper().clearRecentId();
+                          HiveHelper().clearBoxRecent();
+                          HiveHelper().clearRecentId();
                         },
                         child: const Text(
                           TextConstant.seeall,

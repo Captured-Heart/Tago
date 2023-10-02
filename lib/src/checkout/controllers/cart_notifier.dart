@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:tago/app.dart';
 
 class CartMethodNotifier extends StateNotifier<AsyncValue> {

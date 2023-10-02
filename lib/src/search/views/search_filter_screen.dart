@@ -56,7 +56,9 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
                 icon: Badge(
                   backgroundColor: TagoLight.orange,
                   smallSize: 10,
-                  isLabelVisible: cartList?.isNotEmpty ?? false,
+                  isLabelVisible: checkCartBoxLength()?.isNotEmpty ?? false,
+
+                  // isLabelVisible: cartList?.isNotEmpty ?? false,
                   child: const Icon(
                     Icons.shopping_cart_outlined,
                     color: TagoLight.textBold,
@@ -101,23 +103,21 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
               mainAxisSpacing: 14,
               physics: const NeverScrollableScrollPhysics(),
               children: List.generate(
-                widget.product!.length,
-                (index) => 
-                Text(widget.product![index].name!)
-                // productCard(
-                //   productModel: widget.product![index],
-                //   context: context,
-                //   addToCartBTN: () {
-                //     ref.read(cartNotifierProvider.notifier).addToCartMethod(
-                //       map: {
-                //         ProductTypeEnums.productId.name: widget.product![index].id.toString(),
-                //         ProductTypeEnums.quantity.name: '1',
-                //       },
-                //     );
-                //     ref.invalidate(getCartListProvider(false));
-                //   },
-                // ),
-              ),
+                  widget.product!.length, (index) => Text(widget.product![index].name!)
+                  // productCard(
+                  //   productModel: widget.product![index],
+                  //   context: context,
+                  //   addToCartBTN: () {
+                  //     ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                  //       map: {
+                  //         ProductTypeEnums.productId.name: widget.product![index].id.toString(),
+                  //         ProductTypeEnums.quantity.name: '1',
+                  //       },
+                  //     );
+                  //     ref.invalidate(getCartListProvider(false));
+                  //   },
+                  // ),
+                  ),
             ),
           ],
         ),

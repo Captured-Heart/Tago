@@ -20,9 +20,9 @@ Future<List<CartModel>> getCartMethod({
   var decodedData = jsonDecode(data);
   //the response and error handling
   if (decodedData['success'] == true) {
-    showSnackBar == true
-        ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3)
-        : null;
+    // showSnackBar == true
+    //     ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3)
+    //     : null;
     final cartList = (decodedData['data'] as List)
         .map((e) => CartModel.fromJson(e))
         .toList();

@@ -58,7 +58,9 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               );
             },
             icon: Badge(
-              isLabelVisible: cartListLength?.isNotEmpty ?? false,
+            isLabelVisible: checkCartBoxLength()?.isNotEmpty ?? false,
+
+              // isLabelVisible: cartListLength?.isNotEmpty ?? false,
               backgroundColor: TagoLight.orange,
               smallSize: 10,
               child: const Icon(Icons.shopping_cart_outlined),

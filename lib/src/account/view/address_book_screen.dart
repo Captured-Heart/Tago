@@ -63,10 +63,7 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
                         context: context,
                         title: TextConstant.areSureYouWantToDelete,
                         errorMessage:
-                            '''${addressModel.apartmentNumber}, ${addressModel.streetAddress}
-                  ${addressModel.city}
-                  ${addressModel.state}
-                                ''',
+                            '${addressModel.apartmentNumber}, ${addressModel.streetAddress}\n${addressModel.city}\n${addressModel.state}',
                         onPostiveAction: () {
                           log(addressModel.id!);
                           ref.read(accountAddressProvider.notifier).deleteAddressMethod(
