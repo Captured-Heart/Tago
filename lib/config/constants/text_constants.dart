@@ -205,6 +205,8 @@ ORDERS SCREEN
 WISHLIST SCREEN
 -----------------------------------------------------------------------*/
   static const addtocart = 'Add to Cart';
+  static const addedTocart = 'Added to Cart';
+
   static const savedToCart = 'Saved to Cart';
 
   static const deleteFromcart = 'Delete from Cart';
@@ -238,6 +240,9 @@ SINGLE PRODUCT PAGE
   static const productNotFound = 'Product not found';
   static const productDeletedFromCartSuccessfully = 'Product deleted from cart successfully';
   static const productAddedToCartSuccessfully = 'Product added to cart successfully';
+  static const productIsAlreadyInCart = 'Product is already in cart';
+  static const doYouWantToDeleteThisProduct = 'Do you want to delete this product';
+
   static const weight = 'Weight (kg): ';
   static const sku = 'SKU: ';
   static const ratingandReviews = 'Ratings & Reviews ';

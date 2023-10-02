@@ -83,7 +83,6 @@ class HiveHelper {
   saveRecentData(List<ProductsModel> product) async {
     log('the product saved/viewed $product');
     return await _boxRecentlyViewed.add(product);
-    // return await _boxRecentlyViewed.put(HiveKeys.recentlyViewed.keys, product);
   }
 
   List<ProductsModel>? getRecentlyViewed({
@@ -117,10 +116,20 @@ class HiveHelper {
     return _boxCarts.listenable();
   }
 
+  Iterable<List<dynamic>> cartsBoxValues() {
+    return _boxCarts.values;
+  }
+
 // save task
   saveCartsToList(List<CartModel> cartProduct) async {
     log('the product saved/viewed $cartProduct');
     return await _boxCarts.add(cartProduct);
+  }
+
+  // save task
+  saveCartsToListByPutAt(int index, List<CartModel> cartProduct) async {
+    log('the product saved/viewed $cartProduct');
+    return await _boxCarts.putAt(index, cartProduct);
   }
 
   deleteAtFromCart(int index) {
@@ -128,16 +137,21 @@ class HiveHelper {
   }
 
   List<CartModel>? getCartsList({
-    dynamic defaultValue,
+    List<CartModel>? defaultValue,
   }) {
-    return _boxCarts.get(
+    var opp = _boxCarts.get(
       HiveKeys.cartsKey.keys,
       defaultValue: defaultValue,
     ) as List<CartModel>;
+    return opp;
   }
 
   Future<void> closeCartsBox() async {
     return await _boxCarts.close();
+  }
+
+  List<CartModel>? getAtCarts(int index) {
+    return _boxCarts.getAt(index) as List<CartModel>;
   }
 
   // clear box

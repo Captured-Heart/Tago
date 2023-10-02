@@ -50,4 +50,4 @@ export 'src/orders/order.dart';
 export 'src/categories/categories.dart' hide ProductsModel;
 export 'src/drawer/drawer.dart';
 export './src/search/search.dart';
-export './src/checkout/checkout.dart';
+export './src/checkout/checkout.dart' hide CartModel;

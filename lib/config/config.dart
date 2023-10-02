@@ -31,3 +31,6 @@ export './theme/app_fontweight.dart';
 export './theme/app_textstyles.dart';
 export './theme/app_theme.dart';
 export './theme/brand_theme_color.dart';
+
+//hive models
+export './hive_models/hive_cart_model.dart';
