@@ -1,24 +1,25 @@
 import 'package:tago/app.dart';
 
-class WishListScreen extends ConsumerWidget {
-  WishListScreen({super.key});
-
-  final List<CartModel> recentProducts = [];
-
-  void saveToCartLocalStorage(CartModel cartModel) {
-    final myData = HiveHelper().getCartsList(defaultValue: recentProducts) as List<CartModel>;
-
-    final updatedData = [...myData, cartModel];
-    HiveHelper().saveCartsToList(updatedData);
-  }
+class WishListScreen extends ConsumerStatefulWidget {
+  const WishListScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WishListScreen> createState() => _WishListScreenState();
+}
+
+class _WishListScreenState extends ConsumerState<WishListScreen> {
+  // final List<CartModel> recentProducts = [];
+  @override
+  Widget build(BuildContext context) {
     final wishList = ref.watch(fetchWishListProvider(false));
-    var cartList = ref.watch(getCartListProvider(false));
     var wishListID = wishList.valueOrNull?.map((e) => e.id).toList();
     log('wishListID: $wishListID');
-    var cartListID = cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList();
+
+    var cartListID = checkCartBoxLength()!.map((e) => e.product!.id).toList();
+    setState(() {
+      checkCartBoxLength();
+    });
+
     log('cartListID: $cartListID');
     return Scaffold(
       appBar: appBarWidget(
@@ -36,7 +37,7 @@ class WishListScreen extends ConsumerWidget {
           icon: Badge(
             backgroundColor: TagoLight.orange,
             smallSize: 10,
-            isLabelVisible: cartList.valueOrNull?.isNotEmpty ?? false,
+            isLabelVisible: checkCartBoxLength()?.isNotEmpty ?? false,
             child: const Icon(Icons.shopping_cart_outlined),
           ),
         ),
@@ -51,11 +52,9 @@ class WishListScreen extends ConsumerWidget {
                   // var wishList = convertDynamicListToProductListModel(data)[index];
                   var wishListIndex = data[index];
                   var isInCartAlready = checkIdenticalListsWithInt(
-                    list1: cartListID ?? [],
+                    list1: cartListID,
                     int: wishListIndex.id!,
                   );
-
-                  log(isInCartAlready.toString());
                   return wishlistWidget(
                     context: context,
                     productsModel: wishListIndex,
@@ -67,10 +66,14 @@ class WishListScreen extends ConsumerWidget {
                           TextConstant.productIsOutOfStock,
                           isError: true,
                         );
-                        saveToCartLocalStorage(CartModel(quantity: 1, product: wishListIndex));
                       } else {
-                        saveToCartLocalStorage(CartModel(quantity: 1, product: wishListIndex));
+                        //add to cart (LOCALLY)
+                        saveToCartLocalStorageMethod(
+                          CartModel(quantity: 1, product: wishListIndex),
+                        );
+                        setState(() {});
 
+                        // add to cart (BACKEND)
                         ref.read(cartNotifierProvider.notifier).addToCartMethod(
                           map: {
                             ProductTypeEnums.productId.name: wishListIndex.id.toString(),
@@ -78,15 +81,22 @@ class WishListScreen extends ConsumerWidget {
                           },
                         ).whenComplete(() => ref.invalidate(getCartListProvider));
                       }
-                      inspect(wishListIndex);
                     },
-                    deleteFromCart: () {
-                      ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
-                        map: {
-                          ProductTypeEnums.productId.name: wishListIndex.id.toString(),
-                        },
-                      ).whenComplete(() => ref.invalidate(getCartListProvider));
-                    },
+
+                    //! I REMOVED THIS METHOD HERE, BECAUSE WE CAN'T GET THE ACCURATE INDEX OF THE CARTLIST SAVED LOCALLY IN THE WISHLIST. THEY ARE INDEPENDENTLY CO-EXISTING
+                    // deleteFromCart: () {
+                    //   deleteCartFromListMethod(
+                    //     index: index,
+                    //     context: context,
+                    //     cartModel: CartModel(product: wishListIndex),
+                    //   );
+                    //   //delete from cart(BACKEND)
+                    //   ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                    //     map: {
+                    //       ProductTypeEnums.productId.name: wishListIndex.id.toString(),
+                    //     },
+                    //   ).whenComplete(() => ref.invalidate(getCartListProvider));
+                    // },
                   );
                 }),
               );

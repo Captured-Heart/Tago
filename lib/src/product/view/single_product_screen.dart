@@ -58,7 +58,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               );
             },
             icon: Badge(
-            isLabelVisible: checkCartBoxLength()?.isNotEmpty ?? false,
+              isLabelVisible: checkCartBoxLength()?.isNotEmpty ?? false,
 
               // isLabelVisible: cartListLength?.isNotEmpty ?? false,
               backgroundColor: TagoLight.orange,
@@ -160,15 +160,19 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                   )
                                 : ElevatedButton(
                                     onPressed: () {
-                                      //TODO: ADD TO CART IN HIVE HERE
-                                        // HiveHelper().saveCartsToList(products.valueOrNull);
+                                      //add to cart (LOCALLY)
+                                      saveToCartLocalStorageMethod(
+                                        CartModel(quantity: 1, product: widget.productsModel),
+                                      );
+                                      // add to cart (BACKEND)
                                       ref.read(cartNotifierProvider.notifier).addToCartMethod(
                                         map: {
-                                          ProductTypeEnums.productId.name: widget.id.toString(),
+                                          ProductTypeEnums.productId.name:
+                                              widget.productsModel.id.toString(),
                                           ProductTypeEnums.quantity.name: '1',
                                         },
-                                      ).whenComplete(
-                                          () => ref.invalidate(getCartListProvider(false)));
+                                      );
+                                      ref.invalidate(getCartListProvider(false));
                                     },
                                     child: const Text(TextConstant.addtocart),
                                   ),

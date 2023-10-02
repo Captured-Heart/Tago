@@ -45,14 +45,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final categoriesGroup = ref.watch(fetchCategoriesProvider);
-    final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
     final accountInfo = ref.watch(getAccountInfoProvider);
     // log(HiveHelper().getData(HiveKeys.token.keys));
     // HiveHelper().clearBoxRecent();
     return Scaffold(
       appBar: homescreenAppbar(
         context: context,
-        isBadgeVisible: cartList?.isNotEmpty ?? false,
+        isBadgeVisible: checkCartBoxLength()?.isNotEmpty ?? false,
+
+        // cartList?.isNotEmpty ?? false,
         showSearchIcon: showSearchAddressWidget,
       ),
       body: ListView(
@@ -267,13 +268,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   productModel: data.showcaseProductTag!.products![index],
                                   context: context,
                                   addToCartBTN: () {
-                                    ref.read(cartNotifierProvider.notifier).addToCartMethod(
-                                      map: {
-                                        ProductTypeEnums.productId.name:
-                                            data.showcaseProductTag!.products![index].id.toString(),
-                                        ProductTypeEnums.quantity.name: '1',
-                                      },
-                                    );
+                                    if (data.showcaseProductTag!.products![index]
+                                            .availableQuantity! <
+                                        1) {
+                                      //product is out of stock
+                                      showScaffoldSnackBarMessage(
+                                        TextConstant.productIsOutOfStock,
+                                        isError: true,
+                                      );
+                                    } else {
+                                      //add to cart (LOCALLY)
+                                      saveToCartLocalStorageMethod(
+                                        CartModel(
+                                            quantity: 1,
+                                            product: data.showcaseProductTag!.products![index]),
+                                      );
+                                      setState(() {});
+                                      // add to cart (BACKEND)
+                                      ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                        map: {
+                                          ProductTypeEnums.productId.name: data
+                                              .showcaseProductTag!.products![index].id
+                                              .toString(),
+                                          ProductTypeEnums.quantity.name: '1',
+                                        },
+                                      );
+                                    }
                                   },
                                 ).padOnly(left: 10);
                               },
@@ -304,70 +324,76 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           //     child: const Text(TextConstant.seeall),
           //   ),
           // ),
-          categoriesGroup
-              .when(
-                data: (data) {
-                  if (data!.showcaseProductTag == null) {
-                    return const SizedBox();
-                  }
-                  return Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          data.showcaseProductTag!.name,
-                          style: context.theme.textTheme.titleLarge,
-                        ),
-                        trailing: TextButton(
-                          onPressed: () {},
-                          child: const Text(TextConstant.seeall),
-                        ),
-                      ).padOnly(bottom: 10),
-                      Stack(
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: data.showcaseProductTag!.imageUrl!,
-                            fit: BoxFit.fill,
-                            width: double.infinity,
-                            height: 320,
-                          ),
-                          SizedBox(
-                            height: 320,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.only(left: 170.0, top: 10, bottom: 10),
-                              itemCount: data.showcaseProductTag!.products!.length,
-                              shrinkWrap: false,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return productCard(
-                                  productModel: data.showcaseProductTag!.products![index],
-                                  context: context,
-                                  addToCartBTN: () {
-                                    ref.read(cartNotifierProvider.notifier).addToCartMethod(
-                                      map: {
-                                        ProductTypeEnums.productId.name:
-                                            data.showcaseProductTag!.products![index].id.toString(),
-                                        ProductTypeEnums.quantity.name: '1',
-                                      },
-                                    );
-                                  },
-                                ).padOnly(left: 10);
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  );
-                },
-                error: (error, stackTrace) => Center(
-                  child: Text(
-                    NetworkErrorEnums.checkYourNetwork.message,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                loading: () => categoryCardLoaders(context: context),
-              )
-              .padOnly(bottom: 20),
+          // categoriesGroup
+          //     .when(
+          //       data: (data) {
+          //         if (data!.showcaseProductTag == null) {
+          //           return const SizedBox();
+          //         }
+          //         return Column(
+          //           children: [
+          //             ListTile(
+          //               title: Text(
+          //                 data.showcaseProductTag!.name,
+          //                 style: context.theme.textTheme.titleLarge,
+          //               ),
+          //               trailing: TextButton(
+          //                 onPressed: () {},
+          //                 child: const Text(TextConstant.seeall),
+          //               ),
+          //             ).padOnly(bottom: 10),
+          //             Stack(
+          //               children: [
+          //                 CachedNetworkImage(
+          //                   imageUrl: data.showcaseProductTag!.imageUrl!,
+          //                   fit: BoxFit.fill,
+          //                   width: double.infinity,
+          //                   height: 320,
+          //                 ),
+          //                 SizedBox(
+          //                   height: 320,
+          //                   child: ListView.builder(
+          //                     padding: const EdgeInsets.only(left: 170.0, top: 10, bottom: 10),
+          //                     itemCount: data.showcaseProductTag!.products!.length,
+          //                     shrinkWrap: false,
+          //                     scrollDirection: Axis.horizontal,
+          //                     itemBuilder: (context, index) {
+          //                       return productCard(
+          //                         productModel: data.showcaseProductTag!.products![index],
+          //                         context: context,
+          //                         addToCartBTN: () {
+          //                           saveToCartLocalStorageMethod(
+          //                             CartModel(
+          //                                 quantity: 1,
+          //                                 product: data.showcaseProductTag!.products![index]),
+          //                           );
+          //                           setState(() {});
+          //                           ref.read(cartNotifierProvider.notifier).addToCartMethod(
+          //                             map: {
+          //                               ProductTypeEnums.productId.name:
+          //                                   data.showcaseProductTag!.products![index].id.toString(),
+          //                               ProductTypeEnums.quantity.name: '1',
+          //                             },
+          //                           );
+          //                         },
+          //                       ).padOnly(left: 10);
+          //                     },
+          //                   ),
+          //                 )
+          //               ],
+          //             ),
+          //           ],
+          //         );
+          //       },
+          //       error: (error, stackTrace) => Center(
+          //         child: Text(
+          //           NetworkErrorEnums.checkYourNetwork.message,
+          //           textAlign: TextAlign.center,
+          //         ),
+          //       ),
+          //       loading: () => categoryCardLoaders(context: context),
+          //     )
+          //     .padOnly(bottom: 20),
 
           ValueListenableBuilder(
             valueListenable: HiveHelper().getRecentlyViewedListenable(),
