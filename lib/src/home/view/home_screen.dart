@@ -45,7 +45,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final categoriesGroup = ref.watch(fetchCategoriesProvider);
-    final accountInfo = ref.watch(getAccountInfoProvider);
+    // final accountInfo = ref.watch(getAccountInfoProvider);
+   final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
+    
     // log(HiveHelper().getData(HiveKeys.token.keys));
     // HiveHelper().clearBoxRecent();
     return Scaffold(
@@ -60,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         controller: _controller,
         children: [
           showSearchAddressWidget
-              ? searchBoxAndAddressWidget(context, accountInfo)
+              ? searchBoxAndAddressWidget(context, accountInfo![HiveHelper().getData(HiveKeys.addressIndex.keys)])
               : const SizedBox(),
           Container(
             padding: const EdgeInsets.only(right: 18, left: 18, bottom: 10, top: 10),
@@ -543,9 +545,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
 searchBoxAndAddressWidget(
   BuildContext context,
-  AsyncValue<AccountModel> accountInfo,
+  AddressModel ? accountInfo,
 ) {
-  var address = accountInfo.valueOrNull?.address;
+  var address = accountInfo;
 
   return Container(
     color: TagoDark.primaryColor,

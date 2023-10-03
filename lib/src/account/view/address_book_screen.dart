@@ -44,11 +44,14 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
                         groupValue: HiveHelper().getData(HiveKeys.addressIndex.keys) ?? 0,
                         onChanged: (value) {
                           HiveHelper().saveData(HiveKeys.addressIndex.keys, value);
+                          // ref.invalidate(getAccountInfoProvider);
+
                           setState(() {});
                           if (HiveHelper().getData(HiveKeys.fromCheckout.keys) ==
                               HiveKeys.fromCheckout.keys) {
                             HiveHelper().saveData(HiveKeys.addressId.keys, index);
                             ref.invalidate(getAccountAddressProvider);
+
                             pop(context);
                           }
                         },
