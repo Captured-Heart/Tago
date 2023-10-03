@@ -12,7 +12,7 @@ class TextEditingControllerClass {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController phoneNoController = TextEditingController();
   TextEditingController otpCode = TextEditingController();
-  // TextEditingController emailController = TextEditingController();
+  TextEditingController addressStateController = TextEditingController();
   TextEditingController addressStreetController = TextEditingController();
   TextEditingController addressCityController = TextEditingController();
   TextEditingController apartmentNoController = TextEditingController();

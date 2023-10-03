@@ -132,10 +132,10 @@ double? getAverageOfRatings({
 }
 
 double getPercentageOfReviews({
-  required int totalNoOfReviews,
-  required int noOfReviews,
+  required int? totalNoOfReviews,
+  required int? noOfReviews,
 }) {
-  var perc = noOfReviews / totalNoOfReviews;
+  var perc = (noOfReviews ?? 0) / (totalNoOfReviews ?? 0);
   return perc;
 }
 
@@ -148,7 +148,7 @@ double ratingsValueExtrapolation(double ratings) {
   }
 }
 
-List<dynamic> getListOfIndividualRating({
+List<dynamic>  getListOfIndividualRating({
   required List<dynamic>? listOfDoubles,
   required double ratingsValue,
 }) {

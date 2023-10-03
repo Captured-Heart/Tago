@@ -1,3 +1,5 @@
+// ignore_for_file: sdk_version_since
+
 import 'package:tago/app.dart';
 
 class SingleProductPage extends ConsumerStatefulWidget {
@@ -22,14 +24,13 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     var wishlist = ref.watch(fetchWishListProvider(false));
     var cartList = ref.watch(getCartListProvider(false));
     var wishListID = wishlist.value?.map((e) => e.id).contains(widget.id);
-    var cartListLength = cartList.valueOrNull;
 
     var cartListID =
         cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList().contains(widget.id);
     // var wishListID = checkIdenticalListsWithInt(list1: wishListList, int: widget.id);
     final productSpecs = ref.watch(productSpecificationsProvider);
 
-    log('preducts Specs: ${products.valueOrNull?.productReview!.map((e) => e['rating']).toList()}');
+    log('preducts Specs: ${products.valueOrNull?.productSpecification!}');
     final relatedProducts = ref.watch(relatedProductsProvider);
 
     return FullScreenLoader(
@@ -196,7 +197,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
             ),
 
             //
-
+            // ITEM DETAILS
             ListTile(
               title: const Text(
                 TextConstant.itemsDetails,
@@ -223,11 +224,20 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
             ),
 
             //PRODUCT SPECIFICATIONS SECTIONS
-            singleProductSpecificationsWidget(context, productSpecs).padOnly(bottom: 20),
+            productSpecs.isNotEmpty
+                ? singleProductSpecificationsWidget(context, productSpecs).padOnly(bottom: 20)
+                : const SizedBox.shrink(),
 
             // RATINGS AND REVIEWS
             products.when(
               data: (data) {
+                if (data.productReview!.isEmpty) {
+                  return  Center(
+                      child: Text(
+                    'There are no reviews for this product!',
+                    style: context.theme.textTheme.bodyLarge?.copyWith(height: 1.7),
+                  ));
+                }
                 return singleProductRatingsAndReviewsWidget(data, context, products);
               },
               error: (error, _) {
@@ -325,24 +335,18 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
 
             //TODO: THE ERROR OF BAD STATE IS HERE
             child: Text(
-              // ignore: sdk_version_since
-              productSpec?.firstOrNull?.title ?? 'Weight',
+              // productSpec?.map((e) => e.title).toString() ?? '',
+              '${productSpec?.firstOrNull?.title}\n\n ${productSpec?.firstOrNull?.value}',
+
               style: context.theme.textTheme.bodyLarge,
             ),
           ),
           //SKU
           Container(
             padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  TextConstant.sku,
-                  style: context.theme.textTheme.bodyLarge,
-                ),
-                const Text('1FDITDKCTU34565hj')
-              ],
+            child: Text(
+              '${productSpec?.lastOrNull?.title}\n\n ${productSpec?.lastOrNull?.value}',
+              style: context.theme.textTheme.bodyLarge,
             ),
           ),
         ],

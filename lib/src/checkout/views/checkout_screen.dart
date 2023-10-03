@@ -1,4 +1,3 @@
-
 import 'package:tago/app.dart';
 import 'package:tago/src/orders/view/orders_make_payment_screen.dart';
 
@@ -191,7 +190,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               onPressed: () {
                 // check if payment is selected
                 if (paymentMethodType == PaymentMethodsType.notSelected) {
-                  showScaffoldSnackBarMessage("Please select a payment method");
+                  showScaffoldSnackBarMessage("Please select a payment method", isError: true);
                   return;
                 }
 
@@ -217,6 +216,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ref.read(checkoutNotifierProvider.notifier).createAnOrderMethod(
                         map: checkModel,
                         onNavigation: () {
+                          HiveHelper().clearCartList();
+
                           navBarPush(
                             context: context,
                             screen: const OrderPlacedScreen(),
@@ -225,6 +226,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           return ref.refresh(getCartListProvider(false));
                         },
                       );
+                  HiveHelper().clearCartList();
                 } else {
                   var checkModel = CheckoutModel(
                     addressId: addressId,
@@ -244,6 +246,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ref.read(checkoutNotifierProvider.notifier).createAnOrderMethod(
                         map: checkModel,
                         onNavigation: () {
+                          HiveHelper().clearCartList();
+
                           if (paymentMethodType == PaymentMethodsType.cash) {
                             navBarPush(
                               context: context,
@@ -259,6 +263,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           }
                         },
                       );
+                  // HiveHelper().clearCartList();
                 }
               },
               child: const Text(TextConstant.confirmOrder),

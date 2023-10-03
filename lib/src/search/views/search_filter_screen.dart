@@ -16,7 +16,6 @@ class SearchFilterScreen extends ConsumerStatefulWidget {
 class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
   @override
   Widget build(BuildContext context) {
-    final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
     final keyWord = ref.watch(searchTextProvider);
     log('data gotten from search screen: ${widget.product.toString()}');
     return Scaffold(
