@@ -1,8 +1,11 @@
 import 'package:tago/app.dart';
 
 // home screen appp bar
-AppBar homescreenAppbar(
-    {required BuildContext context, required bool isBadgeVisible, required bool showSearchIcon}) {
+AppBar homescreenAppbar({
+  required BuildContext context,
+  required bool isBadgeVisible,
+  required bool showSearchIcon,
+}) {
   return AppBar(
     elevation: 0,
     centerTitle: true,
@@ -177,7 +180,7 @@ AppBar ordersAppbar({
 }
 
 //categories app bar
-AppBar myAccountAppbar(context) {
+AppBar myAccountAppbar(BuildContext context) {
   return AppBar(
     elevation: 0,
     centerTitle: true,

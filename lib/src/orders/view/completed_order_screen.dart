@@ -106,8 +106,11 @@ class _CompletedOrderScreenState extends ConsumerState<CompletedOrderScreen> {
           error: (error, _) {
             return Center(child: Text(NetworkErrorEnums.checkYourNetwork.message));
           },
-          loading: () => const Center(
-            child: CircularProgressIndicator.adaptive(),
+          loading: () => Column(
+            children: List.generate(
+              4,
+              (index) => orderWidgetLoaders(context),
+            ),
           ),
         ),
       ],

@@ -13,12 +13,16 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
   Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider);
     final deliveryRequests = ref.watch(deliveryRequestsProvider).valueOrNull;
+    final deliveryRequestNumber = deliveryRequests?.where((e) => e.status == 1).toList().length;
+    // log(deliveryRequests!.where((e) => e.status == 1).toList().toString());
+
     // log(orderList.toString());
     // log(deliveryRequests.toString());
     // log(HiveHelper().getData(HiveKeys.token.keys).toString());
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+          key: ref.watch(scaffoldKeyProvider),
           appBar: AppBar(
             toolbarHeight: kToolbarHeight * 2.3,
 
@@ -50,47 +54,52 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                       ),
 
                       // how many orders
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: TagoDark.primaryColor.withOpacity(0.1),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.receipt,
-                                        color: TagoDark.primaryColor,
-                                        size: 15,
-                                      ),
-                                      Text(
-                                        '0',
-                                        style: context.theme.textTheme.titleLarge?.copyWith(
+                      GestureDetector(
+                        onTap: () {
+                          push(context, const DeliveryRequestScreen());
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: TagoDark.primaryColor.withOpacity(0.1),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.receipt,
                                           color: TagoDark.primaryColor,
-                                          fontWeight: AppFontWeight.w500,
+                                          size: 15,
                                         ),
-                                      )
-                                    ].rowInPadding(5),
-                                  ).padAll(5),
-                                ),
-                                Text(
-                                  'You have completed 4 orders today',
-                                  style: context.theme.textTheme.bodyMedium,
-                                ),
-                              ].rowInPadding(10)),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            // size: 24
-                          ),
-                        ],
+                                        Text(
+                                          '$deliveryRequestNumber',
+                                          style: context.theme.textTheme.titleLarge?.copyWith(
+                                            color: TagoDark.primaryColor,
+                                            fontWeight: AppFontWeight.w500,
+                                          ),
+                                        )
+                                      ].rowInPadding(5),
+                                    ).padAll(5),
+                                  ),
+                                  Text(
+                                    'You have completed $deliveryRequestNumber orders today',
+                                    style: context.theme.textTheme.bodyMedium,
+                                  ),
+                                ].rowInPadding(10)),
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              // size: 24
+                            ),
+                          ],
+                        ),
                       ),
                     ].columnInPadding(10))
                 .padOnly(top: kTextTabBarHeight * 1.2)
