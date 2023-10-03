@@ -2,6 +2,8 @@ import 'package:tago/app.dart';
 
 Widget categoryCardLoaders({
   required BuildContext context,
+  double ? width,
+  int ? index,
 }) {
   return Wrap(
     runSpacing: 20,
@@ -10,10 +12,10 @@ Widget categoryCardLoaders({
     // runAlignment: WrapAlignment.start,
     crossAxisAlignment: WrapCrossAlignment.start,
     children: List.generate(
-      4,
+    index??  4,
       (index) => shimmerWidget(
         child: SizedBox(
-          width: 80,
+          width: width ?? 80,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,

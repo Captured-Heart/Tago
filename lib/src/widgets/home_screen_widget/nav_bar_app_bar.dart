@@ -184,13 +184,17 @@ AppBar myAccountAppbar(BuildContext context) {
   return AppBar(
     elevation: 0,
     centerTitle: true,
-    leading: IconButton(
-      onPressed: () {
-        Scaffold.of(context).openDrawer();
-      },
-      icon: const Icon(
-        Icons.menu,
-      ),
+    leading: Builder(
+      builder: (context) {
+        return IconButton(
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+          icon: const Icon(
+            Icons.menu,
+          ),
+        );
+      }
     ),
     title: const Text(
       TextConstant.myaccounts,

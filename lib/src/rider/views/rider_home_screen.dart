@@ -22,7 +22,6 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          key: ref.watch(scaffoldKeyProvider),
           appBar: AppBar(
             toolbarHeight: kToolbarHeight * 2.3,
 
@@ -34,9 +33,14 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                       /// title and leading icon
                       ListTile(
                         contentPadding: EdgeInsets.zero,
-                        leading: const Icon(
-                          FontAwesomeIcons.circleUser,
-                          color: TagoLight.textBold,
+                        leading: GestureDetector(
+                          onTap: () {
+                            push(context, const RiderAccountScreen());
+                          },
+                          child: const Icon(
+                            FontAwesomeIcons.circleUser,
+                            color: TagoLight.textBold,
+                          ),
                         ),
                         title: Text('Hello, ${accountInfo.valueOrNull?.fname}'),
                         //

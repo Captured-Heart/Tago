@@ -63,7 +63,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           showSearchAddressWidget
               ? searchBoxAndAddressWidget(
-                  context, accountInfo![HiveHelper().getData(HiveKeys.addressIndex.keys)])
+                  context, accountInfo?[HiveHelper().getData(HiveKeys.addressIndex.keys)])
               : const SizedBox(),
           Container(
             padding: const EdgeInsets.only(right: 18, left: 18, bottom: 10, top: 10),
@@ -201,7 +201,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  loading: () => categoryCardLoaders(context: context),
+                  loading: () => categoryCardLoaders(context: context, index: 8),
                 ),
 
                 // shortcut
@@ -313,7 +313,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                loading: () => categoryCardLoaders(context: context),
+                loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
               )
               .padOnly(bottom: 20),
           // ListTile(

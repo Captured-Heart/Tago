@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/home/loaders/category_card_loaders.dart';
 
 class AllCategoriesScreen extends ConsumerStatefulWidget {
   const AllCategoriesScreen({super.key});
@@ -59,9 +60,11 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
             //TODO: ADD CACHED MODEL HERE
             error: (error, stackTrace) =>
                 Center(child: Text(NetworkErrorEnums.checkYourNetwork.message)),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
+            loading: () => categoryCardLoaders(
+              context: context,
+              width: 100,
+              index: 15,
+            ).padSymmetric(horizontal: 20)
           ),
         ],
       ),

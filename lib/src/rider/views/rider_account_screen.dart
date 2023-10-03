@@ -13,6 +13,7 @@ class _RiderAccountScreenState extends ConsumerState<RiderAccountScreen> {
     final accountInfo = ref.watch(getAccountInfoProvider).valueOrNull;
 
     return Scaffold(
+      key: ref.watch(scaffoldKeyProvider),
       drawer: tagoHomeDrawer(context, accountInfo),
       appBar: myAccountAppbar(context),
       body: ListView(

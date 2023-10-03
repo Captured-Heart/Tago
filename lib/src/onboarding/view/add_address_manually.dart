@@ -30,6 +30,7 @@ class _AddAddressManuallyScreenState extends ConsumerState<AddAddressManuallyScr
       body: Form(
         key: controller.signInformKey,
         child: ListView(
+          shrinkWrap: false,
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             authTextFieldWithError(
@@ -56,30 +57,37 @@ class _AddAddressManuallyScreenState extends ConsumerState<AddAddressManuallyScr
               inputFormatters: [],
               validator: RequiredValidator(errorText: requiredValue),
             ),
-            Row(children: [
-              Expanded(
-                  child: authTextFieldWithError(
-                controller: TextEditingController(),
-                context: context,
-                isError: false,
-                hintText: TextConstant.state,
-                inputFormatters: [],
-                validator: RequiredValidator(errorText: requiredValue),
-              ).padOnly(right: 15)),
-              Expanded(
-                child: authTextFieldWithError(
-                  controller: TextEditingController(),
-                  context: context,
-                  isError: false,
-                  hintText: TextConstant.postalcode,
-                  inputFormatters: [],
-                  validator: RequiredValidator(errorText: requiredValue),
-                ),
+            SizedBox(
+              width: context.sizeWidth(1),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: authTextFieldWithError(
+                      controller:controller.addressStateController,
+                      context: context,
+                      isError: false,
+                      hintText: TextConstant.state,
+                      inputFormatters: [],
+                      validator: RequiredValidator(errorText: requiredValue),
+                    ).padOnly(right: 15),
+                  ),
+                  Flexible(
+                    child: authTextFieldWithError(
+                      controller: TextEditingController(),
+                      context: context,
+                      isError: false,
+                      hintText: TextConstant.postalcode,
+                      inputFormatters: [],
+                      validator: RequiredValidator(errorText: requiredValue),
+                    ),
+                  ),
+                ],
               ),
-            ]),
+            ),
             Text(
               TextConstant.thishelpsTagotofind,
               style: context.theme.textTheme.bodyMedium,
+              textAlign: TextAlign.center,
             ).padOnly(top: 10),
             Align(
               child: TextButton.icon(
@@ -88,7 +96,7 @@ class _AddAddressManuallyScreenState extends ConsumerState<AddAddressManuallyScr
                 label: const Text(TextConstant.usemycurrentlocation),
               ),
             ),
-            const Spacer(),
+            // const Spacer(),
             SizedBox(
               width: context.sizeWidth(1),
               child: ElevatedButton(
@@ -98,7 +106,7 @@ class _AddAddressManuallyScreenState extends ConsumerState<AddAddressManuallyScr
                       map: {
                         AddressType.apartmentNumber.name: controller.apartmentNoController.text,
                         AddressType.city.name: controller.addressCityController.text,
-                        AddressType.state.name: controller.addressLabelController.text,
+                        AddressType.state.name: controller.addressStateController.text,
                         AddressType.streetAddress.name: controller.addressStreetController.text
                       },
                       context: context,

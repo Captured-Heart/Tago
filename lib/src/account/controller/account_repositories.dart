@@ -33,7 +33,7 @@ Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) as
 
     return addressList;
   } else {
-    return decodedData['message'];
+    return [AddressModel()];
   }
 }
 
