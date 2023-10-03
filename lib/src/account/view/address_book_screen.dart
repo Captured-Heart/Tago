@@ -94,7 +94,7 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
                                   context: context,
                                   ref: ref,
                                 ).whenComplete(() {
-                                  popRootNavigatorTrue(context);
+                                  popRootNavigatorTrue(context: context, value: true);
                                 });
                               },
                             );

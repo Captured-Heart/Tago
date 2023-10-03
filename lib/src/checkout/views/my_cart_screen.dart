@@ -104,7 +104,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                             CartModel(quantity: quantity + 1, product: product),
                           );
                           setState(() {});
-                        }
+                        } 
                       },
                     );
                   },

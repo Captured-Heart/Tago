@@ -24,7 +24,8 @@ void popToMain(BuildContext context) => Navigator.of(context).popUntil((route) =
 void pop(BuildContext context) => Navigator.of(context).pop();
 
 //.oFContext with rootNavigator POP
-void popRootNavigatorTrue(BuildContext context) => Navigator.of(context, rootNavigator: true).pop();
+void popRootNavigatorTrue({required BuildContext context, required bool value}) =>
+    Navigator.of(context, rootNavigator: value).pop();
 
 //.ofContext PUSH with root navigator == true
 void pushReplacementOnRootNav(BuildContext context, Widget child) =>

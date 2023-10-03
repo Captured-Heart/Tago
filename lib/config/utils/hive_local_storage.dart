@@ -4,7 +4,6 @@ import 'package:tago/app.dart';
 class HiveHelper {
   final _boxTago = Hive.box('tago');
   final _boxSearch = Hive.box('search');
-  final _boxRecentlyID = Hive.box('recentId');
   final _boxRecentlyViewed = Hive.box<List>('recently');
   final _boxCarts = Hive.box<List>('carts');
 
@@ -16,7 +15,6 @@ class HiveHelper {
     await Hive.initFlutter();
     await Hive.openBox('tago');
     await Hive.openBox('search');
-    await Hive.openBox('recentId');
     await Hive.openBox<List>('recently');
     await Hive.openBox<List>('carts');
   }
@@ -55,22 +53,7 @@ class HiveHelper {
     return _boxTago.get(key) ?? 0;
   }
 
-/*------------------------------------------------------------------
-                 FOR BOX ('RECENTLY ID')
- -------------------------------------------------------------------*/
-  saveRecentIdData(int id) async {
-    log('the product saved/viewed $id');
-    return await _boxRecentlyID.add(id);
-  }
 
-  ValueListenable<Box<dynamic>> getRecentIdData() {
-    // log('the product saved/viewed $id');
-    return _boxRecentlyID.listenable();
-  }
-
-  clearRecentId() {
-    return _boxRecentlyID.clear();
-  }
 
   /*------------------------------------------------------------------
                  FOR BOX ('RECENTLY VIEWED')
@@ -83,6 +66,10 @@ class HiveHelper {
   saveRecentData(List<ProductsModel> product) async {
     log('the product saved/viewed $product');
     return await _boxRecentlyViewed.add(product);
+  }
+
+  Iterable<List<dynamic>> recentlyBoxValues() {
+    return _boxRecentlyViewed.values;
   }
 
   List<ProductsModel>? getRecentlyViewed({

@@ -49,6 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
 
     // log(HiveHelper().getData(HiveKeys.token.keys));
+    // log('$cartIndex');
     // HiveHelper().clearBoxRecent();
     return Scaffold(
       appBar: homescreenAppbar(
@@ -267,9 +268,62 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               shrinkWrap: false,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
+                                var productModel = data.showcaseProductTag!.products![index];
+                                var quantity = cartQuantityFromName(productModel);
                                 return productCard(
                                   productModel: data.showcaseProductTag!.products![index],
                                   context: context,
+
+                                  // on DECREMENT
+                                  onDecrementBTN: () {
+                                    if (quantity! > 1) {
+                                      //! REDUCE THE QUANTITY
+                                      incrementDecrementCartValueMethod(
+                                        cartIDFromName(productModel)!,
+                                        CartModel(quantity: quantity - 1, product: productModel),
+                                      );
+                                    } else {
+                                      //! delete from the cart locally
+                                      deleteCartFromListMethod(
+                                        index: cartIDFromName(productModel)!,
+                                        cartModel: CartModel(),
+                                        context: context,
+                                        setState: () {},
+                                        isProductModel: true,
+                                        productsModel: productModel,
+                                      );
+                                      // setState(() {});
+                                      //! DELETE FROM THE CART IN BACKEND
+                                      ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                                        map: {
+                                          ProductTypeEnums.productId.name:
+                                              productModel.id.toString(),
+                                        },
+                                      ).whenComplete(
+                                        () => ref.invalidate(getCartListProvider(false)),
+                                      );
+                                    }
+                                  },
+
+                                  //ON INCREMENT
+                                  onIncrementBTN: () {
+                                    if (quantity! < productModel.availableQuantity!) {
+                                      log('increased: ${cartIndexFromID(productModel)!} ');
+
+                                      incrementDecrementCartValueMethod(
+                                        cartIndexFromID(productModel)!,
+                                        CartModel(quantity: quantity + 1, product: productModel),
+                                      );
+                                    } else {
+                                      showScaffoldSnackBarMessage(
+                                        'The available quantity of ${productModel.name} is (${productModel.availableQuantity})',
+                                        isError: true,
+                                        duration: 2,
+                                      );
+                                    }
+                                  },
+
+                                  // ADD TO CART
                                   addToCartBTN: () {
                                     if (data.showcaseProductTag!.products![index]
                                             .availableQuantity! <
@@ -415,10 +469,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       trailing: TextButton(
                         onPressed: () {
                           HiveHelper().clearBoxRecent();
-                          HiveHelper().clearRecentId();
                         },
                         child: const Text(
-                          TextConstant.seeall,
+                          TextConstant.clear,
                         ),
                       ),
                     ),

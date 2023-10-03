@@ -195,33 +195,86 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                 physics: const NeverScrollableScrollPhysics(),
                 children: List.generate(
                   subCategoryModel.products!.length,
-                  (index) => productCard(
-                    productModel: subCategoryModel.products![index],
-                    context: context,
-                    addToCartBTN: () {
-                      if (subCategoryModel.products![index].availableQuantity! < 1) {
-                        //product is out of stock
-                        showScaffoldSnackBarMessage(
-                          TextConstant.productIsOutOfStock,
-                          isError: true,
-                        );
-                      } else {
-                        //add to cart (LOCALLY)
-                        saveToCartLocalStorageMethod(
-                          CartModel(quantity: 1, product: subCategoryModel.products![index]),
-                        );
-                        // add to cart (BACKEND)
-                        ref.read(cartNotifierProvider.notifier).addToCartMethod(
-                          map: {
-                            ProductTypeEnums.productId.name:
-                                subCategoryModel.products![index].id.toString(),
-                            ProductTypeEnums.quantity.name: '1',
-                          },
-                        );
-                        ref.invalidate(getCartListProvider(false));
-                      }
-                    },
-                  ),
+                  (index) {
+                    var productModel = subCategoryModel.products![index];
+                    var quantity = cartQuantityFromName(productModel);
+
+                    return productCard(
+                      productModel: subCategoryModel.products![index],
+                      context: context,
+
+                      // on DECREMENT
+                      onDecrementBTN: () {
+                        if (quantity! > 1) {
+                          //! REDUCE THE QUANTITY
+                          incrementDecrementCartValueMethod(
+                            cartIndexFromID(productModel)!,
+                            CartModel(quantity: quantity - 1, product: productModel),
+                          );
+                        } else {
+                          //! delete from the cart locally
+                          deleteCartFromListMethod(
+                            index: cartIndexFromID(productModel)!,
+                            cartModel: CartModel(),
+                            context: context,
+                            setState: () {},
+                            isProductModel: true,
+                            productsModel: productModel,
+                          );
+                          // setState(() {});
+                          //! DELETE FROM THE CART IN BACKEND
+                          ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                            map: {
+                              ProductTypeEnums.productId.name: productModel.id.toString(),
+                            },
+                          ).whenComplete(
+                            () => ref.invalidate(getCartListProvider(false)),
+                          );
+                        }
+                      },
+
+                      //ON INCREMENT
+                      onIncrementBTN: () {
+                        if (quantity! < productModel.availableQuantity!) {
+                          log('increased: ${cartIndexFromID(productModel)!} ');
+
+                          incrementDecrementCartValueMethod(
+                            cartIndexFromID(productModel)!,
+                            CartModel(quantity: quantity + 1, product: productModel),
+                          );
+                        } else {
+                          showScaffoldSnackBarMessage(
+                            'The available quantity of ${productModel.name} is (${productModel.availableQuantity})',
+                            isError: true,
+                            duration: 2,
+                          );
+                        }
+                      },
+                      addToCartBTN: () {
+                        if (subCategoryModel.products![index].availableQuantity! < 1) {
+                          //product is out of stock
+                          showScaffoldSnackBarMessage(
+                            TextConstant.productIsOutOfStock,
+                            isError: true,
+                          );
+                        } else {
+                          //add to cart (LOCALLY)
+                          saveToCartLocalStorageMethod(
+                            CartModel(quantity: 1, product: subCategoryModel.products![index]),
+                          );
+                          // add to cart (BACKEND)
+                          ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                            map: {
+                              ProductTypeEnums.productId.name:
+                                  subCategoryModel.products![index].id.toString(),
+                              ProductTypeEnums.quantity.name: '1',
+                            },
+                          );
+                          ref.invalidate(getCartListProvider(false));
+                        }
+                      },
+                    );
+                  },
                 ),
               ),
             ],

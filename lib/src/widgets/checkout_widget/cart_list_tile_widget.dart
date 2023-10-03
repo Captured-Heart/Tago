@@ -85,7 +85,7 @@ Widget myCartListTile({
                 quantity! < product!.availableQuantity!
                     ? const SizedBox.shrink()
                     : Text(
-                        '${cartModel.product!.name} is less than the available quantity of (${product.availableQuantity})',
+                        'The available quantity of ${cartModel.product!.name} is (${product.availableQuantity})',
                         style: context.theme.textTheme.labelSmall,
                       ),
               ],

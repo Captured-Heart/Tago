@@ -149,26 +149,13 @@ Widget fruitsAndVeggiesCardLoader({
   ).padOnly(bottom: 35));
 }
 
-Widget productCard({
-  required BuildContext context,
-  required ProductsModel productModel,
-  required VoidCallback addToCartBTN,
-}) {
-  final List<ProductsModel> recentProducts = [];
-
-  void addRecentlyViewedToStorage(ProductsModel productModel) {
-    final myData =
-        HiveHelper().getRecentlyViewed(defaultValue: recentProducts) as List<ProductsModel>;
-    log('recentDataList: $myData');
-    var op = HiveHelper().getRecentIdData();
-
-    if (op.value.values.contains(productModel.id) == false) {
-      final updatedData = [...myData, productModel];
-      HiveHelper().saveRecentIdData(productModel.id!);
-      HiveHelper().saveRecentData(updatedData);
-    }
-  }
-
+Widget productCard(
+    {required BuildContext context,
+    required ProductsModel productModel,
+    required VoidCallback addToCartBTN,
+    required VoidCallback onIncrementBTN,
+    required VoidCallback onDecrementBTN,
+    required}) {
   return GestureDetector(
     onTap: () {
       addRecentlyViewedToStorage(productModel);
@@ -215,30 +202,72 @@ Widget productCard({
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '${TextConstant.nairaSign} ${productModel.amount}',
-                  style: context.theme.textTheme.titleLarge?.copyWith(
-                    fontFamily: TextConstant.fontFamilyNormal,
-                    fontSize: 16,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7.0),
-                      border: Border.all(color: TagoDark.primaryColor)),
-                  child: GestureDetector(
-                    onTap: addToCartBTN,
-                    child: Text(
-                      'Add',
-                      style: context.theme.textTheme.titleMedium?.copyWith(
-                          fontFamily: TextConstant.fontFamilyNormal,
-                          fontSize: 12,
-                          color: TagoDark.orange),
+                Expanded(
+                  child: Text(
+                    '${TextConstant.nairaSign} ${productModel.amount}',
+                    style: context.theme.textTheme.titleLarge?.copyWith(
+                      fontFamily: TextConstant.fontFamilyNormal,
+                      fontSize: 16,
                     ),
+                    textAlign: TextAlign.start,
                   ),
-                )
+                ),
+                checkCartBoxLength()
+                            ?.map((e) => e.product?.id)
+                            .toList()
+                            .contains(productModel.id) ==
+                        true
+                    ? Container(
+                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
+                        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: TagoLight.primaryColor.withOpacity(0.13),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            //decrease
+                            GestureDetector(
+                              onTap: onDecrementBTN,
+                              child: const Icon(
+                                Icons.remove,
+                                size: 22,
+                                color: TagoLight.primaryColor,
+                              ),
+                            ),
+                            Text(
+                              '${cartQuantityFromName(productModel) ?? 1}',
+                              style: context.theme.textTheme.titleMedium,
+                            ),
+
+                            //increase
+                            GestureDetector(
+                              onTap: onIncrementBTN,
+                              child: const Icon(
+                                Icons.add,
+                                size: 22,
+                                color: TagoLight.primaryColor,
+                              ),
+                            ),
+                          ].rowInPadding(7),
+                        ),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7.0),
+                            border: Border.all(color: TagoDark.primaryColor)),
+                        child: GestureDetector(
+                          onTap: addToCartBTN,
+                          child: Text(
+                            'Add',
+                            style: context.theme.textTheme.titleMedium?.copyWith(
+                                fontFamily: TextConstant.fontFamilyNormal,
+                                fontSize: 12,
+                                color: TagoDark.orange),
+                          ),
+                        ),
+                      )
               ],
             )
           ],

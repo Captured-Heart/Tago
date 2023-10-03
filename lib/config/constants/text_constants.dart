@@ -241,7 +241,7 @@ SINGLE PRODUCT PAGE
   static const productDeletedFromCartSuccessfully = 'Product deleted from cart successfully';
   static const productAddedToCartSuccessfully = 'Product added to cart successfully';
   static const productIsAlreadyInCart = 'Product is already in cart';
-  static const doYouWantToDeleteThisProduct = 'Do you want to delete this product';
+  static const doYouWantToDeleteThisProduct = 'Do you want to delete this product from cart';
 
   static const weight = 'Weight (kg): ';
   static const sku = 'SKU: ';

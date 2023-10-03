@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
-
 import 'package:tago/app.dart';
 
 final authAsyncNotifierProvider = StateNotifierProvider<AuthAsyncNotifier, AsyncValue>((ref) {
@@ -20,41 +18,46 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
     required String phoneno,
   }) async {
     state = const AsyncValue.loading();
-    //post request executed
-    final Response response = await NetworkHelper.postRequest(
-      map: map,
-      api: signUpUrl,
-    ).timeout(const Duration(seconds: 25), onTimeout: () {
-      state = const AsyncValue.data(null);
 
-      showScaffoldSnackBarMessage('Connection timeout, try again');
-    });
+    try {
+      //post request executed
+      final Response response = await NetworkHelper.postRequest(
+        map: map,
+        api: signUpUrl,
+      ).timeout(const Duration(seconds: 25), onTimeout: () {
+        state = const AsyncValue.data(null);
 
-    // decoding the response
-    String data = response.body;
-    var decodedData = jsonDecode(data);
+        showScaffoldSnackBarMessage('Connection timeout, try again');
+      });
 
-    //the response and error handling
-    if (decodedData['success'] == true) {
-      log('came in here');
-      await HiveHelper().saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
-      await HiveHelper().saveData(HiveKeys.role.keys, decodedData['data']['role']);
-      log('decodedData: $decodedData');
+      // decoding the response
+      String data = response.body;
+      var decodedData = jsonDecode(data);
 
-      state = AsyncValue.data(decodedData['message']);
-      controller.disposeControllers();
-      push(
-          context,
-          ConfirmPhoneNumberScreen(
-            phoneno: phoneno,
-          ));
+      //the response and error handling
+      if (decodedData['success'] == true) {
+        log('came in here');
+        await HiveHelper().saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
+        await HiveHelper().saveData(HiveKeys.role.keys, decodedData['data']['role']);
+        log('decodedData: $decodedData');
 
-      return decodedData;
-    } else {
-      state = AsyncValue.error(decodedData['message'], StackTrace.fromString('stackTraceString'));
-      showAuthBottomSheet(
-        context: context,
-      );
+        state = AsyncValue.data(decodedData['message']);
+        controller.disposeControllers();
+        push(
+            context,
+            ConfirmPhoneNumberScreen(
+              phoneno: phoneno,
+            ));
+
+        return decodedData;
+      } else {
+        state = AsyncValue.error(decodedData['message'], StackTrace.empty);
+        showAuthBottomSheet(
+          context: context,
+        );
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
@@ -68,41 +71,40 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
   }) async {
     state = const AsyncValue.loading();
 
-    //post request executed
-    final Response response = await NetworkHelper.postRequest(
-      map: map,
-      api: signInUrl,
-    )
-        .onError(
-      (error, stackTrace) => state = AsyncValue.error(error!, stackTrace),
-    )
-        .timeout(const Duration(seconds: 25), onTimeout: () {
-      state = const AsyncValue.error('error, try again', StackTrace.empty);
-      showScaffoldSnackBarMessage('Connection timeout, try again', isError: true);
-    });
+    try {
+      final Response response = await NetworkHelper.postRequest(
+        map: map,
+        api: signInUrl,
+      )
+          .onError(
+        (error, stackTrace) => state = AsyncValue.error(error!, stackTrace),
+      )
+          .timeout(const Duration(seconds: 25), onTimeout: () {
+        state = const AsyncValue.data(null);
+        state = const AsyncValue.error('error, try again', StackTrace.empty);
+        showScaffoldSnackBarMessage('Connection timeout, try again', isError: true);
+      });
 
-    // decoding the response
-    String data = response.body;
-    var decodedData = jsonDecode(data);
+      // decoding the response
+      String data = response.body;
+      var decodedData = jsonDecode(data);
 
-    //the response and error handling
-    if (decodedData['success'] == true) {
-      log('came in here');
-      await HiveHelper().saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
-      await HiveHelper().saveData(HiveKeys.role.keys, decodedData['data']['role']);
+      //the response and error handling
+      if (decodedData['success'] == true) {
+        log('came in here');
+        await HiveHelper().saveData(HiveKeys.token.keys, decodedData['data']['access_token']);
+        await HiveHelper().saveData(HiveKeys.role.keys, decodedData['data']['role']);
 
-      state = AsyncValue.data(decodedData['message']);
-      log('decodedData: $decodedData');
+        state = AsyncValue.data(decodedData['message']);
+        log('decodedData: $decodedData');
 
 //NAVIGATING TO THE MAIN SCREEN
-      onNavigation();
+        onNavigation();
 
-      return decodedData;
-    } else {
-      state = AsyncValue.error(decodedData['message'], StackTrace.empty);
-      showAuthBottomSheet(
-        context: context,
-      );
+        return decodedData;
+      }
+    } catch (e) {
+      state = AsyncValue.error(e.toString(), StackTrace.empty);
     }
   }
 
