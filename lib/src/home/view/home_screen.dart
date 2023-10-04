@@ -308,8 +308,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   //ON INCREMENT
                                   onIncrementBTN: () {
                                     if (quantity! < productModel.availableQuantity!) {
-                                      log('increased: ${cartIndexFromID(productModel)!} ');
-
                                       incrementDecrementCartValueMethod(
                                         cartIndexFromID(productModel)!,
                                         CartModel(quantity: quantity + 1, product: productModel),
