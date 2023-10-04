@@ -1,5 +1,6 @@
 import 'package:tago/app.dart';
 import 'package:tago/src/home/loaders/category_card_loaders.dart';
+import 'package:tago/src/home/view/tag_screen.dart';
 import 'package:tago/src/widgets/shortcut_widget.dart';
 
 final carouselSliderProvider = Provider<CarouselController>((ref) {
@@ -250,22 +251,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   if (data!.showcaseProductTag == null) {
                     return const SizedBox();
                   }
+                  var productTagModel = data.showcaseProductTag;
                   return Column(
                     children: [
                       ListTile(
                         title: Text(
-                          data.showcaseProductTag!.name,
+                          productTagModel!.name,
                           style: context.theme.textTheme.titleLarge,
                         ),
                         trailing: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            push(
+                              context,
+                              TagScreen(
+                                  tagId: productTagModel.id,
+                                  appBarTitle: productTagModel.name,
+                                  imageUrl: productTagModel.previewImageUrl ??
+                                      productTagModel.imageUrl!),
+                            );
+                          },
                           child: const Text(TextConstant.seeall),
                         ),
                       ).padOnly(bottom: 10),
                       Stack(
                         children: [
                           CachedNetworkImage(
-                            imageUrl: data.showcaseProductTag!.imageUrl!,
+                            imageUrl: productTagModel.imageUrl!,
                             fit: BoxFit.fill,
                             width: double.infinity,
                             height: 320,
@@ -275,25 +286,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             child: ListView.builder(
                               padding: const EdgeInsets.only(
                                   left: 170.0, top: 10, bottom: 10),
-                              itemCount:
-                                  data.showcaseProductTag!.products!.length,
+                              itemCount: productTagModel.products!.length,
                               shrinkWrap: false,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return productCard(
                                   productModel:
-                                      data.showcaseProductTag!.products![index],
+                                      productTagModel.products![index],
                                   context: context,
                                   addToCartBTN: () {
                                     ref
                                         .read(cartNotifierProvider.notifier)
                                         .addToCartMethod(
                                       map: {
-                                        ProductTypeEnums.productId.name: data
-                                            .showcaseProductTag!
-                                            .products![index]
-                                            .id
-                                            .toString(),
+                                        ProductTypeEnums.productId.name:
+                                            productTagModel.products![index].id
+                                                .toString(),
                                         ProductTypeEnums.quantity.name: '1',
                                       },
                                     );

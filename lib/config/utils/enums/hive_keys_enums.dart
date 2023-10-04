@@ -2,8 +2,7 @@ enum HiveKeys {
   token('token'),
   role('role'),
   addressId('addressId'),
-  createOrder('orderId'),
-  createOrderUrl('url'),
+  createOrder('data'),
   search('search');
 
   const HiveKeys(this.keys);

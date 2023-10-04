@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/account/controller/card_payment_async_notifier.dart';
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -30,8 +31,6 @@ void showScaffoldSnackBarMessage(
         duration: Duration(seconds: duration ?? 5),
       ),
     );
-
-    
 
 void warningDialogs({
   required BuildContext context,
@@ -162,6 +161,48 @@ Future<void> showAuthBottomSheet({
               subtitle: Text(
                 '${authState1.error}',
                 // 'invalid phone number/password combination',
+                textScaleFactor: 1.1,
+                textAlign: TextAlign.center,
+              ),
+            )
+          ].columnInPadding(20),
+        ).padSymmetric(vertical: 40, horizontal: 30);
+      },
+    ),
+  );
+}
+
+Future<void> showPaymentBottomSheet({
+  required BuildContext context,
+}) async {
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(20),
+      topRight: Radius.circular(20),
+    )),
+    builder: (context1) => Consumer(
+      builder: (context, ref, child) {
+        final payWithCardState = ref.watch(payWithCardAsyncNotifierProvider);
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.cancel,
+              color: TagoLight.textError,
+              size: 44,
+            ),
+            ListTile(
+              title: const Text(
+                'Error',
+                textScaleFactor: 1.1,
+                textAlign: TextAlign.center,
+              ).padOnly(bottom: 10),
+              subtitle: Text(
+                '${payWithCardState.error}',
                 textScaleFactor: 1.1,
                 textAlign: TextAlign.center,
               ),

@@ -23,13 +23,15 @@ dependencies:
   google_polyline_algorithm: ^3.1.0
   hive_flutter: ^1.1.0
   http: ^0.13.5
-  intl: ^0.18.1
+  # intl: ^0.18.1
+  intl: ^0.17.0
   material_symbols_icons: ^4.39.5
   persistent_bottom_nav_bar: ^5.0.2
   shimmer: ^3.0.0
   scrollable_positioned_list: ^0.3.8
   webview_flutter: ^2.0.15
   url_launcher: ^6.1.14
+  flutter_paystack:
   flutter_masked_text2: ^0.9.1
 
 dev_dependencies:

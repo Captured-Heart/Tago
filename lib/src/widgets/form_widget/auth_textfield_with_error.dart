@@ -21,6 +21,7 @@ Widget authTextFieldWithError(
     bool? readOnly,
     Color? fillColor,
     int? maxLength,
+    TextStyle? style,
     TextInputAction? textInputAction,
     String? Function(String?)? validator}) {
   return Column(children: [
@@ -35,13 +36,12 @@ Widget authTextFieldWithError(
       keyboardType: keyboardType,
       onChanged: onChanged,
       maxLength: maxLength,
-      
       textInputAction: textInputAction ?? TextInputAction.next,
       cursorColor: TagoDark.primaryColor,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       autocorrect: false,
       validator: validator,
-      style: AppTextStyle.listTileSubtitleLight,
+      style: style ?? AppTextStyle.listTileSubtitleLight,
       inputFormatters: inputFormatters ??
           [FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))],
       decoration: InputDecoration(

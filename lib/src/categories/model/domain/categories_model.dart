@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:tago/app.dart';
 
 class CategoriesModel extends Equatable {
@@ -46,37 +48,38 @@ class DealsModel extends Equatable {
   final String? name;
   final int? id;
   final String? label;
-  final String? link;
-  final Map<String, dynamic>? image;
+  final ProductTagModel? tag;
+  final String? imageUrl;
 
   const DealsModel({
     this.name,
     this.id,
     this.label,
-    this.image,
-    this.link,
+    this.imageUrl,
+    this.tag,
   });
 
   factory DealsModel.fromJson(Map<String, dynamic> json) {
     return DealsModel(
-      name: json['name'] as String?,
-      id: json['id'] as int?,
-      label: json['label'] as String?,
-      image: json['image'] as Map<String, dynamic>?,
-      link: json['link'] as String?,
-    );
+        name: json['name'] as String?,
+        id: json['id'] as int?,
+        label: json['label'] as String?,
+        imageUrl:
+            json['image'] != null ? json['image']['url'] as String? : null,
+        tag:
+            json['tag'] != null ? ProductTagModel.fromJson(json['tag']) : null);
   }
 
   Map<String, dynamic> toJson() => {
         'name': name,
         'id': id,
         'label': label,
-        'link': link,
-        'image': image,
+        'tag': tag,
+        'imageUrl': imageUrl,
       };
 
   @override
-  List<Object?> get props => [name, id, label, image, link];
+  List<Object?> get props => [name, id, label, imageUrl, tag];
 }
 
 class CategoriesGroupModel {
@@ -96,6 +99,8 @@ class ProductTagModel extends Equatable {
   final int id;
   final String label;
   final String? imageUrl;
+  final String? previewImageUrl;
+
   final List<ProductsModel>? products;
 
   const ProductTagModel(
@@ -103,6 +108,7 @@ class ProductTagModel extends Equatable {
       required this.id,
       required this.label,
       this.imageUrl,
+      this.previewImageUrl,
       this.products});
 
   factory ProductTagModel.fromJson(Map<String, dynamic> json) {
@@ -110,10 +116,16 @@ class ProductTagModel extends Equatable {
         name: json['name'] as String,
         id: json['id'] as int,
         label: json['label'] as String,
-        imageUrl: json['image']['url'] as String?,
-        products: (json['productTags'] as List)
-            .map((e) => ProductsModel.fromJson(e['product']))
-            .toList());
+        imageUrl:
+            json['image'] != null ? json['image']['url'] as String? : null,
+        previewImageUrl: json['previewImage'] != null
+            ? json['previewImage']['url'] as String?
+            : null,
+        products: json['productTags'] != null
+            ? (json['productTags'] as List)
+                .map((e) => ProductsModel.fromJson(e['product']))
+                .toList()
+            : null);
   }
 
   Map<String, dynamic> toJson() => {

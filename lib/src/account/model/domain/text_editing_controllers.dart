@@ -4,16 +4,13 @@ import 'package:tago/app.dart';
 class PaymentTextEditingControllerClass {
   final GlobalKey<FormState> addCardFormKey = GlobalKey<FormState>();
 
-  TextEditingController cardNameController = TextEditingController();
-  var cardNumberController =
-      MaskedTextController(mask: '0000 0000 0000 0000 0000');
-  MaskedTextController expiryController = MaskedTextController(mask: '00/00');
-  MaskedTextController cvvController = MaskedTextController(mask: '000');
+  var cardNumber = MaskedTextController(mask: '0000 0000 0000 0000 0000');
+  MaskedTextController expiry = MaskedTextController(mask: '00/00');
+  MaskedTextController cvv = MaskedTextController(mask: '000');
 
   void disposeControllers() {
-    cardNameController.dispose();
-    cardNumberController.dispose();
-    expiryController.dispose();
-    cvvController.dispose();
+    cardNumber.dispose();
+    expiry.dispose();
+    cvv.dispose();
   }
 }

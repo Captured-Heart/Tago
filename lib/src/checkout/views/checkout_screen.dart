@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/orders/view/orders_make_payment_screen.dart';
 
 final voucherCodeProvider = StateProvider<String>((ref) {
   return '';
@@ -39,6 +38,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider);
     final code = ref.watch(voucherCodeProvider);
+    var cardList = ref.watch(getCardsProvider);
 
     final voucherCode = ref.watch(getVoucherStreamProvider(code));
     final deliveryfee =
@@ -190,7 +190,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               onPressed: () {
                 // check if payment is selected
                 if (paymentMethodType == PaymentMethodsType.notSelected) {
-                  showScaffoldSnackBarMessage("Please select a payment method");
+                  showScaffoldSnackBarMessage("Please select a payment method",
+                      isError: true);
                   return;
                 }
 
@@ -244,7 +245,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       .read(checkoutNotifierProvider.notifier)
                       .createAnOrderMethod(
                         map: checkModel,
-                        onNavigation: () {
+                        onNavigation: () async {
                           if (paymentMethodType == PaymentMethodsType.cash) {
                             navBarPush(
                               context: context,
@@ -252,11 +253,21 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               withNavBar: false,
                             );
                           } else {
-                            navBarPush(
-                              context: context,
-                              screen: const OrderPaymentScreen(),
-                              withNavBar: false,
-                            );
+                            var cards = cardList.valueOrNull;
+                            if (cards!.isNotEmpty) {
+                              push(
+                                  context,
+                                  PaymentsMethodScreen(
+                                    cards: cards,
+                                    isFromCheckout: true,
+                                  ));
+                            } else {
+                              push(
+                                  context,
+                                  AddNewCardsScreen(
+                                    isFromCheckout: true,
+                                  ));
+                            }
                           }
                         },
                       );

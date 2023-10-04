@@ -13,12 +13,11 @@ class OrderPaymentScreen extends StatefulWidget {
 class _OrderPaymentScreenState extends State<OrderPaymentScreen> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
-  bool _hasReachedSpecificLink = false;
 
   @override
   Widget build(BuildContext context) {
-    var url =
-        HiveHelper().getData(HiveKeys.createOrderUrl.keys)['url'].toString();
+    var data = HiveHelper().getData(HiveKeys.createOrder.keys)['data'];
+    var url = data['url'];
     return Scaffold(
         appBar: AppBar(
           elevation: 0,

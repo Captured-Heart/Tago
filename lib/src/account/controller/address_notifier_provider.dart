@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:tago/app.dart';
+import 'package:tago/src/account/controller/card_payment_async_notifier.dart';
+import 'package:tago/src/account/model/domain/card_model.dart';
 
 final addressIdProvider = StateProvider<String>((ref) {
   return '';
@@ -19,6 +21,14 @@ final getAccountAddressProvider =
 final getAccountInfoProvider =
     FutureProvider.autoDispose<AccountModel>((ref) async {
   return getAccountInfoMethod();
+});
+
+/*------------------------------------------------------------------
+                  GET CARDS  PROVIDER
+ -------------------------------------------------------------------*/
+final getCardsProvider =
+    FutureProvider.autoDispose<List<CardModel>>((ref) async {
+  return getCardsMethod(ref);
 });
 
 /*------------------------------------------------------------------

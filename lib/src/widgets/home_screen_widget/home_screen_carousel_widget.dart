@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/home/view/tag_screen.dart';
 
 List<Widget> carouselWidgetList(BuildContext context) {
   return [
@@ -92,12 +93,26 @@ Widget hotDealsCarouselWidget2({
   required BuildContext context,
   required DealsModel deal,
 }) {
-  return Container(
-    padding: const EdgeInsets.all(5),
-    width: context.sizeWidth(1),
-    child: cachedNetworkImageWidget(
-      imgUrl: deal.image!['url'],
-      height: 200,
+  return GestureDetector(
+    behavior: HitTestBehavior.opaque,
+    onTap: () {
+      if (deal.tag != null) {
+        push(
+          context,
+          TagScreen(
+              tagId: deal.tag!.id,
+              appBarTitle: deal.name!,
+              imageUrl: deal.tag!.previewImageUrl ?? deal.imageUrl!),
+        );
+      }
+    },
+    child: Container(
+      padding: const EdgeInsets.all(5),
+      width: context.sizeWidth(1),
+      child: cachedNetworkImageWidget(
+        imgUrl: deal.imageUrl,
+        height: 200,
+      ),
     ),
   );
 }

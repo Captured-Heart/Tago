@@ -42,6 +42,7 @@ Future<AccountModel> getAccountInfoMethod() async {
   );
   // WidgetRef? ref;
 
+  log("load account");
   // decoding the response
   String data = response.body;
   var decodedData = jsonDecode(data);

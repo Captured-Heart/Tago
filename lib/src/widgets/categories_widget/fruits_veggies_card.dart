@@ -126,7 +126,6 @@ Widget addMinusBTN({
 Widget fruitsAndVeggiesCardLoader({
   required BuildContext context,
 }) {
-  // var products = convertDynamicListToProductListModel(productImagesList!);
   return shimmerWidget(
       child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,6 +157,29 @@ Widget fruitsAndVeggiesCardLoader({
                   ))),
     ],
   ).padOnly(bottom: 35));
+}
+
+Widget tagScreenCardLoader({
+  required BuildContext context,
+}) {
+  return shimmerWidget(
+      child: GridView.count(
+          crossAxisCount: 2,
+          shrinkWrap: true,
+          childAspectRatio: 0.6,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          physics: const NeverScrollableScrollPhysics(),
+          children: List.generate(
+              4,
+              (index) => Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                    ),
+                    width: 180,
+                    height: 50,
+                  ))));
 }
 
 Widget productCard({

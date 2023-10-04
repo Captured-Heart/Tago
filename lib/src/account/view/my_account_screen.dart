@@ -6,6 +6,8 @@ class MyAccountScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final accountInfo = ref.watch(getAccountInfoProvider);
+    var cardList = ref.watch(getCardsProvider);
+
     return Scaffold(
       drawer: tagoHomeDrawer(context, accountInfo.valueOrNull),
       appBar: myAccountAppbar(context),
@@ -26,7 +28,6 @@ class MyAccountScreen extends ConsumerWidget {
             ),
             title: Text(
                 '${accountInfo.valueOrNull?.fname} ${accountInfo.valueOrNull?.lname}'),
-            // const Text('Samuel Adekanbi'),
             subtitle: Text(accountInfo.valueOrNull?.email ?? 'you@example.com'),
             trailing: TextButton(
               onPressed: () {},
@@ -52,8 +53,17 @@ class MyAccountScreen extends ConsumerWidget {
                 textStyle: context.theme.textTheme.bodySmall?.copyWith(
                   fontSize: 14,
                 ),
-                onTap: () {
-                  push(context, const PaymentsMethodScreen());
+                onTap: () async {
+                  var cards = cardList.valueOrNull;
+                  if (cards!.isNotEmpty) {
+                    push(
+                        context,
+                        PaymentsMethodScreen(
+                          cards: cards,
+                        ));
+                  } else {
+                    push(context, AddNewCardsScreen());
+                  }
                 },
               ),
               drawerListTile(
