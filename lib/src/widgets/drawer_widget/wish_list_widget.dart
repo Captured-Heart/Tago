@@ -4,7 +4,6 @@ Widget wishlistWidget({
   required BuildContext context,
   bool? isInCartAlready,
   required VoidCallback onAddToCart,
-  required VoidCallback deleteFromCart,
   required ProductsModel productsModel,
 }) {
   return Container(
@@ -41,7 +40,8 @@ Widget wishlistWidget({
                   children: [
                     productsModel.savedPerc != null
                         ? Text(
-                             TextConstant.nairaSign + productsModel.amount.toString().toCommaPrices(),
+                            TextConstant.nairaSign +
+                                productsModel.amount.toString().toCommaPrices(),
                             style: context.theme.textTheme.bodyMedium
                                 ?.copyWith(decoration: TextDecoration.lineThrough),
                           )
@@ -79,22 +79,19 @@ Widget wishlistWidget({
                           ),
                         ),
                       )
-                    : ElevatedButton(
-                        onPressed: deleteFromCart,
-                        style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            fixedSize: const Size.fromHeight(25),
-                            visualDensity: VisualDensity.compact,
-                            foregroundColor: TagoLight.primaryColor,
-                            backgroundColor: TagoLight.textError.withOpacity(0.15)),
+                    : Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 11),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: TagoLight.primaryColor.withOpacity(0.2),
+                        ),
                         child: Text(
-                          TextConstant.deleteFromcart,
+                          TextConstant.addedTocart,
                           style: context.theme.textTheme.bodyLarge?.copyWith(
-                            color: TagoDark.textError.withOpacity(0.6),
+                            color: TagoDark.primaryColor,
                           ),
                         ),
-                      )
-                // .debugBorder()
+                      ),
               ],
             ),
           ),

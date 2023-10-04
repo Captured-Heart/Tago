@@ -34,6 +34,8 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
         TextEditingController(text: widget.addressModel?.apartmentNumber);
     TextEditingController addressLabelController =
         TextEditingController(text: widget.addressModel?.label);
+    TextEditingController addressStateController =
+        TextEditingController(text: widget.addressModel?.state);
     return FullScreenLoader(
       isLoading: ref.watch(accountAddressProvider).isLoading,
       child: Scaffold(
@@ -106,27 +108,40 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                           ),
                           authTextFieldWithError(
                             controller: widget.isEditMode == false
+                                ? controller.addressStateController
+                                : addressStateController,
+                            context: context,
+                            inputFormatters: [],
+                            isError: false,
+                            hintText: TextConstant.state,
+                            validator: RequiredValidator(errorText: requiredValue),
+                          ),
+                          authTextFieldWithError(
+                            controller: widget.isEditMode == false
                                 ? controller.apartmentNoController
                                 : apartmentNoController,
                             context: context,
                             isError: false,
                             hintText: TextConstant.appartmentsuite,
+                            validator: RequiredValidator(errorText: requiredValue),
                           ),
-                          Text(
-                            TextConstant.addressLabel,
-                            textAlign: TextAlign.left,
-                            style: context.theme.textTheme.bodyLarge,
-                          ),
-                          authTextFieldWithError(
-                            controller: widget.isEditMode == false
-                                ? controller.addressLabelController
-                                : addressLabelController,
-                            context: context,
-                            isError: false,
-                            inputFormatters: [],
-                            textInputAction: TextInputAction.send,
-                            hintText: TextConstant.egOffice,
-                          ),
+
+                          //TODO: I REMOVED THIS LABEL BECAUSE IT'S ONLY ON THE DESIGN BUT NOT PASSED TO THE BACKEND
+                          // Text(
+                          //   TextConstant.addressLabel,
+                          //   textAlign: TextAlign.left,
+                          //   style: context.theme.textTheme.bodyLarge,
+                          // ),
+                          // authTextFieldWithError(
+                          //   controller: widget.isEditMode == false
+                          //       ? controller.addressLabelController
+                          //       : addressLabelController,
+                          //   context: context,
+                          //   isError: false,
+                          //   inputFormatters: [],
+                          //   textInputAction: TextInputAction.send,
+                          //   hintText: TextConstant.egOffice,
+                          // ),
                         ].columnInPadding(10),
                       ).padAll(20)
                     ],
@@ -149,10 +164,14 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                       log('entered the add address voidcallback');
                       ref.read(accountAddressProvider.notifier).addAddressMethod(
                           map: {
-                            AddressType.apartmentNumber.name: controller.apartmentNoController.text,
-                            AddressType.city.name: controller.addressCityController.text,
-                            AddressType.state.name: controller.addressLabelController.text,
-                            AddressType.streetAddress.name: controller.addressStreetController.text
+                            AddressType.apartmentNumber.name:
+                                controller.apartmentNoController.text.toTitleCase(),
+                            AddressType.city.name:
+                                controller.addressCityController.text.toTitleCase(),
+                            AddressType.state.name:
+                                controller.addressStateController.text.toTitleCase(),
+                            AddressType.streetAddress.name:
+                                controller.addressStreetController.text.toTitleCase()
                           },
                           context: context,
                           ref: ref,

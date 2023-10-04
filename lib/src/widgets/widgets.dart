@@ -6,6 +6,7 @@ export './custom_stepper_widget.dart';
 export './carousel_dot_indicator.dart';
 export './active_orders_card_widget.dart';
 export './shimmer_widget.dart';
+export './orders_widget_loaders.dart';
 //DRAWERS
 export './drawer_widget/drawer_widget.dart';
 

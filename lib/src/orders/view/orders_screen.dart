@@ -1,5 +1,9 @@
 import 'package:tago/app.dart';
 
+final searchOrdersProvider = StateProvider.autoDispose<String>((ref) {
+  return '';
+});
+
 enum OrderStatus {
   pending(0, TextConstant.pending),
   received(4, TextConstant.received),
@@ -44,18 +48,17 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
         controllerClass.ordersFocusNode.unfocus();
       }
     });
-    final orderList = ref.watch(orderListProvider(false));
-    final cartList = ref.watch(getCartListProvider(false).select((value) => value.valueOrNull));
-    log(orderList.valueOrNull?.map((e) => e.status).toList().toString() ?? '');
-    log('status: ${orderList.valueOrNull?.map((e) => e.id).toList()}');
+    // final orderList = ref.watch(orderListProvider(false));
+    // log(orderList.valueOrNull?.map((e) => e.status).toList().toString() ?? '');
+    // log('status: ${orderList.valueOrNull?.map((e) => e.id).toList()}');
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-   
         appBar: ordersAppbar(
           context: context,
-          isBadgeVisible: cartList?.isNotEmpty ?? false,
+          isBadgeVisible: checkCartBoxLength()?.isNotEmpty ?? false,
           controllerClass: controllerClass,
+          ref: ref,
         ),
         body: const TabBarView(
           children: [

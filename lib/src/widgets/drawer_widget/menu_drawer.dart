@@ -2,7 +2,7 @@ import 'package:tago/app.dart';
 
 Widget tagoHomeDrawer(
   BuildContext context,
-  AccountModel ? accountModel,
+  AccountModel? accountModel,
 ) {
   return Drawer(
       child: SafeArea(

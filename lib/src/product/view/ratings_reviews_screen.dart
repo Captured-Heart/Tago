@@ -14,11 +14,12 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
     // List<dynamic> listOfRatings = [3.5, 3.5, 3.8, 4.5, 4.5, 4.5, 5, 5, 5, 1, 3, 2];
     final products = ref.watch(getProductsProvider(widget.id.toString()));
     var listOfRatings = products.valueOrNull?.productReview!.map((e) => e['rating']).toList();
-    var op = listOfRatings
-        ?.where((element) => element >= 3.5 && element <= 3.5)
-        .map((e) => e.roundToDouble())
-        .toList();
-    log(op.toString());
+    log('listOfRatings: $listOfRatings');
+    // var op = listOfRatings
+    //     ?.where((element) => element >= 3.5 && element <= 3.5)
+    //     .map((e) => e.roundToDouble())
+    //     .toList();
+    // log(op.toString());
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -77,7 +78,7 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                           getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 4.5)
                               .length,
                       indicatorValue: getPercentageOfReviews(
-                        totalNoOfReviews: listOfRatings?.length ?? 0,
+                        totalNoOfReviews: listOfRatings!.isNotEmpty ? listOfRatings.length : 1,
                         noOfReviews: getListOfIndividualRating(
                                 listOfDoubles: listOfRatings, ratingsValue: 4.5)
                             .length,

@@ -1,8 +1,9 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/widgets/shimmer_widget.dart';
 
 Widget categoryCardLoaders({
   required BuildContext context,
+  double ? width,
+  int ? index,
 }) {
   return Wrap(
     runSpacing: 20,
@@ -11,18 +12,21 @@ Widget categoryCardLoaders({
     // runAlignment: WrapAlignment.start,
     crossAxisAlignment: WrapCrossAlignment.start,
     children: List.generate(
-      9,
+    index??  4,
       (index) => shimmerWidget(
         child: SizedBox(
-          width: context.sizeWidth(0.155),
+          width: width ?? 80,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 70,
-                width: 70,
-                color: TagoLight.indicatorActiveColor,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: TagoLight.indicatorActiveColor,
+                ),
+                height: 85,
+                padding: const EdgeInsets.all(8),
               ).padOnly(bottom: 4),
               Text(
                 ' Categories',
@@ -39,6 +43,30 @@ Widget categoryCardLoaders({
           ),
         ),
       ),
+    ),
+  );
+}
+
+Widget hotDealsLoaders({
+  required BuildContext context,
+}) {
+  return SizedBox(
+    height: 200,
+    child: ListView.builder(
+      itemCount: 3,
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        return shimmerWidget(
+          child: Container(
+            height: 150,
+            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            width: context.sizeWidth(0.9),
+            decoration: BoxDecoration(
+                color: TagoLight.indicatorActiveColor, borderRadius: BorderRadius.circular(20)),
+          ).padOnly(bottom: 4),
+        );
+      },
     ),
   );
 }

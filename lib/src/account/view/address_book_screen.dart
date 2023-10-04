@@ -15,6 +15,7 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
     super.dispose();
   }
 
+  int radioIndex = 0;
   @override
   Widget build(BuildContext context) {
     final address = ref.watch(getAccountAddressProvider);
@@ -35,52 +36,72 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
                 data.length,
                 (index) {
                   var addressModel = data[index];
-                  return savedAddressCard(
-                    context: context,
-                    onTap: () {
-                      //TODO: ADD THIS GENERAL ON TAP TO A RADIO WIDGET TO SELECT DEFAULT ADDRESS
-                      if (HiveHelper().getData(HiveKeys.fromCheckout.keys) ==
-                          HiveKeys.fromCheckout.keys) {
-                        HiveHelper().saveData(HiveKeys.addressId.keys, index);
-                        ref.invalidate(getAccountAddressProvider);
-                        pop(context);
-                      }
-                    },
-                    title: '${addressModel.apartmentNumber}, ${addressModel.streetAddress}',
-                    subtitle: addressModel.city ?? '',
-                    subtitle2: addressModel.state ?? '',
-                    onEdit: () {
-                      push(
-                        context,
-                        AddNewAddressScreen(
-                          addressModel: addressModel,
-                          isEditMode: true,
-                        ),
-                      );
-                    },
-                    onDelete: () {
-                      warningDialogs(
-                        context: context,
-                        title: TextConstant.areSureYouWantToDelete,
-                        errorMessage:
-                            '''${addressModel.apartmentNumber}, ${addressModel.streetAddress}
-                  ${addressModel.city}
-                  ${addressModel.state}
-                                ''',
-                        onPostiveAction: () {
-                          log(addressModel.id!);
-                          ref.read(accountAddressProvider.notifier).deleteAddressMethod(
-                            map: {
-                              AddressType.id.name: addressModel.id.toString(),
-                            },
-                            context: context,
-                            ref: ref,
-                          ).whenComplete(() {
-                            popRootNavigatorTrue(context);
-                          });
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Radio(
+                        value: index,
+                        groupValue: HiveHelper().getData(HiveKeys.addressIndex.keys) ?? 0,
+                        onChanged: (value) {
+                          HiveHelper().saveData(HiveKeys.addressIndex.keys, value);
+                          // ref.invalidate(getAccountInfoProvider);
+
+                          setState(() {});
+                          if (HiveHelper().getData(HiveKeys.fromCheckout.keys) ==
+                              HiveKeys.fromCheckout.keys) {
+                            HiveHelper().saveData(HiveKeys.addressId.keys, index);
+                            ref.invalidate(getAccountAddressProvider);
+
+                            pop(context);
+                          }
                         },
-                      );
-                    },
+                      ),
+                      Expanded(
+                        child: savedAddressCard(
+                          context: context,
+                          // onTap: () {
+                          //   if (HiveHelper().getData(HiveKeys.fromCheckout.keys) ==
+                          //       HiveKeys.fromCheckout.keys) {
+                          //     HiveHelper().saveData(HiveKeys.addressId.keys, index);
+                          //     ref.invalidate(getAccountAddressProvider);
+                          //     pop(context);
+                          //   }
+                          // },
+                          title: '${addressModel.apartmentNumber}, ${addressModel.streetAddress}',
+                          subtitle: addressModel.city ?? '',
+                          subtitle2: addressModel.state ?? '',
+                          onEdit: () {
+                            push(
+                              context,
+                              AddNewAddressScreen(
+                                addressModel: addressModel,
+                                isEditMode: true,
+                              ),
+                            );
+                          },
+                          onDelete: () {
+                            warningDialogs(
+                              context: context,
+                              title: TextConstant.areSureYouWantToDelete,
+                              errorMessage:
+                                  '${addressModel.apartmentNumber}, ${addressModel.streetAddress}\n${addressModel.city}\n${addressModel.state}',
+                              onPostiveAction: () {
+                                log(addressModel.id!);
+                                ref.read(accountAddressProvider.notifier).deleteAddressMethod(
+                                  map: {
+                                    AddressType.id.name: addressModel.id.toString(),
+                                  },
+                                  context: context,
+                                  ref: ref,
+                                ).whenComplete(() {
+                                  popRootNavigatorTrue(context: context, value: true);
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),

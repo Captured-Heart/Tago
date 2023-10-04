@@ -1,4 +1,5 @@
 // import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:tago/app.dart';
 
@@ -16,6 +17,7 @@ const String verifyPhoneNumberUrl = '/verification/phone-number';
 // CATEGORY URL
 const String getCategoriesUrl = '/public/categories';
 const String getCategoryUrl = '/public/category?label';
+const String getCategoryWithSubcategoriesUrl = '/public/category/subcategories?label';
 
 //PRODUCT URL
 const String getProductsUrl = '/public/product?label';
@@ -70,16 +72,13 @@ class NetworkHelper {
     required Map<String, dynamic> map,
     required String api,
   }) async {
-    try {
+    if (await Connectivity.instance.isConnected()) {
       final response = await http.post(Uri.parse('$baseUrl$api'), body: map);
       log('$baseUrl$api');
 
       return response;
-    } catch (e) {
-      showScaffoldSnackBarMessage(e.toString(), isError: true);
-      log(
-        'error from postRequest: ${e.toString()}',
-      );
+    } else {
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
   }
 
@@ -91,16 +90,16 @@ class NetworkHelper {
     Map<String, String>? headers,
   }) async {
     var url = '$baseUrl$api';
-    try {
+
+    if (await Connectivity.instance.isConnected()) {
       final response = await http.get(
         Uri.parse(url),
         headers: headers,
       );
 
       return response;
-    } catch (e) {
-      showScaffoldSnackBarMessage(e.toString(), isError: true);
-      log('error from getRequest: ${e.toString()}');
+    } else {
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
   }
 
@@ -111,7 +110,7 @@ class NetworkHelper {
     required String api,
   }) async {
     var url = '$baseUrl$api';
-    try {
+    if (await Connectivity.instance.isConnected()) {
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -123,12 +122,8 @@ class NetworkHelper {
       );
 
       return response;
-    } catch (e) {
-      showScaffoldSnackBarMessage(
-        e.toString(),
-        isError: true,
-      );
-      log('error from getRequest: ${e.toString()}');
+    } else {
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
   }
 
@@ -140,7 +135,7 @@ class NetworkHelper {
     required String api,
     AsyncValue? state,
   }) async {
-    try {
+    if (await Connectivity.instance.isConnected()) {
       final response = await http.post(
         Uri.parse('$baseUrl$api'),
         headers: {
@@ -154,13 +149,8 @@ class NetworkHelper {
       );
       // log('$baseUrl$api');
       return response;
-    } catch (e) {
-      // showScaffoldSnackBarMessage(
-      //   e.toString(),
-      //   isError: true,
-      // );
-
-      log('error from postRequestWithToken: ${e.toString()}');
+    } else {
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
   }
 
@@ -173,8 +163,7 @@ class NetworkHelper {
   }) async {
     // var url = '$baseUrl$api';
     log('$baseUrl$api');
-
-    try {
+    if (await Connectivity.instance.isConnected()) {
       final response = await http.patch(
         Uri.parse('$baseUrl$api'),
         body: map,
@@ -187,13 +176,30 @@ class NetworkHelper {
       );
 
       return response;
-    } catch (e) {
-      showScaffoldSnackBarMessage(
-        e.toString(),
-        isError: true,
-      );
-      log('error from patchRequest: ${e.toString()}');
+    } else {
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
+
+    // try {
+    //   final response = await http.patch(
+    //     Uri.parse('$baseUrl$api'),
+    //     body: map,
+    //     headers: {
+    //       'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+    //       'Content-Type': 'application/x-www-form-urlencoded',
+    //       'Connection': 'keep-alive',
+    //       'Accept-Encoding': 'gzip, deflate, br',
+    //     },
+    //   );
+
+    //   return response;
+    // } catch (e) {
+    //   showScaffoldSnackBarMessage(
+    //     e.toString(),
+    //     isError: true,
+    //   );
+    //   log('error from patchRequest: ${e.toString()}');
+    // }
   }
 
 /*------------------------------------------------------------------
@@ -204,7 +210,8 @@ class NetworkHelper {
     required String api,
   }) async {
     var url = '$baseUrl$api';
-    try {
+
+    if (await Connectivity.instance.isConnected()) {
       final response = await http.delete(
         Uri.parse(url),
         body: map,
@@ -218,9 +225,26 @@ class NetworkHelper {
       log('$baseUrl$api');
 
       return response;
-    } catch (e) {
-      showScaffoldSnackBarMessage(e.toString(), isError: true);
-      log('error from getRequest: ${e.toString()}');
+    } else {
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
+    // try {
+    //   final response = await http.delete(
+    //     Uri.parse(url),
+    //     body: map,
+    //     headers: {
+    //       'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+    //       'Content-Type': 'application/x-www-form-urlencoded',
+    //       'Connection': 'keep-alive',
+    //       'Accept-Encoding': 'gzip, deflate, br',
+    //     },
+    //   );
+    //   log('$baseUrl$api');
+
+    //   return response;
+    // } catch (e) {
+    //   showScaffoldSnackBarMessage(e.toString(), isError: true);
+    //   log('error from getRequest: ${e.toString()}');
+    // }
   }
 }

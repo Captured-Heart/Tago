@@ -5,7 +5,7 @@ import 'package:tago/app.dart';
  -------------------------------------------------------------------*/
 
 final fetchCategoriesProvider =
-    FutureProvider.autoDispose<List<CategoriesModel>>((ref) async {
+    FutureProvider.autoDispose<CategoriesGroupModel?>((ref) async {
   return fetchCategoriesMethod();
 });
 
@@ -17,6 +17,16 @@ final fetchCategoryByLabelProvider =
     FutureProvider.autoDispose<List<ProductsModel>>((ref) async {
   final label = ref.watch(categoryLabelProvider);
   return fetchCategoriesByLabel(label);
+});
+
+/*------------------------------------------------------------------
+               CATEGORY WITH SUBCATEGORY BY LABEL PROVIDER
+ -------------------------------------------------------------------*/
+
+final fetchCategoryWithSubcategoriesByLabelProvider =
+    FutureProvider.autoDispose<List<SubCategoryModel>>((ref) async {
+  final label = ref.watch(categoryLabelProvider);
+  return fetchCategoryWithSubcategoriesByLabel(label);
 });
 
 /*------------------------------------------------------------------

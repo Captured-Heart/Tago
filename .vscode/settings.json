@@ -1,5 +1,5 @@
 
-  {
+{
     "dart.flutterSdkPaths": ["/Users/captured_heart/fvm/versions"],
     
     // Remove .fvm files from search
@@ -11,4 +11,3 @@
       "**/.fvm": true
     }
   }
-  

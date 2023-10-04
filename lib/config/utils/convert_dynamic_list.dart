@@ -118,17 +118,24 @@ bool checkIdenticalListsWithInt({
 double? getAverageOfRatings({
   required List<dynamic>? listOfDoubles,
 }) {
-  var number = listOfDoubles?.fold(0.0, (previousValue, element) => previousValue + element);
-  double finalNumber = (number ?? 0.0) / (listOfDoubles?.length ?? 1);
-
-  return finalNumber;
+  // log('list of doubles:' + listOfDoubles.toString());
+  if (listOfDoubles!.isNotEmpty) {
+    var number = listOfDoubles.fold(0.0, (previousValue, element) => previousValue + element);
+    double finalNumber = (number) / (listOfDoubles.length);
+    return finalNumber;
+  } else {
+    return 0.0;
+  }
+  // var number = listOfDoubles?.fold(0.0, (previousValue, element) => previousValue + element) ?? 0.0;
+  // double finalNumber = (number ) / (listOfDoubles?.length ?? 1);
+  // return finalNumber;
 }
 
 double getPercentageOfReviews({
-  required int totalNoOfReviews,
-  required int noOfReviews,
+  required int? totalNoOfReviews,
+  required int? noOfReviews,
 }) {
-  var perc = noOfReviews / totalNoOfReviews;
+  var perc = (noOfReviews ?? 0) / (totalNoOfReviews ?? 0);
   return perc;
 }
 
@@ -141,7 +148,7 @@ double ratingsValueExtrapolation(double ratings) {
   }
 }
 
-List<dynamic> getListOfIndividualRating({
+List<dynamic>  getListOfIndividualRating({
   required List<dynamic>? listOfDoubles,
   required double ratingsValue,
 }) {

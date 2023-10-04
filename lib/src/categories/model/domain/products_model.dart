@@ -49,23 +49,24 @@ class ProductsModel extends Equatable {
         productImages: json['productImages'] as List<dynamic>?,
         productSpecification: json['productSpecification'] as List<dynamic>?,
         productReview: json['productReview'] as List<dynamic>?,
-        productTags: json['productTags'] as List<dynamic>?,
         relatedProducts: json['relatedProducts'] as List<dynamic>?,
-        categoryId: json['categoryId'] as int?,
-        subCategoryId: json['subCategoryId'] as int?,
         amount: json['amount'] as int?,
-        brand: json['brand'] as Map<String, dynamic>?,
-        category: json['category'] == null
-            ? null
-            : CategoriesModel.fromJson(
-                json['category'] as Map<String, dynamic>),
-        subCategory: json['subCategory'] == null
-            ? null
-            : SubCategoriesModel.fromJson(
-                json['subCategory'] as Map<String, dynamic>),
         originalAmount: json['originalAmount'] as int?,
         savedPerc: (json['savedPerc'] as num?)?.toDouble(),
         availableQuantity: json['availableQuantity'] as int?,
+
+        // productTags: json['productTags'] as List<dynamic>?,
+        // subCategoryId: json['subCategoryId'] as int?,
+        // categoryId: json['categoryId'] as int?,
+        // brand: json['brand'] as String?,
+        // category: json['category'] == null
+        //     ? null
+        //     : CategoriesModel.fromJson(
+        //         json['category'] as Map<String, dynamic>),
+        // subCategory: json['subCategory'] == null
+        //     ? null
+        //     : SubCategoriesModel.fromJson(
+        //         json['subCategory'] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toJson() => {

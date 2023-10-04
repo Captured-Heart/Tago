@@ -24,14 +24,15 @@ Widget categoryCard({
                 ? categoriesModel.name!
                 : 'Not available',
             textAlign: TextAlign.center,
-            maxLines: 1,
+            maxLines: 2,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
             style: context.theme.textTheme.bodyMedium?.copyWith(
-              fontSize: 12,
-              overflow: TextOverflow.ellipsis,
-              fontFamily: TextConstant.fontFamilyBold,
-            ),
+                fontSize: 12,
+                overflow: TextOverflow.ellipsis,
+                // fontFamily: TextConstant.fontFamilyBold,
+                fontWeight: FontWeight.w700,
+                color: TagoDark.textBold),
           ),
         )
       ],

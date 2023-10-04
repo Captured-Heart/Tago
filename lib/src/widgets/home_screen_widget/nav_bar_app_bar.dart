@@ -4,25 +4,28 @@ import 'package:tago/app.dart';
 AppBar homescreenAppbar({
   required BuildContext context,
   required bool isBadgeVisible,
+  required bool showSearchIcon,
 }) {
   return AppBar(
     elevation: 0,
     centerTitle: true,
+    backgroundColor: TagoDark.primaryColor,
     leading: IconButton(
       onPressed: () {
         Scaffold.of(context).openDrawer();
       },
       icon: const Icon(
         Icons.menu,
+        color: Colors.white,
       ),
     ),
     title: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset(
-          logoMedium,
-          height: 23,
-          width: 23,
+          logoMediumLight,
+          height: 40,
+          width: 28,
         ).padOnly(right: 5),
         Text(
           TextConstant.title.toLowerCase(),
@@ -30,6 +33,22 @@ AppBar homescreenAppbar({
             fontSize: 20,
             fontFamily: TextConstant.fontFamilyBold,
             fontWeight: AppFontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(
+          width: 30,
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: !showSearchIcon
+                ? GestureDetector(
+                    onTap: () => push(context, SearchScreen()),
+                    child: const Icon(
+                      Icons.search_outlined,
+                      color: Colors.white,
+                    ),
+                  )
+                : const SizedBox(),
           ),
         ),
       ],
@@ -47,7 +66,10 @@ AppBar homescreenAppbar({
           backgroundColor: TagoLight.orange,
           smallSize: 10,
           isLabelVisible: isBadgeVisible,
-          child: const Icon(Icons.shopping_cart_outlined),
+          child: const Icon(
+            Icons.shopping_cart_outlined,
+            color: Colors.white,
+          ),
         ),
       )
     ],
@@ -98,6 +120,7 @@ AppBar ordersAppbar({
   required BuildContext context,
   required bool isBadgeVisible,
   required TextEditingControllerClass controllerClass,
+  required WidgetRef ref,
 }) {
   return AppBar(
     toolbarHeight: kToolbarHeight * 1.5,
@@ -110,7 +133,7 @@ AppBar ordersAppbar({
       ),
     ),
     title: authTextFieldWithError(
-      controller: TextEditingController(),
+      controller: controllerClass.searchProductController,
       context: context,
       isError: false,
       filled: true,
@@ -119,6 +142,10 @@ AppBar ordersAppbar({
       fillColor: TagoLight.textFieldFilledColor,
       autoFocus: false,
       focusNode: controllerClass.ordersFocusNode,
+      onChanged: (value) {
+        ref.read(searchOrdersProvider.notifier).update((state) => value);
+        // controllerClass.searchProductController.text = value;
+      },
     ),
     actions: [
       IconButton(
@@ -153,17 +180,21 @@ AppBar ordersAppbar({
 }
 
 //categories app bar
-AppBar myAccountAppbar(context) {
+AppBar myAccountAppbar(BuildContext context) {
   return AppBar(
     elevation: 0,
     centerTitle: true,
-    leading: IconButton(
-      onPressed: () {
-        Scaffold.of(context).openDrawer();
-      },
-      icon: const Icon(
-        Icons.menu,
-      ),
+    leading: Builder(
+      builder: (context) {
+        return IconButton(
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+          icon: const Icon(
+            Icons.menu,
+          ),
+        );
+      }
     ),
     title: const Text(
       TextConstant.myaccounts,

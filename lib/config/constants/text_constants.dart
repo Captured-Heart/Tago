@@ -119,6 +119,8 @@ HOME PAGE
   static const allcategories = 'All Categories';
 
   static const seeall = 'See All';
+  static const seeAllResults = 'See All Results';
+
   static const similiarItems = 'Similar Items';
   static const itemsNearYou = 'Items near you';
   static const itemsDetails = 'Item Details';
@@ -154,6 +156,8 @@ FRUITS AND VEGETABLES SCREEN
       'Sorry, there are no products available in this category at the moment. Kindly Try Again later.';
   static const freeDelivery = 'Free delivery';
   static const productIsOutOfStock = 'Product is out of stock';
+  static const searchResultsFor = 'Search results for ';
+  static const filters = 'Filters ';
 
 /*----------------------------------------------------------------------
 DRAWER
@@ -201,6 +205,8 @@ ORDERS SCREEN
 WISHLIST SCREEN
 -----------------------------------------------------------------------*/
   static const addtocart = 'Add to Cart';
+  static const addedTocart = 'Added to Cart';
+
   static const savedToCart = 'Saved to Cart';
 
   static const deleteFromcart = 'Delete from Cart';
@@ -231,6 +237,12 @@ SINGLE PRODUCT PAGE
 
   static const productSpecifications = 'Product Specifications';
   static const product = 'Product';
+  static const productNotFound = 'Product not found';
+  static const productDeletedFromCartSuccessfully = 'Product deleted from cart successfully';
+  static const productAddedToCartSuccessfully = 'Product added to cart successfully';
+  static const productIsAlreadyInCart = 'Product is already in cart';
+  static const doYouWantToDeleteThisProduct = 'Do you want to delete this product from cart';
+
   static const weight = 'Weight (kg): ';
   static const sku = 'SKU: ';
   static const ratingandReviews = 'Ratings & Reviews ';
@@ -345,6 +357,11 @@ RIDER SECTION
   static const awaitingPickup = 'Awaiting Pickup';
   static const goHome = 'Go Home';
   static const tapStarsToGiveRatings = 'Tap the stars to give a rating';
+
+  static const didNotFind = "Didn't find \nwhat you had \nin mind? 😕";
+  static const suggestSomething = "Suggest something and we will look into it";
+  static const suggest = "Suggest a product";
+  static const shortcuts = 'Shortcuts';
 }
 
 const List categoriesFooters = [

@@ -78,3 +78,26 @@ Widget hotDealsCarouselWidget({
     ],
   );
 }
+
+List<Widget> hotDealsCarouselWidgetList(
+    BuildContext context, List<DealsModel> deals) {
+  List<Widget> widgetList = [];
+  for (var deal in deals) {
+    widgetList.add(hotDealsCarouselWidget2(context: context, deal: deal));
+  }
+  return widgetList;
+}
+
+Widget hotDealsCarouselWidget2({
+  required BuildContext context,
+  required DealsModel deal,
+}) {
+  return Container(
+    padding: const EdgeInsets.all(5),
+    width: context.sizeWidth(1),
+    child: cachedNetworkImageWidget(
+      imgUrl: deal.image!['url'],
+      height: 200,
+    ),
+  );
+}

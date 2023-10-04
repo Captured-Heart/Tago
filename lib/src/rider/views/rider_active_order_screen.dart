@@ -55,8 +55,11 @@ class _RiderActiveOrderScreenState extends ConsumerState<RiderActiveOrderScreen>
           error: (error, _) {
             return Text(error.toString());
           },
-          loading: () => const Center(
-            child: CircularProgressIndicator.adaptive(),
+          loading: () => Column(
+            children: List.generate(
+              4,
+              (index) => orderWidgetLoaders(context),
+            ),
           ),
         ),
       ],

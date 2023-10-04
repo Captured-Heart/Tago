@@ -91,6 +91,7 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                   InkWell(
                     onTap: () {
                       push(context, ForgotPasswordScreen());
+
                     },
                     child: Text(
                       TextConstant.forgotpassword,

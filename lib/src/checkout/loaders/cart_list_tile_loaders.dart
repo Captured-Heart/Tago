@@ -53,7 +53,6 @@ Widget myCartListTileLoader(BuildContext context) {
                       addMinusBTN(
                         context: context,
                         isMinus: true,
-                        isDelete: false,
                         onTap: () {},
                       ),
                       Text(

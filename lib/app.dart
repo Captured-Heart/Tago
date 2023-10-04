@@ -10,14 +10,14 @@ export 'dart:developer';
 export 'package:geolocator/geolocator.dart';
 export 'package:http/http.dart';
 export 'dart:convert';
-export 'package:cached_network_image/cached_network_image.dart'
-    hide ErrorListener;
+export 'package:cached_network_image/cached_network_image.dart' hide ErrorListener;
 export 'package:google_maps_flutter/google_maps_flutter.dart';
 export 'package:shimmer/shimmer.dart';
 export 'package:carousel_slider/carousel_slider.dart';
 export 'package:intl/intl.dart' hide TextDirection;
 export 'package:flutter_rating_bar/flutter_rating_bar.dart';
 export 'package:flutter_dash/flutter_dash.dart';
+export 'package:hive_flutter/hive_flutter.dart';
 
 // config
 export './config/config.dart';
@@ -47,7 +47,7 @@ export 'src/onboarding/onboarding.dart';
 export 'src/rider/rider.dart';
 export 'src/product/product.dart';
 export 'src/orders/order.dart';
-export 'src/categories/categories.dart';
+export 'src/categories/categories.dart' hide ProductsModel;
 export 'src/drawer/drawer.dart';
 export './src/search/search.dart';
-export './src/checkout/checkout.dart';
+export './src/checkout/checkout.dart' hide CartModel;

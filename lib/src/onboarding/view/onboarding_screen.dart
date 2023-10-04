@@ -87,6 +87,7 @@ right to you''',
                     child: TextButton(
                       onPressed: () {
                         pushNamed(context, SignInScreen.routeName);
+                        // HiveHelper().clearBoxRecent();
                       },
                       style: TextButton.styleFrom(
                         side: BorderSide(

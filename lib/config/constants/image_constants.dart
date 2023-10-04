@@ -1,5 +1,6 @@
 const String onBoardBG = 'assets/images/onboard_bg.png';
 const String logoMedium = 'assets/images/logo_medium.png';
+const String logoMediumLight = 'assets/images/logo_medium_light.png';
 const String logoLarge = 'assets/images/logo_large.png';
 const String addAdressImage = 'assets/images/address_icon.png';
 const String frame2 = 'assets/images/Frame_13.png';
@@ -7,6 +8,8 @@ const String mastercardLogo = 'assets/images/mastercard.png';
 const String visacardLogo = 'assets/images/visacard.png';
 const String metricsIcon = 'assets/icons/metrics_icon.png';
 const String noImagePlaceholder = 'assets/images/No-Image-Placeholder.png';
+const String passwordVisible = 'assets/icons/password_eye.png';
+const String passwordVisibleOff = 'assets/icons/password_eye_off.png';
 
 const String splashVideo = 'assets/images/Splash_screen.mp4';
 const String splashVideoGif = 'assets/images/splash_screen.gif';

@@ -21,15 +21,20 @@ dependencies:
   geolocator: ^9.0.2
   google_maps_flutter: ^2.4.0
   google_polyline_algorithm: ^3.1.0
+  hive: ^2.2.3
   hive_flutter: ^1.1.0
   http: ^0.13.5
   intl: ^0.18.1
   material_symbols_icons: ^4.39.5
   persistent_bottom_nav_bar: ^5.0.2
   shimmer: ^3.0.0
+  scrollable_positioned_list: ^0.3.8
+  webview_flutter: ^2.0.15
   url_launcher: ^6.1.14
 
 dev_dependencies:
+  build_runner: ^2.4.6
+  hive_generator: ^2.0.1
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter

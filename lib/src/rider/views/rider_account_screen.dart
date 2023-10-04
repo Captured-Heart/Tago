@@ -1,21 +1,26 @@
 import 'package:tago/app.dart';
 
-class RiderAccountScreen extends ConsumerWidget {
+class RiderAccountScreen extends ConsumerStatefulWidget {
   const RiderAccountScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RiderAccountScreen> createState() => _RiderAccountScreenState();
+}
+
+class _RiderAccountScreenState extends ConsumerState<RiderAccountScreen> {
+  @override
+  Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider).valueOrNull;
 
     return Scaffold(
+      key: ref.watch(scaffoldKeyProvider),
       drawer: tagoHomeDrawer(context, accountInfo),
       appBar: myAccountAppbar(context),
       body: ListView(
         padding: const EdgeInsets.all(15),
         children: [
           ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
               side: const BorderSide(
@@ -27,7 +32,7 @@ class RiderAccountScreen extends ConsumerWidget {
               FontAwesomeIcons.circleUser,
               color: TagoLight.textBold,
             ),
-            title: const Text('Samuel Adekanbi'),
+            title: Text('${accountInfo?.fname} ${accountInfo?.lname}'),
             trailing: TextButton(
               onPressed: () {},
               child: Text(
@@ -58,17 +63,16 @@ class RiderAccountScreen extends ConsumerWidget {
                 },
               ),
               drawerListTile(
-                  context: context,
-                  icons: FontAwesomeIcons.bell,
-                  isMaterialIcon: false,
-                  iconColor: TagoDark.textBold,
-                  title: TextConstant.notifications,
-                  textStyle: context.theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 14,
-                  ),
-                  onTap: () {
-                    push(context, const DeliveryRequestScreen());
-                  }),
+                context: context,
+                icons: FontAwesomeIcons.bell,
+                isMaterialIcon: false,
+                iconColor: TagoDark.textBold,
+                title: TextConstant.notifications,
+                textStyle: context.theme.textTheme.bodySmall?.copyWith(
+                  fontSize: 14,
+                ),
+                onTap: () {},
+              ),
               drawerListTile(
                 context: context,
                 icons: FontAwesomeIcons.circleQuestion,
@@ -89,8 +93,7 @@ class RiderAccountScreen extends ConsumerWidget {
                   });
                 },
                 shape: const Border(bottom: BorderSide(width: 0.1)),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                 minLeadingWidth: 1,
                 leading: const RotatedBox(
                   quarterTurns: 2,

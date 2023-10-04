@@ -1,20 +1,28 @@
 import 'package:flutter/foundation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tago/app.dart';
 
 class HiveHelper {
   final _boxTago = Hive.box('tago');
   final _boxSearch = Hive.box('search');
+  final _boxRecentlyViewed = Hive.box<List>('recently');
+  final _boxCarts = Hive.box<List>('carts');
 
   static Future<void> init() async {
+    Hive.registerAdapter(CartModelAdapter());
+    Hive.registerAdapter(ProductsModelAdapter());
+
+    log('enterrr');
     await Hive.initFlutter();
     await Hive.openBox('tago');
     await Hive.openBox('search');
+    await Hive.openBox<List>('recently');
+    await Hive.openBox<List>('carts');
   }
 
 /*------------------------------------------------------------------
                  FOR BOX('TAGO')
  -------------------------------------------------------------------*/
+
   Future<void> saveData(String key, dynamic value) async {
     log('savedData: $value');
     await _boxTago.put(key, value);
@@ -36,7 +44,7 @@ class HiveHelper {
     return _boxTago.keys.toList();
   }
 
-  Future<void> closeBox() async {
+  Future<void> closeTagoBox() async {
     await _boxTago.close();
   }
 
@@ -44,15 +52,103 @@ class HiveHelper {
     log('getData: $key');
     return _boxTago.get(key) ?? 0;
   }
+
+
+
+  /*------------------------------------------------------------------
+                 FOR BOX ('RECENTLY VIEWED')
+ -------------------------------------------------------------------*/
+  ValueListenable<Box<List>> getRecentlyViewedListenable() {
+    return _boxRecentlyViewed.listenable();
+  }
+
+// save task
+  saveRecentData(List<ProductsModel> product) async {
+    log('the product saved/viewed $product');
+    return await _boxRecentlyViewed.add(product);
+  }
+
+  Iterable<List<dynamic>> recentlyBoxValues() {
+    return _boxRecentlyViewed.values;
+  }
+
+  List<ProductsModel>? getRecentlyViewed({
+    List<ProductsModel>? defaultValue,
+  }) {
+    var opp = _boxRecentlyViewed.get(
+      HiveKeys.recentlyViewed.keys,
+      defaultValue: defaultValue,
+    ) as List<ProductsModel>;
+
+    return opp;
+  }
+
+  List<ProductsModel>? getAtRecently(int index) {
+    return _boxRecentlyViewed.getAt(index) as List<ProductsModel>;
+  }
+
+  // clear box
+  Future<void> clearBoxRecent() async {
+    await _boxRecentlyViewed.clear();
+  }
+
+  Future<void> closeRecentlyBox() async {
+    return await _boxRecentlyViewed.close();
+  }
+
+  /*------------------------------------------------------------------
+                 FOR BOX ('CARTS SECTION')
+ -------------------------------------------------------------------*/
+  ValueListenable<Box<List>> getCartsListenable() {
+    return _boxCarts.listenable();
+  }
+
+  Iterable<List<dynamic>> cartsBoxValues() {
+    return _boxCarts.values;
+  }
+
+// save task
+  saveCartsToList(List<CartModel> cartProduct) async {
+    log('the product saved/viewed $cartProduct');
+    return await _boxCarts.add(cartProduct);
+  }
+
+  // save task
+  saveCartsToListByPutAt(int index, List<CartModel> cartProduct) async {
+    log('the product saved/viewed $cartProduct');
+    return await _boxCarts.putAt(index, cartProduct);
+  }
+
+  deleteAtFromCart(int index) {
+    return _boxCarts.deleteAt(index);
+  }
+
+  List<CartModel>? getCartsList({
+    List<CartModel>? defaultValue,
+  }) {
+    var opp = _boxCarts.get(
+      HiveKeys.cartsKey.keys,
+      defaultValue: defaultValue,
+    ) as List<CartModel>;
+    return opp;
+  }
+
+  Future<void> closeCartsBox() async {
+    return await _boxCarts.close();
+  }
+
+  List<CartModel>? getAtCarts(int index) {
+    return _boxCarts.getAt(index) as List<CartModel>;
+  }
+
+  // clear box
+  Future<void> clearCartList() async {
+    await _boxCarts.clear();
+  }
+
   /*------------------------------------------------------------------
                  FOR BOX ('SEARCH')
  -------------------------------------------------------------------*/
-
-  // ///     save data
-  // Future<void> saveDataSearch(dynamic value) async {
-  //   log('savedData: $value');
-  //   await _boxSearch.add(value);
-  // }
 
   //      get data
   dynamic getDataSearch({String? key, dynamic defaultValue}) {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tago/app.dart';
 
 class CheckOutNotifier extends StateNotifier<AsyncValue> {
@@ -37,6 +39,7 @@ class CheckOutNotifier extends StateNotifier<AsyncValue> {
       var createdOrder = CheckoutModel.fromJson(decodedData['data']);
       showScaffoldSnackBarMessage(decodedData['message']);
       HiveHelper().saveData(HiveKeys.createOrder.keys, decodedData['data']);
+      HiveHelper().saveData(HiveKeys.createOrderUrl.keys, decodedData['data']);
       onNavigation();
       return createdOrder;
     } else {
