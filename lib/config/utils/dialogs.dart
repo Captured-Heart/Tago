@@ -28,7 +28,7 @@ void showScaffoldSnackBarMessage(
                 ),
               ),
             ].rowInPadding(5)),
-        duration: Duration(seconds: duration ?? 5),
+        duration: Duration(seconds: duration ?? 1),
       ),
     );
 
@@ -37,6 +37,9 @@ void warningDialogs({
   required String errorMessage,
   VoidCallback? onNegativeAction,
   required VoidCallback onPostiveAction,
+  bool hasImage = false,
+  String? imgUrl,
+  double? height,
   String? title,
 }) =>
     showDialog(
@@ -52,11 +55,23 @@ void warningDialogs({
             textScaleFactor: 1.1,
             textAlign: TextAlign.center,
           ).padOnly(bottom: 10),
-          content: Text(
-            errorMessage,
-            textScaleFactor: 1.1,
-            textAlign: TextAlign.center,
-          ),
+          content: Row(
+            children: [
+              hasImage == false
+                  ? const SizedBox.shrink()
+                  : cachedNetworkImageWidget(
+                      imgUrl: imgUrl,
+                      height: height ?? 80,
+                    ),
+              Expanded(
+                child: Text(
+                  errorMessage,
+                  textScaleFactor: 1.1,
+                  textAlign: hasImage == true ? TextAlign.left : TextAlign.center,
+                ),
+              )
+            ].rowInPadding(10),
+          ).padSymmetric(horizontal: 15),
           contentPadding: const EdgeInsets.only(top: 5),
           actionsAlignment: MainAxisAlignment.spaceAround,
           contentTextStyle: context.theme.textTheme.bodyMedium,
@@ -67,12 +82,9 @@ void warningDialogs({
                     () {
                       pop(context);
                     },
-                style:
-                    TextButton.styleFrom(foregroundColor: TagoLight.textError),
+                style: TextButton.styleFrom(foregroundColor: TagoLight.textError),
                 child: const Text(TextConstant.cancel)),
-            TextButton(
-                onPressed: onPostiveAction,
-                child: const Text(TextConstant.confirm))
+            TextButton(onPressed: onPostiveAction, child: const Text(TextConstant.confirm))
           ],
           // Column(
           //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -225,3 +237,7 @@ Future<void> showPaymentBottomSheet({
 //       ),
 //     );
 //   }
+String nairaSignString() {
+  var format = NumberFormat.simpleCurrency(name: 'NGN');
+  return format.currencySymbol;
+}

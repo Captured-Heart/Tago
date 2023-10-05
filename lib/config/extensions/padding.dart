@@ -22,8 +22,7 @@ extension PaddingExtension on Widget {
     double bottom = 0.0,
   }) {
     return Padding(
-      padding:
-          EdgeInsets.only(left: left, top: top, right: right, bottom: bottom),
+      padding: EdgeInsets.only(left: left, top: top, right: right, bottom: bottom),
       child: this,
     );
   }
@@ -138,14 +137,16 @@ extension BuildContextThemeExtensions on BuildContext {
 extension StringCasingExtension on String {
   String toCapitalized() =>
       length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
-  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
-      .split(' ')
-      .map((str) => str.toCapitalized())
-      .join(' ');
+  String toTitleCase() =>
+      replaceAll(RegExp(' +'), ' ').split(' ').map((str) => str.toCapitalized()).join(' ');
 
   String toCommaPrices() {
     final formatter = NumberFormat("###,###.#", "en_US");
-    final price = formatter.format(double.parse(this));
-    return price;
+    if (isEmpty) {
+      return '';
+    } else {
+      final price = formatter.format(isEmpty ? 0.00 : double.parse(this));
+      return price;
+    }
   }
 }

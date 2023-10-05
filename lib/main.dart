@@ -5,8 +5,8 @@ import 'package:tago/src/onboarding/view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await HiveHelper.init();
-  log('started app');
   final ProviderContainer container = ProviderContainer(
     // This observer is used for logging changes in all Riverpod providers.
     observers: <ProviderObserver>[AppProviderObserver()],
@@ -37,6 +37,7 @@ class MainAppState extends ConsumerState<MainApp> {
     return MaterialApp(
       onGenerateTitle: (context) => TextConstant.title,
       restorationScopeId: 'app',
+
       // useInheritedMediaQuery: true,
       // builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
@@ -61,7 +62,7 @@ class MainAppState extends ConsumerState<MainApp> {
               case AddAddressScreen.routeName:
                 return const AddAddressScreen();
               case AddAddressManuallyScreen.routeName:
-                return const AddAddressManuallyScreen();
+                return AddAddressManuallyScreen();
               default:
                 return const OnBoardScreen();
             }

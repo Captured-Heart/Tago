@@ -27,7 +27,7 @@ class OrdersDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final accountInfo = ref.watch(getAccountInfoProvider);
-
+    var address = accountInfo.valueOrNull?.address;
     final orderStatus = ref.watch(orderStatusProvider(orderListModel.id.toString())).valueOrNull;
     // log(orderListModel.id!.toString());
 // log(orderStatus!.status.toString());
@@ -137,7 +137,7 @@ class OrdersDetailScreen extends ConsumerWidget {
               contentPadding: EdgeInsets.zero,
               title: const Text(TextConstant.deliveredTo),
               subtitle: Text(
-                accountInfo.valueOrNull?.address?.streetAddress ?? TextConstant.noAddressFound,
+                '${address?.apartmentNumber}, ${address?.streetAddress}, ${address?.city}, ${address?.state}',
               ),
             )
           ],

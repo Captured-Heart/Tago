@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tago/app.dart';
 
 /*------------------------------------------------------------------
@@ -18,9 +20,8 @@ Future<List<AvailabilityModel>> getAvailableDatesMethod() async {
   log('day resposnse status: ${response.statusCode}');
   //the response and error handling
   if (decodedData['success'] == true || response.statusCode == 200) {
-    final availableTimes = (decodedData['data'] as List)
-        .map((e) => AvailabilityModel.fromJson(e))
-        .toList();
+    final availableTimes =
+        (decodedData['data'] as List).map((e) => AvailabilityModel.fromJson(e)).toList();
 
     // log('get request for availibilty model:  ${decodedData['data']}');
 
@@ -49,13 +50,15 @@ Future<List<TimesModel>> getAvailableTimesMethod(int index) async {
 
   //the response and error handling
   if (decodedData['success'] == true || response.statusCode == 200) {
-    // final availableTimes =
-    //     (decodedData['data'] as List).map((e) => TimesModel.fromJson(e)).toList();
-    var availableTimes = (decodedData['data'] as List)[index]['times'];
-    var convertedList = convertDynamicListToTimesListModel(availableTimes);
-    log('get request for availibilty times:  $availableTimes');
+    if ((decodedData['data'] as List).isNotEmpty) {
+      var availableTimes = (decodedData['data'] as List)[index]['times'];
+      var convertedList = convertDynamicListToTimesListModel(availableTimes);
+      log('get request for availibilty times:  $availableTimes');
 
-    return convertedList;
+      return convertedList;
+    } else {
+      return [];
+    }
   } else {
     return [decodedData['message']];
   }
@@ -66,8 +69,7 @@ Future<List<TimesModel>> getAvailableTimesMethod(int index) async {
 //  -------------------------------------------------------------------*/
 Future<String> getDeliveryFeeMethod(
     {required String addressId, required String totalAmount}) async {
-  var url =
-      '$checkOutUrl/delivery-fee?addressId=$addressId&totalAmount=$totalAmount';
+  var url = '$checkOutUrl/delivery-fee?addressId=$addressId&totalAmount=$totalAmount';
   final Response response = await NetworkHelper.getRequestWithToken(
     api: url,
   );
@@ -82,6 +84,6 @@ Future<String> getDeliveryFeeMethod(
     // log(' get requests for delivery fee : ${decodedData['data']}');
     return decodedData['data'].toString();
   } else {
-    return decodedData['message'];
+    return '0';
   }
 }

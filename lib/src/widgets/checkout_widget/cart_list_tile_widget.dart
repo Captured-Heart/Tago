@@ -4,8 +4,6 @@ Widget myCartListTile({
   required BuildContext context,
   required CartModel cartModel,
   required int? quantity,
-  required List<CartModel> data,
-  required int index,
   required ProductsModel? product,
   required VoidCallback onDeleteFN,
   required VoidCallback onAddFN,
@@ -24,7 +22,7 @@ Widget myCartListTile({
       mainAxisSize: MainAxisSize.min,
       children: [
         cachedNetworkImageWidget(
-          imgUrl: cartModel.product?.productImages?.last['image']['url'],
+          imgUrl: cartModel.product?.productImages?.first['image']['url'],
           height: 100,
           width: 100,
         ),
@@ -68,7 +66,6 @@ Widget myCartListTile({
                     addMinusBTN(
                       context: context,
                       isMinus: true,
-                      isDelete: quantity! < 2 ? true : false,
                       onTap: onDeleteFN,
                     ),
                     Text(
@@ -85,10 +82,10 @@ Widget myCartListTile({
                   ].rowInPadding(15),
                 ),
                 // showError == false
-                quantity < product!.availableQuantity!
+                quantity! < product!.availableQuantity!
                     ? const SizedBox.shrink()
                     : Text(
-                        '${cartModel.product!.name} is less than the available quantity of (${product.availableQuantity})',
+                        'The available quantity of ${cartModel.product!.name} is (${product.availableQuantity})',
                         style: context.theme.textTheme.labelSmall,
                       ),
               ],

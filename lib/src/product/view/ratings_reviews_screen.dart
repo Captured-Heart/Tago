@@ -5,15 +5,21 @@ class RatingsAndReviewsScreen extends ConsumerStatefulWidget {
   const RatingsAndReviewsScreen({super.key, required this.id});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RatingsAndReviewsState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RatingsAndReviewsState();
 }
 
 class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
   @override
   Widget build(BuildContext context) {
+    // List<dynamic> listOfRatings = [3.5, 3.5, 3.8, 4.5, 4.5, 4.5, 5, 5, 5, 1, 3, 2];
     final products = ref.watch(getProductsProvider(widget.id.toString()));
-
+    var listOfRatings = products.valueOrNull?.productReview!.map((e) => e['rating']).toList();
+    log('listOfRatings: $listOfRatings');
+    // var op = listOfRatings
+    //     ?.where((element) => element >= 3.5 && element <= 3.5)
+    //     .map((e) => e.roundToDouble())
+    //     .toList();
+    // log(op.toString());
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -34,7 +40,7 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                     style: context.theme.textTheme.titleMedium,
                   ),
                   Text(
-                    '(17 ${TextConstant.verifiedRatings}) ',
+                    '(${products.valueOrNull?.productReview?.length} ${TextConstant.verifiedRatings}) ',
                     style: context.theme.textTheme.bodyLarge,
                   ),
                 ].rowInPadding(10),
@@ -48,14 +54,13 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                       size: 25,
                     ),
                     Text(
-                      '4.5',
+                      '${(getAverageOfRatings(listOfDoubles: listOfRatings)?.toStringAsFixed(1) ?? 0.0)} ',
                       style: context.theme.textTheme.bodyLarge,
                       textScaleFactor: 1.6,
                     )
                   ].rowInPadding(10)),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: 0.1,
@@ -65,35 +70,84 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //! TODO: USE A LIST VIEW BUILDER HERE (FIXEDDDDDDDDDD)
                     ratingsIndicatorRowWithStar(
                       context: context,
                       starValue: 5,
-                      ratingsPeopleNumber: 15,
-                      indicatorValue: 0.9,
+                      ratingsPeopleNumber:
+                          getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 4.5)
+                              .length,
+                      indicatorValue: getPercentageOfReviews(
+                        totalNoOfReviews: listOfRatings!.isNotEmpty ? listOfRatings.length : 1,
+                        noOfReviews: getListOfIndividualRating(
+                                listOfDoubles: listOfRatings, ratingsValue: 4.5)
+                            .length,
+                      ),
                     ),
                     ratingsIndicatorRowWithStar(
                       context: context,
                       starValue: 4,
-                      ratingsPeopleNumber: 2,
-                      indicatorValue: 0.2,
+                      ratingsPeopleNumber:
+                          getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 3.5)
+                              .length,
+                      indicatorValue: getPercentageOfReviews(
+                        totalNoOfReviews: listOfRatings?.length ?? 0,
+                        noOfReviews: getListOfIndividualRating(
+                                listOfDoubles: listOfRatings, ratingsValue: 3.5)
+                            .length,
+                      ),
                     ),
                     ratingsIndicatorRowWithStar(
                       context: context,
                       starValue: 3,
-                      ratingsPeopleNumber: 0,
-                      indicatorValue: 0.0,
+                      ratingsPeopleNumber:
+                          getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 2.5)
+                              .length,
+                      indicatorValue: getPercentageOfReviews(
+                        totalNoOfReviews: listOfRatings?.length ?? 0,
+                        noOfReviews: getListOfIndividualRating(
+                                listOfDoubles: listOfRatings, ratingsValue: 2.5)
+                            .length,
+                      ),
                     ),
                     ratingsIndicatorRowWithStar(
                       context: context,
                       starValue: 2,
-                      ratingsPeopleNumber: 0,
-                      indicatorValue: 0.0,
+                      ratingsPeopleNumber:
+                          getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 1.5)
+                              .length,
+                      indicatorValue: getPercentageOfReviews(
+                        totalNoOfReviews: listOfRatings?.length ?? 0,
+                        noOfReviews: getListOfIndividualRating(
+                                listOfDoubles: listOfRatings, ratingsValue: 1.5)
+                            .length,
+                      ),
                     ),
                     ratingsIndicatorRowWithStar(
                       context: context,
                       starValue: 1,
-                      ratingsPeopleNumber: 0,
-                      indicatorValue: 0.0,
+                      ratingsPeopleNumber:
+                          getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 0.5)
+                              .length,
+                      indicatorValue: getPercentageOfReviews(
+                        totalNoOfReviews: listOfRatings?.length ?? 0,
+                        noOfReviews: getListOfIndividualRating(
+                                listOfDoubles: listOfRatings, ratingsValue: 0.5)
+                            .length,
+                      ),
+                    ),
+                    ratingsIndicatorRowWithStar(
+                      context: context,
+                      starValue: 0,
+                      ratingsPeopleNumber:
+                          getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 0)
+                              .length,
+                      indicatorValue: getPercentageOfReviews(
+                        totalNoOfReviews: listOfRatings?.length ?? 0,
+                        noOfReviews:
+                            getListOfIndividualRating(listOfDoubles: listOfRatings, ratingsValue: 0)
+                                .length,
+                      ),
                     ),
                   ].columnInPadding(10),
                 ),
@@ -114,9 +168,7 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                 data: (data) {
                   return Container(
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.1,
-                          strokeAlign: BorderSide.strokeAlignInside),
+                      border: Border.all(width: 0.1, strokeAlign: BorderSide.strokeAlignInside),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(

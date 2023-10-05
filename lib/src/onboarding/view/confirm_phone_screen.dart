@@ -18,7 +18,12 @@ class ConfirmPhoneNumberScreen extends ConsumerWidget {
             isLeading: true,
             title: TextConstant.confirmPhoneNo,
             suffixIcon: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                push(
+                  context,
+                  const AddAddressScreen(),
+                );
+              },
               child: const Text(TextConstant.skip),
             ),
           ),
@@ -48,9 +53,7 @@ class ConfirmPhoneNumberScreen extends ConsumerWidget {
                       width: context.sizeWidth(1),
                       child: ElevatedButton(
                         onPressed: () {
-                          ref
-                              .read(authAsyncNotifierProvider.notifier)
-                              .verifyPhoneNumberMethod(
+                          ref.read(authAsyncNotifierProvider.notifier).verifyPhoneNumberMethod(
                             map: {
                               AuthTypeField.phoneNumber.name: phoneno,
                               AuthTypeField.otp.name: controller.otpCode.text,
@@ -73,9 +76,7 @@ class ConfirmPhoneNumberScreen extends ConsumerWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            ref
-                                .read(authAsyncNotifierProvider.notifier)
-                                .resendOtpMethod(context);
+                            ref.read(authAsyncNotifierProvider.notifier).resendOtpMethod(context);
                           },
                           child: const Text(TextConstant.resend),
                         )

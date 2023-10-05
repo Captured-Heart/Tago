@@ -1,7 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/product/models/domain/product_reviews_model.dart';
-import 'package:tago/src/product/models/domain/product_specifications_model.dart';
-import 'package:tago/src/rider/models/domain/rider_order_item_model.dart';
 
 List<SubCategoriesModel> convertDynamicListToSubCategoryListModel(
   List<dynamic> dynamicList,
@@ -44,6 +41,7 @@ List<PlaceOrderModel> convertDynamicListToPlaceOrderModel(
 
   return modelList;
 }
+
 List<RiderOrderItemsModel> convertDynamicListToRiderOrderItemModel(
   List<dynamic> dynamicList,
 ) {
@@ -78,8 +76,7 @@ List<ProductSpecificationsModel> convertDynamicListToProductSpecificationsModel(
   List<ProductSpecificationsModel> modelList = [];
 
   for (var dynamicItem in dynamicList ?? []) {
-    ProductSpecificationsModel modelInstance =
-        ProductSpecificationsModel.fromJson(dynamicItem);
+    ProductSpecificationsModel modelInstance = ProductSpecificationsModel.fromJson(dynamicItem);
 
     modelList.add(modelInstance);
   }
@@ -93,8 +90,7 @@ List<ProductReviewsModel> convertDynamicListToProductReviewsModel(
   List<ProductReviewsModel> modelList = [];
 
   for (var dynamicItem in dynamicList) {
-    ProductReviewsModel modelInstance =
-        ProductReviewsModel.fromJson(dynamicItem);
+    ProductReviewsModel modelInstance = ProductReviewsModel.fromJson(dynamicItem);
 
     modelList.add(modelInstance);
   }
@@ -117,4 +113,49 @@ bool checkIdenticalListsWithInt({
   var itemList = list1.contains(int);
 
   return itemList;
+}
+
+double? getAverageOfRatings({
+  required List<dynamic>? listOfDoubles,
+}) {
+  // log('list of doubles:' + listOfDoubles.toString());
+  if (listOfDoubles!.isNotEmpty) {
+    var number = listOfDoubles.fold(0.0, (previousValue, element) => previousValue + element);
+    double finalNumber = (number) / (listOfDoubles.length);
+    return finalNumber;
+  } else {
+    return 0.0;
+  }
+  // var number = listOfDoubles?.fold(0.0, (previousValue, element) => previousValue + element) ?? 0.0;
+  // double finalNumber = (number ) / (listOfDoubles?.length ?? 1);
+  // return finalNumber;
+}
+
+double getPercentageOfReviews({
+  required int? totalNoOfReviews,
+  required int? noOfReviews,
+}) {
+  var perc = (noOfReviews ?? 0) / (totalNoOfReviews ?? 0);
+  return perc;
+}
+
+// i am checking if the ratings has a decimal (e.g: 3.5 == true, i.e if it is false, i can return the same value or approximate)
+double ratingsValueExtrapolation(double ratings) {
+  if ((ratings != ratings.toInt()) == false) {
+    return ratings;
+  } else {
+    return ratings.roundToDouble();
+  }
+}
+
+List<dynamic>  getListOfIndividualRating({
+  required List<dynamic>? listOfDoubles,
+  required double ratingsValue,
+}) {
+  var op = listOfDoubles
+          ?.where((element) => element >= ratingsValue && element <= ratingsValue.roundToDouble())
+          .map((e) => e.roundToDouble())
+          .toList() ??
+      [];
+  return op;
 }

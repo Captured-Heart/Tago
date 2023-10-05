@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:tago/app.dart';
 import 'package:tago/src/account/controller/card_payment_async_notifier.dart';
 import 'package:tago/src/account/model/domain/card_model.dart';
@@ -10,16 +12,14 @@ final addressIdProvider = StateProvider<String>((ref) {
 /*------------------------------------------------------------------
                   GET ACCOUNT ADDRESS PROVIDER
  -------------------------------------------------------------------*/
-final getAccountAddressProvider =
-    FutureProvider.autoDispose<List<AddressModel>>((ref) async {
+final getAccountAddressProvider = FutureProvider.autoDispose<List<AddressModel>>((ref) async {
   return getAddressMethod(ref);
 });
 
 /*------------------------------------------------------------------
                   GET ACCOUNT  PROVIDER
  -------------------------------------------------------------------*/
-final getAccountInfoProvider =
-    FutureProvider.autoDispose<AccountModel>((ref) async {
+final getAccountInfoProvider = FutureProvider.autoDispose<AccountModel>((ref) async {
   return getAccountInfoMethod();
 });
 
@@ -34,8 +34,7 @@ final getCardsProvider =
 /*------------------------------------------------------------------
                  ACCOUNT ADDRESS STATE NOTIFIER PROVIDER
  -------------------------------------------------------------------*/
-final accountAddressProvider =
-    StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
+final accountAddressProvider = StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
   return AccountAddressNotifier();
 });
 
@@ -51,6 +50,7 @@ class AccountAddressNotifier extends StateNotifier<AsyncValue> {
     required Map<String, dynamic> map,
     required BuildContext context,
     required WidgetRef ref,
+    required VoidCallback onNavigation,
   }) async {
     state = const AsyncValue.loading();
     //post request executed
@@ -65,7 +65,7 @@ class AccountAddressNotifier extends StateNotifier<AsyncValue> {
     //the response and error handling
     if (decodedData['success'] == true) {
       state = AsyncValue.data(decodedData['message']);
-      pop(context);
+      onNavigation();
       Future.delayed(const Duration(milliseconds: 200), () {
         ref.invalidate(getAccountAddressProvider);
 

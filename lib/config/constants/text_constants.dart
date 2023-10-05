@@ -69,6 +69,7 @@ Add address screen
   static const addressBook = 'Address Book';
   static const appartmentsuite = '  Apartment / Suite / Floor number';
   static const egOffice = '  (e.g., Office)';
+  static const pleaseProvideFullAddress = 'Please provide full street address';
 
 /*----------------------------------------------------------------------
 forgot password
@@ -121,10 +122,12 @@ HOME PAGE
   static const allcategories = 'All Categories';
 
   static const seeall = 'See All';
+  static const seeAllResults = 'See All Results';
+
   static const similiarItems = 'Similar Items';
   static const itemsNearYou = 'Items near you';
   static const itemsDetails = 'Item Details';
-
+  static const scheduleLaterNotAvailable = 'Schedule later is currently not available';
   static const recentlyViewed = 'Recently Viewed';
 
 /*----------------------------------------------------------------------
@@ -156,6 +159,8 @@ FRUITS AND VEGETABLES SCREEN
       'Sorry, there are no products available in this category at the moment. Kindly Try Again later.';
   static const freeDelivery = 'Free delivery';
   static const productIsOutOfStock = 'Product is out of stock';
+  static const searchResultsFor = 'Search results for ';
+  static const filters = 'Filters ';
 
 /*----------------------------------------------------------------------
 DRAWER
@@ -204,6 +209,8 @@ ORDERS SCREEN
 WISHLIST SCREEN
 -----------------------------------------------------------------------*/
   static const addtocart = 'Add to Cart';
+  static const addedTocart = 'Added to Cart';
+
   static const savedToCart = 'Saved to Cart';
 
   static const deleteFromcart = 'Delete from Cart';
@@ -240,6 +247,12 @@ SINGLE PRODUCT PAGE
 
   static const productSpecifications = 'Product Specifications';
   static const product = 'Product';
+  static const productNotFound = 'Product not found';
+  static const productDeletedFromCartSuccessfully = 'Product deleted from cart successfully';
+  static const productAddedToCartSuccessfully = 'Product added to cart successfully';
+  static const productIsAlreadyInCart = 'Product is already in cart';
+  static const doYouWantToDeleteThisProduct = 'Do you want to delete this product from cart';
+
   static const weight = 'Weight (kg): ';
   static const sku = 'SKU: ';
   static const ratingandReviews = 'Ratings & Reviews ';

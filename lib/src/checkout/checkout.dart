@@ -15,3 +15,4 @@ export './controllers/checkout_notifier.dart';
 
 export './views/delivery_complete_screen.dart';
 export './models/domain/place_order_model.dart';
+export './models/methods/save_to_carts_method.dart';

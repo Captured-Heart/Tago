@@ -1,5 +1,4 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/widgets/shimmer_widget.dart';
 
 Widget getFreeDeliveryDesign(
     List<int> indexList, int index, BuildContext context) {
@@ -93,7 +92,6 @@ Widget addMinusBTN({
   bool? isMinus,
   required BuildContext context,
   required VoidCallback onTap,
-  bool? isDelete,
 }) {
   return ElevatedButton(
     onPressed: onTap,
@@ -110,11 +108,7 @@ Widget addMinusBTN({
           : TagoLight.primaryColor,
     ),
     child: Icon(
-      isDelete == true
-          ? Symbols.delete
-          : isMinus == true
-              ? Icons.remove
-              : Icons.add,
+      isMinus == true ? Icons.remove : Icons.add,
       color: isMinus == true
           ? TagoDark.primaryColor
           : TagoDark.scaffoldBackgroundColor,
@@ -182,13 +176,17 @@ Widget tagScreenCardLoader({
                   ))));
 }
 
-Widget productCard({
-  required BuildContext context,
-  required ProductsModel productModel,
-  required VoidCallback addToCartBTN,
-}) {
+Widget productCard(
+    {required BuildContext context,
+    required ProductsModel productModel,
+    required VoidCallback addToCartBTN,
+    required VoidCallback onIncrementBTN,
+    required VoidCallback onDecrementBTN,
+    required}) {
   return GestureDetector(
     onTap: () {
+      addRecentlyViewedToStorage(productModel);
+
       navBarPush(
         context: context,
         screen: SingleProductPage(
@@ -231,30 +229,75 @@ Widget productCard({
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '${TextConstant.nairaSign} ${productModel.amount}',
-                  style: context.theme.textTheme.titleLarge?.copyWith(
-                    fontFamily: TextConstant.fontFamilyNormal,
-                    fontSize: 16,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7.0),
-                      border: Border.all(color: TagoDark.primaryColor)),
-                  child: GestureDetector(
-                    onTap: addToCartBTN,
-                    child: Text(
-                      'Add',
-                      style: context.theme.textTheme.titleMedium?.copyWith(
-                          fontFamily: TextConstant.fontFamilyNormal,
-                          fontSize: 12,
-                          color: TagoDark.orange),
+                Expanded(
+                  child: Text(
+                    '${TextConstant.nairaSign} ${productModel.amount}',
+                    style: context.theme.textTheme.titleLarge?.copyWith(
+                      fontFamily: TextConstant.fontFamilyNormal,
+                      fontSize: 16,
                     ),
+                    textAlign: TextAlign.start,
                   ),
-                )
+                ),
+                checkCartBoxLength()
+                            ?.map((e) => e.product?.id)
+                            .toList()
+                            .contains(productModel.id) ==
+                        true
+                    ? Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 3),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 2, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: TagoLight.primaryColor.withOpacity(0.13),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            //decrease
+                            GestureDetector(
+                              onTap: onDecrementBTN,
+                              child: const Icon(
+                                Icons.remove,
+                                size: 22,
+                                color: TagoLight.primaryColor,
+                              ),
+                            ),
+                            Text(
+                              '${cartQuantityFromName(productModel) ?? 1}',
+                              style: context.theme.textTheme.titleMedium,
+                            ),
+
+                            //increase
+                            GestureDetector(
+                              onTap: onIncrementBTN,
+                              child: const Icon(
+                                Icons.add,
+                                size: 22,
+                                color: TagoLight.primaryColor,
+                              ),
+                            ),
+                          ].rowInPadding(7),
+                        ),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7.0),
+                            border: Border.all(color: TagoDark.primaryColor)),
+                        child: GestureDetector(
+                          onTap: addToCartBTN,
+                          child: Text(
+                            'Add',
+                            style: context.theme.textTheme.titleMedium
+                                ?.copyWith(
+                                    fontFamily: TextConstant.fontFamilyNormal,
+                                    fontSize: 12,
+                                    color: TagoDark.orange),
+                          ),
+                        ),
+                      )
               ],
             )
           ],

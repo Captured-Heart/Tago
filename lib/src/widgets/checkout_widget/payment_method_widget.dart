@@ -57,7 +57,9 @@ Column checkoutPaymentMethodWidget(BuildContext context,
                 return checkOutChoosePaymentModalSheet(context).padAll(20);
               },
             );
-            updatePaymentMethod(selected);
+            if (selected != null) {
+              updatePaymentMethod(selected);
+            }
           },
           child: const Text(TextConstant.choose),
         ),

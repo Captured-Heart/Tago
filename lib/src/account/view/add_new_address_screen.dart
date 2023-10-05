@@ -9,8 +9,7 @@ class AddNewAddressScreen extends ConsumerStatefulWidget {
   final AddressModel? addressModel;
   final bool? isEditMode;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AddNewAddressScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AddNewAddressScreenState();
 }
 
 class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
@@ -35,6 +34,8 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
         TextEditingController(text: widget.addressModel?.apartmentNumber);
     TextEditingController addressLabelController =
         TextEditingController(text: widget.addressModel?.label);
+    TextEditingController addressStateController =
+        TextEditingController(text: widget.addressModel?.state);
     return FullScreenLoader(
       isLoading: ref.watch(accountAddressProvider).isLoading,
       child: Scaffold(
@@ -80,19 +81,21 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                             style: context.theme.textTheme.bodyLarge,
                           ),
                           authTextFieldWithError(
-                            controller: widget.isEditMode == false
-                                ? controller.addressStreetController
-                                : addressStreetController,
-                            context: context,
-                            isError: false,
-                            inputFormatters: [],
-                            prefixIcon: const Icon(
-                              Icons.search,
-                            ),
-                            hintText: TextConstant.enterAnewAddress,
-                            validator:
+                              controller: widget.isEditMode == false
+                                  ? controller.addressStreetController
+                                  : addressStreetController,
+                              context: context,
+                              isError: false,
+                              inputFormatters: [],
+                              prefixIcon: const Icon(
+                                Icons.search,
+                              ),
+                              hintText: TextConstant.enterAnewAddress,
+                              validator: MultiValidator([
                                 RequiredValidator(errorText: requiredValue),
-                          ),
+                                MinLengthValidator(10,
+                                    errorText: TextConstant.pleaseProvideFullAddress),
+                              ])),
                           authTextFieldWithError(
                             controller: widget.isEditMode == false
                                 ? controller.addressCityController
@@ -101,8 +104,17 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                             inputFormatters: [],
                             isError: false,
                             hintText: TextConstant.city,
-                            validator:
-                                RequiredValidator(errorText: requiredValue),
+                            validator: RequiredValidator(errorText: requiredValue),
+                          ),
+                          authTextFieldWithError(
+                            controller: widget.isEditMode == false
+                                ? controller.addressStateController
+                                : addressStateController,
+                            context: context,
+                            inputFormatters: [],
+                            isError: false,
+                            hintText: TextConstant.state,
+                            validator: RequiredValidator(errorText: requiredValue),
                           ),
                           authTextFieldWithError(
                             controller: widget.isEditMode == false
@@ -111,22 +123,25 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                             context: context,
                             isError: false,
                             hintText: TextConstant.appartmentsuite,
+                            validator: RequiredValidator(errorText: requiredValue),
                           ),
-                          Text(
-                            TextConstant.addressLabel,
-                            textAlign: TextAlign.left,
-                            style: context.theme.textTheme.bodyLarge,
-                          ),
-                          authTextFieldWithError(
-                            controller: widget.isEditMode == false
-                                ? controller.addressLabelController
-                                : addressLabelController,
-                            context: context,
-                            isError: false,
-                            inputFormatters: [],
-                            textInputAction: TextInputAction.send,
-                            hintText: TextConstant.egOffice,
-                          ),
+
+                          //TODO: I REMOVED THIS LABEL BECAUSE IT'S ONLY ON THE DESIGN BUT NOT PASSED TO THE BACKEND
+                          // Text(
+                          //   TextConstant.addressLabel,
+                          //   textAlign: TextAlign.left,
+                          //   style: context.theme.textTheme.bodyLarge,
+                          // ),
+                          // authTextFieldWithError(
+                          //   controller: widget.isEditMode == false
+                          //       ? controller.addressLabelController
+                          //       : addressLabelController,
+                          //   context: context,
+                          //   isError: false,
+                          //   inputFormatters: [],
+                          //   textInputAction: TextInputAction.send,
+                          //   hintText: TextConstant.egOffice,
+                          // ),
                         ].columnInPadding(10),
                       ).padAll(20)
                     ],
@@ -147,40 +162,35 @@ class _AddNewAddressScreenState extends ConsumerState<AddNewAddressScreen> {
                   if (controller.signInformKey.currentState!.validate()) {
                     if (widget.isEditMode == false) {
                       log('entered the add address voidcallback');
-                      ref
-                          .read(accountAddressProvider.notifier)
-                          .addAddressMethod(
-                        map: {
-                          AddressType.apartmentNumber.name:
-                              controller.apartmentNoController.text,
-                          AddressType.city.name:
-                              controller.addressCityController.text,
-                          AddressType.state.name:
-                              controller.addressLabelController.text,
-                          AddressType.streetAddress.name:
-                              controller.addressStreetController.text
-                        },
-                        context: context,
-                        ref: ref,
-                      );
+                      ref.read(accountAddressProvider.notifier).addAddressMethod(
+                          map: {
+                            AddressType.apartmentNumber.name:
+                                controller.apartmentNoController.text.toTitleCase(),
+                            AddressType.city.name:
+                                controller.addressCityController.text.toTitleCase(),
+                            AddressType.state.name:
+                                controller.addressStateController.text.toTitleCase(),
+                            AddressType.streetAddress.name:
+                                controller.addressStreetController.text.toTitleCase()
+                          },
+                          context: context,
+                          ref: ref,
+                          onNavigation: () {
+                            pop(context);
+                            ref.invalidate(getAccountInfoProvider);
+                          });
                     } else {
                       log('entered the edit address function');
 
-                      ref
-                          .read(accountAddressProvider.notifier)
-                          .editAddressMethod(
+                      ref.read(accountAddressProvider.notifier).editAddressMethod(
                         map: {
-                          AddressType.postalCode.name:
-                              widget.addressModel?.label.toString(),
+                          AddressType.postalCode.name: widget.addressModel?.label.toString(),
                           AddressType.setAsDefault.name: 'false',
-                          AddressType.id.name:
-                              widget.addressModel?.id.toString(),
-                          AddressType.apartmentNumber.name:
-                              apartmentNoController.text,
+                          AddressType.id.name: widget.addressModel?.id.toString(),
+                          AddressType.apartmentNumber.name: apartmentNoController.text,
                           AddressType.city.name: addressCityController.text,
                           AddressType.state.name: addressCityController.text,
-                          AddressType.streetAddress.name:
-                              addressStreetController.text
+                          AddressType.streetAddress.name: addressStreetController.text
                         },
                         context: context,
                         ref: ref,

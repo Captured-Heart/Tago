@@ -39,17 +39,19 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final accountInfo = ref.watch(getAccountInfoProvider);
     final code = ref.watch(voucherCodeProvider);
     var cardList = ref.watch(getCardsProvider);
+    final address = ref.watch(getAccountAddressProvider).valueOrNull;
 
     final voucherCode = ref.watch(getVoucherStreamProvider(code));
     final deliveryfee =
         ref.watch(getDeliveryFeeProvider(widget.totalAmount ?? 0));
-    log(deliveryfee.toString());
+    // log(" address : $accountInfo!.toString()");
+    var deliveryFeeValue = deliveryfee.valueOrNull ?? '0';
     var perc = ((int.parse('${voucherCode.valueOrNull?.amount ?? '0'}') /
                 (widget.totalAmount ?? 0)) *
             100)
         .round();
     final addressId = ref.watch(addressIdProvider);
-    // log(widget.placeOrderModel.toString());
+    // log(HiveHelper().getData(HiveKeys.addressId.keys).toString());
     return FullScreenLoader(
       isLoading: ref.watch(checkoutNotifierProvider).isLoading,
       child: Scaffold(
@@ -63,7 +65,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           controller: scrollController,
           children: [
             //! delivering to
-            checkoutDeliveryToWidget(context, accountInfo),
+            checkoutDeliveryToWidget(
+              context,
+              address != null && address.isNotEmpty
+                  ? address[
+                      HiveHelper().getAddressIndex(HiveKeys.addressId.keys)]
+                  : const AddressModel(),
+            ),
 
             //! select delivery type
             Column(
@@ -83,6 +91,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     log(isInstant.toString());
                   },
                   onTapInstantSchedule: () {
+                    // HiveHelper().saveData(HiveKeys.addressId.keys, 0);
                     setState(() {
                       isInstant = true;
                     });
@@ -105,6 +114,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             checkoutPhoneNumberWidget(context, accountInfo),
 
             //!payment method
+
             checkoutPaymentMethodWidget(
                     context, updatePaymentMethod, paymentMethodType)
                 .padOnly(top: 20),
@@ -147,8 +157,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   checkOutALLItemsRowWidget(
                     context: context,
                     leading: TextConstant.deliveryfee,
-                    trailing:
-                        '₦${deliveryfee.valueOrNull?.toCommaPrices() ?? 0}',
+                    trailing: '₦${deliveryFeeValue.toCommaPrices()}',
                   ),
                   checkOutALLItemsRowWidget(
                     context: context,
@@ -169,7 +178,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         Text(
                           TextConstant.nairaSign +
                               ((widget.totalAmount ?? 0) +
-                                      int.parse(deliveryfee.value ?? '0') -
+                                      int.parse(deliveryFeeValue) -
                                       int.parse(
                                         voucherCode.value?.amount == null
                                             ? '0'
@@ -197,6 +206,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
                 if (controller.voucherController.text.isNotEmpty) {
                   log('token: ${HiveHelper().getData(HiveKeys.token.name)}');
+
                   var checkModel = CheckoutModel(
                     addressId: addressId,
                     deliveryType: DeliveryType.instant.name,
@@ -218,13 +228,17 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       .createAnOrderMethod(
                         map: checkModel,
                         onNavigation: () {
+                          HiveHelper().clearCartList();
+
                           navBarPush(
                             context: context,
                             screen: const OrderPlacedScreen(),
                             withNavBar: false,
                           );
+                          return ref.refresh(getCartListProvider(false));
                         },
                       );
+                  HiveHelper().clearCartList();
                 } else {
                   var checkModel = CheckoutModel(
                     addressId: addressId,
@@ -246,6 +260,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       .createAnOrderMethod(
                         map: checkModel,
                         onNavigation: () async {
+                          HiveHelper().clearCartList();
+
                           if (paymentMethodType == PaymentMethodsType.cash) {
                             navBarPush(
                               context: context,
@@ -271,6 +287,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           }
                         },
                       );
+                  // HiveHelper().clearCartList();
                 }
               },
               child: const Text(TextConstant.confirmOrder),

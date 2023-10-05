@@ -113,6 +113,8 @@ class _TagScreenState extends ConsumerState<TagScreen> {
                               },
                             );
                           },
+                          onDecrementBTN: () {},
+                          onIncrementBTN: () {},
                         ),
                       ),
                     );

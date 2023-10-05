@@ -5,6 +5,7 @@ export './utils/navigation.dart';
 export './utils/dialogs.dart';
 export './utils/date_formatter.dart';
 export './utils/url_options.dart';
+export './utils/connectivity.dart';
 // enums
 export './utils/enums/auth_error_enums.dart';
 export './utils/enums/auth_type_enums.dart';
@@ -31,3 +32,6 @@ export './theme/app_fontweight.dart';
 export './theme/app_textstyles.dart';
 export './theme/app_theme.dart';
 export './theme/brand_theme_color.dart';
+
+//hive models
+export './hive_models/hive_cart_model.dart';

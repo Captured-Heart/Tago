@@ -1,5 +1,6 @@
+// ignore_for_file: sdk_version_since
+
 import 'package:tago/app.dart';
-import 'package:tago/src/product/models/domain/product_specifications_model.dart';
 
 class SingleProductPage extends ConsumerStatefulWidget {
   const SingleProductPage({
@@ -15,6 +16,7 @@ class SingleProductPage extends ConsumerStatefulWidget {
 }
 
 class _SingleProductPageState extends ConsumerState<SingleProductPage> {
+  final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     final products = ref.watch(getProductsProvider(widget.id.toString()));
@@ -27,14 +29,17 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
         cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList().contains(widget.id);
     // var wishListID = checkIdenticalListsWithInt(list1: wishListList, int: widget.id);
     final productSpecs = ref.watch(productSpecificationsProvider);
+
+    log('preducts Specs: ${products.valueOrNull?.productSpecification!}');
     final relatedProducts = ref.watch(relatedProductsProvider);
+
     return FullScreenLoader(
       isLoading: ref.read(postToWishListNotifierProvider).isLoading ||
           ref.watch(cartNotifierProvider).isLoading,
       child: Scaffold(
         appBar: appBarWidget(
           context: context,
-          title: products.valueOrNull?.label?.toTitleCase() ?? '',
+          title: products.valueOrNull?.name?.toTitleCase() ?? '',
           isLeading: true,
           suffixIcon: IconButton(
             onPressed: () {
@@ -43,16 +48,24 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 isDismissible: false,
                 isScrollControlled: true,
                 shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                )),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
                 builder: (context) {
                   return const SingleProductMiniCartModalWidget();
                 },
               );
             },
-            icon: const Icon(Icons.shopping_cart_outlined),
+            icon: Badge(
+              isLabelVisible: checkCartBoxLength()?.isNotEmpty ?? false,
+
+              // isLabelVisible: cartListLength?.isNotEmpty ?? false,
+              backgroundColor: TagoLight.orange,
+              smallSize: 10,
+              child: const Icon(Icons.shopping_cart_outlined),
+            ),
           ),
         ),
         body: ListView(
@@ -63,10 +76,12 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               width: context.sizeWidth(1),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: CarouselSlider(
@@ -96,8 +111,11 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                             ),
                           ),
                         ),
-                        carouselIndicator(context, widget.productsModel.productImages!.length, ref)
-                            .padOnly(top: 10),
+                        widget.productsModel.productImages!.length < 2
+                            ? const SizedBox.shrink()
+                            : carouselIndicator(
+                                    context, widget.productsModel.productImages!.length, ref)
+                                .padOnly(top: 10),
                       ],
                     ),
                   ),
@@ -143,78 +161,83 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                                   )
                                 : ElevatedButton(
                                     onPressed: () {
+                                      //add to cart (LOCALLY)
+                                      saveToCartLocalStorageMethod(
+                                        CartModel(quantity: 1, product: widget.productsModel),
+                                      );
+                                      // add to cart (BACKEND)
                                       ref.read(cartNotifierProvider.notifier).addToCartMethod(
                                         map: {
-                                          ProductTypeEnums.productId.name: widget.id.toString(),
+                                          ProductTypeEnums.productId.name:
+                                              widget.productsModel.id.toString(),
                                           ProductTypeEnums.quantity.name: '1',
                                         },
-                                      ).whenComplete(
-                                          () => ref.invalidate(getCartListProvider(false)));
+                                      );
+                                      ref.invalidate(getCartListProvider(false));
                                     },
                                     child: const Text(TextConstant.addtocart),
                                   ),
                           ),
-                    widget.productsModel.availableQuantity! < 1
-                        ? GestureDetector(
-                            onTap: () {
-                              showScaffoldSnackBarMessage(
-                                TextConstant.productIsOutOfStock,
-                                isError: true,
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Icon(Icons.favorite_outline),
-                                Text(
-                                  TextConstant.saveforlater,
-                                  textScaleFactor: 1.2,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ].rowInPadding(8),
-                            ),
-                          )
-                        : TextButton.icon(
-                            onPressed: () {
-                              if (wishListID != true) {
-                                ref
-                                    .read(postToWishListNotifierProvider.notifier)
-                                    .postToWishListMethod(
-                                  map: {ProductTypeEnums.productId.name: widget.id.toString()},
-                                ).whenComplete(() => ref.watch(fetchWishListProvider(false)));
-                              }
-                            },
-                            icon: wishListID == true
-                                ? const Icon(Icons.favorite)
-                                : const Icon(Icons.favorite_border_outlined),
-                            label: wishListID == true
-                                ? const Text(TextConstant.saved)
-                                : const Text(TextConstant.saveforlater),
-                          )
+                    TextButton.icon(
+                      onPressed: () {
+                        ref.read(postToWishListNotifierProvider.notifier).postToWishListMethod(
+                          map: {ProductTypeEnums.productId.name: widget.id.toString()},
+                        ).whenComplete(() => ref.invalidate(fetchWishListProvider(false)));
+                      },
+                      icon: wishListID == true
+                          ? const Icon(Icons.favorite)
+                          : const Icon(Icons.favorite_border_outlined),
+                      label: wishListID == true
+                          ? const Text(TextConstant.saved)
+                          : const Text(TextConstant.saveforlater),
+                    )
                   ].columnInPadding(10)),
                 ],
               ),
             ),
 
             //
+            // ITEM DETAILS
             ListTile(
               title: const Text(
                 TextConstant.itemsDetails,
               ),
-              subtitle: Text(
-                products.valueOrNull?.description ??
-                    'The most delicate moment requires impeccable precision.',
-                style: context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
-              ).padSymmetric(vertical: 10),
+              subtitle: products.isLoading
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(
+                        4,
+                        (index) => shimmerWidget(
+                          child: SizedBox(
+                            width: context.sizeWidth(0.95),
+                            child: const LinearProgressIndicator(
+                              minHeight: 12,
+                            ).padSymmetric(vertical: 3, horizontal: 10),
+                          ),
+                        ),
+                      ),
+                    ).padSymmetric(vertical: 10)
+                  : Text(
+                      products.valueOrNull?.description ?? '',
+                      style: context.theme.textTheme.bodyMedium?.copyWith(height: 1.7),
+                    ).padSymmetric(vertical: 10),
             ),
 
             //PRODUCT SPECIFICATIONS SECTIONS
-            singleProductSpecificationsWidget(context, productSpecs).padOnly(bottom: 20),
+            productSpecs.isNotEmpty
+                ? singleProductSpecificationsWidget(context, productSpecs).padOnly(bottom: 20)
+                : const SizedBox.shrink(),
 
             // RATINGS AND REVIEWS
             products.when(
               data: (data) {
+                if (data.productReview!.isEmpty) {
+                  return  Center(
+                      child: Text(
+                    'There are no reviews for this product!',
+                    style: context.theme.textTheme.bodyLarge?.copyWith(height: 1.7),
+                  ));
+                }
                 return singleProductRatingsAndReviewsWidget(data, context, products);
               },
               error: (error, _) {
@@ -230,44 +253,49 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               ),
             ),
 
-            SizedBox(
-              height: 220,
-              child: ListView.builder(
-                itemCount: products.valueOrNull?.relatedProducts?.length,
-                shrinkWrap: false,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  if (products.value?.relatedProducts != null) {
-                    return SizedBox(
-                      width: context.sizeWidth(0.38),
-                      child: singleProductSimilarItemCardWidget(
-                        // index: index,
-                        productsModel: relatedProducts[index],
+            products.value?.relatedProducts == null
+                ? const SizedBox.shrink()
+                : SizedBox(
+                    height: 220,
+                    width: context.sizeWidth(1),
+                    child: ListView.builder(
+                      itemCount: relatedProducts.length,
+                      shrinkWrap: false,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      scrollDirection: Axis.horizontal,
+                      controller: controller,
+                      itemBuilder: (context, index) {
+                        if (products.value?.relatedProducts != null) {
+                          return SizedBox(
+                            width: context.sizeWidth(0.38),
+                            child: singleProductSimilarItemCardWidget(
+                              // index: index,
+                              productsModel: relatedProducts[index],
 
-                        //TODO: REPLACE THE [0] WITH INDEX
-                        context: context,
-                        image: relatedProducts[0].productImages?.last['image']['url'] ??
-                            noImagePlaceholderHttp,
-                        onTap: () {
-                          // navBarPush(
-                          //   context: context,
-                          //   screen: SingleProductPage(
-                          //     appBarTitle: drinkTitle[index],
-                          //     image: drinkImages[index],
-                          //   ),
-                          //   withNavBar: false,
-                          // );
-                        },
-                      ),
-                    );
-                  }
-                  return const Center(
-                    child: Text(TextConstant.sorryNoProductsInCategory),
-                  );
-                },
-              ),
-            ),
+                              context: context,
+                              image: relatedProducts[index].productImages!.isNotEmpty
+                                  ? relatedProducts[index].productImages?.first['image']['url']
+                                  : noImagePlaceholderHttp,
+                              onTap: () {
+                                navBarPush(
+                                  context: context,
+                                  popFirst: true,
+                                  screen: SingleProductPage(
+                                    id: relatedProducts[index].id!,
+                                    productsModel: relatedProducts[index],
+                                  ),
+                                  withNavBar: false,
+                                );
+                              },
+                            ),
+                          );
+                        }
+                        return const Center(
+                          child: Text(TextConstant.sorryNoProductsInCategory),
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       ),
@@ -307,24 +335,18 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
 
             //TODO: THE ERROR OF BAD STATE IS HERE
             child: Text(
-              // ignore: sdk_version_since
-              productSpec?.firstOrNull?.title ?? 'Weight',
+              // productSpec?.map((e) => e.title).toString() ?? '',
+              '${productSpec?.firstOrNull?.title}\n\n ${productSpec?.firstOrNull?.value}',
+
               style: context.theme.textTheme.bodyLarge,
             ),
           ),
           //SKU
           Container(
             padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  TextConstant.sku,
-                  style: context.theme.textTheme.bodyLarge,
-                ),
-                const Text('1FDITDKCTU34565hj')
-              ],
+            child: Text(
+              '${productSpec?.lastOrNull?.title}\n\n ${productSpec?.lastOrNull?.value}',
+              style: context.theme.textTheme.bodyLarge,
             ),
           ),
         ],
