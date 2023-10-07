@@ -42,44 +42,7 @@ class CategoriesModel extends Equatable {
   List<Object?> get props => [name, id, label, image, subCategories, products];
 }
 
-class DealsModel extends Equatable {
-  final String? name;
-  final int? id;
-  final String? label;
-  final String? link;
-  final Map<String, dynamic>? image;
-
-  const DealsModel({
-    this.name,
-    this.id,
-    this.label,
-    this.image,
-    this.link,
-  });
-
-  factory DealsModel.fromJson(Map<String, dynamic> json) {
-    return DealsModel(
-      name: json['name'] as String?,
-      id: json['id'] as int?,
-      label: json['label'] as String?,
-      image: json['image'] as Map<String, dynamic>?,
-      link: json['link'] as String?,
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'id': id,
-        'label': label,
-        'link': link,
-        'image': image,
-      };
-
-  @override
-  List<Object?> get props => [name, id, label, image, link];
-}
-
-class CategoriesGroupModel  extends Equatable{
+class CategoriesGroupModel extends Equatable {
   final List<CategoriesModel> categories;
   final List<DealsModel> deals;
   final ProductTagModel? showcaseProductTag;
@@ -89,43 +52,6 @@ class CategoriesGroupModel  extends Equatable{
 
   @override
   List<Object?> get props => [categories, deals];
-}
-
-class ProductTagModel extends Equatable {
-  final String name;
-  final int id;
-  final String label;
-  final String? imageUrl;
-  final List<ProductsModel>? products;
-
-  const ProductTagModel(
-      {required this.name,
-      required this.id,
-      required this.label,
-      this.imageUrl,
-      this.products});
-
-  factory ProductTagModel.fromJson(Map<String, dynamic> json) {
-    return ProductTagModel(
-        name: json['name'] as String,
-        id: json['id'] as int,
-        label: json['label'] as String,
-        imageUrl: json['image']['url'] as String?,
-        products: (json['productTags'] as List)
-            .map((e) => ProductsModel.fromJson(e['product']))
-            .toList());
-  }
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'id': id,
-        'label': label,
-        'products': products,
-        'imageUrl': imageUrl,
-      };
-
-  @override
-  List<Object?> get props => [name, id, label, imageUrl, products];
 }
 
 class SubCategoryModel extends Equatable {
@@ -169,4 +95,88 @@ class SubCategoryModel extends Equatable {
 
   @override
   List<Object?> get props => [name, id, categoryId, label, imageUrl, products];
+}
+
+class DealsModel extends Equatable {
+  final String? name;
+  final int? id;
+  final String? label;
+  final ProductTagModel? tag;
+  final String? imageUrl;
+
+  const DealsModel({
+    this.name,
+    this.id,
+    this.label,
+    this.imageUrl,
+    this.tag,
+  });
+
+  factory DealsModel.fromJson(Map<String, dynamic> json) {
+    return DealsModel(
+        name: json['name'] as String?,
+        id: json['id'] as int?,
+        label: json['label'] as String?,
+        imageUrl:
+            json['image'] != null ? json['image']['url'] as String? : null,
+        tag:
+            json['tag'] != null ? ProductTagModel.fromJson(json['tag']) : null);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'id': id,
+        'label': label,
+        'tag': tag,
+        'imageUrl': imageUrl,
+      };
+
+  @override
+  List<Object?> get props => [name, id, label, imageUrl, tag];
+}
+
+class ProductTagModel extends Equatable {
+  final String name;
+  final int id;
+  final String label;
+  final String? imageUrl;
+  final String? previewImageUrl;
+
+  final List<ProductsModel>? products;
+
+  const ProductTagModel(
+      {required this.name,
+      required this.id,
+      required this.label,
+      this.imageUrl,
+      this.previewImageUrl,
+      this.products});
+
+  factory ProductTagModel.fromJson(Map<String, dynamic> json) {
+    return ProductTagModel(
+        name: json['name'] as String,
+        id: json['id'] as int,
+        label: json['label'] as String,
+        imageUrl:
+            json['image'] != null ? json['image']['url'] as String? : null,
+        previewImageUrl: json['previewImage'] != null
+            ? json['previewImage']['url'] as String?
+            : null,
+        products: json['productTags'] != null
+            ? (json['productTags'] as List)
+                .map((e) => ProductsModel.fromJson(e['product']))
+                .toList()
+            : null);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'id': id,
+        'label': label,
+        'products': products,
+        'imageUrl': imageUrl,
+      };
+
+  @override
+  List<Object?> get props => [name, id, label, imageUrl, products];
 }

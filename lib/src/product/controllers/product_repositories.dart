@@ -20,7 +20,7 @@ Future<ProductsModel> getProductsMethod(
     String label, AutoDisposeFutureProviderRef ref) async {
   // try {
   //post request executed
-  final Response response = await NetworkHelper.getRequestWithToken(
+  final Response response = await NetworkHelper.getRequest(
     api: '$getProductsUrl=$label',
   );
   log('$getProductsUrl=$label');
@@ -44,5 +44,28 @@ Future<ProductsModel> getProductsMethod(
     return productList;
   } else {
     return decodedData['message'];
+  }
+}
+
+/*------------------------------------------------------------------
+              FETCH PRODUCTS BY TAG ID METHOD
+ -------------------------------------------------------------------*/
+
+Future<List<ProductsModel>> getProductsByTagMethod(String label) async {
+  final Response response = await NetworkHelper.getRequest(
+    api: "$getProductsByTagUrl=$label&loadAll=true",
+  );
+
+  // decoding the response
+  String data = response.body;
+  var decodedData = jsonDecode(data);
+
+  if (response.statusCode == 200) {
+    final products = (decodedData['data']['productTags'] as List)
+        .map((e) => ProductsModel.fromJson(e['product']))
+        .toList();
+    return products;
+  } else {
+    return [];
   }
 }

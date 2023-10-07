@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:tago/app.dart';
 
 const String baseUrl = 'https://api.tagonow.com';
+// const String baseUrl = 'http://192.168.0.167:9800';
 
 // AUTH URL
 const String signUpUrl = '/auth/signup';
@@ -17,10 +18,12 @@ const String verifyPhoneNumberUrl = '/verification/phone-number';
 // CATEGORY URL
 const String getCategoriesUrl = '/public/categories';
 const String getCategoryUrl = '/public/category?label';
-const String getCategoryWithSubcategoriesUrl = '/public/category/subcategories?label';
+const String getCategoryWithSubcategoriesUrl =
+    '/public/category/subcategories?label';
 
 //PRODUCT URL
 const String getProductsUrl = '/public/product?label';
+const String getProductsByTagUrl = '/public/products/tag?label';
 
 //SEARCH URL
 const String getSearchUrl = '/public/search';
@@ -38,8 +41,10 @@ const String getWishListUrl = '/account/user/wishlist';
 
 //DELIVERY REQUESTS
 const String getDeliveryRequestUrl = '/account/rider/delivery_requests';
-const String declineDeliveryRequestUrl = '/account/rider/delivery_request/decline';
-const String acceptDeliveryRequestUrl = '/account/rider/delivery_request/accept';
+const String declineDeliveryRequestUrl =
+    '/account/rider/delivery_request/decline';
+const String acceptDeliveryRequestUrl =
+    '/account/rider/delivery_request/accept';
 
 // CARTS URL
 const String getCartsUrl = '/account/user/cart';
@@ -48,10 +53,18 @@ const String getCartsUrl = '/account/user/cart';
 const String getAvailabilityUrl = '/account/user/checkout/availability';
 const String checkOutUrl = '/account/user/checkout';
 const String voucherUrl = '/account/user/checkout/voucher';
-const String createAnOrderUrl = '/account/user/checkout/order';
-const String getListOfOrdersUrl = '/account/user/checkout/orders';
-const String getOrderStatusUrl = '/account/user/checkout/order_status';
-//
+
+// ORDER
+const String createAnOrderUrl = '/account/user/order';
+const String getListOfOrdersUrl = '/account/user/order/orders';
+const String getOrderStatusUrl = '/account/user/order/status';
+
+//PAYMENT
+const String paymentUrl = '/account/user/payment';
+const String initiatePaymentUrl = '$paymentUrl/pay';
+const String verifyPaymentUrl = '$paymentUrl/verify';
+const String chargeCardPaymentUrl = '$paymentUrl/charge_card';
+const String cardsUrl = '$paymentUrl/cards';
 
 //RIDER
 const String riderListOfOrdersUrl = '/account/rider/orders';
@@ -78,7 +91,8 @@ class NetworkHelper {
 
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
+          isError: true);
     }
   }
 
@@ -99,7 +113,8 @@ class NetworkHelper {
 
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
+          isError: true);
     }
   }
 
@@ -114,7 +129,8 @@ class NetworkHelper {
       final response = await http.get(
         Uri.parse(url),
         headers: {
-          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',
@@ -123,7 +139,8 @@ class NetworkHelper {
 
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
+          isError: true);
     }
   }
 
@@ -139,7 +156,8 @@ class NetworkHelper {
       final response = await http.post(
         Uri.parse('$baseUrl$api'),
         headers: {
-          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           // HiveHelper().getData(HiveKeys.token.keys) ?? '',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
@@ -150,7 +168,8 @@ class NetworkHelper {
       // log('$baseUrl$api');
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
+          isError: true);
     }
   }
 
@@ -168,7 +187,8 @@ class NetworkHelper {
         Uri.parse('$baseUrl$api'),
         body: map,
         headers: {
-          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',
@@ -177,7 +197,8 @@ class NetworkHelper {
 
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
+          isError: true);
     }
 
     // try {
@@ -216,7 +237,8 @@ class NetworkHelper {
         Uri.parse(url),
         body: map,
         headers: {
-          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization':
+              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',
@@ -226,7 +248,8 @@ class NetworkHelper {
 
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
+          isError: true);
     }
     // try {
     //   final response = await http.delete(

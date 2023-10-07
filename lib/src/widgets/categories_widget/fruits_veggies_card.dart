@@ -1,6 +1,7 @@
 import 'package:tago/app.dart';
 
-Widget getFreeDeliveryDesign(List<int> indexList, int index, BuildContext context) {
+Widget getFreeDeliveryDesign(
+    List<int> indexList, int index, BuildContext context) {
   if (indexList.contains(index)) {
     return Align(
       alignment: Alignment.topLeft,
@@ -13,7 +14,8 @@ Widget getFreeDeliveryDesign(List<int> indexList, int index, BuildContext contex
         child: Text(
           'Free delivery',
           style: context.theme.textTheme.labelMedium?.copyWith(
-              color: TagoLight.scaffoldBackgroundColor, fontFamily: TextConstant.fontFamilyBold),
+              color: TagoLight.scaffoldBackgroundColor,
+              fontFamily: TextConstant.fontFamilyBold),
         ).padAll(5),
       ),
     );
@@ -101,12 +103,15 @@ Widget addMinusBTN({
       maximumSize: const Size.fromRadius(15),
       minimumSize: const Size.fromRadius(5),
       padding: EdgeInsets.zero,
-      backgroundColor:
-          isMinus == true ? TagoLight.primaryColor.withOpacity(0.15) : TagoLight.primaryColor,
+      backgroundColor: isMinus == true
+          ? TagoLight.primaryColor.withOpacity(0.15)
+          : TagoLight.primaryColor,
     ),
     child: Icon(
       isMinus == true ? Icons.remove : Icons.add,
-      color: isMinus == true ? TagoDark.primaryColor : TagoDark.scaffoldBackgroundColor,
+      color: isMinus == true
+          ? TagoDark.primaryColor
+          : TagoDark.scaffoldBackgroundColor,
       size: 20,
     ),
   );
@@ -115,7 +120,6 @@ Widget addMinusBTN({
 Widget fruitsAndVeggiesCardLoader({
   required BuildContext context,
 }) {
-  // var products = convertDynamicListToProductListModel(productImagesList!);
   return shimmerWidget(
       child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,6 +151,29 @@ Widget fruitsAndVeggiesCardLoader({
                   ))),
     ],
   ).padOnly(bottom: 35));
+}
+
+Widget tagScreenCardLoader({
+  required BuildContext context,
+}) {
+  return shimmerWidget(
+      child: GridView.count(
+          crossAxisCount: 2,
+          shrinkWrap: true,
+          childAspectRatio: 0.6,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          physics: const NeverScrollableScrollPhysics(),
+          children: List.generate(
+              4,
+              (index) => Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                    ),
+                    width: 180,
+                    height: 50,
+                  ))));
 }
 
 Widget productCard(
@@ -218,8 +245,10 @@ Widget productCard(
                             .contains(productModel.id) ==
                         true
                     ? Container(
-                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
-                        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 3),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 2, vertical: 5),
                         decoration: BoxDecoration(
                             color: TagoLight.primaryColor.withOpacity(0.13),
                             borderRadius: BorderRadius.circular(20)),
@@ -261,10 +290,11 @@ Widget productCard(
                           onTap: addToCartBTN,
                           child: Text(
                             'Add',
-                            style: context.theme.textTheme.titleMedium?.copyWith(
-                                fontFamily: TextConstant.fontFamilyNormal,
-                                fontSize: 12,
-                                color: TagoDark.orange),
+                            style: context.theme.textTheme.titleMedium
+                                ?.copyWith(
+                                    fontFamily: TextConstant.fontFamilyNormal,
+                                    fontSize: 12,
+                                    color: TagoDark.orange),
                           ),
                         ),
                       )

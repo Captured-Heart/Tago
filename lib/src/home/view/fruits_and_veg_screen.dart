@@ -14,28 +14,35 @@ class FruitsAndVegetablesScreen extends ConsumerStatefulWidget {
   });
   final String appBarTitle;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _FruitsAndVegetablesScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _FruitsAndVegetablesScreenState();
 }
 
-class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesScreen> {
+class _FruitsAndVegetablesScreenState
+    extends ConsumerState<FruitsAndVegetablesScreen> {
   //
-  final TextEditingControllerClass editingController = TextEditingControllerClass();
+  final TextEditingControllerClass editingController =
+      TextEditingControllerClass();
 
   final ItemScrollController itemScrollController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   var currentPosition = 0;
 
   void _scrollToItem(int index) {
     itemScrollController.scrollTo(
-        index: index, duration: const Duration(seconds: 2), curve: Curves.easeInOutCubic);
+        index: index,
+        duration: const Duration(seconds: 2),
+        curve: Curves.easeInOutCubic);
   }
 
   @override
   void initState() {
     super.initState();
     itemPositionsListener.itemPositions.addListener(() {
-      ItemPosition? itemPosition = itemPositionsListener.itemPositions.value.first;
+      ItemPosition? itemPosition =
+          itemPositionsListener.itemPositions.value.first;
       setState(() {
         currentPosition = itemPosition.index;
       });
@@ -44,7 +51,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
 
   @override
   Widget build(BuildContext context) {
-    final categoryWithSubcategories = ref.watch(fetchCategoryWithSubcategoriesByLabelProvider);
+    final categoryWithSubcategories =
+        ref.watch(fetchCategoryWithSubcategoriesByLabelProvider);
     // final search = ref.watch(searchFruitProvider);
     // final subCategory = widget.subCategoriesList;
     // log(checkCartBoxLength().toString());
@@ -106,7 +114,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                       onTap: () {
                         _scrollToItem(index);
                       },
-                      child: subCategoryCardItem(widget.subCategoriesList![index].name, index),
+                      child: subCategoryCardItem(
+                          widget.subCategoriesList![index].name, index),
                     );
                   },
                 ),
@@ -116,7 +125,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  padding:
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: categoryWithSubcategories.when(
                     data: (data) {
                       if (data.isEmpty) {
@@ -132,7 +142,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                         itemBuilder: (context, index) {
                           bool isLast = index == data.length - 1;
 
-                          return subCategoryWithProductsCard(data[index], isLast: isLast);
+                          return subCategoryWithProductsCard(data[index],
+                              isLast: isLast);
                         },
                         itemScrollController: itemScrollController,
                         itemPositionsListener: itemPositionsListener,
@@ -162,8 +173,10 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7.0),
           color: currentPosition == index ? TagoDark.primaryColor : null,
-          border:
-              Border.all(color: currentPosition == index ? TagoDark.primaryColor : Colors.black87)),
+          border: Border.all(
+              color: currentPosition == index
+                  ? TagoDark.primaryColor
+                  : Colors.black87)),
       child: Text(
         name,
         style: context.theme.textTheme.titleSmall?.copyWith(
@@ -174,7 +187,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
     ).padOnly(left: 10);
   }
 
-  subCategoryWithProductsCard(SubCategoryModel subCategoryModel, {bool isLast = false}) {
+  subCategoryWithProductsCard(SubCategoryModel subCategoryModel,
+      {bool isLast = false}) {
     return subCategoryModel.products!.isNotEmpty
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,7 +223,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                           //! REDUCE THE QUANTITY
                           incrementDecrementCartValueMethod(
                             cartIndexFromID(productModel)!,
-                            CartModel(quantity: quantity - 1, product: productModel),
+                            CartModel(
+                                quantity: quantity - 1, product: productModel),
                           );
                         } else {
                           //! delete from the cart locally
@@ -223,9 +238,12 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                           );
                           // setState(() {});
                           //! DELETE FROM THE CART IN BACKEND
-                          ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                          ref
+                              .read(cartNotifierProvider.notifier)
+                              .deleteFromCartMethod(
                             map: {
-                              ProductTypeEnums.productId.name: productModel.id.toString(),
+                              ProductTypeEnums.productId.name:
+                                  productModel.id.toString(),
                             },
                           ).whenComplete(
                             () => ref.invalidate(getCartListProvider(false)),
@@ -240,7 +258,8 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
 
                           incrementDecrementCartValueMethod(
                             cartIndexFromID(productModel)!,
-                            CartModel(quantity: quantity + 1, product: productModel),
+                            CartModel(
+                                quantity: quantity + 1, product: productModel),
                           );
                         } else {
                           showScaffoldSnackBarMessage(
@@ -251,7 +270,9 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                         }
                       },
                       addToCartBTN: () {
-                        if (subCategoryModel.products![index].availableQuantity! < 1) {
+                        if (subCategoryModel
+                                .products![index].availableQuantity! <
+                            1) {
                           //product is out of stock
                           showScaffoldSnackBarMessage(
                             TextConstant.productIsOutOfStock,
@@ -260,13 +281,18 @@ class _FruitsAndVegetablesScreenState extends ConsumerState<FruitsAndVegetablesS
                         } else {
                           //add to cart (LOCALLY)
                           saveToCartLocalStorageMethod(
-                            CartModel(quantity: 1, product: subCategoryModel.products![index]),
+                            CartModel(
+                                quantity: 1,
+                                product: subCategoryModel.products![index]),
                           );
                           // add to cart (BACKEND)
-                          ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                          ref
+                              .read(cartNotifierProvider.notifier)
+                              .addToCartMethod(
                             map: {
-                              ProductTypeEnums.productId.name:
-                                  subCategoryModel.products![index].id.toString(),
+                              ProductTypeEnums.productId.name: subCategoryModel
+                                  .products![index].id
+                                  .toString(),
                               ProductTypeEnums.quantity.name: '1',
                             },
                           );

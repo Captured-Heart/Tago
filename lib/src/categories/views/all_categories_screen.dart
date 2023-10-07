@@ -5,7 +5,8 @@ class AllCategoriesScreen extends ConsumerStatefulWidget {
   const AllCategoriesScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AllCategoriesScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AllCategoriesScreenState();
 }
 
 class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
@@ -38,14 +39,15 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
                       growable: true,
                       (index) => GestureDetector(
                         onTap: () {
-                          ref
-                              .read(categoryLabelProvider.notifier)
-                              .update((state) => data.categories[index].label ?? '');
+                          ref.read(categoryLabelProvider.notifier).update(
+                              (state) => data.categories[index].label ?? '');
                           push(
                             context,
                             FruitsAndVegetablesScreen(
-                              subCategoriesList: data.categories[index].subCategories,
-                              appBarTitle: data.categories[index].name ?? 'Product Name',
+                              subCategoriesList:
+                                  data.categories[index].subCategories,
+                              appBarTitle:
+                                  data.categories[index].name ?? 'Product Name',
                             ),
                           );
                         },
@@ -60,8 +62,8 @@ class _AllCategoriesScreenState extends ConsumerState<AllCategoriesScreen> {
                     ));
               },
               //TODO: ADD CACHED MODEL HERE
-              error: (error, stackTrace) =>
-                  Center(child: Text(NetworkErrorEnums.checkYourNetwork.message)),
+              error: (error, stackTrace) => Center(
+                  child: Text(NetworkErrorEnums.checkYourNetwork.message)),
               loading: () => categoryCardLoaders(
                     context: context,
                     width: 100,

@@ -12,7 +12,8 @@ abstract class TextConstant {
   sign up screen
 -----------------------------------------------------------------------*/
   static const welcometotago = 'Welcome to Tago';
-  static const groceriesDeliveryInMins = 'Grocery delivery in minutes, right to you';
+  static const groceriesDeliveryInMins =
+      'Grocery delivery in minutes, right to you';
   static const fullname = 'Full Name';
   static const phoneno = 'Phone Number';
   static const createpassword = 'Create a password';
@@ -52,7 +53,8 @@ Add address screen
   static const noAddressFound = 'No address found';
   static const addressDetails = 'Address Details';
   static const addressLabel = 'Address Label';
-  static const thishelpsTagotofind = 'This helps Tago find the closest items to your location';
+  static const thishelpsTagotofind =
+      'This helps Tago find the closest items to your location';
   static const usemycurrentlocation = 'Use my current location';
   static const typeaddressmanually = 'Type address manually';
   static const save = 'Save';
@@ -72,7 +74,8 @@ Add address screen
 /*----------------------------------------------------------------------
 forgot password
 -----------------------------------------------------------------------*/
-  static const enterthePhoneno = 'Enter the phone number used to create an account';
+  static const enterthePhoneno =
+      'Enter the phone number used to create an account';
   static const sendResetcode = 'Send Reset Code';
   static const confirmResetcode = 'Confirm Reset Code';
   static const confirmBytypingthecode = 'Confirm by typing the code below';
@@ -199,7 +202,8 @@ ORDERS SCREEN
 /*----------------------------------------------------------------------
  VOUCHERS SCREEN
 -----------------------------------------------------------------------*/
-  static const vouchersWillAppear = 'Vouchers will appear here when you receive them';
+  static const vouchersWillAppear =
+      'Vouchers will appear here when you receive them';
 
 /*----------------------------------------------------------------------
 WISHLIST SCREEN
@@ -221,10 +225,16 @@ WISHLIST SCREEN
   static const expiryDate = 'Expiry Date';
   static const cvv = 'CVV';
   static const done = 'Done';
+  static const continue_ = 'Continue';
+
   static const savedAddress = 'Saved Addresses';
   static const savedCards = 'Saved Cards';
+  static const selectCard = 'Select Card';
+  static const enterCardDetails = 'Enter Card Details';
+
   static const help = 'Help';
-  static const areSureYouWantToDelete = 'Are you sure you want to delete this address?';
+  static const areSureYouWantToDelete =
+      'Are you sure you want to delete this address?';
 
   static const addnewCard = 'Add New Card ';
   static const firstandlastname = 'First & Last Name';
@@ -280,7 +290,8 @@ CHECKOUT SECTION
   static const notselected = 'Not selected';
   static const choose = 'Choose';
   static const reviewItems = 'Review Items';
-  static const deliveryInstructionsOptional = 'Delivery Instructions (Optional)';
+  static const deliveryInstructionsOptional =
+      'Delivery Instructions (Optional)';
   static const voucherCode = 'Voucher Code';
   static const writeaNoteHint = 'Write a note (e.g., Estate Gate Code)';
   static const pastevoucherCode = 'Paste Voucher code';
@@ -293,7 +304,8 @@ CHECKOUT SECTION
   static const choosePaymentMethod = 'Choose Payment Method';
   static const paywithcash = 'Pay with cash (Cash on Delivery)';
   static const paywithcard = 'Pay with Card';
-  static const pleaseTakeAMoment = 'Please take a moment to review the item(s) you received';
+  static const pleaseTakeAMoment =
+      'Please take a moment to review the item(s) you received';
   static const sendReview = 'Send Review';
   static const paywithbank = 'Pay with Bank Transfer';
 
@@ -319,11 +331,14 @@ RIDER SECTION
   static const pickupLocation = 'Pickup Location';
   static const deliveryLocation = 'Delivery Location';
   static const ordercompleted = 'Order Completed!';
-  static const yousuccessfulCompletedanorder = 'You successfully completed an order';
+  static const yousuccessfulCompletedanorder =
+      'You successfully completed an order';
   static const backHome = 'Back Home';
   static const geBack = 'Go back';
-  static const doyouwantTodeclinethisdelivery = 'Do you want to decline this delivery request';
-  static const doyouwantToAcceptthisdelivery = 'Do you want to accept this delivery request';
+  static const doyouwantTodeclinethisdelivery =
+      'Do you want to decline this delivery request';
+  static const doyouwantToAcceptthisdelivery =
+      'Do you want to accept this delivery request';
   static const declinerequests = 'Decline Request?';
   static const pleaseconfirmthebuyerhasreceived =
       'Please confirm the buyer has received their products';
@@ -331,7 +346,8 @@ RIDER SECTION
   static const successful = 'Successful';
   static const signOut = 'Sign Out';
   static const km = 'km';
-  static const youWillReceiveAnEmail = 'You will receive an email confirmation shortly';
+  static const youWillReceiveAnEmail =
+      'You will receive an email confirmation shortly';
   static const orderPlaced = 'Order Placed';
   static const orderPickUp = 'Order Pick Up';
 

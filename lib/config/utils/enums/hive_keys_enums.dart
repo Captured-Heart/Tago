@@ -2,10 +2,9 @@ enum HiveKeys {
   token('token'),
   role('role'),
   addressId('addressId'),
+  createOrder('data'),
   addressIndex('address index'),
-  createOrder('orderId'),
   fromCheckout('fromCheckout'),
-  createOrderUrl('url'),
   recentlyViewed('Recently Viewed'),
   recentlyId('RecentlyID'),
 
