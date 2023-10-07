@@ -333,7 +333,6 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               bottom: BorderSide(width: 0.1),
             )),
 
-            //TODO: THE ERROR OF BAD STATE IS HERE
             child: Text(
               // productSpec?.map((e) => e.title).toString() ?? '',
               '${productSpec?.firstOrNull?.title}\n\n ${productSpec?.firstOrNull?.value}',

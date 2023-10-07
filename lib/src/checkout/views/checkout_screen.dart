@@ -42,14 +42,12 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final address = ref.watch(getAccountAddressProvider).valueOrNull;
 
     final voucherCode = ref.watch(getVoucherStreamProvider(code));
-    final deliveryfee =
-        ref.watch(getDeliveryFeeProvider(widget.totalAmount ?? 0));
+    final deliveryfee = ref.watch(getDeliveryFeeProvider(widget.totalAmount ?? 0));
     // log(" address : $accountInfo!.toString()");
     var deliveryFeeValue = deliveryfee.valueOrNull ?? '0';
-    var perc = ((int.parse('${voucherCode.valueOrNull?.amount ?? '0'}') /
-                (widget.totalAmount ?? 0)) *
-            100)
-        .round();
+    var perc =
+        ((int.parse('${voucherCode.valueOrNull?.amount ?? '0'}') / (widget.totalAmount ?? 0)) * 100)
+            .round();
     final addressId = ref.watch(addressIdProvider);
     // log(HiveHelper().getData(HiveKeys.addressId.keys).toString());
     return FullScreenLoader(
@@ -68,8 +66,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             checkoutDeliveryToWidget(
               context,
               address != null && address.isNotEmpty
-                  ? address[
-                      HiveHelper().getAddressIndex(HiveKeys.addressId.keys)]
+                  ? accountInfo.valueOrNull?.address
                   : const AddressModel(),
             ),
 
@@ -104,9 +101,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 ),
 
                 //DAY && TIMES WIDGET
-                isInstant == true
-                    ? const SizedBox.shrink()
-                    : const CheckOutDayAndTimesWidget(),
+                isInstant == true ? const SizedBox.shrink() : const CheckOutDayAndTimesWidget(),
               ].columnInPadding(10),
             ).padOnly(top: 25),
 
@@ -115,8 +110,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
             //!payment method
 
-            checkoutPaymentMethodWidget(
-                    context, updatePaymentMethod, paymentMethodType)
+            checkoutPaymentMethodWidget(context, updatePaymentMethod, paymentMethodType)
                 .padOnly(top: 20),
 
             //! REVIEW ITEMS
@@ -162,8 +156,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   checkOutALLItemsRowWidget(
                     context: context,
                     leading: '${TextConstant.discount} ($perc%)',
-                    trailing:
-                        '- ${TextConstant.nairaSign}${voucherCode.valueOrNull?.amount ?? 0}',
+                    trailing: '- ${TextConstant.nairaSign}${voucherCode.valueOrNull?.amount ?? 0}',
                   ),
                   const Divider(thickness: 1),
 
@@ -182,8 +175,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                       int.parse(
                                         voucherCode.value?.amount == null
                                             ? '0'
-                                            : voucherCode.value!.amount
-                                                .toString(),
+                                            : voucherCode.value!.amount.toString(),
                                       ))
                                   .toString()
                                   .toCommaPrices(),
@@ -199,8 +191,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               onPressed: () {
                 // check if payment is selected
                 if (paymentMethodType == PaymentMethodsType.notSelected) {
-                  showScaffoldSnackBarMessage("Please select a payment method",
-                      isError: true);
+                  showScaffoldSnackBarMessage("Please select a payment method", isError: true);
                   return;
                 }
 
@@ -223,9 +214,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ).toJson();
                   log(checkModel.toString());
                   //
-                  ref
-                      .read(checkoutNotifierProvider.notifier)
-                      .createAnOrderMethod(
+                  ref.read(checkoutNotifierProvider.notifier).createAnOrderMethod(
                         map: checkModel,
                         onNavigation: () {
                           HiveHelper().clearCartList();
@@ -255,9 +244,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ).toJsonWithoutVocher();
                   log(checkModel.toString());
                   //
-                  ref
-                      .read(checkoutNotifierProvider.notifier)
-                      .createAnOrderMethod(
+                  ref.read(checkoutNotifierProvider.notifier).createAnOrderMethod(
                         map: checkModel,
                         onNavigation: () async {
                           HiveHelper().clearCartList();

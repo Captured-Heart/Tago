@@ -32,6 +32,7 @@ const String getAddressUrl = '/account/user/address';
 const String addAddressUrl = '/account/user/address';
 const String updateAddressUrl = '/account/user/address';
 const String deleteAddressUrl = '/account/user/address';
+const String setDefaultAddressUrl = '/account/user/address/default';
 
 // ACCOUNT URL
 const String getAccountInfoUrl = '/account/';

@@ -46,13 +46,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final categoriesGroup = ref.watch(fetchCategoriesProvider);
-    final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
+    // final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
     // final accountInfo = ref.watch(getAccountInfoProvider);
-    // final accountInfo = ref.watch(getAccountInfoProvider);
-    final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
+    final accountInfo = ref.watch(getAccountInfoProvider);
+    // final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
 
     // log(HiveHelper().getData(HiveKeys.token.keys));
-    // log('$cartIndex');
+    // log(accountInfo.valueOrNull!.address.toString());
     // HiveHelper().clearBoxRecent();
     return Scaffold(
       appBar: homescreenAppbar(
@@ -66,14 +66,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         controller: _controller,
         children: [
           showSearchAddressWidget
-              ? searchBoxAndAddressWidget(
-                  context,
-                  accountInfo?[
-                      HiveHelper().getData(HiveKeys.addressIndex.keys)])
+              ? searchBoxAndAddressWidget(context, accountInfo.valueOrNull)
               : const SizedBox(),
           Container(
-            padding:
-                const EdgeInsets.only(right: 18, left: 18, bottom: 10, top: 10),
+            padding: const EdgeInsets.only(right: 18, left: 18, bottom: 10, top: 10),
             child: Column(
               children: [
                 // ORDER status
@@ -99,8 +95,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     return Column(
                       children: [
                         CarouselSlider(
-                          items:
-                              hotDealsCarouselWidgetList(context, data!.deals),
+                          items: hotDealsCarouselWidgetList(context, data!.deals),
                           carouselController: ref.watch(carouselSliderProvider),
                           options: CarouselOptions(
                               autoPlay: true,
@@ -119,9 +114,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           children: List.generate(
                             data.deals.length,
                             (index) => GestureDetector(
-                              onTap: () => ref
-                                  .read(carouselSliderProvider)
-                                  .animateToPage(index),
+                              onTap: () => ref.read(carouselSliderProvider).animateToPage(index),
                               child: Container(
                                 width: 6.0,
                                 height: 6.0,
@@ -131,15 +124,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark
+                                  color: (Theme.of(context).brightness == Brightness.dark
                                           ? TagoLight.indicatorInactiveColor
                                           : TagoLight.indicatorActiveColor)
                                       .withOpacity(
-                                    ref.watch(currentCarouselIndexProvider) ==
-                                            index
-                                        ? 0.9
-                                        : 0.4,
+                                    ref.watch(currentCarouselIndexProvider) == index ? 0.9 : 0.4,
                                   ),
                                 ),
                               ),
@@ -155,8 +144,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  loading: () => hotDealsLoaders(context: context)
-                      .padSymmetric(horizontal: 1),
+                  loading: () => hotDealsLoaders(context: context).padSymmetric(horizontal: 1),
                 ),
 
                 //! Categories section
@@ -186,16 +174,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         // growable: false,
                         (index) => GestureDetector(
                           onTap: () {
-                            ref.read(categoryLabelProvider.notifier).update(
-                                (state) => data.categories[index].label ?? '');
+                            ref
+                                .read(categoryLabelProvider.notifier)
+                                .update((state) => data.categories[index].label ?? '');
                             var subList = data.categories[index].subCategories;
 
                             push(
                               context,
                               FruitsAndVegetablesScreen(
                                 subCategoriesList: subList!,
-                                appBarTitle: data.categories[index].name ??
-                                    'Product name',
+                                appBarTitle: data.categories[index].name ?? 'Product name',
                               ),
                             );
                           },
@@ -216,8 +204,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  loading: () =>
-                      categoryCardLoaders(context: context, index: 8),
+                  loading: () => categoryCardLoaders(context: context, index: 8),
                 ),
 
                 // shortcut
@@ -233,21 +220,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         shortcutWidget(
-                            context: context,
-                            icon: Icons.favorite_outline,
-                            name: 'Favorites'),
+                            context: context, icon: Icons.favorite_outline, name: 'Favorites'),
                         shortcutWidget(
                             context: context,
                             icon: Icons.star_border_outlined,
                             name: 'best Sellers'),
                         shortcutWidget(
-                            context: context,
-                            icon: Icons.receipt_outlined,
-                            name: 'Past Orders'),
+                            context: context, icon: Icons.receipt_outlined, name: 'Past Orders'),
                         shortcutWidget(
-                            context: context,
-                            icon: Icons.message_outlined,
-                            name: 'Support'),
+                            context: context, icon: Icons.message_outlined, name: 'Support'),
                       ],
                     ).padOnly(top: 10)
                   ],
@@ -276,8 +257,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               TagScreen(
                                   tagId: productTagModel.id,
                                   appBarTitle: productTagModel.name,
-                                  imageUrl: productTagModel.previewImageUrl ??
-                                      productTagModel.imageUrl!),
+                                  imageUrl:
+                                      productTagModel.previewImageUrl ?? productTagModel.imageUrl!),
                             );
                           },
                           child: const Text(TextConstant.seeall),
@@ -294,20 +275,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           SizedBox(
                             height: 320,
                             child: ListView.builder(
-                              padding: const EdgeInsets.only(
-                                  left: 170.0, top: 10, bottom: 10),
-                              itemCount:
-                                  data.showcaseProductTag!.products!.length,
+                              padding: const EdgeInsets.only(left: 170.0, top: 10, bottom: 10),
+                              itemCount: data.showcaseProductTag!.products!.length,
                               shrinkWrap: false,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                var productModel =
-                                    data.showcaseProductTag!.products![index];
-                                var quantity =
-                                    cartQuantityFromName(productModel);
+                                var productModel = data.showcaseProductTag!.products![index];
+                                var quantity = cartQuantityFromName(productModel);
                                 return productCard(
-                                  productModel:
-                                      data.showcaseProductTag!.products![index],
+                                  productModel: data.showcaseProductTag!.products![index],
                                   context: context,
 
                                   // on DECREMENT
@@ -316,9 +292,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       //! REDUCE THE QUANTITY
                                       incrementDecrementCartValueMethod(
                                         cartIDFromName(productModel)!,
-                                        CartModel(
-                                            quantity: quantity - 1,
-                                            product: productModel),
+                                        CartModel(quantity: quantity - 1, product: productModel),
                                       );
                                     } else {
                                       //! delete from the cart locally
@@ -332,29 +306,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       );
                                       // setState(() {});
                                       //! DELETE FROM THE CART IN BACKEND
-                                      ref
-                                          .read(cartNotifierProvider.notifier)
-                                          .deleteFromCartMethod(
+                                      ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
                                         map: {
                                           ProductTypeEnums.productId.name:
                                               productModel.id.toString(),
                                         },
                                       ).whenComplete(
-                                        () => ref.invalidate(
-                                            getCartListProvider(false)),
+                                        () => ref.invalidate(getCartListProvider(false)),
                                       );
                                     }
                                   },
 
                                   //ON INCREMENT
                                   onIncrementBTN: () {
-                                    if (quantity! <
-                                        productModel.availableQuantity!) {
+                                    if (quantity! < productModel.availableQuantity!) {
                                       incrementDecrementCartValueMethod(
                                         cartIndexFromID(productModel)!,
-                                        CartModel(
-                                            quantity: quantity + 1,
-                                            product: productModel),
+                                        CartModel(quantity: quantity + 1, product: productModel),
                                       );
                                     } else {
                                       showScaffoldSnackBarMessage(
@@ -367,9 +335,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                                   // ADD TO CART
                                   addToCartBTN: () {
-                                    if (data
-                                            .showcaseProductTag!
-                                            .products![index]
+                                    if (data.showcaseProductTag!.products![index]
                                             .availableQuantity! <
                                         1) {
                                       //product is out of stock
@@ -382,19 +348,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       saveToCartLocalStorageMethod(
                                         CartModel(
                                             quantity: 1,
-                                            product: data.showcaseProductTag!
-                                                .products![index]),
+                                            product: data.showcaseProductTag!.products![index]),
                                       );
                                       setState(() {});
                                       // add to cart (BACKEND)
-                                      ref
-                                          .read(cartNotifierProvider.notifier)
-                                          .addToCartMethod(
+                                      ref.read(cartNotifierProvider.notifier).addToCartMethod(
                                         map: {
                                           ProductTypeEnums.productId.name: data
-                                              .showcaseProductTag!
-                                              .products![index]
-                                              .id
+                                              .showcaseProductTag!.products![index].id
                                               .toString(),
                                           ProductTypeEnums.quantity.name: '1',
                                         },
@@ -416,8 +377,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                loading: () => categoryCardLoaders(context: context)
-                    .padSymmetric(horizontal: 20),
+                loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
               )
               .padOnly(bottom: 20),
           // ListTile(
@@ -534,7 +494,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           // var product = box.getAt(index) as List<ProductsModel>;
+                          // var product = (box.values.toList()) [index];
                           var product = (box.values.toList())[index];
+
+                          log(box.values.toList().toString());
                           return SizedBox(
                             width: context.sizeWidth(0.35),
                             child: itemsNearYouCard(
@@ -543,8 +506,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 navBarPush(
                                   context: context,
                                   screen: SingleProductPage(
-                                    id: product[index].id!,
-                                    productsModel: product[index],
+                                    id: product[0].id!,
+                                    productsModel: product[0],
                                   ),
                                   withNavBar: false,
                                 );
@@ -854,8 +817,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Column homeScreenAddressWidget(
-      BuildContext context, AsyncValue<AccountModel> accountInfo) {
+  Column homeScreenAddressWidget(BuildContext context, AsyncValue<AccountModel> accountInfo) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -900,7 +862,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
 searchBoxAndAddressWidget(
   BuildContext context,
-  AddressModel? accountInfo,
+  AccountModel? accountInfo,
 ) {
   var address = accountInfo;
 
@@ -945,8 +907,7 @@ searchBoxAndAddressWidget(
             if (address == null) {
               push(context, const AddNewAddressScreen());
             } else {
-              HiveHelper().saveData(
-                  HiveKeys.fromCheckout.keys, HiveKeys.fromCheckout.keys);
+              HiveHelper().saveData(HiveKeys.fromCheckout.keys, HiveKeys.fromCheckout.keys);
 
               push(context, const AddressBookScreen());
             }
@@ -957,13 +918,15 @@ searchBoxAndAddressWidget(
                 Icons.location_on,
                 color: Colors.white,
               ),
-              Text(
-                address != null
-                    ? '${address.apartmentNumber}, ${address.streetAddress}'
-                    : 'Add your address',
-                style: context.theme.textTheme.titleLarge?.copyWith(
-                  fontSize: 12,
-                  color: Colors.white,
+              Expanded(
+                child: Text(
+                  address != null
+                      ? '${address.address?.apartmentNumber}, ${address.address?.streetAddress}, ${address.address?.city}'
+                      : 'Add your address',
+                  style: context.theme.textTheme.titleLarge?.copyWith(
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               const Icon(
