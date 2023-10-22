@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tago/app.dart';
 
 // Set the bool flag to true to show debug prints. Even if you forgot
@@ -48,17 +46,6 @@ class AppProviderObserver extends ProviderObserver {
       debugPrint('Provider $provider was disposed');
     }
 
-    @override
-    void providerDidFail(
-      ProviderBase<Object?> provider,
-      Object error,
-      StackTrace stackTrace,
-      ProviderContainer container,
-    ) {
-      if (_debug) {
-        print('Provider $provider threw $error at $stackTrace');
-      }
-    }
   }
 
 // @override
