@@ -232,7 +232,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
             products.when(
               data: (data) {
                 if (data.productReview!.isEmpty) {
-                  return  Center(
+                  return Center(
                       child: Text(
                     'There are no reviews for this product!',
                     style: context.theme.textTheme.bodyLarge?.copyWith(height: 1.7),
@@ -243,7 +243,7 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
               error: (error, _) {
                 return Text(error.toString());
               },
-              loading: () => const CircularProgressIndicator.adaptive(),
+              loading: () => const Center(child: CircularProgressIndicator.adaptive()),
             ),
 
             //SIMILAR ITEMS
@@ -332,7 +332,6 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
                 border: Border(
               bottom: BorderSide(width: 0.1),
             )),
-
             child: Text(
               // productSpec?.map((e) => e.title).toString() ?? '',
               '${productSpec?.firstOrNull?.title}\n\n ${productSpec?.firstOrNull?.value}',

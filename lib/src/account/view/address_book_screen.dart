@@ -21,9 +21,12 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
     final address = ref.watch(getAccountAddressProvider);
     final accountInfo = ref.watch(getAccountInfoProvider);
 
-    var groupValue = address.valueOrNull?.indexWhere((element) => element.streetAddress!
-        .toLowerCase()
-        .contains(accountInfo.valueOrNull!.address!.streetAddress!.toLowerCase().toString()));
+    var groupValue = address.valueOrNull?.indexWhere((element) =>
+        element.streetAddress
+            ?.toLowerCase()
+            // .toLowerCase()
+            .contains(accountInfo.valueOrNull!.address!.streetAddress!.toLowerCase().toString()) ??
+        false);
     // .where((element) => element.streetAddress!
     // .toLowerCase()
     // .contains(accountInfo.valueOrNull!.address!.streetAddress.toString()));
@@ -38,6 +41,14 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
       body: ListView(padding: const EdgeInsets.symmetric(horizontal: 20), children: [
         address.when(
           data: (data) {
+            if (data.isEmpty) {
+              return const Center(
+                child: Text(
+                  TextConstant.noAddressFound,
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
             return Column(
               children: List.generate(
                 data.length,

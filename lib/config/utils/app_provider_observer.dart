@@ -18,16 +18,46 @@ class AppProviderObserver extends ProviderObserver {
   AppProviderObserver();
 
   @override
-  Future<void> didUpdateProvider(
-      ProviderBase<dynamic> provider,
-      Object? previousValue,
-      Object? newValue,
-      ProviderContainer container) async {
+  Future<void> didUpdateProvider(ProviderBase<dynamic> provider, Object? previousValue,
+      Object? newValue, ProviderContainer container) async {
     if (_debug) {
       debugPrint('PROVIDER    : ${provider.name ?? '<NO NAME>'}\n'
           '  Type      : ${provider.runtimeType}\n'
           '  Old value : $previousValue\n'
           '  New value : $newValue');
+    }
+  }
+
+  @override
+  void didAddProvider(
+    ProviderBase<Object?> provider,
+    Object? value,
+    ProviderContainer container,
+  ) {
+    if (_debug) {
+      debugPrint('Provider $provider was initialized with $value');
+    }
+  }
+
+  @override
+  void didDisposeProvider(
+    ProviderBase<Object?> provider,
+    ProviderContainer container,
+  ) {
+    if (_debug) {
+      debugPrint('Provider $provider was disposed');
+    }
+
+    @override
+    void providerDidFail(
+      ProviderBase<Object?> provider,
+      Object error,
+      StackTrace stackTrace,
+      ProviderContainer container,
+    ) {
+      if (_debug) {
+        print('Provider $provider threw $error at $stackTrace');
+      }
     }
   }
 

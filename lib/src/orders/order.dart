@@ -7,3 +7,4 @@ export './view/orders_placed_screen.dart';
 export './view/review_items_screen.dart';
 export './view/active_order_screen.dart';
 export './view/completed_order_screen.dart';
+export './providers.dart/providers.dart';

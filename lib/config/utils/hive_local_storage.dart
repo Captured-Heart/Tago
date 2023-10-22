@@ -53,8 +53,6 @@ class HiveHelper {
     return _boxTago.get(key) ?? 0;
   }
 
-
-
   /*------------------------------------------------------------------
                  FOR BOX ('RECENTLY VIEWED')
  -------------------------------------------------------------------*/
@@ -63,9 +61,17 @@ class HiveHelper {
   }
 
 // save task
-  saveRecentData(List<ProductsModel> product) async {
+  // saveRecentData(List<ProductsModel> product) async {
+  //   log('the product saved/viewed $product');
+  //   return await _boxRecentlyViewed.add(product);
+  // }
+
+  saveRecentData(Map<String, dynamic> product) async {
     log('the product saved/viewed $product');
-    return await _boxRecentlyViewed.add(product);
+   var pro = ProductsModel.fromJson(product);
+   List<ProductsModel> opp = [];
+   opp.add(pro);
+    return await _boxRecentlyViewed.add(opp);
   }
 
   Iterable<List<dynamic>> recentlyBoxValues() {

@@ -2,7 +2,6 @@
               FETCH ADDRESS METHOD
  -------------------------------------------------------------------*/
 
-
 import 'package:tago/app.dart';
 
 Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) async {
@@ -19,7 +18,7 @@ Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) as
   //the response and error handling
   if (decodedData['success'] == true) {
     final addressList = (decodedData['data'] as List).map((e) => AddressModel.fromJson(e)).toList();
-    log('get request for address:  ${decodedData['data']}'); //
+    // log('get request for address:  ${decodedData['data']}'); //
 
     // ref.read(addressIdProvider.notifier).update((state) {
     //   if ((decodedData['data'] as List).isNotEmpty) {
@@ -32,7 +31,7 @@ Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) as
 
     return addressList;
   } else {
-    return [AddressModel()];
+    return [const AddressModel()];
   }
 }
 
@@ -63,5 +62,3 @@ Future<AccountModel> getAccountInfoMethod() async {
     // return decodedData['message'];
   }
 }
-
-

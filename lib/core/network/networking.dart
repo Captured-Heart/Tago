@@ -18,8 +18,7 @@ const String verifyPhoneNumberUrl = '/verification/phone-number';
 // CATEGORY URL
 const String getCategoriesUrl = '/public/categories';
 const String getCategoryUrl = '/public/category?label';
-const String getCategoryWithSubcategoriesUrl =
-    '/public/category/subcategories?label';
+const String getCategoryWithSubcategoriesUrl = '/public/category/subcategories?label';
 
 //PRODUCT URL
 const String getProductsUrl = '/public/product?label';
@@ -42,10 +41,8 @@ const String getWishListUrl = '/account/user/wishlist';
 
 //DELIVERY REQUESTS
 const String getDeliveryRequestUrl = '/account/rider/delivery_requests';
-const String declineDeliveryRequestUrl =
-    '/account/rider/delivery_request/decline';
-const String acceptDeliveryRequestUrl =
-    '/account/rider/delivery_request/accept';
+const String declineDeliveryRequestUrl = '/account/rider/delivery_request/decline';
+const String acceptDeliveryRequestUrl = '/account/rider/delivery_request/accept';
 
 // CARTS URL
 const String getCartsUrl = '/account/user/cart';
@@ -92,8 +89,7 @@ class NetworkHelper {
 
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
-          isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
   }
 
@@ -105,18 +101,27 @@ class NetworkHelper {
     Map<String, String>? headers,
   }) async {
     var url = '$baseUrl$api';
-
-    if (await Connectivity.instance.isConnected()) {
+    try {
       final response = await http.get(
         Uri.parse(url),
         headers: headers,
       );
 
       return response;
-    } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
-          isError: true);
+    } catch (e) {
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
+    // if (await Connectivity.instance.isConnected()) {
+    //   final response = await http.get(
+    //     Uri.parse(url),
+    //     headers: headers,
+    //   );
+
+    //   return response;
+    // } else {
+    //   showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
+    //       isError: true);
+    // }
   }
 
   /*------------------------------------------------------------------
@@ -130,8 +135,7 @@ class NetworkHelper {
       final response = await http.get(
         Uri.parse(url),
         headers: {
-          'Authorization':
-              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',
@@ -140,8 +144,7 @@ class NetworkHelper {
 
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
-          isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
   }
 
@@ -157,8 +160,7 @@ class NetworkHelper {
       final response = await http.post(
         Uri.parse('$baseUrl$api'),
         headers: {
-          'Authorization':
-              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           // HiveHelper().getData(HiveKeys.token.keys) ?? '',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
@@ -169,8 +171,7 @@ class NetworkHelper {
       // log('$baseUrl$api');
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
-          isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
   }
 
@@ -188,8 +189,7 @@ class NetworkHelper {
         Uri.parse('$baseUrl$api'),
         body: map,
         headers: {
-          'Authorization':
-              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',
@@ -198,8 +198,7 @@ class NetworkHelper {
 
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
-          isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
 
     // try {
@@ -238,8 +237,7 @@ class NetworkHelper {
         Uri.parse(url),
         body: map,
         headers: {
-          'Authorization':
-              'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
+          'Authorization': 'Bearer ${HiveHelper().getData(HiveKeys.token.keys)}',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Connection': 'keep-alive',
           'Accept-Encoding': 'gzip, deflate, br',
@@ -249,8 +247,7 @@ class NetworkHelper {
 
       return response;
     } else {
-      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
-          isError: true);
+      showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message, isError: true);
     }
     // try {
     //   final response = await http.delete(
