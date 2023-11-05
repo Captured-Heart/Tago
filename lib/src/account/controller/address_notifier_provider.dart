@@ -12,14 +12,16 @@ final addressIdProvider = StateProvider<String>((ref) {
 /*------------------------------------------------------------------
                   GET ACCOUNT ADDRESS PROVIDER
  -------------------------------------------------------------------*/
-final getAccountAddressProvider = FutureProvider.autoDispose<List<AddressModel>>((ref) async {
+final getAccountAddressProvider =
+    FutureProvider.autoDispose<List<AddressModel>>((ref) async {
   return getAddressMethod(ref);
 });
 
 /*------------------------------------------------------------------
                   GET ACCOUNT  PROVIDER
  -------------------------------------------------------------------*/
-final getAccountInfoProvider = FutureProvider.autoDispose<AccountModel>((ref) async {
+final getAccountInfoProvider =
+    FutureProvider.autoDispose<AccountModel>((ref) async {
   return getAccountInfoMethod();
 });
 
@@ -34,7 +36,8 @@ final getCardsProvider =
 /*------------------------------------------------------------------
                  ACCOUNT ADDRESS STATE NOTIFIER PROVIDER
  -------------------------------------------------------------------*/
-final accountAddressProvider = StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
+final accountAddressProvider =
+    StateNotifierProvider<AccountAddressNotifier, AsyncValue>((ref) {
   return AccountAddressNotifier();
 });
 
@@ -53,6 +56,7 @@ class AccountAddressNotifier extends StateNotifier<AsyncValue> {
     required VoidCallback onNavigation,
   }) async {
     state = const AsyncValue.loading();
+    inspect(map);
     //post request executed
     final Response response = await NetworkHelper.postRequestWithToken(
       api: addAddressUrl,

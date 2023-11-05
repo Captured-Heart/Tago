@@ -7,4 +7,5 @@ enum AddressType {
   id,
   setAsDefault,
   postalCode,
+  metadata
 }

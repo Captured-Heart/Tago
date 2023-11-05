@@ -91,7 +91,6 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                   InkWell(
                     onTap: () {
                       push(context, ForgotPasswordScreen());
-
                     },
                     child: Text(
                       TextConstant.forgotpassword,
@@ -108,14 +107,17 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
               child: ElevatedButton(
                 onPressed: () async {
                   if (controller.signInformKey.currentState!.validate()) {
-                    ref.read(authAsyncNotifierProvider.notifier).signInAsyncMethod(
+                    ref
+                        .read(authAsyncNotifierProvider.notifier)
+                        .signInAsyncMethod(
                       map: {
                         'password': controller.passWordController.text,
                         'phoneNumber': controller.phoneNoController.text,
                       },
                       context: context,
                       onNavigation: () {
-                        if (HiveHelper().getData(HiveKeys.role.name) == AuthRoleType.user.name) {
+                        if (HiveHelper().getData(HiveKeys.role.name) ==
+                            AuthRoleType.user.name) {
                           pushReplacement(
                             context,
                             const MainScreen(),
@@ -143,7 +145,12 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    pushReplaceNamed(context, SignUpScreen.routeName);
+                    push(
+                      context,
+                      const AddAddressScreen(),
+                    );
+
+                    // pushReplaceNamed(context, SignUpScreen.routeName);
                   },
                   child: const Text(TextConstant.signup),
                 )

@@ -3,8 +3,8 @@
 import 'package:http/http.dart' as http;
 import 'package:tago/app.dart';
 
-const String baseUrl = 'https://api.tagonow.com';
-// const String baseUrl = 'http://192.168.0.167:9800';
+// const String baseUrl = 'https://api.tagonow.com';
+const String baseUrl = 'http://192.168.0.167:9800';
 
 // AUTH URL
 const String signUpUrl = '/auth/signup';
@@ -74,7 +74,7 @@ const String riderPickUpUrl = '/account/rider/order/picked_up';
 const String riderDeliveredUrl = '/account/rider/order/delivered';
 
 //
-const googleAPIKey = 'AIzaSyDhKg6wsJbCyYLdjRj5m2bf5b_uUJfN8iE';
+const googleAPIKey = 'AIzaSyAadW6ekHcvTwNPtq0SZd1VkB6u7m3GRB8';
 
 //                       //! HTTP HELPER
 class NetworkHelper {
