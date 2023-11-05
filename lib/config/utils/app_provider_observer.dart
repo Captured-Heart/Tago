@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tago/app.dart';
 
 // Set the bool flag to true to show debug prints. Even if you forgot
@@ -18,17 +16,36 @@ class AppProviderObserver extends ProviderObserver {
   AppProviderObserver();
 
   @override
-  Future<void> didUpdateProvider(
-      ProviderBase<dynamic> provider,
-      Object? previousValue,
-      Object? newValue,
-      ProviderContainer container) async {
+  Future<void> didUpdateProvider(ProviderBase<dynamic> provider, Object? previousValue,
+      Object? newValue, ProviderContainer container) async {
     if (_debug) {
       debugPrint('PROVIDER    : ${provider.name ?? '<NO NAME>'}\n'
           '  Type      : ${provider.runtimeType}\n'
           '  Old value : $previousValue\n'
           '  New value : $newValue');
     }
+  }
+
+  @override
+  void didAddProvider(
+    ProviderBase<Object?> provider,
+    Object? value,
+    ProviderContainer container,
+  ) {
+    if (_debug) {
+      debugPrint('Provider $provider was initialized with $value');
+    }
+  }
+
+  @override
+  void didDisposeProvider(
+    ProviderBase<Object?> provider,
+    ProviderContainer container,
+  ) {
+    if (_debug) {
+      debugPrint('Provider $provider was disposed');
+    }
+
   }
 
 // @override

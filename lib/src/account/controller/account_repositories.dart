@@ -2,8 +2,6 @@
               FETCH ADDRESS METHOD
  -------------------------------------------------------------------*/
 
-import 'dart:convert';
-
 import 'package:tago/app.dart';
 
 Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) async {
@@ -20,20 +18,20 @@ Future<List<AddressModel>> getAddressMethod(AutoDisposeFutureProviderRef ref) as
   //the response and error handling
   if (decodedData['success'] == true) {
     final addressList = (decodedData['data'] as List).map((e) => AddressModel.fromJson(e)).toList();
-    log('get request for address:  ${decodedData['data']}'); //
+    // log('get request for address:  ${decodedData['data']}'); //
 
-    ref.read(addressIdProvider.notifier).update((state) {
-      if ((decodedData['data'] as List).isNotEmpty) {
-        // return '${decodedData['data'][0]['id']}';
+    // ref.read(addressIdProvider.notifier).update((state) {
+    //   if ((decodedData['data'] as List).isNotEmpty) {
+    //     // return '${decodedData['data'][0]['id']}';
 
-        return '${decodedData['data'][HiveHelper().getAddressIndex(HiveKeys.addressId.keys)]['id']}';
-      }
-      return '';
-    });
+    //     return '${decodedData['data'][HiveHelper().getAddressIndex(HiveKeys.addressId.keys)]['id']}';
+    //   }
+    //   return '';
+    // });
 
     return addressList;
   } else {
-    return [AddressModel()];
+    return [const AddressModel()];
   }
 }
 

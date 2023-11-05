@@ -98,10 +98,15 @@ class AuthAsyncNotifier extends StateNotifier<AsyncValue> {
         state = AsyncValue.data(decodedData['message']);
         log('decodedData: $decodedData');
 
-//NAVIGATING TO THE MAIN SCREEN
+        //NAVIGATING TO THE MAIN SCREEN
         onNavigation();
 
         return decodedData;
+      } else {
+        state = AsyncValue.error(decodedData['message'], StackTrace.empty);
+        showAuthBottomSheet(
+          context: context,
+        );
       }
     } catch (e) {
       state = AsyncValue.error(e.toString(), StackTrace.empty);

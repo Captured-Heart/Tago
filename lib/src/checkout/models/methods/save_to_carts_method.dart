@@ -1,20 +1,23 @@
 import 'package:tago/app.dart';
 
-int? cartIDFromName(ProductsModel productsModel) {
-  var cartID = checkCartBoxLength()
-      ?.where(
-          (element) => element.product?.name?.toLowerCase() == productsModel.name?.toLowerCase())
-      .map((e) => e.product?.id)
-      .first;
+// int? cartIDFromName(ProductsModel productsModel) {
+//   var cartID = checkCartBoxLength()
+//       ?.where(
+//           (element) => element.product?.name?.toLowerCase() == productsModel.name?.toLowerCase())
+//       .map((e) => e.product?.id)
+//       .first;
+//   log('cartId: $cartID');
 
-  return cartID;
-}
+//   return cartID;
+// }
 
 int? cartIndexFromID(ProductsModel productsModel) {
-  var cartIndex = checkCartBoxLength()
-      ?.map((e) => e.product?.id)
-      .toList()
-      .indexOf(cartIDFromName(productsModel));
+  var cartIndex = checkCartBoxLength()?.indexWhere(
+      (element) => element.product?.name?.toLowerCase() == productsModel.name?.toLowerCase());
+
+  // ?.map((e) => e.product?.id)
+  // .toList()
+  // .indexOf(cartIDFromName(productsModel));
   return cartIndex;
 }
 
@@ -22,11 +25,13 @@ int? cartQuantityFromName(ProductsModel productModel) {
   var cartIndex = checkCartBoxLength()
       ?.where((element) => element.product?.name?.toLowerCase() == productModel.name?.toLowerCase())
       .toList();
+
+    // log('product quantity first: ${cartIndex?.map((e) => e.quantity)}, dateTime: ${DateTime.now().second}');
+
   if (cartIndex!.isNotEmpty) {
-    return cartIndex.map((e) => e.quantity).first;
+    // log('product quantity second: ${cartIndex.map((e) => e.quantity)}, dateTime_2nd: ${DateTime.now().second}');
+    return cartIndex.map((e) => e.quantity).single;
   }
-  // .map((e) => e.quantity)
-  // .first;
 
   return 1;
 }
@@ -40,15 +45,16 @@ List<CartModel>? checkCartBoxLength() {
 }
 
 void addRecentlyViewedToStorage(ProductsModel productModel) {
-  final List<ProductsModel> recentProducts = [];
+  // final List<ProductsModel> recentProducts = [];
+  // final Map<String, dynamic> recentProd = {};
   var totalLists = (HiveHelper().recentlyBoxValues())
       .map((dynamic e) => ProductsModel(id: e[0].id, name: e[0].name))
       .toList();
 
   if (totalLists.map((e) => e.id).toList().contains(productModel.id) == false) {
-    final updatedData = [...recentProducts, productModel];
+    // final updatedData = [...recentProducts, productModel.toJson()];
     // this saves the recent products to list
-    HiveHelper().saveRecentData(updatedData);
+    HiveHelper().saveRecentData(productModel.toJson());
   }
 }
 

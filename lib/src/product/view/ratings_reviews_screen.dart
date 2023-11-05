@@ -70,7 +70,6 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviewsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //! TODO: USE A LIST VIEW BUILDER HERE (FIXEDDDDDDDDDD)
                     ratingsIndicatorRowWithStar(
                       context: context,
                       starValue: 5,

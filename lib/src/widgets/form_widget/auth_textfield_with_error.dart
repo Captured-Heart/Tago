@@ -73,6 +73,7 @@ Widget authTextFieldWithError(
               const BorderSide(width: 1, color: TagoLight.textFieldBorder),
         ),
         errorBorder: OutlineInputBorder(
+          
           borderRadius: BorderRadius.circular(8),
           borderSide:
               const BorderSide(width: 1, color: TagoLight.textFieldBorder),

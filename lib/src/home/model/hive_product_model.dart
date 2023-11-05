@@ -40,6 +40,8 @@ class ProductsModel extends HiveObject {
   final double? savedPerc;
   @HiveField(17)
   final int? availableQuantity;
+  @HiveField(18)
+  final DateTime? date;
 
   ProductsModel({
     this.id,
@@ -60,6 +62,7 @@ class ProductsModel extends HiveObject {
     this.originalAmount,
     this.savedPerc,
     this.availableQuantity,
+    this.date,
   });
 
   factory ProductsModel.fromJson(Map<String, dynamic> json) => ProductsModel(
@@ -75,7 +78,7 @@ class ProductsModel extends HiveObject {
         originalAmount: json['originalAmount'] as int?,
         savedPerc: (json['savedPerc'] as num?)?.toDouble(),
         availableQuantity: json['availableQuantity'] as int?,
-
+        date: json['date'] as DateTime?,
         // productTags: json['productTags'] as List<dynamic>?,
         // subCategoryId: json['subCategoryId'] as int?,
         // categoryId: json['categoryId'] as int?,
@@ -109,5 +112,6 @@ class ProductsModel extends HiveObject {
         'originalAmount': originalAmount,
         'savedPerc': savedPerc,
         'availableQuantity': availableQuantity,
+        'date': DateTime.now(),
       };
 }

@@ -1,7 +1,6 @@
 import 'package:tago/app.dart';
 
-Widget getFreeDeliveryDesign(
-    List<int> indexList, int index, BuildContext context) {
+Widget getFreeDeliveryDesign(List<int> indexList, int index, BuildContext context) {
   if (indexList.contains(index)) {
     return Align(
       alignment: Alignment.topLeft,
@@ -14,8 +13,7 @@ Widget getFreeDeliveryDesign(
         child: Text(
           'Free delivery',
           style: context.theme.textTheme.labelMedium?.copyWith(
-              color: TagoLight.scaffoldBackgroundColor,
-              fontFamily: TextConstant.fontFamilyBold),
+              color: TagoLight.scaffoldBackgroundColor, fontFamily: TextConstant.fontFamilyBold),
         ).padAll(5),
       ),
     );
@@ -103,15 +101,12 @@ Widget addMinusBTN({
       maximumSize: const Size.fromRadius(15),
       minimumSize: const Size.fromRadius(5),
       padding: EdgeInsets.zero,
-      backgroundColor: isMinus == true
-          ? TagoLight.primaryColor.withOpacity(0.15)
-          : TagoLight.primaryColor,
+      backgroundColor:
+          isMinus == true ? TagoLight.primaryColor.withOpacity(0.15) : TagoLight.primaryColor,
     ),
     child: Icon(
       isMinus == true ? Icons.remove : Icons.add,
-      color: isMinus == true
-          ? TagoDark.primaryColor
-          : TagoDark.scaffoldBackgroundColor,
+      color: isMinus == true ? TagoDark.primaryColor : TagoDark.scaffoldBackgroundColor,
       size: 20,
     ),
   );
@@ -176,27 +171,35 @@ Widget tagScreenCardLoader({
                   ))));
 }
 
-Widget productCard(
-    {required BuildContext context,
-    required ProductsModel productModel,
-    required VoidCallback addToCartBTN,
-    required VoidCallback onIncrementBTN,
-    required VoidCallback onDecrementBTN,
-    required}) {
+
+
+
+Widget productCard({
+  required BuildContext context,
+  required ProductsModel productModel,
+  required VoidCallback setState,
+  // required VoidCallback onIncrementBTN,
+  // required VoidCallback onDecrementBTN,
+  required WidgetRef ref,
+  required int quantity,
+
+}) {
   return GestureDetector(
+    // key: UniqueKey(),
     onTap: () {
       addRecentlyViewedToStorage(productModel);
 
       navBarPush(
         context: context,
         screen: SingleProductPage(
-          id: productModel.id!,
+          id: productModel.id ?? 0,
           productsModel: productModel,
         ),
         withNavBar: false,
       );
     },
     child: Container(
+        // key: UniqueKey(),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.white,
@@ -245,10 +248,8 @@ Widget productCard(
                             .contains(productModel.id) ==
                         true
                     ? Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 3),
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 2, vertical: 5),
+                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
+                        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
                         decoration: BoxDecoration(
                             color: TagoLight.primaryColor.withOpacity(0.13),
                             borderRadius: BorderRadius.circular(20)),
@@ -257,7 +258,36 @@ Widget productCard(
                           children: [
                             //decrease
                             GestureDetector(
-                              onTap: onDecrementBTN,
+                              // onTap: onDecrementBTN,
+                              onTap: () {
+                                if (quantity > 1) {
+                                  //! REDUCE THE QUANTITY
+                                  incrementDecrementCartValueMethod(
+                                    cartIndexFromID(productModel)!,
+                                    CartModel(quantity: quantity - 1, product: productModel),
+                                  );
+                                  setState();
+                                } else {
+                                  //! delete from the cart locally
+                                  deleteCartFromListMethod(
+                                    index: cartIndexFromID(productModel)!,
+                                    cartModel: CartModel(),
+                                    context: context,
+                                    setState: () {},
+                                    isProductModel: true,
+                                    productsModel: productModel,
+                                  );
+                                  // setState(() {});
+                                  //! DELETE FROM THE CART IN BACKEND
+                                  ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                                    map: {
+                                      ProductTypeEnums.productId.name: productModel.id.toString(),
+                                    },
+                                  ).whenComplete(
+                                    () => ref.invalidate(getCartListProvider(false)),
+                                  );
+                                }
+                              },
                               child: const Icon(
                                 Icons.remove,
                                 size: 22,
@@ -271,7 +301,23 @@ Widget productCard(
 
                             //increase
                             GestureDetector(
-                              onTap: onIncrementBTN,
+                              // onTap: onIncrementBTN,
+                              onTap: () {
+                                if (quantity < productModel.availableQuantity!) {
+                                  log('increased: ${cartIndexFromID(productModel)!} ');
+
+                                  incrementDecrementCartValueMethod(
+                                    cartIndexFromID(productModel)!,
+                                    CartModel(quantity: quantity + 1, product: productModel),
+                                  );
+                                } else {
+                                  showScaffoldSnackBarMessage(
+                                    'The available quantity of ${productModel.name} is (${productModel.availableQuantity})',
+                                    isError: true,
+                                    duration: 2,
+                                  );
+                                }
+                              },
                               child: const Icon(
                                 Icons.add,
                                 size: 22,
@@ -287,14 +333,35 @@ Widget productCard(
                             borderRadius: BorderRadius.circular(7.0),
                             border: Border.all(color: TagoDark.primaryColor)),
                         child: GestureDetector(
-                          onTap: addToCartBTN,
+                          // onTap: addToCartBTN,
+                          onTap: () {
+                            if (productModel.availableQuantity! < 1) {
+                              //product is out of stock
+                              showScaffoldSnackBarMessage(
+                                TextConstant.productIsOutOfStock,
+                                isError: true,
+                              );
+                            } else {
+                              //add to cart (LOCALLY)
+                              saveToCartLocalStorageMethod(
+                                CartModel(quantity: 1, product: productModel),
+                              );
+                              // add to cart (BACKEND)
+                              ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                map: {
+                                  ProductTypeEnums.productId.name: productModel.id.toString(),
+                                  ProductTypeEnums.quantity.name: '1',
+                                },
+                              );
+                              ref.invalidate(getCartListProvider(false));
+                            }
+                          },
                           child: Text(
                             'Add',
-                            style: context.theme.textTheme.titleMedium
-                                ?.copyWith(
-                                    fontFamily: TextConstant.fontFamilyNormal,
-                                    fontSize: 12,
-                                    color: TagoDark.orange),
+                            style: context.theme.textTheme.titleMedium?.copyWith(
+                                fontFamily: TextConstant.fontFamilyNormal,
+                                fontSize: 12,
+                                color: TagoDark.orange),
                           ),
                         ),
                       )

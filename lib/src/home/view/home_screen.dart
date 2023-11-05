@@ -3,13 +3,6 @@ import 'package:tago/src/home/loaders/category_card_loaders.dart';
 import 'package:tago/src/home/view/tag_screen.dart';
 import 'package:tago/src/widgets/shortcut_widget.dart';
 
-final carouselSliderProvider = Provider<CarouselController>((ref) {
-  return CarouselController();
-});
-final currentCarouselIndexProvider = StateProvider<int>((ref) {
-  return 0;
-});
-
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -46,34 +39,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final categoriesGroup = ref.watch(fetchCategoriesProvider);
-    final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
+    // final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
     // final accountInfo = ref.watch(getAccountInfoProvider);
-    // final accountInfo = ref.watch(getAccountInfoProvider);
-    final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
+    final accountInfo = ref.watch(getAccountInfoProvider);
+    // final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
 
-    // log(HiveHelper().getData(HiveKeys.token.keys));
-    // log('$cartIndex');
-    // HiveHelper().clearBoxRecent();
     return Scaffold(
       appBar: homescreenAppbar(
         context: context,
         isBadgeVisible: checkCartBoxLength()?.isNotEmpty ?? false,
 
-        // cartList?.isNotEmpty ?? false,
         showSearchIcon: showSearchAddressWidget,
       ),
       body: ListView(
         controller: _controller,
         children: [
           showSearchAddressWidget
-              ? searchBoxAndAddressWidget(
-                  context,
-                  accountInfo?[
-                      HiveHelper().getData(HiveKeys.addressIndex.keys)])
+              ? searchBoxAndAddressWidget(context, accountInfo.value)
               : const SizedBox(),
           Container(
-            padding:
-                const EdgeInsets.only(right: 18, left: 18, bottom: 10, top: 10),
+            padding: const EdgeInsets.only(right: 18, left: 18, bottom: 10, top: 10),
             child: Column(
               children: [
                 // ORDER status
@@ -99,8 +84,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     return Column(
                       children: [
                         CarouselSlider(
-                          items:
-                              hotDealsCarouselWidgetList(context, data!.deals),
+                          items: hotDealsCarouselWidgetList(context, data!.deals),
                           carouselController: ref.watch(carouselSliderProvider),
                           options: CarouselOptions(
                               autoPlay: true,
@@ -119,9 +103,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           children: List.generate(
                             data.deals.length,
                             (index) => GestureDetector(
-                              onTap: () => ref
-                                  .read(carouselSliderProvider)
-                                  .animateToPage(index),
+                              onTap: () => ref.read(carouselSliderProvider).animateToPage(index),
                               child: Container(
                                 width: 6.0,
                                 height: 6.0,
@@ -131,15 +113,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: (Theme.of(context).brightness ==
-                                              Brightness.dark
+                                  color: (Theme.of(context).brightness == Brightness.dark
                                           ? TagoLight.indicatorInactiveColor
                                           : TagoLight.indicatorActiveColor)
                                       .withOpacity(
-                                    ref.watch(currentCarouselIndexProvider) ==
-                                            index
-                                        ? 0.9
-                                        : 0.4,
+                                    ref.watch(currentCarouselIndexProvider) == index ? 0.9 : 0.4,
                                   ),
                                 ),
                               ),
@@ -155,8 +133,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  loading: () => hotDealsLoaders(context: context)
-                      .padSymmetric(horizontal: 1),
+                  loading: () => hotDealsLoaders(context: context).padSymmetric(horizontal: 1),
                 ),
 
                 //! Categories section
@@ -186,16 +163,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         // growable: false,
                         (index) => GestureDetector(
                           onTap: () {
-                            ref.read(categoryLabelProvider.notifier).update(
-                                (state) => data.categories[index].label ?? '');
+                            ref
+                                .read(categoryLabelProvider.notifier)
+                                .update((state) => data.categories[index].label ?? '');
                             var subList = data.categories[index].subCategories;
 
                             push(
                               context,
                               FruitsAndVegetablesScreen(
                                 subCategoriesList: subList!,
-                                appBarTitle: data.categories[index].name ??
-                                    'Product name',
+                                appBarTitle: data.categories[index].name ?? 'Product name',
                               ),
                             );
                           },
@@ -216,8 +193,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  loading: () =>
-                      categoryCardLoaders(context: context, index: 8),
+                  loading: () => categoryCardLoaders(context: context, index: 8),
                 ),
 
                 // shortcut
@@ -233,21 +209,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         shortcutWidget(
-                            context: context,
-                            icon: Icons.favorite_outline,
-                            name: 'Favorites'),
+                            context: context, icon: Icons.favorite_outline, name: 'Favorites'),
                         shortcutWidget(
                             context: context,
                             icon: Icons.star_border_outlined,
                             name: 'best Sellers'),
                         shortcutWidget(
-                            context: context,
-                            icon: Icons.receipt_outlined,
-                            name: 'Past Orders'),
+                            context: context, icon: Icons.receipt_outlined, name: 'Past Orders'),
                         shortcutWidget(
-                            context: context,
-                            icon: Icons.message_outlined,
-                            name: 'Support'),
+                            context: context, icon: Icons.message_outlined, name: 'Support'),
                       ],
                     ).padOnly(top: 10)
                   ],
@@ -255,6 +225,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
+
           categoriesGroup
               .when(
                 data: (data) {
@@ -274,10 +245,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             push(
                               context,
                               TagScreen(
-                                  tagId: productTagModel.id,
-                                  appBarTitle: productTagModel.name,
-                                  imageUrl: productTagModel.previewImageUrl ??
-                                      productTagModel.imageUrl!),
+                                tagId: productTagModel.id,
+                                appBarTitle: productTagModel.name,
+                                imageUrl:
+                                    productTagModel.previewImageUrl ?? productTagModel.imageUrl!,
+                              ),
                             );
                           },
                           child: const Text(TextConstant.seeall),
@@ -294,113 +266,98 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           SizedBox(
                             height: 320,
                             child: ListView.builder(
-                              padding: const EdgeInsets.only(
-                                  left: 170.0, top: 10, bottom: 10),
-                              itemCount:
-                                  data.showcaseProductTag!.products!.length,
-                              shrinkWrap: false,
+                              padding: const EdgeInsets.only(left: 170.0, top: 10, bottom: 10),
+                              itemCount: data.showcaseProductTag!.products!.length,
+                              shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                var productModel =
-                                    data.showcaseProductTag!.products![index];
-                                var quantity =
-                                    cartQuantityFromName(productModel);
+                              itemBuilder: (context1, index) {
+                                var productModel = data.showcaseProductTag!.products![index];
+                                var quantity = cartQuantityFromName(productModel);
+                                // var cartIndex = cartIndexFromID(productModel);
+
                                 return productCard(
-                                  productModel:
-                                      data.showcaseProductTag!.products![index],
-                                  context: context,
+                                  productModel: productModel,
+                                  context: context1,
+                                  quantity: quantity ?? 1,
+                                  ref: ref,
+                                  setState: () => setState(() {}),
 
                                   // on DECREMENT
-                                  onDecrementBTN: () {
-                                    if (quantity! > 1) {
-                                      //! REDUCE THE QUANTITY
-                                      incrementDecrementCartValueMethod(
-                                        cartIDFromName(productModel)!,
-                                        CartModel(
-                                            quantity: quantity - 1,
-                                            product: productModel),
-                                      );
-                                    } else {
-                                      //! delete from the cart locally
-                                      deleteCartFromListMethod(
-                                        index: cartIDFromName(productModel)!,
-                                        cartModel: CartModel(),
-                                        context: context,
-                                        setState: () {},
-                                        isProductModel: true,
-                                        productsModel: productModel,
-                                      );
-                                      // setState(() {});
-                                      //! DELETE FROM THE CART IN BACKEND
-                                      ref
-                                          .read(cartNotifierProvider.notifier)
-                                          .deleteFromCartMethod(
-                                        map: {
-                                          ProductTypeEnums.productId.name:
-                                              productModel.id.toString(),
-                                        },
-                                      ).whenComplete(
-                                        () => ref.invalidate(
-                                            getCartListProvider(false)),
-                                      );
-                                    }
-                                  },
+                                  // onDecrementBTN: () {
+                                  //   if (quantity! > 1) {
+                                  //     //! REDUCE THE QUANTITY
+                                  //     incrementDecrementCartValueMethod(
+                                  //       cartIndexFromID(productModel)!,
+                                  //       CartModel(quantity: quantity - 1, product: productModel),
+                                  //     );
+                                  //   } else {
+                                  //     //! delete from the cart locally
+                                  //     deleteCartFromListMethod(
+                                  //       index: cartIDFromName(productModel)!,
+                                  //       cartModel: CartModel(),
+                                  //       context: context,
+                                  //       setState: () {},
+                                  //       isProductModel: true,
+                                  //       productsModel: productModel,
+                                  //     );
+                                  //     // setState(() {});
+                                  //     //! DELETE FROM THE CART IN BACKEND
+                                  //     ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
+                                  //       map: {
+                                  //         ProductTypeEnums.productId.name:
+                                  //             productModel.id.toString(),
+                                  //       },
+                                  //     ).whenComplete(
+                                  //       () => ref.invalidate(getCartListProvider(false)),
+                                  //     );
+                                  //   }
+                                  // },
 
                                   //ON INCREMENT
-                                  onIncrementBTN: () {
-                                    if (quantity! <
-                                        productModel.availableQuantity!) {
-                                      incrementDecrementCartValueMethod(
-                                        cartIndexFromID(productModel)!,
-                                        CartModel(
-                                            quantity: quantity + 1,
-                                            product: productModel),
-                                      );
-                                    } else {
-                                      showScaffoldSnackBarMessage(
-                                        'The available quantity of ${productModel.name} is (${productModel.availableQuantity})',
-                                        isError: true,
-                                        duration: 2,
-                                      );
-                                    }
-                                  },
+                                  // onIncrementBTN: () {
+                                  //   if (quantity < productModel.availableQuantity!) {
+                                  //     incrementDecrementCartValueMethod(
+                                  //       cartIndexFromID(productModel)!,
+                                  //       CartModel(quantity: quantity + 1, product: productModel),
+                                  //     );
+                                  //   } else {
+                                  //     showScaffoldSnackBarMessage(
+                                  //       'The available quantity of ${productModel.name} is (${productModel.availableQuantity})',
+                                  //       isError: true,
+                                  //       duration: 2,
+                                  //     );
+                                  //   }
+                                  // },
 
                                   // ADD TO CART
-                                  addToCartBTN: () {
-                                    if (data
-                                            .showcaseProductTag!
-                                            .products![index]
-                                            .availableQuantity! <
-                                        1) {
-                                      //product is out of stock
-                                      showScaffoldSnackBarMessage(
-                                        TextConstant.productIsOutOfStock,
-                                        isError: true,
-                                      );
-                                    } else {
-                                      //add to cart (LOCALLY)
-                                      saveToCartLocalStorageMethod(
-                                        CartModel(
-                                            quantity: 1,
-                                            product: data.showcaseProductTag!
-                                                .products![index]),
-                                      );
-                                      setState(() {});
-                                      // add to cart (BACKEND)
-                                      ref
-                                          .read(cartNotifierProvider.notifier)
-                                          .addToCartMethod(
-                                        map: {
-                                          ProductTypeEnums.productId.name: data
-                                              .showcaseProductTag!
-                                              .products![index]
-                                              .id
-                                              .toString(),
-                                          ProductTypeEnums.quantity.name: '1',
-                                        },
-                                      );
-                                    }
-                                  },
+                                  // addToCartBTN: () {
+                                  //   if (data.showcaseProductTag!.products![index]
+                                  //           .availableQuantity! <
+                                  //       1) {
+                                  //     //product is out of stock
+                                  //     showScaffoldSnackBarMessage(
+                                  //       TextConstant.productIsOutOfStock,
+                                  //       isError: true,
+                                  //     );
+                                  //   } else {
+                                  //     //add to cart (LOCALLY)
+                                  //     saveToCartLocalStorageMethod(
+                                  //       CartModel(
+                                  //           quantity: 1,
+                                  //           product: data.showcaseProductTag!.products![index]),
+                                  //     );
+                                  //     setState(() {});
+                                  //     // add to cart (BACKEND)
+                                  //     ref.read(cartNotifierProvider.notifier).addToCartMethod(
+                                  //       map: {
+                                  //         ProductTypeEnums.productId.name: data
+                                  //             .showcaseProductTag!.products![index].id
+                                  //             .toString(),
+                                  //         ProductTypeEnums.quantity.name: '1',
+                                  //       },
+                                  //     );
+                                  //   }
+                                  // },
                                 ).padOnly(left: 10);
                               },
                             ),
@@ -416,96 +373,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                loading: () => categoryCardLoaders(context: context)
-                    .padSymmetric(horizontal: 20),
+                loading: () => categoryCardLoaders(context: context).padSymmetric(horizontal: 20),
               )
               .padOnly(bottom: 20),
-          // ListTile(
-          //   title: const Text(
-          //     TextConstant.itemsNearYou,
-          //   ),
-          //   trailing: TextButton(
-          //     onPressed: () {
-          //       log(ref.watch(categoryLabelProvider));
-          //     },
-          //     child: const Text(TextConstant.seeall),
-          //   ),
-          // ),
-          // categoriesGroup
-          //     .when(
-          //       data: (data) {
-          //         if (data!.showcaseProductTag == null) {
-          //           return const SizedBox();
-          //         }
-          //         return Column(
-          //           children: [
-          //             ListTile(
-          //               title: Text(
-          //                 data.showcaseProductTag!.name,
-          //                 style: context.theme.textTheme.titleLarge,
-          //               ),
-          //               trailing: TextButton(
-          //                 onPressed: () {},
-          //                 child: const Text(TextConstant.seeall),
-          //               ),
-          //             ).padOnly(bottom: 10),
-          //             Stack(
-          //               children: [
-          //                 CachedNetworkImage(
-          //                   imageUrl: data.showcaseProductTag!.imageUrl!,
-          //                   fit: BoxFit.fill,
-          //                   width: double.infinity,
-          //                   height: 320,
-          //                 ),
-          //                 SizedBox(
-          //                   height: 320,
-          //                   child: ListView.builder(
-          //                     padding: const EdgeInsets.only(left: 170.0, top: 10, bottom: 10),
-          //                     itemCount: data.showcaseProductTag!.products!.length,
-          //                     shrinkWrap: false,
-          //                     scrollDirection: Axis.horizontal,
-          //                     itemBuilder: (context, index) {
-          //                       return productCard(
-          //                         productModel: data.showcaseProductTag!.products![index],
-          //                         context: context,
-          //                         addToCartBTN: () {
-          //                           saveToCartLocalStorageMethod(
-          //                             CartModel(
-          //                                 quantity: 1,
-          //                                 product: data.showcaseProductTag!.products![index]),
-          //                           );
-          //                           setState(() {});
-          //                           ref.read(cartNotifierProvider.notifier).addToCartMethod(
-          //                             map: {
-          //                               ProductTypeEnums.productId.name:
-          //                                   data.showcaseProductTag!.products![index].id.toString(),
-          //                               ProductTypeEnums.quantity.name: '1',
-          //                             },
-          //                           );
-          //                         },
-          //                       ).padOnly(left: 10);
-          //                     },
-          //                   ),
-          //                 )
-          //               ],
-          //             ),
-          //           ],
-          //         );
-          //       },
-          //       error: (error, stackTrace) => Center(
-          //         child: Text(
-          //           NetworkErrorEnums.checkYourNetwork.message,
-          //           textAlign: TextAlign.center,
-          //         ),
-          //       ),
-          //       loading: () => categoryCardLoaders(context: context),
-          //     )
-          //     .padOnly(bottom: 20),
+
+          //RECENTLY VIEWED
 
           ValueListenableBuilder(
             valueListenable: HiveHelper().getRecentlyViewedListenable(),
             builder: (BuildContext context, Box<List> box, Widget? child) {
               // if (HiveHelper().getRecentlyViewed() != null) {
+
               if (box.isNotEmpty) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -533,8 +411,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          // var product = box.getAt(index) as List<ProductsModel>;
-                          var product = (box.values.toList())[index];
+                          var product = box.getAt(index)!.cast<ProductsModel>();
+                          // var product = (box.values.toList())[index];
+                          // log('a: ${product[0].date}, b: ${product[0].date}');
+
+                          // // List<ProductsModel> product =
+                          // //     (box.values.toList())[index].cast<ProductsModel>();
+
+                          product.sort((a, b) {
+                            log('a: ${a.date}, b: ${b.date}');
+                            setState(() {});
+                            b.amount!.compareTo(a.amount!);
+                            return 1;
+                          });
+
+                          // List<ProductsModel> product() {
+                          //   var product = (box.values.toList())[index].cast<ProductsModel>();
+
+                          //   product.sort((a, b) => a.amount!.compareTo(b.amount!));
+
+                          //   log(product .toString());
+                          //   return product;
+                          // }
+
                           return SizedBox(
                             width: context.sizeWidth(0.35),
                             child: itemsNearYouCard(
@@ -543,8 +442,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 navBarPush(
                                   context: context,
                                   screen: SingleProductPage(
-                                    id: product[index].id!,
-                                    productsModel: product[index],
+                                    id: product[0].id!,
+                                    productsModel: product[0],
                                   ),
                                   withNavBar: false,
                                 );
@@ -854,8 +753,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Column homeScreenAddressWidget(
-      BuildContext context, AsyncValue<AccountModel> accountInfo) {
+  Column homeScreenAddressWidget(BuildContext context, AsyncValue<AccountModel> accountInfo) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -900,7 +798,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
 searchBoxAndAddressWidget(
   BuildContext context,
-  AddressModel? accountInfo,
+  AccountModel? accountInfo,
 ) {
   var address = accountInfo;
 
@@ -945,8 +843,7 @@ searchBoxAndAddressWidget(
             if (address == null) {
               push(context, const AddNewAddressScreen());
             } else {
-              HiveHelper().saveData(
-                  HiveKeys.fromCheckout.keys, HiveKeys.fromCheckout.keys);
+              HiveHelper().saveData(HiveKeys.fromCheckout.keys, HiveKeys.fromCheckout.keys);
 
               push(context, const AddressBookScreen());
             }
@@ -957,13 +854,15 @@ searchBoxAndAddressWidget(
                 Icons.location_on,
                 color: Colors.white,
               ),
-              Text(
-                address != null
-                    ? '${address.apartmentNumber}, ${address.streetAddress}'
-                    : 'Add your address',
-                style: context.theme.textTheme.titleLarge?.copyWith(
-                  fontSize: 12,
-                  color: Colors.white,
+              Expanded(
+                child: Text(
+                  address != null
+                      ? '${address.address?.apartmentNumber}, ${address.address?.streetAddress}, ${address.address?.city}'
+                      : 'Add your address',
+                  style: context.theme.textTheme.titleLarge?.copyWith(
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               const Icon(

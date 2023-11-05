@@ -19,7 +19,17 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
   @override
   Widget build(BuildContext context) {
     final address = ref.watch(getAccountAddressProvider);
+    final accountInfo = ref.watch(getAccountInfoProvider);
 
+    var groupValue = address.valueOrNull?.indexWhere((element) =>
+        element.streetAddress
+            ?.toLowerCase()
+            // .toLowerCase()
+            .contains(accountInfo.valueOrNull!.address!.streetAddress!.toLowerCase().toString()) ??
+        false);
+    // .where((element) => element.streetAddress!
+    // .toLowerCase()
+    // .contains(accountInfo.valueOrNull!.address!.streetAddress.toString()));
     return Scaffold(
       appBar: appBarWidget(
         context: context,
@@ -31,6 +41,14 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
       body: ListView(padding: const EdgeInsets.symmetric(horizontal: 20), children: [
         address.when(
           data: (data) {
+            if (data.isEmpty) {
+              return const Center(
+                child: Text(
+                  TextConstant.noAddressFound,
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
             return Column(
               children: List.generate(
                 data.length,
@@ -41,18 +59,48 @@ class AddressBookScreenState extends ConsumerState<AddressBookScreen> {
                     children: [
                       Radio(
                         value: index,
-                        groupValue: HiveHelper().getData(HiveKeys.addressIndex.keys) ?? 0,
+                        groupValue: groupValue,
                         onChanged: (value) {
-                          HiveHelper().saveData(HiveKeys.addressIndex.keys, value);
-                          // ref.invalidate(getAccountInfoProvider);
+                          // HiveHelper().saveData(HiveKeys.addressIndex.keys, value);
 
                           setState(() {});
                           if (HiveHelper().getData(HiveKeys.fromCheckout.keys) ==
                               HiveKeys.fromCheckout.keys) {
-                            HiveHelper().saveData(HiveKeys.addressId.keys, index);
+                            //
+                            //BUT HERE, THE USER IS COMING FROM A SCREEN THAT WISHES TO EDIT THE ADDRESS SUCH AS (CHECKOUT SCREEN AND HOME SCREEN)
+                            ref.read(accountAddressProvider.notifier).setDefaultAddressMethod(
+                              map: {
+                                AddressType.apartmentNumber.name:
+                                    addressModel.apartmentNumber?.trim(),
+                                AddressType.city.name: addressModel.city?.trim(),
+                                AddressType.state.name: addressModel.state?.trim(),
+                                AddressType.streetAddress.name: addressModel.streetAddress?.trim(),
+                                AddressType.id.name: addressModel.id?.trim(),
+                              },
+                              context: context,
+                              ref: ref,
+                            );
                             ref.invalidate(getAccountAddressProvider);
+                            ref.invalidate(getAccountInfoProvider);
 
                             pop(context);
+                          } else {
+                            //
+                            //HERE I AM NOT POPPING THE SCREEN, AND IT HAPPENS ONLY WHEN THE USER DIRECTLY COMES TO THE ADDRESS SCREEN
+                            ref.read(accountAddressProvider.notifier).setDefaultAddressMethod(
+                              map: {
+                                AddressType.apartmentNumber.name:
+                                    addressModel.apartmentNumber?.trim(),
+                                AddressType.city.name: addressModel.city?.trim(),
+                                AddressType.state.name: addressModel.state?.trim(),
+                                AddressType.streetAddress.name: addressModel.streetAddress?.trim(),
+                                AddressType.id.name: addressModel.id?.trim(),
+                              },
+                              context: context,
+                              ref: ref,
+                            );
+                            ref.invalidate(getAccountAddressProvider);
+                            ref.invalidate(getAccountInfoProvider);
                           }
                         },
                       ),

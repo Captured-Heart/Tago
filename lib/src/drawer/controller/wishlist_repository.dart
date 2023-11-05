@@ -9,35 +9,39 @@ import 'package:tago/app.dart';
 Future<List<ProductsModel>> fetchWishListMethod({
   bool showSnackBar = true,
 }) async {
-  // try {
-  //post request executed
-  final Response response =
-      await NetworkHelper.getRequest(api: getWishListUrl, headers: {
-    'Authorization': HiveHelper().getData(HiveKeys.token.name),
-  });
+  try {
+    // post request executed
+    final Response response = await NetworkHelper.getRequest(api: getWishListUrl, headers: {
+      'Authorization': HiveHelper().getData(HiveKeys.token.name),
+    });
 
-  // decoding the response
-  // log('responseBody: ${response.body}');
-  String data = response.body;
-  var decodedData = jsonDecode(data);
+    // decoding the response
+    // log('responseBody: ${response.body}');
+    String data = response.body;
+    var decodedData = jsonDecode(data);
 
-  //the response and error handling
-  if (decodedData['success'] == true) {
-    // log('get request for Categories:  $decodedData'); //
+    //the response and error handling
+    if (decodedData['success'] == true) {
+      // log('get request for Categories:  $decodedData'); //
 
-    // final wishList = ProductsModel.fromJson(decodedData['data'][0]['product']);
-    final wishList = (decodedData['data'] as List)
-        .map((e) => e['product'])
-        // .where((element) => element == ['product'])
-        .map((e) => ProductsModel.fromJson(e))
-        .toList();
+      // final wishList = ProductsModel.fromJson(decodedData['data'][0]['product']);
+      final wishList = (decodedData['data'] as List)
+          .map((e) => e['product'])
+          // .where((element) => element == ['product'])
+          .map((e) => ProductsModel.fromJson(e))
+          .toList();
 
-    showSnackBar ? showScaffoldSnackBarMessage(decodedData['message']) : null;
+      showSnackBar ? showScaffoldSnackBarMessage(decodedData['message']) : null;
 
-    return wishList;
-  } else {
-    showScaffoldSnackBarMessage(decodedData['message'], isError: true);
-    return decodedData['message'];
+      return wishList;
+    } else {
+      showScaffoldSnackBarMessage(decodedData['message'], isError: true);
+      return [];
+      // decodedData['message'];
+    }
+  } catch (e) {
+    log(e.toString());
+    return [];
   }
 }
 
