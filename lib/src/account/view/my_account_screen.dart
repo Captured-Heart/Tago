@@ -19,7 +19,7 @@ class MyAccountScreen extends ConsumerWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
               side: const BorderSide(
-                width: 0.05,
+                width: 0.055,
                 strokeAlign: BorderSide.strokeAlignCenter,
               ),
             ),
