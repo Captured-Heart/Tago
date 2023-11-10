@@ -35,13 +35,14 @@ class ProductsModelAdapter extends TypeAdapter<ProductsModel> {
       originalAmount: fields[15] as int?,
       savedPerc: fields[16] as double?,
       availableQuantity: fields[17] as int?,
+      date: fields[18] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ProductsModel obj) {
     writer
-      ..writeByte(18)
+      ..writeByte(19)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -77,7 +78,9 @@ class ProductsModelAdapter extends TypeAdapter<ProductsModel> {
       ..writeByte(16)
       ..write(obj.savedPerc)
       ..writeByte(17)
-      ..write(obj.availableQuantity);
+      ..write(obj.availableQuantity)
+      ..writeByte(18)
+      ..write(obj.date);
   }
 
   @override

@@ -5,7 +5,7 @@ class OrderModel extends Equatable {
   final String? name;
   final AddressModel? address;
   final FulfillmentHubModel? fulfillmentHub;
-  final List<dynamic>? orderItems;
+  final List<OrderItemModel>? orderItems;
   final AccountModel? user;
 
   const OrderModel({
@@ -22,12 +22,13 @@ class OrderModel extends Equatable {
         name: json['name'] as String?,
         address: json['address'] == null
             ? null
-            : AddressModel.fromJson(json['address'] as Map<String, dynamic>),
+            : AddressModel.fromJson(json['address']),
         fulfillmentHub: json['fulfillmentHub'] == null
             ? null
-            : FulfillmentHubModel.fromJson(
-                json['fulfillmentHub'] as Map<String, dynamic>),
-        orderItems: json['orderItems'] as List<dynamic>?,
+            : FulfillmentHubModel.fromJson(json['fulfillmentHub']),
+        orderItems: (json['orderItems'] as List)
+            .map((e) => OrderItemModel.fromJson(e))
+            .toList(),
         user: json['user'] == null
             ? null
             : AccountModel.fromJson(json['user'] as Map<String, dynamic>),

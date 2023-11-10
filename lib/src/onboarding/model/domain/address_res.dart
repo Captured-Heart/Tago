@@ -27,6 +27,22 @@ class AddressSearchResponse {
     this.distance,
   });
 
+  factory AddressSearchResponse.fromJson(Map<String, dynamic> json) =>
+      AddressSearchResponse(
+        placeId: json['placeId'] as String?,
+        description: json['description'] as String?,
+        streetNumber: json['streetNumber'] as int?,
+        streetAddress: json['streetAddress'] as String?,
+        longitude: json['longitude'] as double?,
+        latitude: json['latitude'] as double?,
+        elevation: json['elevation'] as double?,
+        distance: json['distance'] as double?,
+        geoNumber: json['geoNumber'] as int?,
+        city: json['city'] as String?,
+        region: json['region'] as String?,
+        postal: json['postal'] as String?,
+      );
+
   // Implement the toJson method to convert the object to JSON
   Map<String, dynamic> toJson() {
     return {

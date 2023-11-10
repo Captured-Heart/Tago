@@ -1,18 +1,20 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:tago/app.dart';
 
 class NewDeliveryRequestScreen extends ConsumerStatefulWidget {
   const NewDeliveryRequestScreen({
     super.key,
-    required this.riderOrderModel,
-    required this.riderOrder,
+    required this.request,
   });
-  final List<RiderOrderItemsModel> riderOrderModel;
-  final DeliveryRequestsModel? riderOrder;
+  final DeliveryRequestsModel? request;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _NewDeliveryRequestScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _NewDeliveryRequestScreenState();
 }
 
-class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScreen> {
+class _NewDeliveryRequestScreenState
+    extends ConsumerState<NewDeliveryRequestScreen> {
   @override
   void initState() {
     ref.read(getCurrentLocationProvider);
@@ -22,13 +24,27 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
   final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    var orders = widget.riderOrder?.order;
-    var address = orders?.address;
-    var fulfillmentHub = orders?.fulfillmentHub;
+    var order = widget.request?.order;
+    var orderItems = widget.request!.order!.orderItems;
+    var address = order?.address;
+    var fulfillmentHub = order?.fulfillmentHub;
     final currentPosition = ref.watch(getCurrentLocationProvider);
     final isLoading = ref.watch(riderAcceptDeclineNotifierProvider).isLoading;
-    // log(orders!.toString());
-    log(widget.riderOrder!.status.toString());
+
+    var pickupLocationDistance = Geolocator.distanceBetween(
+            fulfillmentHub!.latitude,
+            fulfillmentHub.longitude,
+            currentPosition.value?.latitude ?? 0,
+            currentPosition.value?.longitude ?? 0) /
+        1000;
+
+    var deliveryLocationDistance = Geolocator.distanceBetween(
+            address!.metadata?.latitude ?? 0,
+            address.metadata?.longitude ?? 0,
+            currentPosition.value?.latitude ?? 0,
+            currentPosition.value?.longitude ?? 0) /
+        1000;
+
     return FullScreenLoader(
       isLoading: isLoading,
       child: Scaffold(
@@ -37,12 +53,11 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
             Expanded(
               child: CustomScrollView(
                 slivers: <Widget>[
-                  // SliverAppBar is a flexible app bar that can expand and contract
                   SliverAppBar(
                     automaticallyImplyLeading: false,
-                    expandedHeight: context.sizeHeight(0.4), // Set the height when expanded
-                    floating: false, // The app bar won't float as the user scrolls
-                    pinned: true, // The app bar is pinned to the top
+                    expandedHeight: context.sizeHeight(0.6),
+                    floating: true,
+                    pinned: true,
                     flexibleSpace: Column(
                       children: [
                         appBarWidget(
@@ -53,34 +68,41 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                         ),
                         Expanded(
                           child: GoogleMap(
+                            myLocationEnabled: true,
+                            scrollGesturesEnabled: true,
+                            zoomControlsEnabled: true,
+                            zoomGesturesEnabled: true,
+                            gestureRecognizers: Set()
+                              ..add(Factory<VerticalDragGestureRecognizer>(
+                                  () => VerticalDragGestureRecognizer())),
                             initialCameraPosition: CameraPosition(
-                              target: LatLng(
-                                currentPosition.value?.latitude ?? 20,
-                                currentPosition.value?.longitude ?? 12.2,
-                              ),
-                            ),
+                                target: LatLng(
+                                  currentPosition.value?.latitude ?? 0,
+                                  currentPosition.value?.longitude ?? 0,
+                                ),
+                                zoom: 19.0),
                           ),
                         ),
                       ],
                     ),
                   ),
-
                   SliverToBoxAdapter(
                     child: Column(
                       children: List.generate(
-                        widget.riderOrderModel.length,
+                        orderItems!.length,
                         (index) {
-                          var riderOrderDetails = widget.riderOrderModel[index];
+                          var item = orderItems[index];
                           return ListTile(
-                            contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 5),
                             leading: cachedNetworkImageWidget(
-                              imgUrl: riderOrderDetails.product?.productImages?.first['image']
-                                  ['url'],
+                              imgUrl: item.product?.productImages
+                                  ?.first['image']['url'],
                               height: 100,
                               width: 100,
                             ),
                             title: Text(
-                              riderOrderDetails.product?.name ?? TextConstant.product,
+                              item.product?.name ?? TextConstant.product,
                               textAlign: TextAlign.left,
                             ),
                             shape: const Border(bottom: BorderSide(width: 0.1)),
@@ -89,9 +111,8 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                       ),
                     ).padOnly(top: 5, left: 10),
                   ),
-
                   SliverToBoxAdapter(
-                    child: riderDeliveringToWidget(context, orders!),
+                    child: riderDeliveringToWidget(context, order!.user!),
                   ),
                   SliverToBoxAdapter(
                     child: Column(
@@ -101,8 +122,9 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                           context: context,
                           icon: Icons.pedal_bike,
                           title: TextConstant.pickupLocation,
-                          subtitle1: ' ${fulfillmentHub?.address}',
-                          subtitle2: '${fulfillmentHub?.position ?? 0} km away',
+                          subtitle1: ' ${fulfillmentHub.address}',
+                          subtitle2:
+                              '${pickupLocationDistance.toStringAsFixed(0)}Km away',
                         ),
 
                         //delivery location
@@ -112,8 +134,9 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                           icon: Icons.location_on,
                           title: TextConstant.deliveryLocation,
                           subtitle1:
-                              ' ${address?.apartmentNumber} ${address?.streetAddress}, ${address?.city}, ${address?.state} ',
-                          subtitle2: '${address?.position ?? 0}km away',
+                              ' ${address.apartmentNumber} ${address.streetAddress}, ${address.city}, ${address.state} ',
+                          subtitle2:
+                              '${deliveryLocationDistance.toStringAsFixed(0)}Km away',
                         ),
                       ],
                     ),
@@ -121,7 +144,7 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                 ],
               ),
             ),
-            widget.riderOrder!.status! > 0
+            widget.request!.status! > 0
                 ? const SizedBox.shrink()
                 : Column(
                     children: [
@@ -130,10 +153,11 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                         child: ElevatedButton(
                           onPressed: () {
                             ref
-                                .read(riderAcceptDeclineNotifierProvider.notifier)
+                                .read(
+                                    riderAcceptDeclineNotifierProvider.notifier)
                                 .riderAcceptReqestMethod(
                               map: {
-                                HiveKeys.createOrder.keys: orders.id,
+                                HiveKeys.orderId.keys: order.id,
                               },
                               onNavigation: () {
                                 ref.invalidate(deliveryRequestsProvider);
@@ -150,21 +174,24 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
                         child: ElevatedButton(
                           onPressed: () {
                             ref
-                                .read(riderAcceptDeclineNotifierProvider.notifier)
+                                .read(
+                                    riderAcceptDeclineNotifierProvider.notifier)
                                 .riderDeleteReqestMethod(
                               map: {
-                                HiveKeys.createOrder.keys: orders.id,
+                                HiveKeys.orderId.keys: order.id,
                               },
                               onNavigation: () {
                                 ref.invalidate(deliveryRequestsProvider);
+                                pop(context);
                               },
                             );
-                            ref.invalidate(deliveryRequestsProvider);
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            foregroundColor: TagoLight.textError.withOpacity(0.8),
-                            backgroundColor: TagoLight.textError.withOpacity(0.1),
+                            foregroundColor:
+                                TagoLight.textError.withOpacity(0.8),
+                            backgroundColor:
+                                TagoLight.textError.withOpacity(0.1),
                           ),
                           child: const Text(TextConstant.decline),
                         ),

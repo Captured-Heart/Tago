@@ -7,6 +7,7 @@ export './view/mainscreen.dart';
 export './controllers/bottom_navbar_provider.dart';
 export 'controllers/scaffold_key_provider.dart';
 export 'controllers/value_notifier_provider.dart';
+export './controllers/carousel_provider.dart';
 
 //models
 export './model/hive_product_model.dart';

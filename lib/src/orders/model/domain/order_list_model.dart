@@ -1,10 +1,12 @@
-import 'package:equatable/equatable.dart';
+import 'package:tago/app.dart';
 
 class OrderListModel extends Equatable {
   final String? id;
+  final String? riderId;
   final String? name;
-  final String? userId;
-  final String? addressId;
+  final AddressModel? address;
+  final FulfillmentHubModel? fulfillmentHub;
+  final AccountModel? user;
   final String? deliveryType;
   final String? paymentMethod;
   final String? instructions;
@@ -23,18 +25,19 @@ class OrderListModel extends Equatable {
   final String? pickedUpAt;
   final String? deliveredAt;
   final String? currentPosition;
-  final String? riderId;
+  final AccountModel? rider;
   final String? updatedAt;
   final String? deletedAt;
-  final List<dynamic>? orderItems;
+  final List<OrderItemModel>? orderItems;
   final int? status;
-  final String? fulfillmentHubId;
 
   const OrderListModel({
     this.id,
+    this.riderId,
     this.name,
-    this.userId,
-    this.addressId,
+    this.address,
+    this.fulfillmentHub,
+    this.user,
     this.deliveryType,
     this.paymentMethod,
     this.instructions,
@@ -53,20 +56,18 @@ class OrderListModel extends Equatable {
     this.pickedUpAt,
     this.deliveredAt,
     this.currentPosition,
-    this.riderId,
+    this.rider,
     this.updatedAt,
     this.deletedAt,
     this.orderItems,
     this.status,
-    this.fulfillmentHubId,
   });
 
   factory OrderListModel.fromJson(Map<String, dynamic> json) {
     return OrderListModel(
       id: json['id'] as String?,
+      riderId: json['riderId'] as String?,
       name: json['name'] as String?,
-      userId: json['userId'] as String?,
-      addressId: json['addressId'] as String?,
       deliveryType: json['deliveryType'] as String?,
       paymentMethod: json['paymentMethod'] as String?,
       instructions: json['instructions'] as String?,
@@ -85,20 +86,32 @@ class OrderListModel extends Equatable {
       pickedUpAt: json['pickedUpAt'] as String?,
       deliveredAt: json['deliveredAt'] as String?,
       currentPosition: json['currentPosition'] as String?,
-      riderId: json['riderId'] as String?,
+      rider:
+          json['rider'] == null ? null : AccountModel.fromJson(json['rider']),
       updatedAt: json['updatedAt'] as String?,
       deletedAt: json['deletedAt'] as String?,
-      orderItems: json['orderItems'] as List<dynamic>?,
+      orderItems: json['orderItems'] == null
+          ? null
+          : (json['orderItems'] as List)
+              .map((e) => OrderItemModel.fromJson(e))
+              .toList(),
       status: json['status'] as int?,
-      fulfillmentHubId: json['fulfillmentHubId'] as String?,
+      address: json['address'] != null
+          ? AddressModel.fromJson(json['address'])
+          : null,
+      fulfillmentHub: json['fulfillmentHub'] != null
+          ? FulfillmentHubModel.fromJson(json['fulfillmentHub'])
+          : null,
+      user: json['user'] == null
+          ? null
+          : AccountModel.fromJson(json['user'] as Map<String, dynamic>),
     );
   }
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'riderId': riderId,
         'name': name,
-        'userId': userId,
-        'addressId': addressId,
         'deliveryType': deliveryType,
         'paymentMethod': paymentMethod,
         'instructions': instructions,
@@ -117,16 +130,17 @@ class OrderListModel extends Equatable {
         'pickedUpAt': pickedUpAt,
         'deliveredAt': deliveredAt,
         'currentPosition': currentPosition,
-        'riderId': riderId,
+        'rider': rider,
         'updatedAt': updatedAt,
         'deletedAt': deletedAt,
         'orderItems': orderItems,
         'status': status,
-        'fulfillmentHubId': fulfillmentHubId,
+        'user': user?.toJson(),
       };
 
   OrderListModel copyWith({
     String? id,
+    String? riderId,
     String? name,
     String? userId,
     String? addressId,
@@ -148,18 +162,17 @@ class OrderListModel extends Equatable {
     String? pickedUpAt,
     String? deliveredAt,
     String? currentPosition,
-    String? riderId,
+    AccountModel? rider,
     String? updatedAt,
     String? deletedAt,
-    List<dynamic>? orderItems,
+    List<OrderItemModel>? orderItems,
     int? status,
     String? fulfillmentHubId,
   }) {
     return OrderListModel(
       id: id ?? this.id,
+      riderId: id ?? this.riderId,
       name: name ?? this.name,
-      userId: userId ?? this.userId,
-      addressId: addressId ?? this.addressId,
       deliveryType: deliveryType ?? this.deliveryType,
       paymentMethod: paymentMethod ?? this.paymentMethod,
       instructions: instructions ?? this.instructions,
@@ -178,12 +191,11 @@ class OrderListModel extends Equatable {
       pickedUpAt: pickedUpAt ?? this.pickedUpAt,
       deliveredAt: deliveredAt ?? this.deliveredAt,
       currentPosition: currentPosition ?? this.currentPosition,
-      riderId: riderId ?? this.riderId,
+      rider: rider ?? this.rider,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
       orderItems: orderItems ?? this.orderItems,
       status: status ?? this.status,
-      fulfillmentHubId: fulfillmentHubId ?? this.fulfillmentHubId,
     );
   }
 
@@ -192,8 +204,9 @@ class OrderListModel extends Equatable {
     return [
       id,
       name,
-      userId,
-      addressId,
+      address,
+      fulfillmentHub,
+      user,
       deliveryType,
       paymentMethod,
       instructions,
@@ -212,12 +225,11 @@ class OrderListModel extends Equatable {
       pickedUpAt,
       deliveredAt,
       currentPosition,
-      riderId,
+      rider,
       updatedAt,
       deletedAt,
       orderItems,
       status,
-      fulfillmentHubId,
     ];
   }
 }

@@ -109,18 +109,14 @@ class RiderAcceptDeclineNotifier extends StateNotifier<AsyncValue> {
     required Map<String, dynamic> map,
   }) async {
     state = const AsyncValue.loading();
-    // try {
-    //post request executed
+
     final Response response = await NetworkHelper.postRequestWithToken(
       api: riderDeliveredUrl,
       map: map,
     );
 
-    // decoding the response
-
     String data = response.body;
     var decodedData = jsonDecode(data);
-    //the response and error handling
     log(decodedData['data'].toString());
     if (decodedData['success'] == true) {
       state = AsyncValue.data(decodedData['message']);

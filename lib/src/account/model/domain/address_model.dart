@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
+import 'package:tago/src/onboarding/model/domain/address_res.dart';
 
 class AddressModel extends Equatable {
   final String? userId;
@@ -9,11 +12,10 @@ class AddressModel extends Equatable {
   final String? city;
   final String? state;
   final String? postalCode;
-  final String? position;
+  final AddressSearchResponse? metadata;
   final String? createdAt;
   final String? updatedAt;
   final String? deletedAt;
-  
 
   const AddressModel({
     this.userId,
@@ -24,7 +26,7 @@ class AddressModel extends Equatable {
     this.city,
     this.state,
     this.postalCode,
-    this.position,
+    this.metadata,
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
@@ -39,7 +41,9 @@ class AddressModel extends Equatable {
         city: json['city'] as String?,
         state: json['state'] as String?,
         postalCode: json['postalCode'] as String?,
-        position: json['position'] as String?,
+        metadata: json['metadata'] != null
+            ? AddressSearchResponse.fromJson(jsonDecode(json['metadata']))
+            : null,
         createdAt: json['createdAt'] as String?,
         updatedAt: json['updatedAt'] as String?,
         deletedAt: json['deletedAt'] as String?,
@@ -54,7 +58,7 @@ class AddressModel extends Equatable {
         'city': city,
         'state': state,
         'postalCode': postalCode,
-        'position': position,
+        'position': metadata,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
         'deletedAt': deletedAt,
@@ -71,7 +75,7 @@ class AddressModel extends Equatable {
       city,
       state,
       postalCode,
-      position,
+      metadata,
       createdAt,
       updatedAt,
       deletedAt,

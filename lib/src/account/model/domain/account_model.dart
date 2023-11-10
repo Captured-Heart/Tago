@@ -9,19 +9,25 @@ class AccountModel extends Equatable {
   final String? role;
   final String? emailVerifiedAt;
   final String? phoneVerifiedAt;
+  final num? completedForToday;
+  final double? latitude;
+  final double? longitude;
+
   final AddressModel? address;
 
-  const AccountModel({
-    this.phoneNumber,
-    this.id,
-    this.fname,
-    this.lname,
-    this.email,
-    this.role,
-    this.emailVerifiedAt,
-    this.phoneVerifiedAt,
-    this.address,
-  });
+  const AccountModel(
+      {this.phoneNumber,
+      this.id,
+      this.fname,
+      this.lname,
+      this.email,
+      this.role,
+      this.emailVerifiedAt,
+      this.phoneVerifiedAt,
+      this.address,
+      this.completedForToday,
+      this.latitude,
+      this.longitude});
 
   factory AccountModel.fromJson(Map<String, dynamic> json) => AccountModel(
         phoneNumber: json['phoneNumber'] as String?,
@@ -30,11 +36,14 @@ class AccountModel extends Equatable {
         lname: json['lname'] as String?,
         email: json['email'] as String?,
         role: json['role'] as String?,
+        latitude: json['latitude'] as double?,
+        longitude: json['longitude'] as double?,
         emailVerifiedAt: json['emailVerifiedAt'] as String?,
         phoneVerifiedAt: json['phoneVerifiedAt'] as String?,
         address: json['address'] == null
             ? null
-            : AddressModel.fromJson(json['address'] as Map<String, dynamic>),
+            : AddressModel.fromJson(json['address']),
+        completedForToday: json['completedDeliveryForToday'] as num?,
       );
 
   Map<String, dynamic> toJson() => {

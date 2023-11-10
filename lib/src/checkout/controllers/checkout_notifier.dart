@@ -33,6 +33,7 @@ class CheckOutNotifier extends StateNotifier<AsyncValue> {
     // decoding the response
     String data = response.body;
     var decodedData = jsonDecode(data);
+
     //the response and error handling
     if (decodedData['success'] == true || response.statusCode == 200) {
       state = AsyncValue.data(decodedData['data']);

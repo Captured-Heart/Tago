@@ -4,8 +4,10 @@ Container activeOrdersCard({
   required BuildContext context,
   required int orderStatus,
   required OrderListModel orderModel,
+  Function? onViewDetails,
 }) {
-  var product = convertDynamicListToPlaceOrderModel(orderModel.orderItems!);
+  var address =
+      "${orderModel.address!.apartmentNumber} ${orderModel.address!.streetAddress} \n${orderModel.address!.city}, ${orderModel.address!.state}";
 
   getOrderStatusColor(int status) {
     if (status == OrderStatus.cancelled.status) {
@@ -47,41 +49,66 @@ Container activeOrdersCard({
     ),
     width: double.infinity,
     child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       textBaseline: TextBaseline.alphabetic,
       children: [
         cachedNetworkImageWidget(
-          imgUrl: product.first.product?.productImages?.first['image']['url'],
+          imgUrl: orderModel
+              .orderItems!.first.product?.productImages?.first['image']['url'],
           height: 95,
           width: 100,
         ).padOnly(right: 10),
         Expanded(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  //  TextConstant.nairaSign ,
-
-                  orderModel.name ?? '',
-                  style:
-                      context.theme.textTheme.titleMedium?.copyWith(fontWeight: AppFontWeight.w300),
-                ).padOnly(bottom: 5),
-                Text('${TextConstant.orderID}: ${orderModel.id}',
-                    style: context.theme.textTheme.bodyMedium
-                        ?.copyWith(fontWeight: AppFontWeight.w600)),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                  decoration: BoxDecoration(
-                    color: getOrderStatusColor(orderStatus).withOpacity(0.1),
-                  ),
-                  child: Text(
-                    // TextConstant.inTransit,
-                    getOrderStatusTitle(orderStatus),
-                    style: context.theme.textTheme.bodyLarge
-                        ?.copyWith(color: getOrderStatusColor(orderStatus)),
-                  ),
-                ),
-              ].columnInPadding(8)),
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              orderModel.name ?? '',
+              style: context.theme.textTheme.titleMedium
+                  ?.copyWith(fontWeight: AppFontWeight.w300),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(address,
+                style: context.theme.textTheme.bodyMedium
+                    ?.copyWith(fontWeight: AppFontWeight.w600)),
+            const SizedBox(
+              height: 10,
+            ),
+            onViewDetails != null
+                ? GestureDetector(
+                    onTap: () {
+                      onViewDetails();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 7),
+                      decoration: BoxDecoration(
+                        color: TagoLight.orange.withOpacity(0.1),
+                      ),
+                      child: Text(
+                        TextConstant.viewdetails,
+                        textAlign: TextAlign.center,
+                        style: context.theme.textTheme.bodyLarge?.copyWith(
+                          color: TagoLight.orange,
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ],
+        )),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+          decoration: BoxDecoration(
+            color: getOrderStatusColor(orderStatus).withOpacity(0.1),
+          ),
+          child: Text(
+            getOrderStatusTitle(orderStatus),
+            style: context.theme.textTheme.bodyLarge
+                ?.copyWith(color: getOrderStatusColor(orderStatus)),
+          ),
         ),
       ],
     ),

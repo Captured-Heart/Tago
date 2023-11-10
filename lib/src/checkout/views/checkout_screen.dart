@@ -27,11 +27,23 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   bool isInstant = true;
   // payment method
   PaymentMethodsType paymentMethodType = PaymentMethodsType.notSelected;
+  String scheduleForDate = "";
+  String scheduleForTime = "";
+
   updatePaymentMethod(PaymentMethodsType paymentMethod) {
-    log(paymentMethod.toString());
     setState(() {
       paymentMethodType = paymentMethod;
     });
+  }
+
+  updateScheduleForLaterDate(String date) {
+    log(date);
+    scheduleForDate = date;
+  }
+
+  updateScheduleForLaterTime(String time) {
+    log(time);
+    scheduleForTime = time;
   }
 
   @override
@@ -42,16 +54,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final address = ref.watch(getAccountAddressProvider).valueOrNull;
 
     final voucherCode = ref.watch(getVoucherStreamProvider(code));
-    final deliveryfee =
+    final deliveryFee =
         ref.watch(getDeliveryFeeProvider(widget.totalAmount ?? 0));
-    // log(" address : $accountInfo!.toString()");
-    var deliveryFeeValue = deliveryfee.valueOrNull ?? '0';
+    var deliveryFeeValue = deliveryFee.valueOrNull ?? '0';
     var perc = ((int.parse('${voucherCode.valueOrNull?.amount ?? '0'}') /
                 (widget.totalAmount ?? 0)) *
             100)
         .round();
-    final addressId = ref.watch(addressIdProvider);
-    // log(HiveHelper().getData(HiveKeys.addressId.keys).toString());
     return FullScreenLoader(
       isLoading: ref.watch(checkoutNotifierProvider).isLoading,
       child: Scaffold(
@@ -68,8 +77,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             checkoutDeliveryToWidget(
               context,
               address != null && address.isNotEmpty
-                  ? address[
-                      HiveHelper().getAddressIndex(HiveKeys.addressId.keys)]
+                  ? accountInfo.valueOrNull?.address
                   : const AddressModel(),
             ),
 
@@ -88,14 +96,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     setState(() {
                       isInstant = false;
                     });
-                    log(isInstant.toString());
                   },
                   onTapInstantSchedule: () {
-                    // HiveHelper().saveData(HiveKeys.addressId.keys, 0);
                     setState(() {
                       isInstant = true;
                     });
-                    log(isInstant.toString());
                   },
                   isInstant: isInstant,
                 ),
@@ -106,7 +111,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 //DAY && TIMES WIDGET
                 isInstant == true
                     ? const SizedBox.shrink()
-                    : const CheckOutDayAndTimesWidget(),
+                    : CheckOutDayAndTimesWidget(
+                        updateScheduleForLaterDate: updateScheduleForLaterDate,
+                        updateScheduleForLaterTime: updateScheduleForLaterTime,
+                      ),
               ].columnInPadding(10),
             ).padOnly(top: 25),
 
@@ -204,91 +212,70 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   return;
                 }
 
-                if (controller.voucherController.text.isNotEmpty) {
-                  log('token: ${HiveHelper().getData(HiveKeys.token.name)}');
+                // check if payment is selected
+                if (!isInstant && scheduleForDate == "") {
+                  showScaffoldSnackBarMessage(
+                      "Schedule for later is not available",
+                      isError: true);
+                  return;
+                }
 
-                  var checkModel = CheckoutModel(
-                    addressId: addressId,
+                var items = [];
+                for (var element in widget.placeOrderModel) {
+                  items.add({
+                    "productId": element.productId,
+                    "quantity": element.quantity,
+                  });
+                }
+                var checkModel = CheckoutModel(
+                    addressId: accountInfo.valueOrNull?.address!.id,
                     deliveryType: DeliveryType.instant.name,
-                    paymentMethod: PaymentMethodsType.cash.message,
+                    paymentMethod: paymentMethodType.message,
                     instructions: controller.instructionsController.text,
-                    voucherCode: controller.voucherController.text,
-                    // scheduleForDate: '',
-                    // '2023-08-23T00:00:00.000Z',
-                    // DateTime.now().toIso8601String(),
-                    // scheduleForTime: '',
-                    items: jsonEncode(
-                      widget.placeOrderModel,
-                    ),
-                  ).toJson();
-                  log(checkModel.toString());
-                  //
-                  ref
-                      .read(checkoutNotifierProvider.notifier)
-                      .createAnOrderMethod(
-                        map: checkModel,
-                        onNavigation: () {
-                          HiveHelper().clearCartList();
+                    scheduleForDate: scheduleForDate,
+                    scheduleForTime: scheduleForTime,
+                    voucherCode: code,
+                    items: jsonEncode(items));
 
+                // filter order map
+                var checkModelMap = checkModel.toJson();
+                if (code.length != 7) {
+                  checkModelMap.remove("voucherCode");
+                }
+                if (isInstant) {
+                  checkModelMap.remove("scheduleForDate");
+                  checkModelMap.remove("scheduleForTime");
+                }
+
+                ref.read(checkoutNotifierProvider.notifier).createAnOrderMethod(
+                      map: checkModelMap,
+                      onNavigation: () async {
+                        HiveHelper().clearCartList();
+                        if (paymentMethodType == PaymentMethodsType.cash) {
                           navBarPush(
                             context: context,
                             screen: const OrderPlacedScreen(),
                             withNavBar: false,
                           );
-                          return ref.refresh(getCartListProvider(false));
-                        },
-                      );
-                  HiveHelper().clearCartList();
-                } else {
-                  var checkModel = CheckoutModel(
-                    addressId: addressId,
-                    deliveryType: DeliveryType.instant.name,
-                    paymentMethod: paymentMethodType.message,
-                    instructions: controller.instructionsController.text,
-                    // scheduleForDate: '',
-                    // '2023-08-23T00:00:00.000Z',
-                    // DateTime.now().toIso8601String(),
-                    // scheduleForTime: '',
-                    items: jsonEncode(
-                      widget.placeOrderModel,
-                    ),
-                  ).toJsonWithoutVocher();
-                  log(checkModel.toString());
-                  //
-                  ref
-                      .read(checkoutNotifierProvider.notifier)
-                      .createAnOrderMethod(
-                        map: checkModel,
-                        onNavigation: () async {
-                          HiveHelper().clearCartList();
-
-                          if (paymentMethodType == PaymentMethodsType.cash) {
-                            navBarPush(
-                              context: context,
-                              screen: const OrderPlacedScreen(),
-                              withNavBar: false,
-                            );
+                        } else {
+                          var cards = cardList.valueOrNull;
+                          if (cards!.isNotEmpty) {
+                            push(
+                                context,
+                                PaymentsMethodScreen(
+                                  cards: cards,
+                                  isFromCheckout: true,
+                                ));
                           } else {
-                            var cards = cardList.valueOrNull;
-                            if (cards!.isNotEmpty) {
-                              push(
-                                  context,
-                                  PaymentsMethodScreen(
-                                    cards: cards,
-                                    isFromCheckout: true,
-                                  ));
-                            } else {
-                              push(
-                                  context,
-                                  AddNewCardsScreen(
-                                    isFromCheckout: true,
-                                  ));
-                            }
+                            push(
+                                context,
+                                AddNewCardsScreen(
+                                  isFromCheckout: true,
+                                ));
                           }
-                        },
-                      );
-                  // HiveHelper().clearCartList();
-                }
+                        }
+                      },
+                    );
               },
               child: const Text(TextConstant.confirmOrder),
             ).padOnly(top: 25, bottom: 45)

@@ -6,11 +6,9 @@ class CheckoutModel extends Equatable {
   final String? paymentMethod;
   final String? instructions;
   final String? voucherCode;
-  // final String? scheduleForDate;
-  // final String? scheduleForTime;
+  final String? scheduleForDate;
+  final String? scheduleForTime;
   final String? items;
-  // final String? orderId;
-  // final String? url;
 
   const CheckoutModel({
     this.addressId,
@@ -18,11 +16,9 @@ class CheckoutModel extends Equatable {
     this.paymentMethod,
     this.instructions,
     this.voucherCode,
-    // this.scheduleForDate,
-    // this.scheduleForTime,
+    this.scheduleForDate,
+    this.scheduleForTime,
     this.items,
-    // this.orderId,
-    // this.url,
   });
 
   factory CheckoutModel.fromJson(Map<String, dynamic> json) => CheckoutModel(
@@ -31,11 +27,9 @@ class CheckoutModel extends Equatable {
         paymentMethod: json['paymentMethod'] as String?,
         instructions: json['instructions'] as String?,
         voucherCode: json['voucherCode'] as String?,
-        // scheduleForDate: json['scheduleForDate'] as String?,
-        // scheduleForTime: json['scheduleForTime'] as String?,
+        scheduleForDate: json['scheduleForDate'] as String?,
+        scheduleForTime: json['scheduleForTime'] as String?,
         items: json['items'] as String?,
-        // orderId: json['orderId'] as String?,
-        // url: json['url'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,22 +38,9 @@ class CheckoutModel extends Equatable {
         'paymentMethod': paymentMethod,
         'instructions': instructions,
         'voucherCode': voucherCode,
-        // 'scheduleForDate': scheduleForDate,
-        // 'scheduleForTime': scheduleForTime,
+        'scheduleForDate': scheduleForDate,
+        'scheduleForTime': scheduleForTime,
         'items': items,
-        // 'orderId': orderId,
-        // 'url': url,
-      };
-  Map<String, dynamic> toJsonWithoutVocher() => {
-        'addressId': addressId,
-        'deliveryType': deliveryType,
-        'paymentMethod': paymentMethod,
-        'instructions': instructions,
-        // 'scheduleForDate': scheduleForDate,
-        // 'scheduleForTime': scheduleForTime,
-        'items': items,
-        // 'orderId': orderId,
-        // 'url': url,
       };
 
   @override
@@ -70,11 +51,9 @@ class CheckoutModel extends Equatable {
       paymentMethod,
       instructions,
       voucherCode,
-      // scheduleForDate,
-      // scheduleForTime,
+      scheduleForDate,
+      scheduleForTime,
       items,
-      // orderId,
-      // url,
     ];
   }
 }

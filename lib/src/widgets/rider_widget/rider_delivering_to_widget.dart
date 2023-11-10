@@ -2,7 +2,7 @@ import 'package:tago/app.dart';
 
 Widget riderDeliveringToWidget(
   BuildContext context,
-  OrderModel orders,
+  AccountModel user,
 ) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -18,13 +18,13 @@ Widget riderDeliveringToWidget(
         // dense: true,
         contentPadding: EdgeInsets.zero,
         title: Text(
-          '${orders.user?.fname} ${orders.user?.lname}',
+          '${user.fname} ${user.lname}',
           textAlign: TextAlign.left,
         ),
-        subtitle: Text(orders.user?.phoneNumber ?? ''),
+        subtitle: Text(user.phoneNumber ?? ''),
         trailing: IconButton(
           onPressed: () {
-            UrlLaunchOptions().makePhoneCall(orders.user!.phoneNumber!);
+            UrlLaunchOptions().makePhoneCall(user.phoneNumber!);
           },
           icon: const Icon(
             Icons.phone,
@@ -57,7 +57,9 @@ Widget riderDeliveryRequestListTile({
         children: [
           Icon(
             icon,
-            color: isFaded == true ? TagoLight.indicatorActiveColor : TagoLight.primaryColor,
+            color: isFaded == true
+                ? TagoLight.indicatorActiveColor
+                : TagoLight.primaryColor,
           ),
           !hideDash
               ? const Dash(
@@ -76,19 +78,25 @@ Widget riderDeliveryRequestListTile({
                   Text(
                     title,
                     style: context.theme.textTheme.titleMedium?.copyWith(
-                      color: isFaded == true ? TagoLight.indicatorActiveColor : null,
+                      color: isFaded == true
+                          ? TagoLight.indicatorActiveColor
+                          : null,
                     ),
                   ),
                   Text(
                     subtitle1,
                     style: context.theme.textTheme.bodyLarge?.copyWith(
-                      color: isFaded == true ? TagoLight.indicatorActiveColor : null,
+                      color: isFaded == true
+                          ? TagoLight.indicatorActiveColor
+                          : null,
                     ),
                   ).padOnly(top: 8),
                   Text(
                     subtitle2,
                     style: context.theme.textTheme.bodyLarge?.copyWith(
-                      color: isFaded == true ? TagoLight.indicatorActiveColor : null,
+                      color: isFaded == true
+                          ? TagoLight.indicatorActiveColor
+                          : null,
                     ),
                   ),
                   hasButton == false
@@ -101,7 +109,8 @@ Widget riderDeliveryRequestListTile({
                                 color: isFaded == true
                                     ? TagoLight.indicatorInactiveColor
                                     : isPickedUp == true
-                                        ? TagoLight.primaryColor.withOpacity(0.1)
+                                        ? TagoLight.primaryColor
+                                            .withOpacity(0.1)
                                         : TagoLight.primaryColor,
                                 borderRadius: BorderRadius.circular(7)),
                             child: Row(
@@ -117,7 +126,8 @@ Widget riderDeliveryRequestListTile({
                                 Text(
                                   bTNText ?? '',
                                   textAlign: TextAlign.center,
-                                  style: AppTextStyle.listTileTitleLight.copyWith(
+                                  style:
+                                      AppTextStyle.listTileTitleLight.copyWith(
                                     color: isPickedUp == true
                                         ? TagoLight.primaryColor
                                         : TagoLight.scaffoldBackgroundColor,

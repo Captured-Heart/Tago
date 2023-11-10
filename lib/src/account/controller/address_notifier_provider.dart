@@ -152,4 +152,37 @@ class AccountAddressNotifier extends StateNotifier<AsyncValue> {
       return decodedData['message'];
     }
   }
+
+
+
+
+  /*------------------------------------------------------------------
+              SET DEFAULT ADDRESS METHOD
+ -------------------------------------------------------------------*/
+  Future setDefaultAddressMethod({
+    required Map<String, dynamic> map,
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    state = const AsyncValue.loading();
+    //post request executed
+    final Response response = await NetworkHelper.patchRequestWithToken(
+      api: setDefaultAddressUrl,
+      map: map,
+    );
+    // decoding the response
+    String data = response.body;
+    var decodedData = jsonDecode(data);
+    //the response and error handling
+    if (decodedData['success'] == true) {
+      state = AsyncValue.data(decodedData['message']);
+      ref.invalidate(getAccountAddressProvider);
+      showScaffoldSnackBarMessage(decodedData['message']);
+
+      return decodedData['message'];
+    } else {
+      state = AsyncValue.error(decodedData['message'], StackTrace.empty);
+      return decodedData['message'];
+    }
+  }
 }

@@ -42,13 +42,13 @@ List<PlaceOrderModel> convertDynamicListToPlaceOrderModel(
   return modelList;
 }
 
-List<RiderOrderItemsModel> convertDynamicListToRiderOrderItemModel(
+List<OrderItemModel> convertDynamicListToRiderOrderItemModel(
   List<dynamic> dynamicList,
 ) {
-  List<RiderOrderItemsModel> modelList = [];
+  List<OrderItemModel> modelList = [];
 
   for (var dynamicItem in dynamicList) {
-    RiderOrderItemsModel modelInstance = RiderOrderItemsModel.fromJson(dynamicItem);
+    OrderItemModel modelInstance = OrderItemModel.fromJson(dynamicItem);
 
     modelList.add(modelInstance);
   }
@@ -76,7 +76,8 @@ List<ProductSpecificationsModel> convertDynamicListToProductSpecificationsModel(
   List<ProductSpecificationsModel> modelList = [];
 
   for (var dynamicItem in dynamicList ?? []) {
-    ProductSpecificationsModel modelInstance = ProductSpecificationsModel.fromJson(dynamicItem);
+    ProductSpecificationsModel modelInstance =
+        ProductSpecificationsModel.fromJson(dynamicItem);
 
     modelList.add(modelInstance);
   }
@@ -90,7 +91,8 @@ List<ProductReviewsModel> convertDynamicListToProductReviewsModel(
   List<ProductReviewsModel> modelList = [];
 
   for (var dynamicItem in dynamicList) {
-    ProductReviewsModel modelInstance = ProductReviewsModel.fromJson(dynamicItem);
+    ProductReviewsModel modelInstance =
+        ProductReviewsModel.fromJson(dynamicItem);
 
     modelList.add(modelInstance);
   }
@@ -120,7 +122,8 @@ double? getAverageOfRatings({
 }) {
   // log('list of doubles:' + listOfDoubles.toString());
   if (listOfDoubles!.isNotEmpty) {
-    var number = listOfDoubles.fold(0.0, (previousValue, element) => previousValue + element);
+    var number = listOfDoubles.fold(
+        0.0, (previousValue, element) => previousValue + element);
     double finalNumber = (number) / (listOfDoubles.length);
     return finalNumber;
   } else {
@@ -148,12 +151,14 @@ double ratingsValueExtrapolation(double ratings) {
   }
 }
 
-List<dynamic>  getListOfIndividualRating({
+List<dynamic> getListOfIndividualRating({
   required List<dynamic>? listOfDoubles,
   required double ratingsValue,
 }) {
   var op = listOfDoubles
-          ?.where((element) => element >= ratingsValue && element <= ratingsValue.roundToDouble())
+          ?.where((element) =>
+              element >= ratingsValue &&
+              element <= ratingsValue.roundToDouble())
           .map((e) => e.roundToDouble())
           .toList() ??
       [];

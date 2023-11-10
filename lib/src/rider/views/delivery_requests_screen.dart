@@ -5,7 +5,8 @@ class DeliveryRequestScreen extends ConsumerStatefulWidget {
   const DeliveryRequestScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _DeliveryRequestScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DeliveryRequestScreenState();
 }
 
 class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {
@@ -20,8 +21,6 @@ class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {
   Widget build(BuildContext context) {
     final deliveryRequests = ref.watch(deliveryRequestsProvider);
     final isLoading = ref.watch(riderAcceptDeclineNotifierProvider).isLoading;
-   
-    log(deliveryRequests.valueOrNull!.map((e) => e.status).toList().toString());
     return FullScreenLoader(
       isLoading: isLoading,
       child: Scaffold(
@@ -39,22 +38,24 @@ class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {
                   children: List.generate(
                     data.length,
                     (index) {
-                      var riderOrder = data[index];
+                      var deliveryRequest = data[index];
 
-                      var riderOrderItemModel = convertDynamicListToRiderOrderItemModel(
-                          data[index].order?.orderItems ?? []);
+                      // var riderOrderItemModel =
+                      //     convertDynamicListToRiderOrderItemModel(
+                      //         data[index].order?.orderItems ?? []);
+
                       return riderOrdersListTile(
                         context: context,
                         orderStatus: OrderStatus.delivered,
                         isDeliveryRequests: true,
-                        riderOrderModel: riderOrder,
-                        riderOrder: riderOrderItemModel,
+                        riderOrderModel: deliveryRequest,
+                        riderOrder: deliveryRequest.order!.orderItems,
                         onAcceptRequest: () {
                           ref
                               .read(riderAcceptDeclineNotifierProvider.notifier)
                               .riderAcceptReqestMethod(
                             map: {
-                              HiveKeys.createOrder.keys: riderOrder.order?.id,
+                              HiveKeys.orderId.keys: deliveryRequest.order?.id,
                             },
                             onNavigation: () {
                               ref.invalidate(deliveryRequestsProvider);
@@ -62,23 +63,12 @@ class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {
                           );
                         },
                         onViewDetails: () {
-                          log(riderOrder.status.toString());
-
-                          riderOrder.status == 1
-                              ? push(
-                                  context,
-                                  ActiveDeliveryScreen(
-                                    riderOrderModel: riderOrderItemModel,
-                                    riderOrder: riderOrder,
-                                  ),
-                                )
-                              : push(
-                                  context,
-                                  NewDeliveryRequestScreen(
-                                    riderOrderModel: riderOrderItemModel,
-                                    riderOrder: riderOrder,
-                                  ),
-                                );
+                          push(
+                            context,
+                            NewDeliveryRequestScreen(
+                              request: deliveryRequest,
+                            ),
+                          );
                         },
                       );
                     },
@@ -93,17 +83,6 @@ class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {
                 index: 3,
               ),
             ),
-
-            // riderOrdersListTile(
-            //   context: context,
-            //   orderStatus: OrderStatus.delivered,
-            //   isDeliveryRequests: true,
-            // ),
-            // riderOrdersListTile(
-            //   context: context,
-            //   orderStatus: OrderStatus.delivered,
-            //   isDeliveryRequests: true,
-            // )
           ],
         ),
       ),

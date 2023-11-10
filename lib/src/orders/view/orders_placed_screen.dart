@@ -53,8 +53,7 @@ class OrderPlacedScreen extends ConsumerWidget {
                       navBarPush(
                         context: context,
                         screen: OrdersDetailScreen(
-                          orderListModel:
-                              orderListModel ?? const OrderListModel(),
+                          order: orderListModel ?? const OrderListModel(),
                           orderStatusFromOrderScreen: orderListModel?.status,
                         ),
                         withNavBar: false,

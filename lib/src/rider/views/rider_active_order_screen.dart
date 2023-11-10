@@ -1,13 +1,16 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/rider/views/active_delivery_screen.dart';
 
 class RiderActiveOrderScreen extends ConsumerStatefulWidget {
   const RiderActiveOrderScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _RiderActiveOrderScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RiderActiveOrderScreenState();
 }
 
-class _RiderActiveOrderScreenState extends ConsumerState<RiderActiveOrderScreen> {
+class _RiderActiveOrderScreenState
+    extends ConsumerState<RiderActiveOrderScreen> {
   @override
   Widget build(BuildContext context) {
     final orderList = ref.watch(ridersOrderProvider);
@@ -43,10 +46,13 @@ class _RiderActiveOrderScreenState extends ConsumerState<RiderActiveOrderScreen>
                   return GestureDetector(
                     onTap: () {},
                     child: activeOrdersCard(
-                      context: context,
-                      orderStatus: orderModel.status ?? 0,
-                      orderModel: orderModel,
-                    ),
+                        context: context,
+                        orderStatus: orderModel.status ?? 0,
+                        orderModel: orderModel,
+                        onViewDetails: () {
+                          push(
+                              context, ActiveDeliveryScreen(order: orderModel));
+                        }),
                   );
                 },
               ),
@@ -63,6 +69,6 @@ class _RiderActiveOrderScreenState extends ConsumerState<RiderActiveOrderScreen>
           ),
         ),
       ],
-    );
+    ).padOnly(top: 20);
   }
 }

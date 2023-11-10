@@ -398,6 +398,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					"ARCHS[sdk=iphonesimulator*]",
+					"=",
+					"x86_64\nARCHS[sdk=iphonesimulator*]",
+					"=",
+					"x86_64\nARCHS[sdk=iphonesimulator*]",
+					"=",
+					"x86_64\nARCHS[sdk=iphonesimulator*]",
+					"=",
+					x86_64,
+				);
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";

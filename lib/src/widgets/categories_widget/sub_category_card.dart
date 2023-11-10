@@ -50,7 +50,6 @@ Widget subCategoryCard({
           //       decoration: const BoxDecoration(
           //         shape: BoxShape.circle,
           //         image: DecorationImage(
-          //           //TODO: ADD AN ERROR IMAGE FOR WIDGET
           //           image: AssetImage(logoLarge),
           //           fit: BoxFit.fill,
           //         ),

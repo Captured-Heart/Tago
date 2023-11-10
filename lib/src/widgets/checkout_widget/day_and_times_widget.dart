@@ -1,13 +1,22 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:tago/app.dart';
 
 class CheckOutDayAndTimesWidget extends ConsumerStatefulWidget {
-  const CheckOutDayAndTimesWidget({super.key});
+  CheckOutDayAndTimesWidget(
+      {super.key,
+      required this.updateScheduleForLaterDate,
+      required this.updateScheduleForLaterTime});
+  Function updateScheduleForLaterDate;
+  Function updateScheduleForLaterTime;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CheckOutDayAndTimesWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CheckOutDayAndTimesWidgetState();
 }
 
-class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesWidget> {
+class _CheckOutDayAndTimesWidgetState
+    extends ConsumerState<CheckOutDayAndTimesWidget> {
   int? selectedValue;
   int selectedIndex = 0;
 
@@ -22,7 +31,9 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
   @override
   Widget build(BuildContext context) {
     final availabileDate = ref.watch(getAvailabileDateProvider);
-    final availabileTimes = ref.watch(getAvailabileTimesProvider(selectedIndex));
+    final availabileTimes =
+        ref.watch(getAvailabileTimesProvider(selectedIndex));
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -33,8 +44,17 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
             availabileDate.when(
               data: (data) {
                 if (data.isEmpty) {
-                  return const Center(child: Text(TextConstant.scheduleLaterNotAvailable));
+                  return const Center(
+                      child: Text(TextConstant.scheduleLaterNotAvailable));
                 }
+
+                if (selectedIndex == 0 && selectedValue == null) {
+                  // set schedule later options
+                  widget.updateScheduleForLaterDate(data[0].date);
+                  widget.updateScheduleForLaterTime(
+                      data[0].times![0]['startTime']);
+                }
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -48,7 +68,15 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
                         data.length,
                         (index) => GestureDetector(
                           onTap: () {
-                            log(data[index].times![1].toString());
+                            // set schedule later options
+                            inspect(data[index].date!);
+
+                            widget.updateScheduleForLaterDate(data[index].date);
+                            if (selectedValue == null) {
+                              widget.updateScheduleForLaterTime(
+                                  data[index].times![0]['startTime']);
+                            }
+
                             setState(() {
                               selectedIndex = index;
                             });
@@ -68,8 +96,10 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
                                   getDayOfWeek(data[index].date!),
                                   textAlign: TextAlign.center,
                                   maxLines: 1,
-                                  style: AppTextStyle.hintTextStyleLight.copyWith(
-                                    color: context.theme.scaffoldBackgroundColor,
+                                  style:
+                                      AppTextStyle.hintTextStyleLight.copyWith(
+                                    color:
+                                        context.theme.scaffoldBackgroundColor,
                                     fontWeight: AppFontWeight.w700,
                                   ),
                                 ),
@@ -77,8 +107,10 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
                                   dateFormatted2(data[index].date!),
                                   textAlign: TextAlign.center,
                                   maxLines: 1,
-                                  style: AppTextStyle.hintTextStyleLight.copyWith(
-                                    color: context.theme.scaffoldBackgroundColor,
+                                  style:
+                                      AppTextStyle.hintTextStyleLight.copyWith(
+                                    color:
+                                        context.theme.scaffoldBackgroundColor,
                                     fontWeight: AppFontWeight.w700,
                                   ),
                                 ),
@@ -108,10 +140,13 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
                                   return radioListTileWidget(
                                     context: context,
                                     onChanged: (value) {
+                                      // set schedule later options
+                                      widget.updateScheduleForLaterTime(
+                                          data[index].startTime);
+
                                       setState(() {
                                         selectedValue = value!;
                                       });
-                                      log(value.toString());
                                     },
                                     title:
                                         '${timesModel.startTime}am to ${convertTo12Hrs(int.tryParse(timesModel.endTime!)!)}pm',
@@ -123,9 +158,10 @@ class _CheckOutDayAndTimesWidgetState extends ConsumerState<CheckOutDayAndTimesW
                               ).toList(),
                             );
                           },
-                          error: (error, _) =>
-                              const Center(child: Text('No available time, at the moment'))
-                                  .padOnly(top: 10),
+                          error: (error, _) => const Center(
+                                  child:
+                                      Text('No available time, at the moment'))
+                              .padOnly(top: 10),
                           loading: () => const Center(
                             child: CircularProgressIndicator.adaptive(),
                           ),

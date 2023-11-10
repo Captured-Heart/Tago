@@ -97,3 +97,13 @@ Future<Address> getCurrentLocationAddress(double lat, double lng) async {
   var address = await geoCode.reverseGeocoding(latitude: lat, longitude: lng);
   return address;
 }
+
+Future<void> saveCurrentLocation(Position position) async {
+  await NetworkHelper.postRequestWithToken(
+    api: saveCurrentLocationUrl,
+    map: {
+      "latitude": position.latitude.toString(),
+      "longitude": position.longitude.toString()
+    },
+  );
+}

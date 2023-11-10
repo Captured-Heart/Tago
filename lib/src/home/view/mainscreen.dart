@@ -31,7 +31,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         navBarHeight: kBottomNavigationBarHeight * 1.2,
         hideNavigationBarWhenKeyboardShows: true,
         popAllScreensOnTapOfSelectedTab: true,
-        popAllScreensOnTapAnyTabs: true,
+        popAllScreensOnTapAnyTabs: false,
         confineInSafeArea: true,
         backgroundColor: context.theme.scaffoldBackgroundColor,
         onItemSelected: (value) {

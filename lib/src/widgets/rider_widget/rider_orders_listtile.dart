@@ -7,7 +7,7 @@ Widget riderOrdersListTile({
   VoidCallback? onAcceptRequest,
   VoidCallback? onViewDetails,
   DeliveryRequestsModel? riderOrderModel,
-  List<RiderOrderItemsModel>? riderOrder,
+  List<OrderItemModel>? riderOrder,
 }) {
   getOrderStatusColor(Enum status) {
     if (status == OrderStatus.cancelled) {
@@ -43,7 +43,8 @@ Widget riderOrdersListTile({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         cachedNetworkImageWidget(
-          imgUrl: riderOrder?.first.product?.productImages?.first['image']['url'] ??
+          imgUrl: riderOrder?.first.product?.productImages?.first['image']
+                  ['url'] ??
               noImagePlaceholderHttp,
           height: 100,
           width: 100,
@@ -59,7 +60,6 @@ Widget riderOrdersListTile({
               children: [
                 Expanded(
                   child: Text(
-                    // 'Fanta Drink - 50cl Pet x 12 ',
                     riderOrderModel?.order?.name ?? TextConstant.product,
                     style: context.theme.textTheme.bodySmall,
                   ),
@@ -67,9 +67,11 @@ Widget riderOrdersListTile({
                 isDeliveryRequests == true
                     ? const SizedBox.shrink()
                     : Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 7),
                         decoration: BoxDecoration(
-                          color: getOrderStatusColor(orderStatus).withOpacity(0.1),
+                          color:
+                              getOrderStatusColor(orderStatus).withOpacity(0.1),
                         ),
                         child: Text(
                           getOrderStatusTitle(orderStatus),
@@ -89,7 +91,7 @@ Widget riderOrdersListTile({
                   SizedBox(
                     width: context.sizeWidth(0.65),
                     child: Text(
-                      '${address?.apartmentNumber}, ${address?.streetAddress}, \n ${address?.city}, ${address?.state} . ${address?.position ?? 0}km',
+                      '${address?.apartmentNumber}, ${address?.streetAddress}, \n ${address?.city}, ${address?.state}',
                       style: context.theme.textTheme.bodyMedium,
                     ),
                   ).padSymmetric(vertical: 5),
@@ -103,14 +105,26 @@ Widget riderOrdersListTile({
                                 ? Container(
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: TagoLight.primaryColor.withOpacity(0.1),
+                                      color: riderOrderModel.status == 1 ||
+                                              riderOrderModel.status == 4
+                                          ? TagoLight.primaryColor
+                                              .withOpacity(0.1)
+                                          : TagoLight.textError
+                                              .withOpacity(0.1),
                                       borderRadius: BorderRadius.circular(7),
                                     ),
                                     child: Text(
-                                      TextConstant.accepted,
+                                      riderOrderModel.status == 1 ||
+                                              riderOrderModel.status == 4
+                                          ? TextConstant.accepted
+                                          : TextConstant.declined,
                                       textAlign: TextAlign.center,
-                                      style: AppTextStyle.listTileTitleLight.copyWith(
-                                        color: TagoLight.primaryColor,
+                                      style: AppTextStyle.listTileTitleLight
+                                          .copyWith(
+                                        color: riderOrderModel.status == 1 ||
+                                                riderOrderModel.status == 4
+                                            ? TagoLight.primaryColor
+                                            : TagoLight.textError,
                                         fontSize: 12,
                                       ),
                                     ),
@@ -121,12 +135,15 @@ Widget riderOrdersListTile({
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
                                           color: TagoLight.primaryColor,
-                                          borderRadius: BorderRadius.circular(7)),
+                                          borderRadius:
+                                              BorderRadius.circular(7)),
                                       child: Text(
                                         TextConstant.acceptRequest,
                                         textAlign: TextAlign.center,
-                                        style: AppTextStyle.listTileTitleLight.copyWith(
-                                          color: TagoLight.scaffoldBackgroundColor,
+                                        style: AppTextStyle.listTileTitleLight
+                                            .copyWith(
+                                          color:
+                                              TagoLight.scaffoldBackgroundColor,
                                           fontSize: 12,
                                         ),
                                       ),
@@ -137,14 +154,16 @@ Widget riderOrdersListTile({
                             child: GestureDetector(
                               onTap: onViewDetails,
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 7),
                                 decoration: BoxDecoration(
                                   color: TagoLight.orange.withOpacity(0.1),
                                 ),
                                 child: Text(
                                   TextConstant.viewdetails,
                                   textAlign: TextAlign.center,
-                                  style: context.theme.textTheme.bodyLarge?.copyWith(
+                                  style: context.theme.textTheme.bodyLarge
+                                      ?.copyWith(
                                     color: TagoLight.orange,
                                   ),
                                 ),
@@ -153,7 +172,8 @@ Widget riderOrdersListTile({
                           ),
                         ].rowInPadding(8))
                       : Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 7),
                           decoration: BoxDecoration(
                             color: TagoLight.orange.withOpacity(0.1),
                           ),

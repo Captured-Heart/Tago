@@ -5,7 +5,8 @@ class ActiveOrderScreen extends ConsumerStatefulWidget {
   // final TextEditingControllerClass controllerClass;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ActiveOrderScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ActiveOrderScreenState();
 }
 
 class _ActiveOrderScreenState extends ConsumerState<ActiveOrderScreen> {
@@ -50,29 +51,29 @@ class _ActiveOrderScreenState extends ConsumerState<ActiveOrderScreen> {
                   data.length,
                   (index) {
                     var orderModel = data[index];
-                    if (orderModel.name!.toLowerCase().contains(keyWord.toLowerCase())) {
-                      return GestureDetector(
-                        onTap: () {
-                          log(orderModel.status.toString());
-                          navBarPush(
-                            context: context,
-                            screen: orderModel.status == OrderStatus.delivered.status
-                                ? DeliveryCompleteScreen(
-                                    orderListModel: orderModel,
-                                  )
-                                : OrdersDetailScreen(
-                                    orderListModel: orderModel,
-                                    orderStatusFromOrderScreen: orderModel.status,
-                                  ),
-                            withNavBar: false,
-                          );
-                        },
-                        child: activeOrdersCard(
+                    if (orderModel.name!
+                        .toLowerCase()
+                        .contains(keyWord.toLowerCase())) {
+                      return activeOrdersCard(
                           context: context,
                           orderStatus: orderModel.status ?? 0,
                           orderModel: orderModel,
-                        ),
-                      );
+                          onViewDetails: () {
+                            navBarPush(
+                              context: context,
+                              screen: orderModel.status ==
+                                      OrderStatus.delivered.status
+                                  ? DeliveryCompleteScreen(
+                                      orderListModel: orderModel,
+                                    )
+                                  : OrdersDetailScreen(
+                                      order: orderModel,
+                                      orderStatusFromOrderScreen:
+                                          orderModel.status,
+                                    ),
+                              withNavBar: false,
+                            );
+                          });
                     }
                     return const SizedBox.shrink();
                   },
@@ -84,34 +85,32 @@ class _ActiveOrderScreenState extends ConsumerState<ActiveOrderScreen> {
                 data.length,
                 (index) {
                   var orderModel = data[index];
-                  return GestureDetector(
-                    onTap: () {
-                      log(orderModel.status.toString());
-                      navBarPush(
-                        context: context,
-                        screen: orderModel.status == OrderStatus.delivered.status
-                            ? DeliveryCompleteScreen(
-                                orderListModel: orderModel,
-                              )
-                            : OrdersDetailScreen(
-                                orderListModel: orderModel,
-                                orderStatusFromOrderScreen: orderModel.status,
-                              ),
-                        withNavBar: false,
-                      );
-                    },
-                    child: activeOrdersCard(
+                  return activeOrdersCard(
                       context: context,
                       orderStatus: orderModel.status ?? 0,
                       orderModel: orderModel,
-                    ),
-                  );
+                      onViewDetails: () {
+                        navBarPush(
+                          context: context,
+                          screen: orderModel.status ==
+                                  OrderStatus.delivered.status
+                              ? DeliveryCompleteScreen(
+                                  orderListModel: orderModel,
+                                )
+                              : OrdersDetailScreen(
+                                  order: orderModel,
+                                  orderStatusFromOrderScreen: orderModel.status,
+                                ),
+                          withNavBar: false,
+                        );
+                      });
                 },
               ),
             );
           },
           error: (error, _) {
-            return Center(child: Text(NetworkErrorEnums.checkYourNetwork.message));
+            return Center(
+                child: Text(NetworkErrorEnums.checkYourNetwork.message));
           },
           loading: () => Column(
             children: List.generate(

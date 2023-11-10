@@ -127,7 +127,8 @@ HOME PAGE
   static const similiarItems = 'Similar Items';
   static const itemsNearYou = 'Items near you';
   static const itemsDetails = 'Item Details';
-  static const scheduleLaterNotAvailable = 'Schedule later is currently not available';
+  static const scheduleLaterNotAvailable =
+      'Schedule later is currently not available';
   static const recentlyViewed = 'Recently Viewed';
 
 /*----------------------------------------------------------------------
@@ -248,10 +249,13 @@ SINGLE PRODUCT PAGE
   static const productSpecifications = 'Product Specifications';
   static const product = 'Product';
   static const productNotFound = 'Product not found';
-  static const productDeletedFromCartSuccessfully = 'Product deleted from cart successfully';
-  static const productAddedToCartSuccessfully = 'Product added to cart successfully';
+  static const productDeletedFromCartSuccessfully =
+      'Product deleted from cart successfully';
+  static const productAddedToCartSuccessfully =
+      'Product added to cart successfully';
   static const productIsAlreadyInCart = 'Product is already in cart';
-  static const doYouWantToDeleteThisProduct = 'Do you want to delete this product from cart';
+  static const doYouWantToDeleteThisProduct =
+      'Do you want to delete this product from cart';
 
   static const weight = 'Weight (kg): ';
   static const sku = 'SKU: ';
@@ -328,6 +332,7 @@ RIDER SECTION
   static const activeDelivery = 'Active Delivery';
 
   static const decline = 'Decline';
+  static const declined = 'Declined';
   static const pickupLocation = 'Pickup Location';
   static const deliveryLocation = 'Delivery Location';
   static const ordercompleted = 'Order Completed!';

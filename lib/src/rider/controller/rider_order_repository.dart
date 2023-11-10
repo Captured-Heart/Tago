@@ -8,25 +8,17 @@ import 'package:tago/app.dart';
 Future<List<OrderListModel>> getRiderListOfOrderMethod({
   bool showSnackBar = true,
 }) async {
-  // try {
-  //post request executed
   final Response response = await NetworkHelper.getRequestWithToken(
     api: riderListOfOrdersUrl,
   );
-
-  // decoding the response
-
   String data = response.body;
   var decodedData = jsonDecode(data);
-  //the response and error handling
-  log(decodedData['data'].toString());
-  if (decodedData['success'] == true) {
-    log('entered here');
-    // showSnackBar ? showScaffoldSnackBarMessage(decodedData['message'], duration: 3) : null;
-    final orderList = (decodedData['data'] as List).map((e) => OrderListModel.fromJson(e)).toList();
-    orderList.sort((a, b) => b.status!.compareTo(a.status!));
-    // log('get request for cart model:  ${decodedData['data']}'); //
 
+  if (decodedData['success'] == true) {
+    final orderList = (decodedData['data'] as List)
+        .map((e) => OrderListModel.fromJson(e))
+        .toList();
+    orderList.sort((a, b) => b.status!.compareTo(a.status!));
     return orderList;
   } else {
     return [];

@@ -4,7 +4,8 @@ class CompletedOrderScreen extends ConsumerStatefulWidget {
   const CompletedOrderScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CompletedOrderScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CompletedOrderScreenState();
 }
 
 class _CompletedOrderScreenState extends ConsumerState<CompletedOrderScreen> {
@@ -18,8 +19,10 @@ class _CompletedOrderScreenState extends ConsumerState<CompletedOrderScreen> {
       children: [
         orderList.when(
           data: (data) {
-            var completedList =
-                data.where((element) => element.status == OrderStatus.delivered.status).toList();
+            var completedList = data
+                .where(
+                    (element) => element.status == OrderStatus.delivered.status)
+                .toList();
             if (completedList.isNotEmpty) {
               return Column(
                 children: List.generate(
@@ -30,12 +33,13 @@ class _CompletedOrderScreenState extends ConsumerState<CompletedOrderScreen> {
                       onTap: () {
                         navBarPush(
                           context: context,
-                          screen: OrderStatus.delivered.status == orderModel.status
+                          screen: OrderStatus.delivered.status ==
+                                  orderModel.status
                               ? DeliveryCompleteScreen(
                                   orderListModel: orderModel,
                                 )
                               : OrdersDetailScreen(
-                                  orderListModel: orderModel,
+                                  order: orderModel,
                                   orderStatusFromOrderScreen: orderModel.status,
                                 ),
                           withNavBar: false,
@@ -57,18 +61,22 @@ class _CompletedOrderScreenState extends ConsumerState<CompletedOrderScreen> {
                   (index) {
                     var orderModel = completedList[index];
 
-                    if (orderModel.name!.toLowerCase().contains(keyWord.toLowerCase())) {
+                    if (orderModel.name!
+                        .toLowerCase()
+                        .contains(keyWord.toLowerCase())) {
                       return GestureDetector(
                         onTap: () {
                           navBarPush(
                             context: context,
-                            screen: OrderStatus.delivered.status == orderModel.status
+                            screen: OrderStatus.delivered.status ==
+                                    orderModel.status
                                 ? DeliveryCompleteScreen(
                                     orderListModel: orderModel,
                                   )
                                 : OrdersDetailScreen(
-                                    orderListModel: orderModel,
-                                    orderStatusFromOrderScreen: orderModel.status,
+                                    order: orderModel,
+                                    orderStatusFromOrderScreen:
+                                        orderModel.status,
                                   ),
                             withNavBar: false,
                           );
@@ -104,7 +112,8 @@ class _CompletedOrderScreenState extends ConsumerState<CompletedOrderScreen> {
             ).padOnly(top: 50);
           },
           error: (error, _) {
-            return Center(child: Text(NetworkErrorEnums.checkYourNetwork.message));
+            return Center(
+                child: Text(NetworkErrorEnums.checkYourNetwork.message));
           },
           loading: () => Column(
             children: List.generate(

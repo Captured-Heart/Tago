@@ -1,18 +1,18 @@
 import 'package:tago/app.dart';
 
-class RiderOrderItemsModel extends Equatable {
+class OrderItemModel extends Equatable {
   final int? amount;
   final int? quantity;
   final ProductsModel? product;
 
-  const RiderOrderItemsModel({
+  const OrderItemModel({
     this.amount,
     this.quantity,
     this.product,
   });
 
-  factory RiderOrderItemsModel.fromJson(Map<String, dynamic> json) {
-    return RiderOrderItemsModel(
+  factory OrderItemModel.fromJson(Map<String, dynamic> json) {
+    return OrderItemModel(
       amount: json['amount'] as int?,
       quantity: json['quantity'] as int?,
       product: json['product'] == null
@@ -27,12 +27,12 @@ class RiderOrderItemsModel extends Equatable {
         'product': product?.toJson(),
       };
 
-  RiderOrderItemsModel copyWith({
+  OrderItemModel copyWith({
     int? amount,
     int? quantity,
     ProductsModel? product,
   }) {
-    return RiderOrderItemsModel(
+    return OrderItemModel(
       amount: amount ?? this.amount,
       quantity: quantity ?? this.quantity,
       product: product ?? this.product,

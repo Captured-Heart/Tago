@@ -4,7 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:tago/app.dart';
 
 // const String baseUrl = 'https://api.tagonow.com';
+// const String wsBaseUrl = 'wss://api.tagonow.com';
 const String baseUrl = 'http://192.168.0.167:9800';
+const String wsBaseUrl = 'ws://192.168.0.167:9800';
 
 // AUTH URL
 const String signUpUrl = '/auth/signup';
@@ -32,9 +34,11 @@ const String getAddressUrl = '/account/user/address';
 const String addAddressUrl = '/account/user/address';
 const String updateAddressUrl = '/account/user/address';
 const String deleteAddressUrl = '/account/user/address';
+const String setDefaultAddressUrl = '/account/user/address/default';
 
 // ACCOUNT URL
 const String getAccountInfoUrl = '/account/';
+const String saveCurrentLocationUrl = '/account/current_location';
 
 // WISH LIST URL
 const String getWishListUrl = '/account/user/wishlist';
@@ -104,18 +108,28 @@ class NetworkHelper {
     Map<String, String>? headers,
   }) async {
     var url = '$baseUrl$api';
-
-    if (await Connectivity.instance.isConnected()) {
+    try {
       final response = await http.get(
         Uri.parse(url),
         headers: headers,
       );
 
       return response;
-    } else {
+    } catch (e) {
       showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
           isError: true);
     }
+    // if (await Connectivity.instance.isConnected()) {
+    //   final response = await http.get(
+    //     Uri.parse(url),
+    //     headers: headers,
+    //   );
+
+    //   return response;
+    // } else {
+    //   showScaffoldSnackBarMessage(NetworkErrorEnums.checkYourNetwork.message,
+    //       isError: true);
+    // }
   }
 
   /*------------------------------------------------------------------
