@@ -3,10 +3,9 @@
 import 'package:http/http.dart' as http;
 import 'package:tago/app.dart';
 
-// const String baseUrl = 'https://api.tagonow.com';
-// const String wsBaseUrl = 'wss://api.tagonow.com';
-const String baseUrl = 'http://192.168.0.167:9800';
-const String wsBaseUrl = 'ws://192.168.0.167:9800';
+const String baseUrl = 'https://api.tagonow.com';
+const String wsBaseUrl = "http://18.170.151.1:9800";
+// const String baseUrl = 'http://192.168.0.167:9800';
 
 // AUTH URL
 const String signUpUrl = '/auth/signup';

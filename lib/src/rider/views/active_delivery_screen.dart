@@ -61,7 +61,7 @@ class _ActiveDeliveryScreenState extends ConsumerState<ActiveDeliveryScreen> {
 
   void connectToServer() {
     try {
-      socket = io(baseUrl, <String, dynamic>{
+      socket = io(wsBaseUrl, <String, dynamic>{
         'transports': ['websocket'],
         'autoConnect': false,
       });
