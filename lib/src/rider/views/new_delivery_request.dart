@@ -9,19 +9,19 @@ class NewDeliveryRequestScreen extends ConsumerStatefulWidget {
   });
   final DeliveryRequestsModel? request;
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _NewDeliveryRequestScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _NewDeliveryRequestScreenState();
 }
 
-class _NewDeliveryRequestScreenState
-    extends ConsumerState<NewDeliveryRequestScreen> {
-  @override
-  void initState() {
-    ref.read(getCurrentLocationProvider);
-    super.initState();
-  }
-
+class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScreen> {
   final ScrollController scrollController = ScrollController();
+  late GoogleMapController mapController;
+
+  var gestureRecognizers = {
+    Factory<PanGestureRecognizer>(() => PanGestureRecognizer()),
+    Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()),
+    Factory<TapGestureRecognizer>(() => TapGestureRecognizer()),
+  };
+
   @override
   Widget build(BuildContext context) {
     var order = widget.request?.order;
@@ -32,10 +32,11 @@ class _NewDeliveryRequestScreenState
     final isLoading = ref.watch(riderAcceptDeclineNotifierProvider).isLoading;
 
     var pickupLocationDistance = Geolocator.distanceBetween(
-            fulfillmentHub!.latitude,
-            fulfillmentHub.longitude,
-            currentPosition.value?.latitude ?? 0,
-            currentPosition.value?.longitude ?? 0) /
+          fulfillmentHub!.latitude,
+          fulfillmentHub.longitude,
+          currentPosition.value?.latitude ?? 0,
+          currentPosition.value?.longitude ?? 0,
+        ) /
         1000;
 
     var deliveryLocationDistance = Geolocator.distanceBetween(
@@ -45,103 +46,138 @@ class _NewDeliveryRequestScreenState
             currentPosition.value?.longitude ?? 0) /
         1000;
 
+    log('''the pickup location: $pickupLocationDistance
+
+the deliveryLocation: $deliveryLocationDistance
+''');
+    var initialLocationLATLNG = LatLng(
+      currentPosition.value?.latitude ?? 0,
+      currentPosition.value?.longitude ?? 0,
+    );
     return FullScreenLoader(
       isLoading: isLoading,
       child: Scaffold(
         body: Column(
           children: [
             Expanded(
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  SliverAppBar(
-                    automaticallyImplyLeading: false,
-                    expandedHeight: context.sizeHeight(0.6),
-                    floating: true,
-                    pinned: true,
-                    flexibleSpace: Column(
-                      children: [
-                        appBarWidget(
-                          context: context,
-                          title: TextConstant.newDeliveryRequests,
-                          centerTitle: false,
-                          isLeading: true,
-                        ),
-                        Expanded(
-                          child: GoogleMap(
-                            myLocationEnabled: true,
-                            scrollGesturesEnabled: true,
-                            zoomControlsEnabled: true,
-                            zoomGesturesEnabled: true,
-                            gestureRecognizers: Set()
-                              ..add(Factory<VerticalDragGestureRecognizer>(
-                                  () => VerticalDragGestureRecognizer())),
-                            initialCameraPosition: CameraPosition(
-                                target: LatLng(
-                                  currentPosition.value?.latitude ?? 0,
-                                  currentPosition.value?.longitude ?? 0,
-                                ),
-                                zoom: 19.0),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                child: CustomScrollView(
+                  controller: scrollController,
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      expandedHeight: context.sizeHeight(0.6),
+                      floating: true,
+                      pinned: true,
+                      flexibleSpace: Column(
+                        children: [
+                          appBarWidget(
+                            context: context,
+                            title: TextConstant.newDeliveryRequests,
+                            centerTitle: false,
+                            isLeading: true,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: List.generate(
-                        orderItems!.length,
-                        (index) {
-                          var item = orderItems[index];
-                          return ListTile(
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 5),
-                            leading: cachedNetworkImageWidget(
-                              imgUrl: item.product?.productImages
-                                  ?.first['image']['url'],
-                              height: 100,
-                              width: 100,
-                            ),
-                            title: Text(
-                              item.product?.name ?? TextConstant.product,
-                              textAlign: TextAlign.left,
-                            ),
-                            shape: const Border(bottom: BorderSide(width: 0.1)),
-                          ).padOnly(bottom: 8);
-                        },
-                      ),
-                    ).padOnly(top: 5, left: 10),
-                  ),
-                  SliverToBoxAdapter(
-                    child: riderDeliveringToWidget(context, order!.user!),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        riderDeliveryRequestListTile(
-                          fulfillmentHub: fulfillmentHub,
-                          context: context,
-                          icon: Icons.pedal_bike,
-                          title: TextConstant.pickupLocation,
-                          subtitle1: ' ${fulfillmentHub.address}',
-                          subtitle2:
-                              '${pickupLocationDistance.toStringAsFixed(0)}Km away',
-                        ),
+                          Expanded(
+                            child: GoogleMap(
+                              onMapCreated: (controller) {
+                                mapController = controller;
+                              },
+                              // ignore: prefer_collection_literals
+                              markers: <Marker>[
+                                //current position for rider
+                                Marker(
+                                  markerId:  MarkerId('marker${address}'),
+                                  position: initialLocationLATLNG,
+                                  infoWindow: InfoWindow(
+                                    title: 'My location ${address.apartmentNumber ?? ''}',
+                                    snippet: '${fulfillmentHub.address}',
+                                  ),
+                                  icon: BitmapDescriptor.defaultMarker,
+                                ),
 
-                        //delivery location
-                        riderDeliveryRequestListTile(
-                          fulfillmentHub: fulfillmentHub,
-                          context: context,
-                          icon: Icons.location_on,
-                          title: TextConstant.deliveryLocation,
-                          subtitle1:
-                              ' ${address.apartmentNumber} ${address.streetAddress}, ${address.city}, ${address.state} ',
-                          subtitle2:
-                              '${deliveryLocationDistance.toStringAsFixed(0)}Km away',
-                        ),
-                      ],
+                                //destination marker for delivery
+                                Marker(
+                                  markerId: const MarkerId('marker_1'),
+                                  position: initialLocationLATLNG,
+                                  infoWindow: InfoWindow(
+                                    title: 'My location ${address.apartmentNumber ?? ''}',
+                                    snippet: '${fulfillmentHub.address}',
+                                  ),
+                                  icon: BitmapDescriptor.defaultMarker,
+                                ),
+                              ].toSet(),
+                              trafficEnabled: true,
+                              indoorViewEnabled: true,
+                              mapType: MapType.normal,
+                              mapToolbarEnabled: true,
+                              myLocationEnabled: true,
+                              scrollGesturesEnabled: true,
+                              zoomControlsEnabled: true,
+                              zoomGesturesEnabled: true,
+                              gestureRecognizers: gestureRecognizers,
+                              initialCameraPosition: CameraPosition(
+                                target: initialLocationLATLNG,
+                                zoom: 15.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  )
-                ],
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: List.generate(
+                          orderItems!.length,
+                          (index) {
+                            var item = orderItems[index];
+                            return ListTile(
+                              contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                              leading: cachedNetworkImageWidget(
+                                imgUrl: item.product?.productImages?.first['image']['url'],
+                                height: 100,
+                                width: 100,
+                              ),
+                              title: Text(
+                                item.product?.name ?? TextConstant.product,
+                                textAlign: TextAlign.left,
+                              ),
+                              shape: const Border(bottom: BorderSide(width: 0.1)),
+                            ).padOnly(bottom: 8);
+                          },
+                        ),
+                      ).padOnly(top: 5, left: 10),
+                    ),
+                    SliverToBoxAdapter(
+                      child: riderDeliveringToWidget(context, order!.user!),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          riderDeliveryRequestListTile(
+                            fulfillmentHub: fulfillmentHub,
+                            context: context,
+                            icon: Icons.pedal_bike,
+                            title: TextConstant.pickupLocation,
+                            subtitle1: ' ${fulfillmentHub.address}',
+                            subtitle2: '${pickupLocationDistance.toStringAsFixed(0)}Km away',
+                          ),
+
+                          //delivery location
+                          riderDeliveryRequestListTile(
+                            fulfillmentHub: fulfillmentHub,
+                            context: context,
+                            icon: Icons.location_on,
+                            title: TextConstant.deliveryLocation,
+                            subtitle1:
+                                ' ${address.apartmentNumber} ${address.streetAddress}, ${address.city}, ${address.state} ',
+                            subtitle2: '${deliveryLocationDistance.toStringAsFixed(0)}Km away',
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             widget.request!.status! > 0
@@ -153,8 +189,7 @@ class _NewDeliveryRequestScreenState
                         child: ElevatedButton(
                           onPressed: () {
                             ref
-                                .read(
-                                    riderAcceptDeclineNotifierProvider.notifier)
+                                .read(riderAcceptDeclineNotifierProvider.notifier)
                                 .riderAcceptReqestMethod(
                               map: {
                                 HiveKeys.orderId.keys: order.id,
@@ -174,8 +209,7 @@ class _NewDeliveryRequestScreenState
                         child: ElevatedButton(
                           onPressed: () {
                             ref
-                                .read(
-                                    riderAcceptDeclineNotifierProvider.notifier)
+                                .read(riderAcceptDeclineNotifierProvider.notifier)
                                 .riderDeleteReqestMethod(
                               map: {
                                 HiveKeys.orderId.keys: order.id,
@@ -188,10 +222,8 @@ class _NewDeliveryRequestScreenState
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            foregroundColor:
-                                TagoLight.textError.withOpacity(0.8),
-                            backgroundColor:
-                                TagoLight.textError.withOpacity(0.1),
+                            foregroundColor: TagoLight.textError.withOpacity(0.8),
+                            backgroundColor: TagoLight.textError.withOpacity(0.1),
                           ),
                           child: const Text(TextConstant.decline),
                         ),

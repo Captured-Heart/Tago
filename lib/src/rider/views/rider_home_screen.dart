@@ -1,12 +1,13 @@
 import 'package:tago/app.dart';
 import 'package:tago/src/rider/views/rider_completed_order_screen.dart';
 
+
+
 class RiderHomeScreen extends ConsumerStatefulWidget {
   const RiderHomeScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RiderHomeScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RiderHomeScreenState();
 }
 
 class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
@@ -14,8 +15,8 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
   Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider);
     final deliveryRequests = ref.watch(deliveryRequestsProvider).valueOrNull;
-    final pendingDeliveryRequests =
-        deliveryRequests?.where((e) => e.status == 0).toList().length;
+    final pendingDeliveryRequests = deliveryRequests?.where((e) => e.status == 0).toList().length;
+    // log(HiveHelper().getData(HiveKeys.token.keys));
 
     return DefaultTabController(
       length: 2,
@@ -23,20 +24,16 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
           appBar: AppBar(
             toolbarHeight: kToolbarHeight * 2.3,
             leading: const SizedBox.shrink(),
+
             flexibleSpace: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
                         contentPadding: EdgeInsets.zero,
-                        leading: GestureDetector(
-                          onTap: () {
-                            push(context, const RiderAccountScreen());
-                          },
-                          child: const Icon(
-                            FontAwesomeIcons.circleUser,
-                            color: TagoLight.textBold,
-                          ),
+                        leading: const Icon(
+                          FontAwesomeIcons.circleUser,
+                          color: TagoLight.textBold,
                         ),
                         title: Text('Hello, ${accountInfo.valueOrNull?.fname}'),
                         //
@@ -64,13 +61,11 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: TagoDark.primaryColor
-                                          .withOpacity(0.1),
+                                      color: TagoDark.primaryColor.withOpacity(0.1),
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         const Icon(
                                           Icons.receipt,
@@ -79,9 +74,7 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
                                         ),
                                         Text(
                                           '$pendingDeliveryRequests',
-                                          style: context
-                                              .theme.textTheme.titleLarge
-                                              ?.copyWith(
+                                          style: context.theme.textTheme.titleLarge?.copyWith(
                                             color: TagoDark.primaryColor,
                                             fontWeight: AppFontWeight.w500,
                                           ),
@@ -118,6 +111,7 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
               ],
             ),
           ),
+          
           body: const TabBarView(
             children: [
               //active order screen

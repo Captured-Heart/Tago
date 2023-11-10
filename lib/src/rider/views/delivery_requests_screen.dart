@@ -1,19 +1,16 @@
 import 'package:tago/app.dart';
-import 'package:tago/src/rider/views/active_delivery_screen.dart';
 
 class DeliveryRequestScreen extends ConsumerStatefulWidget {
   const DeliveryRequestScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DeliveryRequestScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _DeliveryRequestScreenState();
 }
 
 class _DeliveryRequestScreenState extends ConsumerState<DeliveryRequestScreen> {
   @override
   void initState() {
     ref.read(deliveryRequestsProvider);
-
     super.initState();
   }
 

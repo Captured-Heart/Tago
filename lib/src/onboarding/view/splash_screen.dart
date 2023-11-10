@@ -26,7 +26,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         //if user == rider
       } else if (HiveHelper().getData(HiveKeys.token.name) != null &&
           HiveHelper().getData(HiveKeys.role.name) == AuthRoleType.rider.name) {
-        return pushReplacement(context, const RiderHomeScreen());
+        return pushReplacement(context, const RiderMainScreen());
       } else {
         return pushAsVoid(context, const OnBoardScreen());
       }

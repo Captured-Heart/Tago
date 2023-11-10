@@ -15,3 +15,4 @@ export './models/domain/rider_order_item_model.dart';
 export './controller/rider_notifiers.dart';
 export './controller/riders_notifier_providers.dart';
 export './views/rider_active_order_screen.dart';
+export './views/rider_main_screen.dart';
