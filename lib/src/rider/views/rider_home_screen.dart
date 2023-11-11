@@ -16,7 +16,7 @@ class _RiderHomeScreenState extends ConsumerState<RiderHomeScreen> {
     final accountInfo = ref.watch(getAccountInfoProvider);
     final deliveryRequests = ref.watch(deliveryRequestsProvider).valueOrNull;
     final pendingDeliveryRequests = deliveryRequests?.where((e) => e.status == 0).toList().length;
-    // log(HiveHelper().getData(HiveKeys.token.keys));
+    log(HiveHelper().getData(HiveKeys.token.keys));
 
     return DefaultTabController(
       length: 2,

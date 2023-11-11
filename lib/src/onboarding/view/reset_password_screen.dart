@@ -50,10 +50,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                         8,
                         errorText: passwordMustBeAtleast,
                       ),
-                      PatternValidator(
-                        r'(?=.*?[#?!@$%^&*-])',
-                        errorText: passwordMustHaveaSymbol,
-                      ),
+                      // PatternValidator(
+                      //   r'(?=.*?[#?!@$%^&*-])',
+                      //   errorText: passwordMustHaveaSymbol,
+                      // ),
                     ],
                   ),
                 ),

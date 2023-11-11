@@ -1,7 +1,7 @@
 import 'package:tago/app.dart';
 
-class ForgotPasswordScreen extends ConsumerWidget {
-  ForgotPasswordScreen({super.key});
+class ChangePasswordScreen extends ConsumerWidget {
+  ChangePasswordScreen({super.key});
   final TextEditingControllerClass controller = TextEditingControllerClass();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -11,7 +11,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
           appBar: appBarWidget(
             context: context,
             isLeading: true,
-            title: TextConstant.forgotpassword,
+            title: TextConstant.changePassword,
           ),
           body: Form(
             key: controller.signUpformKey,
@@ -44,13 +44,8 @@ class ForgotPasswordScreen extends ConsumerWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (controller.signUpformKey.currentState!.validate()) {
-                        ref
-                            .read(authAsyncNotifierProvider.notifier)
-                            .forgotPasswordAsyncMethod(
-                          map: {
-                            AuthTypeField.phoneNumber.name:
-                                controller.phoneNoController.text
-                          },
+                        ref.read(authAsyncNotifierProvider.notifier).forgotPasswordAsyncMethod(
+                          map: {AuthTypeField.phoneNumber.name: controller.phoneNoController.text},
                           phoneNo: controller.phoneNoController.text,
                           context: context,
                           onNavigation: () {

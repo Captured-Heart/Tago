@@ -65,7 +65,7 @@ class _PaymentsMethodScreenState extends ConsumerState<PaymentsMethodScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(amount);
+    log('amount: $amount');
     return FullScreenLoader(
       isLoading: ref.watch(payWithCardAsyncNotifierProvider).isLoading,
       child: Scaffold(

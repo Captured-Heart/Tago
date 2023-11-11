@@ -1,7 +1,11 @@
 import 'package:tago/app.dart';
 
-Widget homeScreenOrderStatusWidget(
-    {required BuildContext context, required WidgetRef ref}) {
+Widget homeScreenOrderStatusWidget({
+  required BuildContext context,
+  required WidgetRef ref,
+  required OrderListModel orderModel,
+}) {
+  var orderStatus = orderModel.status ?? 0;
   return Container(
     decoration: const BoxDecoration(
       color: TagoLight.textFieldFilledColor,
@@ -21,13 +25,24 @@ Widget homeScreenOrderStatusWidget(
                 style: context.theme.textTheme.bodyLarge,
               ),
             ),
-            Chip(
-                label: const Text(
-                  TextConstant.pickedup,
-                  style: TextStyle(color: TagoDark.primaryColor),
-                ),
-                shape: const ContinuousRectangleBorder(),
-                backgroundColor: TagoLight.primaryColor.withOpacity(0.1))
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              decoration: BoxDecoration(
+                color: getOrderStatusColor(orderStatus).withOpacity(0.1),
+              ),
+              child: Text(
+                getOrderStatusTitle(orderStatus),
+                style: context.theme.textTheme.bodyLarge
+                    ?.copyWith(color: getOrderStatusColor(orderStatus)),
+              ),
+            ),
+            // Chip(
+            //     label: const Text(
+            //       TextConstant.pickedup,
+            //       style: TextStyle(color: TagoDark.primaryColor),
+            //     ),
+            //     shape: const ContinuousRectangleBorder(),
+            //     backgroundColor: TagoLight.primaryColor.withOpacity(0.1))
           ],
         ),
         Row(
@@ -56,10 +71,23 @@ Widget homeScreenOrderStatusWidget(
         ),
         TextButton(
           onPressed: () {
-            // ignore: invalid_use_of_protected_member
-            ref.read(scaffoldKeyProvider).currentState!.setState(() {
-              Scaffold.of(context).openDrawer();
-            });
+            // // ignore: invalid_use_of_protected_member
+            // ref.read(scaffoldKeyProvider).currentState!.setState(() {
+            //   Scaffold.of(context).openDrawer();
+            // });
+
+            navBarPush(
+              context: context,
+              screen: orderModel.status == OrderStatus.delivered.status
+                  ? DeliveryCompleteScreen(
+                      orderListModel: orderModel,
+                    )
+                  : OrdersDetailScreen(
+                      order: orderModel,
+                      orderStatusFromOrderScreen: orderModel.status,
+                    ),
+              withNavBar: false,
+            );
           },
           style: TextButton.styleFrom(padding: EdgeInsets.zero),
           child: const Text(

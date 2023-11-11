@@ -11,7 +11,7 @@ class SignInScreen extends ConsumerStatefulWidget {
 
 class _SignUpScreenState extends ConsumerState<SignInScreen> {
   final TextEditingControllerClass controller = TextEditingControllerClass();
-  final HiveHelper hive = HiveHelper();
+  // final HiveHelper hive = HiveHelper();
   bool isVisible = false;
   @override
   Widget build(BuildContext context) {
@@ -42,8 +42,9 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   authTextFieldWithError(
-                    controller: controller.phoneNoController,
                     context: context,
+                    controller: controller.phoneNoController,
+                    focusNode: controller.phoneNoFocusMode,
                     isError: false,
                     hintText: TextConstant.phoneno,
                     keyboardType: TextInputType.phone,
@@ -53,10 +54,20 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                       max: 11,
                       errorText: phoneValidation,
                     ),
+                    onChanged: (value) {
+                      if (value.length > 10) {
+                        controller.fieldFocusChange(
+                          context,
+                          currentFocus: controller.phoneNoFocusMode,
+                          nextFocus: controller.passwordFocusMode,
+                        );
+                      }
+                    },
                   ),
                   authTextFieldWithError(
-                    controller: controller.passWordController,
                     context: context,
+                    controller: controller.passWordController,
+                    focusNode: controller.passwordFocusMode,
                     isError: false,
                     obscureText: isVisible,
                     hintText: TextConstant.password,
@@ -79,10 +90,6 @@ class _SignUpScreenState extends ConsumerState<SignInScreen> {
                           8,
                           errorText: passwordMustBeAtleast,
                         ),
-                        // PatternValidator(
-                        //   r'(?=.*?[#?!@$%^&*-])',
-                        //   errorText: passwordMustHaveaSymbol,
-                        // )
                       ],
                     ),
                   ).padOnly(bottom: 10),

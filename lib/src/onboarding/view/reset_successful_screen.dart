@@ -10,7 +10,7 @@ class ResetSuccessfulScreen extends ConsumerWidget {
       appBar: appBarWidget(
         context: context,
         title: TextConstant.resetsuccessful,
-        isLeading: true,
+        isLeading: false,
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Align(

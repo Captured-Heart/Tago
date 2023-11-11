@@ -85,6 +85,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                             context: context,
                             setState: () => setState(() {}),
                           );
+                          
                           setState(() {});
                           //! DELETE FROM THE CART IN BACKEND
                           ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(

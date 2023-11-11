@@ -25,6 +25,8 @@ sign in screen
   static const welcomeBack = 'Welcome Back';
   static const letsgetyouback = 'Let’s get you back in';
   static const password = 'Password';
+  static const changePassword = 'Change password';
+
   static const forgotpassword = 'Forgot Password';
   static const newtoTago = 'New to Tago? ';
 
@@ -130,6 +132,11 @@ HOME PAGE
   static const scheduleLaterNotAvailable =
       'Schedule later is currently not available';
   static const recentlyViewed = 'Recently Viewed';
+  static const favorites = 'favorites';
+  static const bestSellers = 'best sellers';
+  static const pastOrders = 'past orders';
+  static const support = 'support';
+
 
 /*----------------------------------------------------------------------
   CATEGORIES

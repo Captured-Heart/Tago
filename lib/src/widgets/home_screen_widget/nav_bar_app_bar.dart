@@ -12,11 +12,11 @@ AppBar homescreenAppbar({
     backgroundColor: TagoDark.primaryColor,
     leading: IconButton(
       onPressed: () {
-        Scaffold.of(context).openDrawer();
+        // Scaffold.of(context).openDrawer();
       },
-      icon: const Icon(
-        Icons.menu,
-        color: Colors.white,
+      icon: const FaIcon(
+        FontAwesomeIcons.circleUser,
+        color: TagoDark.scaffoldBackgroundColor,
       ),
     ),
     title: Row(
@@ -86,10 +86,10 @@ AppBar categoriesAppbar({
     centerTitle: true,
     leading: IconButton(
       onPressed: () {
-        Scaffold.of(context).openDrawer();
+        // Scaffold.of(context).openDrawer();
       },
-      icon: const Icon(
-        Icons.menu,
+      icon: const FaIcon(
+        FontAwesomeIcons.circleUser,
       ),
     ),
     title: const Text(
@@ -126,10 +126,10 @@ AppBar ordersAppbar({
     toolbarHeight: kToolbarHeight * 1.5,
     leading: IconButton(
       onPressed: () {
-        Scaffold.of(context).openDrawer();
+        // Scaffold.of(context).openDrawer();
       },
-      icon: const Icon(
-        Icons.menu,
+      icon: const FaIcon(
+        FontAwesomeIcons.circleUser,
       ),
     ),
     title: authTextFieldWithError(
@@ -180,20 +180,24 @@ AppBar ordersAppbar({
 }
 
 //categories app bar
-AppBar myAccountAppbar(BuildContext context) {
+AppBar myAccountAppbar(BuildContext context, {bool hideLeading = false}) {
   return AppBar(
     elevation: 0,
     centerTitle: true,
-    leading: Builder(builder: (context) {
-      return IconButton(
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
-        icon: const Icon(
-          Icons.menu,
-        ),
-      );
-    }),
+    leading: hideLeading == true
+        ? const SizedBox.shrink()
+        : Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  // Scaffold.of(context).openDrawer();
+                },
+                icon: const FaIcon(
+                  FontAwesomeIcons.circleUser,
+                ),
+              );
+            },
+          ),
     title: const Text(
       TextConstant.myaccounts,
     ),

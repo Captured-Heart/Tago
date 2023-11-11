@@ -46,14 +46,22 @@ class _NewDeliveryRequestScreenState extends ConsumerState<NewDeliveryRequestScr
             currentPosition.value?.longitude ?? 0) /
         1000;
 
-    log('''the pickup location: $pickupLocationDistance
+//     log('''the pickup location: $pickupLocationDistance
 
-the deliveryLocation: $deliveryLocationDistance
-''');
+// the deliveryLocation: $deliveryLocationDistance
+// ''');
+
+    inspect(fulfillmentHub);
     var initialLocationLATLNG = LatLng(
       currentPosition.value?.latitude ?? 0,
       currentPosition.value?.longitude ?? 0,
     );
+
+    var deliveryLocation = LatLng(
+      address.metadata?.latitude ?? 0,
+      address.metadata?.longitude ?? 0,
+    );
+
     return FullScreenLoader(
       isLoading: isLoading,
       child: Scaffold(
@@ -61,7 +69,7 @@ the deliveryLocation: $deliveryLocationDistance
           children: [
             Expanded(
               child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
+                behavior: HitTestBehavior.translucent,
                 child: CustomScrollView(
                   controller: scrollController,
                   slivers: <Widget>[
@@ -87,11 +95,11 @@ the deliveryLocation: $deliveryLocationDistance
                               markers: <Marker>[
                                 //current position for rider
                                 Marker(
-                                  markerId:  MarkerId('marker${address}'),
+                                  markerId: MarkerId('marker${address.id}'),
                                   position: initialLocationLATLNG,
                                   infoWindow: InfoWindow(
-                                    title: 'My location ${address.apartmentNumber ?? ''}',
-                                    snippet: '${fulfillmentHub.address}',
+                                    title: address.state ?? '',
+                                    snippet: '${address.streetAddress}',
                                   ),
                                   icon: BitmapDescriptor.defaultMarker,
                                 ),
@@ -99,10 +107,10 @@ the deliveryLocation: $deliveryLocationDistance
                                 //destination marker for delivery
                                 Marker(
                                   markerId: const MarkerId('marker_1'),
-                                  position: initialLocationLATLNG,
+                                  position: deliveryLocation,
                                   infoWindow: InfoWindow(
-                                    title: 'My location ${address.apartmentNumber ?? ''}',
-                                    snippet: '${fulfillmentHub.address}',
+                                    title: address.metadata?.region ?? '',
+                                    snippet: '${address.metadata?.description}',
                                   ),
                                   icon: BitmapDescriptor.defaultMarker,
                                 ),
@@ -110,7 +118,7 @@ the deliveryLocation: $deliveryLocationDistance
                               trafficEnabled: true,
                               indoorViewEnabled: true,
                               mapType: MapType.normal,
-                              mapToolbarEnabled: true,
+                              mapToolbarEnabled: false,
                               myLocationEnabled: true,
                               scrollGesturesEnabled: true,
                               zoomControlsEnabled: true,

@@ -37,6 +37,10 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         onItemSelected: (value) {
           log(value.toString());
           ref.read(bottomNavBarIndexProvider.notifier).update((state) => value);
+        //   if (value == 2) {
+        //     log('i am ere');
+        //     ref.read(initialIndexOrdersScreenProvider.notifier).update((state) => 0);
+        //   }
         },
         items: navBarsItems(context: context),
         screens: const [

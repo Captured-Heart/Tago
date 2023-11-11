@@ -8,3 +8,4 @@ export './view/review_items_screen.dart';
 export './view/active_order_screen.dart';
 export './view/completed_order_screen.dart';
 export './providers.dart/providers.dart';
+export './model/use_case/use_case.dart';

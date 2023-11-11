@@ -37,10 +37,8 @@ class OrderPlacedScreen extends ConsumerWidget {
                   size: 48,
                 ),
                 ListTile(
-                  title: const Center(child: Text(TextConstant.orderPlaced))
-                      .padOnly(bottom: 10),
-                  subtitle: const Center(
-                      child: Text(TextConstant.youWillReceiveAnEmail)),
+                  title: const Center(child: Text(TextConstant.orderPlaced)).padOnly(bottom: 10),
+                  subtitle: const Center(child: Text(TextConstant.youWillReceiveAnEmail)),
                 ),
               ],
             ),
@@ -50,6 +48,7 @@ class OrderPlacedScreen extends ConsumerWidget {
                   width: context.sizeWidth(0.9),
                   child: ElevatedButton(
                     onPressed: () {
+                      ref.invalidate(orderListProvider(false));
                       navBarPush(
                         context: context,
                         screen: OrdersDetailScreen(
@@ -65,6 +64,8 @@ class OrderPlacedScreen extends ConsumerWidget {
                 TextButton(
                   onPressed: () {
                     popToMain(context);
+
+                    checkCartBoxLength();
                   },
                   child: const Text(TextConstant.shopForAnotherItem),
                 )

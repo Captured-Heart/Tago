@@ -29,7 +29,7 @@ class _RiderMainScreenState extends ConsumerState<RiderMainScreen> {
     return Scaffold(
       key: ref.watch(scaffoldKeyProvider),
       drawer: currentIndex > 0 ? tagoHomeDrawer(context, accountInfo) : null,
-      appBar: currentIndex > 0 ? myAccountAppbar(context) : null,
+      appBar: currentIndex > 0 ? myAccountAppbar(context, hideLeading: true) : null,
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,

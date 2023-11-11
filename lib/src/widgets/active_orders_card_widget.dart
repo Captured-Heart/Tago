@@ -9,36 +9,6 @@ Container activeOrdersCard({
   var address =
       "${orderModel.address!.apartmentNumber} ${orderModel.address!.streetAddress} \n${orderModel.address!.city}, ${orderModel.address!.state}";
 
-  getOrderStatusColor(int status) {
-    if (status == OrderStatus.cancelled.status) {
-      return TagoLight.textError;
-    } else if (status == OrderStatus.pending.status) {
-      return TagoLight.orange;
-    } else {
-      return TagoLight.primaryColor;
-    }
-  }
-
-  getOrderStatusTitle(int status) {
-    if (status == OrderStatus.cancelled.status) {
-      return OrderStatus.cancelled.message;
-    } else if (status == OrderStatus.pending.status) {
-      return OrderStatus.pending.message;
-    } else if (status == OrderStatus.delivered.status) {
-      return OrderStatus.delivered.message;
-    } else if (status == OrderStatus.placed.status) {
-      return OrderStatus.placed.message;
-    } else if (status == OrderStatus.received.status) {
-      return OrderStatus.received.message;
-    } else if (status == OrderStatus.pickedUp.status) {
-      return OrderStatus.pickedUp.message;
-    } else if (status == OrderStatus.successful.status) {
-      return OrderStatus.successful.message;
-    } else {
-      return OrderStatus.processing.message;
-    }
-  }
-
   return Container(
     // height: 250,
     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -53,8 +23,7 @@ Container activeOrdersCard({
       textBaseline: TextBaseline.alphabetic,
       children: [
         cachedNetworkImageWidget(
-          imgUrl: orderModel
-              .orderItems!.first.product?.productImages?.first['image']['url'],
+          imgUrl: orderModel.orderItems!.first.product?.productImages?.first['image']['url'],
           height: 95,
           width: 100,
         ).padOnly(right: 10),
@@ -64,15 +33,14 @@ Container activeOrdersCard({
           children: [
             Text(
               orderModel.name ?? '',
-              style: context.theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: AppFontWeight.w300),
+              style: context.theme.textTheme.titleMedium?.copyWith(fontWeight: AppFontWeight.w300),
             ),
             const SizedBox(
               height: 10,
             ),
             Text(address,
-                style: context.theme.textTheme.bodyMedium
-                    ?.copyWith(fontWeight: AppFontWeight.w600)),
+                style:
+                    context.theme.textTheme.bodyMedium?.copyWith(fontWeight: AppFontWeight.w600)),
             const SizedBox(
               height: 10,
             ),
@@ -82,8 +50,7 @@ Container activeOrdersCard({
                       onViewDetails();
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 7),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                       decoration: BoxDecoration(
                         color: TagoLight.orange.withOpacity(0.1),
                       ),

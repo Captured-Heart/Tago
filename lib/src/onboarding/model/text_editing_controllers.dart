@@ -23,6 +23,19 @@ class TextEditingControllerClass {
   TextEditingController instructionsController = TextEditingController();
 
   FocusNode ordersFocusNode = FocusNode();
+  FocusNode phoneNoFocusMode = FocusNode();
+  FocusNode passwordFocusMode = FocusNode();
+
+
+  fieldFocusChange(
+    BuildContext context, {
+    required FocusNode currentFocus,
+    required FocusNode nextFocus,
+  }) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
+
   // TextEditingController otpCode = TextEditingController();
 
   void disposeControllers() {

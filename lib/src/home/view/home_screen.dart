@@ -42,15 +42,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // final cartList = ref.watch(getCartListProvider(false)).valueOrNull;
     // final accountInfo = ref.watch(getAccountInfoProvider);
     final accountInfo = ref.watch(getAccountInfoProvider);
-    // final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
+    final orderList = ref
+        .watch(orderListProvider(false))
+        .valueOrNull
+        ?.where((element) => element.status! > 0)
+        .toList();
 
+    // final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
+    inspect(orderList);
     return Scaffold(
       appBar: homescreenAppbar(
         context: context,
         isBadgeVisible: checkCartBoxLength()?.isNotEmpty ?? false,
-
         showSearchIcon: showSearchAddressWidget,
       ),
+      // drawer: const FaIcon(FontAwesomeIcons.circleUser),
       body: ListView(
         controller: _controller,
         children: [
@@ -62,8 +68,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Column(
               children: [
                 // ORDER status
-                homeScreenOrderStatusWidget(context: context, ref: ref)
-                    .padOnly(top: 10, bottom: 25),
+
+                orderList?.isEmpty == true
+                    ? const SizedBox.shrink()
+                    : homeScreenOrderStatusWidget(
+                        context: context,
+                        ref: ref,
+                        orderModel: orderList?[0] ?? const OrderListModel(),
+                      ).padOnly(top: 10, bottom: 25),
 
                 //! HOT DEALS CATEGORY
                 Row(
@@ -209,15 +221,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         shortcutWidget(
-                            context: context, icon: Icons.favorite_outline, name: 'Favorites'),
+                          context: context,
+                          icon: Icons.favorite_outline,
+                          name: TextConstant.favorites.toTitleCase(),
+                          onTap: () {
+                            push(context, const WishListScreen());
+                          },
+                        ),
                         shortcutWidget(
-                            context: context,
-                            icon: Icons.star_border_outlined,
-                            name: 'best Sellers'),
+                          context: context,
+                          icon: Icons.star_border_outlined,
+                          name: TextConstant.bestSellers.toTitleCase(),
+                          onTap: () {
+                            // push(context, const TagScreen(imageUrl: imageUrl, appBarTitle: appBarTitle, tagId: tagId));
+                          },
+                        ),
                         shortcutWidget(
-                            context: context, icon: Icons.receipt_outlined, name: 'Past Orders'),
+                          context: context,
+                          icon: Icons.receipt_outlined,
+                          name: TextConstant.pastOrders.toTitleCase(),
+                          onTap: () {
+                            ref.read(bottomNavControllerProvider).jumpToTab(2);
+                            ref
+                                .read(initialIndexOrdersScreenProvider.notifier)
+                                .update((state) => 1);
+                          },
+                        ),
                         shortcutWidget(
-                            context: context, icon: Icons.message_outlined, name: 'Support'),
+                          context: context,
+                          icon: Icons.message_outlined,
+                          name: TextConstant.support.toTitleCase(),
+                          onTap: () {},
+                        ),
                       ],
                     ).padOnly(top: 10)
                   ],
@@ -242,6 +277,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         trailing: TextButton(
                           onPressed: () {
+                            // log('is here pressed');
                             push(
                               context,
                               TagScreen(

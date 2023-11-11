@@ -11,7 +11,9 @@ class _RiderAccountScreenState extends ConsumerState<RiderAccountScreen> {
   @override
   Widget build(BuildContext context) {
     final accountInfo = ref.watch(getAccountInfoProvider).valueOrNull;
+    final address = ref.watch(getAccountAddressProvider);
 
+    inspect(address);
     return Scaffold(
       // key: ref.watch(scaffoldKeyProvider),
       // drawer: tagoHomeDrawer(context, accountInfo),
@@ -33,11 +35,13 @@ class _RiderAccountScreenState extends ConsumerState<RiderAccountScreen> {
                 FontAwesomeIcons.circleUser,
                 color: TagoLight.textBold,
               ),
-              title: Text('${accountInfo?.fname} ${accountInfo?.lname}'),
+              title: Text('${accountInfo?.phoneNumber} ${accountInfo?.email}'),
               trailing: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  push(context, const AddNewAddressScreen(isEditMode: true,));
+                },
                 child: Text(
-                  'Edit',
+                  TextConstant.edit,
                   style: context.theme.textTheme.titleMedium?.copyWith(
                     color: TagoDark.primaryColor,
                     fontFamily: TextConstant.fontFamilyNormal,
@@ -45,7 +49,7 @@ class _RiderAccountScreenState extends ConsumerState<RiderAccountScreen> {
                 ),
               ),
             ),
-      
+
             ///
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,16 +76,31 @@ class _RiderAccountScreenState extends ConsumerState<RiderAccountScreen> {
                   textStyle: context.theme.textTheme.bodySmall?.copyWith(
                     fontSize: 14,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    push(context, const NotificationScreen());
+                  },
                 ),
                 drawerListTile(
                   context: context,
-                  icons: FontAwesomeIcons.circleQuestion,
+                  icons: FontAwesomeIcons.car,
                   isMaterialIcon: false,
                   iconColor: TagoDark.textBold,
-                  title: TextConstant.help,
+                  title: TextConstant.deliveryRequests,
                   onTap: () {
-                    // push(context, const NewDeliveryRequestScreen());
+                    push(context, const DeliveryRequestScreen());
+                  },
+                  textStyle: context.theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 14,
+                  ),
+                ),
+                drawerListTile(
+                  context: context,
+                  icons: FontAwesomeIcons.unlockKeyhole,
+                  isMaterialIcon: false,
+                  iconColor: TagoDark.textBold,
+                  title: TextConstant.changePassword,
+                  onTap: () {
+                    push(context, ForgotPasswordScreen());
                   },
                   textStyle: context.theme.textTheme.bodySmall?.copyWith(
                     fontSize: 14,

@@ -4,14 +4,18 @@ Widget shortcutWidget({
   required BuildContext context,
   required String name,
   required IconData icon,
+  required VoidCallback onTap,
 }) {
   return Column(children: [
-    Container(
-      padding: const EdgeInsets.all(12),
-      height: 55,
-      width: 80,
-      color: TagoLight.primaryColor.withOpacity(0.11),
-      child: Icon(icon, color: TagoLight.primaryColor),
+    GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        height: 55,
+        width: 80,
+        color: TagoLight.primaryColor.withOpacity(0.11),
+        child: Icon(icon, color: TagoLight.primaryColor),
+      ),
     ),
     const SizedBox(
       height: 5,

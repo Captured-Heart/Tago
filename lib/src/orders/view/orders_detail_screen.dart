@@ -16,8 +16,7 @@ class OrdersDetailScreen extends ConsumerStatefulWidget {
   final int? orderStatusFromOrderScreen;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _OrdersDetailScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _OrdersDetailScreenState();
 }
 
 class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
@@ -58,8 +57,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
   void updateLocation(dynamic data) {
     log(data.toString());
     _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(data['latitude'], data['longitude']), zoom: 19)));
+        CameraPosition(target: LatLng(data['latitude'], data['longitude']), zoom: 19)));
     setPolyLine();
     currentLocation = LatLng(data['latitude'], data['longitude']);
     // setState(() {});
@@ -71,8 +69,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
       googleAPIKey,
       PointLatLng(widget.order.address!.metadata!.latitude ?? 0,
           widget.order.address!.metadata!.longitude ?? 0),
-      PointLatLng(widget.order.fulfillmentHub!.latitude,
-          widget.order.fulfillmentHub!.longitude),
+      PointLatLng(widget.order.fulfillmentHub!.latitude, widget.order.fulfillmentHub!.longitude),
       travelMode: TravelMode.driving,
     );
     print("result" + result.toString());
@@ -119,10 +116,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
       });
     });
     _googleMapController.animateCamera(CameraUpdate.newLatLngBounds(
-        LatLngBounds(
-            southwest: LatLng(minLat, minLong),
-            northeast: LatLng(maxLat, maxLong)),
-        20));
+        LatLngBounds(southwest: LatLng(minLat, minLong), northeast: LatLng(maxLat, maxLong)), 20));
   }
 
   loadPolyLine() {
@@ -139,8 +133,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final orderStatus =
-        ref.watch(orderStatusProvider(widget.order.id.toString())).valueOrNull;
+    final orderStatus = ref.watch(orderStatusProvider(widget.order.id.toString())).valueOrNull;
 
     return Scaffold(
         appBar: AppBar(
@@ -179,6 +172,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
                 : SizedBox(
                     height: 300,
                     child: GoogleMap(
+                      
                       onMapCreated: (controller) {
                         _googleMapController = controller;
                       },
@@ -186,8 +180,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
                       markers: {
                         Marker(
                           markerId: const MarkerId("currentLocation"),
-                          position: LatLng(currentLocation.latitude,
-                              currentLocation.longitude),
+                          position: LatLng(currentLocation.latitude, currentLocation.longitude),
                         ),
                         Marker(
                             markerId: const MarkerId("source"),
@@ -195,16 +188,15 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
                               widget.order.fulfillmentHub?.latitude ?? 0,
                               widget.order.fulfillmentHub?.longitude ?? 0,
                             ),
-                            icon: BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueRed)),
+                            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)),
                         Marker(
-                            markerId: const MarkerId("destination"),
-                            position: LatLng(
-                              widget.order.address!.metadata?.latitude ?? 0,
-                              widget.order.address!.metadata?.longitude ?? 0,
-                            ),
-                            icon: BitmapDescriptor.defaultMarkerWithHue(
-                                BitmapDescriptor.hueRed)),
+                          markerId: const MarkerId("destination"),
+                          position: LatLng(
+                            widget.order.address!.metadata?.latitude ?? 0,
+                            widget.order.address!.metadata?.longitude ?? 0,
+                          ),
+                          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+                        ),
                       },
                       myLocationEnabled: true,
                       scrollGesturesEnabled: true,
@@ -228,8 +220,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
               subtitle: TextConstant.yourOrderWasPlacedSuccessfully,
               isFaded: isFaded(
                 orderStatus: OrderStatus.placed,
-                status:
-                    orderStatus?.status ?? widget.orderStatusFromOrderScreen!,
+                status: orderStatus?.status ?? widget.orderStatusFromOrderScreen!,
               ),
             ),
             customStepperWidget(
@@ -239,8 +230,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
               subtitle: TextConstant.orderReceivedFulfilmentCenter,
               isFaded: isFaded(
                 orderStatus: OrderStatus.received,
-                status:
-                    orderStatus?.status ?? widget.orderStatusFromOrderScreen!,
+                status: orderStatus?.status ?? widget.orderStatusFromOrderScreen!,
               ),
             ),
             customStepperWidget(
@@ -250,8 +240,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
               subtitle: TextConstant.youWillReceiveAnEmail,
               isFaded: isFaded(
                 orderStatus: OrderStatus.processing,
-                status:
-                    orderStatus?.status! ?? widget.orderStatusFromOrderScreen!,
+                status: orderStatus?.status! ?? widget.orderStatusFromOrderScreen!,
               ),
             ),
             customStepperWidget(
@@ -261,8 +250,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
               subtitle: TextConstant.itemHasBeenPickedUpCourier,
               isFaded: isFaded(
                 orderStatus: OrderStatus.pickedUp,
-                status:
-                    orderStatus?.status! ?? widget.orderStatusFromOrderScreen!,
+                status: orderStatus?.status! ?? widget.orderStatusFromOrderScreen!,
               ),
             ),
             customStepperWidget(
@@ -273,8 +261,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
               hideDash: true,
               isFaded: isFaded(
                 orderStatus: OrderStatus.delivered,
-                status:
-                    orderStatus?.status! ?? widget.orderStatusFromOrderScreen!,
+                status: orderStatus?.status! ?? widget.orderStatusFromOrderScreen!,
               ),
             ),
             const Divider(

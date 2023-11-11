@@ -3,21 +3,9 @@ import 'package:tago/app.dart';
 final searchOrdersProvider = StateProvider.autoDispose<String>((ref) {
   return '';
 });
-
-enum OrderStatus {
-  pending(0, TextConstant.pending),
-  received(4, TextConstant.received),
-  processing(6, TextConstant.processing),
-  delivered(9, TextConstant.delivered),
-  cancelled(2, TextConstant.cancelled),
-  successful(9, TextConstant.successful),
-  pickedUp(7, TextConstant.pickedUp),
-  placed(1, TextConstant.placed);
-
-  const OrderStatus(this.status, this.message);
-  final int status;
-  final String message;
-}
+final initialIndexOrdersScreenProvider = StateProvider<int>((ref) {
+  return 0;
+});
 
 // 0 - pending
 // 1 - placed
@@ -43,16 +31,19 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final initialIndex = ref.watch(initialIndexOrdersScreenProvider);
     controllerClass.ordersFocusNode.addListener(() {
       if (!controllerClass.ordersFocusNode.hasFocus) {
         controllerClass.ordersFocusNode.unfocus();
       }
     });
+
     // final orderList = ref.watch(orderListProvider(false));
     // log(orderList.valueOrNull?.map((e) => e.status).toList().toString() ?? '');
     // log('status: ${orderList.valueOrNull?.map((e) => e.id).toList()}');
     return DefaultTabController(
       length: 2,
+      initialIndex: initialIndex,
       child: Scaffold(
         appBar: ordersAppbar(
           context: context,
@@ -60,7 +51,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
           controllerClass: controllerClass,
           ref: ref,
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             //! active orders
             ActiveOrderScreen(),
