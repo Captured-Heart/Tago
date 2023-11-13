@@ -30,6 +30,9 @@ class _RiderActiveOrderScreenState extends ConsumerState<RiderCompletedOrderScre
                         context: context,
                         orderStatus: orderModel.status ?? 0,
                         orderModel: orderModel,
+                        onViewDetails: () {
+                          
+                        },
                       ),
                     );
                   },

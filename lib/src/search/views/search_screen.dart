@@ -1,4 +1,3 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tago/app.dart';
 
 final searchTextProvider = StateProvider.autoDispose<String>((ref) {
@@ -40,7 +39,8 @@ class SearchScreen extends ConsumerWidget {
     log(HiveHelper().containsSearchData(HiveKeys.search.keys).toString());
     final keyWord = ref.watch(searchTextProvider);
     final searchList = ref.watch(fetchSearchStreamProvider(keyWord));
-    log('serachList: $searchList');
+    log('serachList: ${searchList.valueOrNull?.map((e) => e).toList()}');
+    inspect(searchList.valueOrNull?.map((e) => e).toList());
     return Scaffold(
       body: SafeArea(
         child: Form(
@@ -196,13 +196,16 @@ class SearchScreen extends ConsumerWidget {
                                     return ListTile(
                                       onTap: () {
                                         //TODO: PUSH JUST THE SELECETD TO THE NEXT SCREEN
-                                        // controller.searchProductController.text = myData[index];
-                                        // controller.fruitsSearchKey.currentState!.save();
+                                        // final products =
+                                        //     ref.watch(getProductsProvider(widget.id.toString()));
+
+                                        log('data: ${myData}');
 
                                         // navBarPush(
                                         //   context: context,
-                                        //   screen: SearchFilterScreen(
-                                        //     controller: controller,
+                                        //   screen: SingleProductPage(
+                                        //     id: productModel.id ?? 0,
+                                        //     productsModel: productModel,
                                         //   ),
                                         //   withNavBar: false,
                                         // );

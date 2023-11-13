@@ -205,7 +205,7 @@ class HiveHelper {
 
   //      get data
   dynamic getDataSearch({String? key, dynamic defaultValue}) {
-    log('getData: $key');
+    // log('getData: $key');
     return _boxSearch.get(key, defaultValue: defaultValue);
   }
 
