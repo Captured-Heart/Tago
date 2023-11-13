@@ -64,7 +64,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ? searchBoxAndAddressWidget(context, accountInfo.value)
               : const SizedBox(),
           Container(
-            padding: const EdgeInsets.only(right: 18, left: 18, bottom: 10, top: 10),
+            padding: const EdgeInsets.only(
+              right: 18,
+              left: 18,
+              bottom: 10,
+              top: 10,
+            ),
             child: Column(
               children: [
                 // ORDER status
@@ -75,7 +80,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         context: context,
                         ref: ref,
                         orderModel: orderList?[0] ?? const OrderListModel(),
-                      ).padOnly(top: 10, bottom: 25),
+                      ).padOnly(
+                        top: 10,
+                        bottom: 25,
+                      ),
 
                 //! HOT DEALS CATEGORY
                 Row(
