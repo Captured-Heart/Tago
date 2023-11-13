@@ -4,8 +4,11 @@ import 'package:tago/app.dart';
 class HiveHelper {
   final _boxTago = Hive.box('tago');
   final _boxSearch = Hive.box('search');
-  final _boxRecentlyViewed = Hive.box<List>('recently');
-  final _boxCarts = Hive.box<List>('carts');
+  // final _boxRecentlyViewed = Hive.box<List>('recently');
+  final _boxRecentlyViewed = Hive.box<ProductsModel>('recently');
+
+  // final _boxCarts = Hive.box<List>('carts');
+  final _boxCarts = Hive.box<CartModel>('carts');
 
   static Future<void> init() async {
     Hive.registerAdapter(CartModelAdapter());
@@ -15,8 +18,11 @@ class HiveHelper {
     await Hive.initFlutter();
     await Hive.openBox('tago');
     await Hive.openBox('search');
-    await Hive.openBox<List>('recently');
-    await Hive.openBox<List>('carts');
+    // await Hive.openBox<List>('recently');
+    await Hive.openBox<ProductsModel>('recently');
+
+    // await Hive.openBox<List>('carts');
+    await Hive.openBox<CartModel>('carts');
   }
 
 /*------------------------------------------------------------------
@@ -53,33 +59,70 @@ class HiveHelper {
     return _boxTago.get(key) ?? 0;
   }
 
+//   /*------------------------------------------------------------------
+//                  FOR BOX ('RECENTLY VIEWED')
+//  -------------------------------------------------------------------*/
+//   ValueListenable<Box<List>> getRecentlyViewedListenable() {
+//     return _boxRecentlyViewed.listenable();
+//   }
+
+//   saveRecentData(Map<String, dynamic> product) async {
+//     log('the product saved/viewed $product');
+//     var pro = ProductsModel.fromJson(product);
+//     List<ProductsModel> opp = [];
+//     opp.add(pro);
+//     return await _boxRecentlyViewed.add(opp);
+//   }
+
+//   Iterable<List<dynamic>> recentlyBoxValues() {
+//     return _boxRecentlyViewed.values;
+//   }
+
+//   List<ProductsModel>? getRecentlyViewed({
+//     List<ProductsModel>? defaultValue,
+//   }) {
+//     var opp = _boxRecentlyViewed.get(
+//       HiveKeys.recentlyViewed.keys,
+//       defaultValue: defaultValue,
+//     ) as List<ProductsModel>;
+
+//     return opp;
+//   }
+
+//   List<ProductsModel>? getAtRecently(int index) {
+//     return _boxRecentlyViewed.getAt(index) as List<ProductsModel>;
+//   }
+
+//   // clear box
+//   Future<void> clearBoxRecent() async {
+//     await _boxRecentlyViewed.clear();
+//   }
+
+//   Future<void> closeRecentlyBox() async {
+//     return await _boxRecentlyViewed.close();
+//   }
+
   /*------------------------------------------------------------------
                  FOR BOX ('RECENTLY VIEWED')
  -------------------------------------------------------------------*/
-  ValueListenable<Box<List>> getRecentlyViewedListenable() {
+  ValueListenable<Box<ProductsModel>> getRecentlyViewedListenable() {
     return _boxRecentlyViewed.listenable();
   }
 
-// save task
-  // saveRecentData(List<ProductsModel> product) async {
-  //   log('the product saved/viewed $product');
-  //   return await _boxRecentlyViewed.add(product);
-  // }
-
   saveRecentData(Map<String, dynamic> product) async {
     log('the product saved/viewed $product');
-   var pro = ProductsModel.fromJson(product);
-   List<ProductsModel> opp = [];
-   opp.add(pro);
-    return await _boxRecentlyViewed.add(opp);
+    var pro = ProductsModel.fromJson(product);
+    List<ProductsModel> opp = [];
+    opp.add(pro);
+    return await _boxRecentlyViewed.add(pro);
   }
 
-  Iterable<List<dynamic>> recentlyBoxValues() {
+  Iterable<ProductsModel> recentlyBoxValues() {
     return _boxRecentlyViewed.values;
   }
 
   List<ProductsModel>? getRecentlyViewed({
-    List<ProductsModel>? defaultValue,
+    ProductsModel? defaultValue,
   }) {
     var opp = _boxRecentlyViewed.get(
       HiveKeys.recentlyViewed.keys,
@@ -105,22 +148,24 @@ class HiveHelper {
   /*------------------------------------------------------------------
                  FOR BOX ('CARTS SECTION')
  -------------------------------------------------------------------*/
-  ValueListenable<Box<List>> getCartsListenable() {
+  ValueListenable<Box<CartModel>> getCartsListenable() {
     return _boxCarts.listenable();
   }
 
-  Iterable<List<dynamic>> cartsBoxValues() {
+  Iterable<CartModel> cartsBoxValues() {
     return _boxCarts.values;
   }
 
 // save task
-  saveCartsToList(List<CartModel> cartProduct) async {
+  saveCartsToList(Map<String, dynamic> cartProduct) async {
     log('the product saved/viewed $cartProduct');
-    return await _boxCarts.add(cartProduct);
+    var cart = CartModel.fromJson(cartProduct);
+
+    return await _boxCarts.add(cart);
   }
 
   // save task
-  saveCartsToListByPutAt(int index, List<CartModel> cartProduct) async {
+  saveCartsToListByPutAt(int index, CartModel cartProduct) async {
     log('the product saved/viewed $cartProduct');
     return await _boxCarts.putAt(index, cartProduct);
   }
@@ -130,7 +175,7 @@ class HiveHelper {
   }
 
   List<CartModel>? getCartsList({
-    List<CartModel>? defaultValue,
+    CartModel ? defaultValue,
   }) {
     var opp = _boxCarts.get(
       HiveKeys.cartsKey.keys,
@@ -138,6 +183,8 @@ class HiveHelper {
     ) as List<CartModel>;
     return opp;
   }
+
+ 
 
   Future<void> closeCartsBox() async {
     return await _boxCarts.close();

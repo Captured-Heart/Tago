@@ -14,9 +14,9 @@ class _SingleProductMiniCartModalWidgetState
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: HiveHelper().getCartsListenable(),
-      builder: (BuildContext context, Box<List> box, Widget? child) {
+      builder: (BuildContext context, Box<CartModel> box, Widget? child) {
         var cartList = (box.values)
-            .map((dynamic e) => CartModel(quantity: e[0].quantity, product: e[0].product))
+            .map((dynamic e) => CartModel(quantity: e.quantity, product: e.product))
             .toList();
 
         int calculateTotalPrice() {
@@ -63,7 +63,7 @@ class _SingleProductMiniCartModalWidgetState
                   itemBuilder: (context, index) {
                     var product = cartList[index].product;
                     var cartModel = cartList[index];
-              
+
                     var quantity = cartModel.quantity;
                     return myCartListTile(
                       context: context,
@@ -85,7 +85,7 @@ class _SingleProductMiniCartModalWidgetState
                             context: context,
                             setState: () => setState(() {}),
                           );
-              
+
                           setState(() {});
                           //! DELETE FROM THE CART IN BACKEND
                           ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(

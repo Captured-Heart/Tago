@@ -49,7 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         .toList();
 
     // final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
-    inspect(orderList);
+    // inspect(orderList);
     return Scaffold(
       appBar: homescreenAppbar(
         context: context,
@@ -278,6 +278,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         trailing: TextButton(
                           onPressed: () {
                             // log('is here pressed');
+
                             push(
                               context,
                               TagScreen(
@@ -317,83 +318,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   quantity: quantity ?? 1,
                                   ref: ref,
                                   setState: () => setState(() {}),
-
-                                  // on DECREMENT
-                                  // onDecrementBTN: () {
-                                  //   if (quantity! > 1) {
-                                  //     //! REDUCE THE QUANTITY
-                                  //     incrementDecrementCartValueMethod(
-                                  //       cartIndexFromID(productModel)!,
-                                  //       CartModel(quantity: quantity - 1, product: productModel),
-                                  //     );
-                                  //   } else {
-                                  //     //! delete from the cart locally
-                                  //     deleteCartFromListMethod(
-                                  //       index: cartIDFromName(productModel)!,
-                                  //       cartModel: CartModel(),
-                                  //       context: context,
-                                  //       setState: () {},
-                                  //       isProductModel: true,
-                                  //       productsModel: productModel,
-                                  //     );
-                                  //     // setState(() {});
-                                  //     //! DELETE FROM THE CART IN BACKEND
-                                  //     ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
-                                  //       map: {
-                                  //         ProductTypeEnums.productId.name:
-                                  //             productModel.id.toString(),
-                                  //       },
-                                  //     ).whenComplete(
-                                  //       () => ref.invalidate(getCartListProvider(false)),
-                                  //     );
-                                  //   }
-                                  // },
-
-                                  //ON INCREMENT
-                                  // onIncrementBTN: () {
-                                  //   if (quantity < productModel.availableQuantity!) {
-                                  //     incrementDecrementCartValueMethod(
-                                  //       cartIndexFromID(productModel)!,
-                                  //       CartModel(quantity: quantity + 1, product: productModel),
-                                  //     );
-                                  //   } else {
-                                  //     showScaffoldSnackBarMessage(
-                                  //       'The available quantity of ${productModel.name} is (${productModel.availableQuantity})',
-                                  //       isError: true,
-                                  //       duration: 2,
-                                  //     );
-                                  //   }
-                                  // },
-
-                                  // ADD TO CART
-                                  // addToCartBTN: () {
-                                  //   if (data.showcaseProductTag!.products![index]
-                                  //           .availableQuantity! <
-                                  //       1) {
-                                  //     //product is out of stock
-                                  //     showScaffoldSnackBarMessage(
-                                  //       TextConstant.productIsOutOfStock,
-                                  //       isError: true,
-                                  //     );
-                                  //   } else {
-                                  //     //add to cart (LOCALLY)
-                                  //     saveToCartLocalStorageMethod(
-                                  //       CartModel(
-                                  //           quantity: 1,
-                                  //           product: data.showcaseProductTag!.products![index]),
-                                  //     );
-                                  //     setState(() {});
-                                  //     // add to cart (BACKEND)
-                                  //     ref.read(cartNotifierProvider.notifier).addToCartMethod(
-                                  //       map: {
-                                  //         ProductTypeEnums.productId.name: data
-                                  //             .showcaseProductTag!.products![index].id
-                                  //             .toString(),
-                                  //         ProductTypeEnums.quantity.name: '1',
-                                  //       },
-                                  //     );
-                                  //   }
-                                  // },
                                 ).padOnly(left: 10);
                               },
                             ),
@@ -413,12 +337,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               )
               .padOnly(bottom: 20),
 
-          //RECENTLY VIEWED
+          //! RECENTLY VIEWED
 
           ValueListenableBuilder(
             valueListenable: HiveHelper().getRecentlyViewedListenable(),
-            builder: (BuildContext context, Box<List> box, Widget? child) {
+            builder: (BuildContext context, Box<ProductsModel> box, Widget? child) {
               // if (HiveHelper().getRecentlyViewed() != null) {
+              List<ProductsModel> products = box.values.toList();
 
               if (box.isNotEmpty) {
                 return Column(
@@ -447,44 +372,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          var product = box.getAt(index)!.cast<ProductsModel>();
-                          // var product = (box.values.toList())[index];
-                          // log('a: ${product[0].date}, b: ${product[0].date}');
-
-                          // // List<ProductsModel> product =
-                          // //     (box.values.toList())[index].cast<ProductsModel>();
-
-                          product.sort((a, b) {
-                            log('a: ${a.date}, b: ${b.date}');
-                            setState(() {});
-                            b.amount!.compareTo(a.amount!);
-                            return 1;
-                          });
-
-                          // List<ProductsModel> product() {
-                          //   var product = (box.values.toList())[index].cast<ProductsModel>();
-
-                          //   product.sort((a, b) => a.amount!.compareTo(b.amount!));
-
-                          //   log(product .toString());
-                          //   return product;
-                          // }
+                          products.sort((a, b) => b.date!.compareTo(a.date!));
 
                           return SizedBox(
                             width: context.sizeWidth(0.35),
                             child: itemsNearYouCard(
                               onTap: () {
-                                // HiveHelper().clearBoxRecent();
+                                HiveHelper().clearBoxRecent();
                                 navBarPush(
                                   context: context,
                                   screen: SingleProductPage(
-                                    id: product[0].id!,
-                                    productsModel: product[0],
+                                    id: products[index].id!,
+                                    productsModel: products[index],
                                   ),
                                   withNavBar: false,
                                 );
                               },
-                              products: product[0],
+                              products: products[index],
                               context: context,
                             ),
                           );

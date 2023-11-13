@@ -26,7 +26,7 @@ int? cartQuantityFromName(ProductsModel productModel) {
       ?.where((element) => element.product?.name?.toLowerCase() == productModel.name?.toLowerCase())
       .toList();
 
-    // log('product quantity first: ${cartIndex?.map((e) => e.quantity)}, dateTime: ${DateTime.now().second}');
+  // log('product quantity first: ${cartIndex?.map((e) => e.quantity)}, dateTime: ${DateTime.now().second}');
 
   if (cartIndex!.isNotEmpty) {
     // log('product quantity second: ${cartIndex.map((e) => e.quantity)}, dateTime_2nd: ${DateTime.now().second}');
@@ -38,37 +38,39 @@ int? cartQuantityFromName(ProductsModel productModel) {
 
 List<CartModel>? checkCartBoxLength() {
   final List<CartModel> totalLists = (HiveHelper().cartsBoxValues())
-      .map((dynamic e) => CartModel(quantity: e[0].quantity, product: e[0].product))
+      .map(( e) => CartModel(quantity: e.quantity, product: e.product))
       .toList();
 
   return totalLists;
 }
 
+//!   ADD RECENTLY VIEWED METHOD
 void addRecentlyViewedToStorage(ProductsModel productModel) {
-  // final List<ProductsModel> recentProducts = [];
-  // final Map<String, dynamic> recentProd = {};
+  // I AM GETTING THE LIST OF RECRENTLY SAVED AND PASSING THEM AS LIST
   var totalLists = (HiveHelper().recentlyBoxValues())
-      .map((dynamic e) => ProductsModel(id: e[0].id, name: e[0].name))
+      //I AM ALSO ADDING A DATE TO THIS MAP, CHECK "PRODUCTSMODEL" @HIVE, YOU WILL SEE DATEIME.NOW PASSED
+      .map(( e) => ProductsModel(id: e.id, name: e.name))
       .toList();
 
+//! HERE I AM CHECKING IF THE PRODUCT HAVE ALREADY BEEN SAVED TO THE DB, IF [FALSE], THEN IT IS NOT FOUND IN THE DB
   if (totalLists.map((e) => e.id).toList().contains(productModel.id) == false) {
-    // final updatedData = [...recentProducts, productModel.toJson()];
     // this saves the recent products to list
     HiveHelper().saveRecentData(productModel.toJson());
   }
 }
 
 void saveToCartLocalStorageMethod(CartModel cartModel) {
-  final List<CartModel> recentProducts = [];
+  // final List<CartModel> recentProducts = [];
+  // var products = ProductsModel()
   var totalLists = (HiveHelper().cartsBoxValues())
-      .map((dynamic e) => CartModel(quantity: e[0].quantity, product: e[0].product))
+      .map(( e) => CartModel(quantity: e.quantity, product: e.product))
       .toList();
 
 //i am trying to check if product already exists in cart
   if (totalLists.map((e) => e.product?.id).toList().contains(cartModel.product?.id) == false) {
-    final updatedData = [...recentProducts, cartModel];
+    // final updatedData = [...recentProducts, cartModel];
     // this saves the product to cart
-    HiveHelper().saveCartsToList(updatedData);
+    HiveHelper().saveCartsToList(cartModel.toJson());
     // this displays the "add to cart successfully" snack
     showScaffoldSnackBarMessage(TextConstant.productAddedToCartSuccessfully, duration: 1);
   } else {
@@ -81,10 +83,10 @@ void incrementDecrementCartValueByIDMethod(
   int index,
   CartModel cartModel,
 ) {
-  final List<CartModel> recentProducts = [];
+  // final List<CartModel> recentProducts = [];
 
-  final updatedData = [...recentProducts, cartModel];
-  HiveHelper().saveCartsToListByPutAt(index, updatedData);
+  // final updatedData = [...recentProducts, cartModel];
+  HiveHelper().saveCartsToListByPutAt(index, cartModel);
 }
 
 //
@@ -92,10 +94,10 @@ void incrementDecrementCartValueMethod(
   int index,
   CartModel cartModel,
 ) {
-  final List<CartModel> recentProducts = [];
+  // final List<CartModel> recentProducts = [];
 
-  final updatedData = [...recentProducts, cartModel];
-  HiveHelper().saveCartsToListByPutAt(index, updatedData);
+  // final updatedData = [...recentProducts, cartModel];
+  HiveHelper().saveCartsToListByPutAt(index, cartModel);
 }
 
 void deleteCartFromListMethod({

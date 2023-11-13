@@ -37,10 +37,9 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
       ),
       body: ValueListenableBuilder(
         valueListenable: HiveHelper().getCartsListenable(),
-        builder: (BuildContext context, Box<List> box, Widget? child) {
-          var cartList = (box.values)
-              .map((dynamic e) => CartModel(quantity: e[0].quantity, product: e[0].product))
-              .toList();
+        builder: (BuildContext context, Box<CartModel> box, Widget? child) {
+          var cartList =
+              (box.values).map((e) => CartModel(quantity: e.quantity, product: e.product)).toList();
 
           int calculateTotalPrice() {
             int total = 0;
@@ -50,6 +49,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
             return total;
           }
 
+          cartList.sort((a, b) => b.product!.date!.compareTo(a.product!.date!));
           if (box.isNotEmpty) {
             return ListView(
               controller: controller,
@@ -85,7 +85,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                             context: context,
                             setState: () => setState(() {}),
                           );
-                          
+
                           setState(() {});
                           //! DELETE FROM THE CART IN BACKEND
                           ref.read(cartNotifierProvider.notifier).deleteFromCartMethod(
@@ -105,7 +105,7 @@ class _MyCartScreenState extends ConsumerState<MyCartScreen> {
                             CartModel(quantity: quantity + 1, product: product),
                           );
                           setState(() {});
-                        } 
+                        }
                       },
                     );
                   },
