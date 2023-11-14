@@ -17,36 +17,55 @@ class MyData {
 class SearchScreen extends ConsumerWidget {
   final TextEditingControllerClass controller = TextEditingControllerClass();
   SearchScreen({super.key});
-  final List<String> recentStrings = [];
 
-  void _addStringToList(String value) {
-    final myData = HiveHelper()
-        .getDataSearch(key: HiveKeys.search.keys, defaultValue: recentStrings) as List<String>;
-    log('myData: $myData');
-    // recentStrings.add(value);
+  void _addStringToList(ProductsModel productModel) {
+    var totalLists = (HiveHelper().getAllSearchEntries())
+        .map((e) => ProductsModel(name: e.name, id: e.id))
+        .toList();
 
-    if (myData.contains(value) == false) {
-      final updatedData = [...myData, value];
-      HiveHelper().saveSearchData(HiveKeys.search.keys, updatedData);
+    // log(totalLists.map((e) => e.name).toList().toString());
+
+    if (totalLists.map((e) => e.name).toList().contains(productModel.name) == false) {
+      // this saves the recent products to list
+
+      HiveHelper().saveSearchData(productModel.toJson());
     }
   }
 
   Future<void> deleteDataAtIndex(int index) async {
-    final myData = HiveHelper()
-        .getDataSearch(key: HiveKeys.search.keys, defaultValue: recentStrings) as List<String>;
-
-    if (index >= 0 && index < myData.length) {
-      myData.removeAt(index);
-      HiveHelper().saveSearchData(HiveKeys.search.keys, myData);
+    if (index >= 0) {
+      HiveHelper().deleteSearchAtIndex(index);
     }
+  }
+
+  void navigateToSingleProductScreen(
+      {required BuildContext context,
+      required WidgetRef ref,
+      required ProductsModel searchObject,
+      required TextEditingController controller}) {
+    ref.read(searchIsLoadingProvider.notifier).update((state) => true);
+
+    ref.read(getProductsProvider(searchObject.label ?? '').future).then((value) {
+      ref.read(searchIsLoadingProvider.notifier).update((state) => false);
+      // pop(context);
+      controller.clear();
+      navBarPush(
+        context: context,
+        screen: SingleProductPage(
+          id: value.id ?? 0,
+          productsModel: value,
+        ),
+        withNavBar: false,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    log(HiveHelper().containsSearchData(HiveKeys.search.keys).toString());
+    // log(HiveHelper().containsSearchData(HiveKeys.search.keys).toString());
     final keyWord = ref.watch(searchTextProvider);
     final searchList = ref.watch(fetchSearchStreamProvider(keyWord));
-    log('serachList: ${searchList.valueOrNull?.map((e) => e.label).toList()}');
+    // log('serachList: ${searchList.valueOrNull?.map((e) => e.label).toList()}');
 
     return FullScreenLoader(
       isLoading: ref.watch(searchIsLoadingProvider),
@@ -102,35 +121,41 @@ class SearchScreen extends ConsumerWidget {
                                 ].rowInPadding(5))
                             .padSymmetric(vertical: 20);
                       } else {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        return ListView(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ...List.generate(data.length, (index) {
                               var searchObject = data[index];
                               return ListTile(
                                 onTap: () {
                                   // controller.fruitsSearchKey.currentState!.save();
-                                  _addStringToList(searchObject.name ?? 'o');
-                                  ref
-                                      .read(searchIsLoadingProvider.notifier)
-                                      .update((state) => true);
+                                  _addStringToList(searchObject);
+                                  navigateToSingleProductScreen(
+                                    context: context,
+                                    ref: ref,
+                                    searchObject: searchObject,
+                                    controller: controller.searchProductController,
+                                  );
+                                  // ref
+                                  //     .read(searchIsLoadingProvider.notifier)
+                                  //     .update((state) => true);
 
-                                  ref
-                                      .read(getProductsProvider(searchObject.label ?? '').future)
-                                      .then((value) {
-                                    ref
-                                        .read(searchIsLoadingProvider.notifier)
-                                        .update((state) => false);
-                                    pop(context);
-                                    navBarPush(
-                                      context: context,
-                                      screen: SingleProductPage(
-                                        id: value.id ?? 0,
-                                        productsModel: value,
-                                      ),
-                                      withNavBar: false,
-                                    );
-                                  });
+                                  // ref
+                                  //     .read(getProductsProvider(searchObject.label ?? '').future)
+                                  //     .then((value) {
+                                  //   ref
+                                  //       .read(searchIsLoadingProvider.notifier)
+                                  //       .update((state) => false);
+                                  //   pop(context);
+                                  //   navBarPush(
+                                  //     context: context,
+                                  //     screen: SingleProductPage(
+                                  //       id: value.id ?? 0,
+                                  //       productsModel: value,
+                                  //     ),
+                                  //     withNavBar: false,
+                                  //   );
+                                  // });
                                 },
                                 title: Text(
                                   searchObject.name!,
@@ -146,26 +171,15 @@ class SearchScreen extends ConsumerWidget {
                               );
                             }).toList(),
 
-                            //see all search button
-                            TextButton(
-                              onPressed: () {
-                                // controller.fruitsSearchKey.currentState!.save();
-
-                                // navBarPush(
-                                //   context: context,
-                                //   screen: SearchFilterScreen(
-                                //     controller: controller,
-                                //     product: data,
-                                //   ),
-                                //   withNavBar: false,
-                                //   popFirst: true,
-                                // );
-                              },
-                              child: const Text(
-                                TextConstant.seeAllResults,
-                                textScaleFactor: 0.9,
-                              ),
-                            ).padSymmetric(horizontal: 10, vertical: 10)
+                            // i commented out the SEE ALL BUTTON because there is no screen/ intentions for it
+                            //! see all search button
+                            // TextButton(
+                            //   onPressed: () {},
+                            //   child: const Text(
+                            //     TextConstant.seeAllResults,
+                            //     textScaleFactor: 0.9,
+                            //   ),
+                            // ).padSymmetric(horizontal: 10, vertical: 10)
                           ],
                         );
                       }
@@ -183,7 +197,8 @@ class SearchScreen extends ConsumerWidget {
                         );
                       } else {
                         // if it contains in hive data
-                        if (HiveHelper().containsSearchData(HiveKeys.search.keys) == true) {
+                        // if (HiveHelper().containsSearchData(HiveKeys.search.keys) == true) {
+                        if (HiveHelper().getAllSearchEntries().isNotEmpty) {
                           return Column(children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,7 +206,6 @@ class SearchScreen extends ConsumerWidget {
                                 const Expanded(child: Text(TextConstant.recentSearches)),
                                 TextButton(
                                   onPressed: () {
-                                    log('message');
                                     HiveHelper().clearBoxSearch();
                                   },
                                   style: TextButton.styleFrom(padding: EdgeInsets.zero),
@@ -203,31 +217,30 @@ class SearchScreen extends ConsumerWidget {
                             //valueable listener for hive searches
                             ValueListenableBuilder(
                               valueListenable: HiveHelper().getSearchListenable(),
-                              builder: (BuildContext context, Box box, Widget? child) {
-                                final myData = HiveHelper().getDataSearch(
-                                    key: HiveKeys.search.keys,
-                                    defaultValue: recentStrings) as List<String>;
+                              builder:
+                                  (BuildContext context, Box<ProductsModel> box, Widget? child) {
+                                // final myData = HiveHelper()
+                                //     .getDataSearch(defaultValue: box) as List<String>;
+                                if (box.isEmpty) {
+                                  return const SizedBox.shrink();
+                                }
+                                List<ProductsModel> products = box.values.toList();
+
                                 return Expanded(
                                   child: ListView.builder(
-                                    itemCount: myData.length,
+                                    itemCount: box.length,
                                     itemBuilder: (BuildContext context, int index) {
                                       return ListTile(
                                         onTap: () {
-                                          //TODO: PUSH JUST THE SELECETD TO THE NEXT SCREEN
-                                          // final products =
-                                          //     ref.watch(getProductsProvider(widget.id.toString()));
-
-                                          // navBarPush(
-                                          //   context: context,
-                                          //   screen: SingleProductPage(
-                                          //     id: productModel.id ?? 0,
-                                          //     productsModel: productModel,
-                                          //   ),
-                                          //   withNavBar: false,
-                                          // );
+                                          navigateToSingleProductScreen(
+                                            context: context,
+                                            ref: ref,
+                                            searchObject: products[index],
+                                            controller: controller.searchProductController,
+                                          );
                                         },
                                         title: Text(
-                                          myData[index],
+                                          products[index].name!,
                                           style: AppTextStyle.listTileSubtitleLight,
                                         ),
                                         shape: const Border(

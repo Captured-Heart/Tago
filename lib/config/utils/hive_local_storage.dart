@@ -3,7 +3,7 @@ import 'package:tago/app.dart';
 
 class HiveHelper {
   final _boxTago = Hive.box('tago');
-  final _boxSearch = Hive.box('search');
+  final _boxSearch = Hive.box<ProductsModel>('search');
   // final _boxRecentlyViewed = Hive.box<List>('recently');
   final _boxRecentlyViewed = Hive.box<ProductsModel>('recently');
 
@@ -17,7 +17,7 @@ class HiveHelper {
     log('enterrr');
     await Hive.initFlutter();
     await Hive.openBox('tago');
-    await Hive.openBox('search');
+    await Hive.openBox<ProductsModel>('search');
     // await Hive.openBox<List>('recently');
     await Hive.openBox<ProductsModel>('recently');
 
@@ -175,7 +175,7 @@ class HiveHelper {
   }
 
   List<CartModel>? getCartsList({
-    CartModel ? defaultValue,
+    CartModel? defaultValue,
   }) {
     var opp = _boxCarts.get(
       HiveKeys.cartsKey.keys,
@@ -183,8 +183,6 @@ class HiveHelper {
     ) as List<CartModel>;
     return opp;
   }
-
- 
 
   Future<void> closeCartsBox() async {
     return await _boxCarts.close();
@@ -204,17 +202,19 @@ class HiveHelper {
  -------------------------------------------------------------------*/
 
   //      get data
-  dynamic getDataSearch({String? key, dynamic defaultValue}) {
+  List<ProductsModel> getDataSearch({ProductsModel? defaultValue}) {
     // log('getData: $key');
-    return _boxSearch.get(key, defaultValue: defaultValue);
+    var data =
+        _boxSearch.get(HiveKeys.search.keys, defaultValue: defaultValue) as List<ProductsModel>;
+    return data;
   }
 
-  ValueListenable<Box<dynamic>> getSearchListenable() {
+  ValueListenable<Box<ProductsModel>> getSearchListenable() {
     return _boxSearch.listenable();
   }
 
-  List<dynamic> getAllSearchEntries() {
-    return _boxSearch.values.toList();
+  Iterable<ProductsModel> getAllSearchEntries() {
+    return _boxSearch.values;
   }
 
   // close box
@@ -232,14 +232,15 @@ class HiveHelper {
     await _boxSearch.deleteAt(index);
   }
 
-//check if it contains data
-  bool containsSearchData(dynamic key) {
-    return _boxSearch.containsKey(key);
-  }
+// //check if it contains data
+//   bool containsSearchData(dynamic key) {
+//     return _boxSearch.containsKey(key);
+//   }
 
-  Future<dynamic> saveSearchData(String key, List<String> value) async {
-    log('save data: $value');
+  Future<dynamic> saveSearchData(Map<String, dynamic> searchProduct) async {
+    log('save data: $searchProduct');
+    var search = ProductsModel.fromJson(searchProduct);
 
-    return await _boxSearch.put(key, value);
+    return await _boxSearch.add(search);
   }
 }
