@@ -1,4 +1,5 @@
 import 'package:tago/app.dart';
+import 'package:tago/src/orders/providers.dart/get_duration_from_orders.dart';
 
 Widget homeScreenOrderStatusWidget({
   required BuildContext context,
@@ -6,6 +7,7 @@ Widget homeScreenOrderStatusWidget({
   required OrderListModel orderModel,
 }) {
   var orderStatus = orderModel.status ?? 0;
+
   return Container(
     decoration: const BoxDecoration(
       color: TagoLight.textFieldFilledColor,
@@ -36,13 +38,6 @@ Widget homeScreenOrderStatusWidget({
                     ?.copyWith(color: getOrderStatusColor(orderStatus)),
               ),
             ),
-            // Chip(
-            //     label: const Text(
-            //       TextConstant.pickedup,
-            //       style: TextStyle(color: TagoDark.primaryColor),
-            //     ),
-            //     shape: const ContinuousRectangleBorder(),
-            //     backgroundColor: TagoLight.primaryColor.withOpacity(0.1))
           ],
         ),
         Row(
@@ -61,10 +56,23 @@ Widget homeScreenOrderStatusWidget({
                   Icons.access_time,
                   color: TagoDark.primaryColor,
                 ).padOnly(right: 5),
-                Text(
-                  '12 minutes away',
-                  style: context.theme.textTheme.bodyLarge,
-                )
+
+                ref.watch(getDurationStreamProvider(orderModel)).when(
+                    data: (data) {
+                      if (data.toString().isEmpty) {
+                        return const Text('data');
+                      }
+                      return Text(
+                        '$data minutes away',
+                        style: context.theme.textTheme.bodyLarge,
+                      );
+                    },
+                    error: (error, _) => const Text(''),
+                    loading: () => const SizedBox.shrink())
+                // Text(
+                //   '12 minutes away',
+                //   style: context.theme.textTheme.bodyLarge,
+                // )
               ],
             ),
           ],

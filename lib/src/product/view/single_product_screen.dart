@@ -22,20 +22,19 @@ class _SingleProductPageState extends ConsumerState<SingleProductPage> {
     final products = ref.watch(getProductsProvider(widget.id.toString()));
 
     var wishlist = ref.watch(fetchWishListProvider(false));
-    var cartList = ref.watch(getCartListProvider(false));
+    // var cartList = ref.watch(getCartListProvider(false));
     var wishListID = wishlist.value?.map((e) => e.id).contains(widget.id);
 
-    var cartListID =
-        cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList().contains(widget.id);
+    // var cartListID =
+    //     cartList.valueOrNull?.map((e) => e.product?.id ?? 0).toList().contains(widget.id);
     // var wishListID = checkIdenticalListsWithInt(list1: wishListList, int: widget.id);
     final productSpecs = ref.watch(productSpecificationsProvider);
 
-    log('preducts Specs: ${products.valueOrNull?.productSpecification!}');
     final relatedProducts = ref.watch(relatedProductsProvider);
 
     //
     var productModel = products.valueOrNull ?? ProductsModel();
-    var cartIndex = cartIndexFromID(products.valueOrNull ?? ProductsModel())!;
+    // var cartIndex = cartIndexFromID(products.valueOrNull ?? ProductsModel())!;
     var quantity = cartQuantityFromName(products.valueOrNull ?? ProductsModel())!;
     return Scaffold(
       appBar: appBarWidget(

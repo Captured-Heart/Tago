@@ -47,10 +47,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         .valueOrNull
         ?.where((element) => element.status! > 0)
         .toList();
+    // log(HiveHelper().getData(HiveKeys.token.keys).toString());
 
     // final accountInfo = ref.watch(getAccountAddressProvider).valueOrNull;
     // inspect(orderList);
-    log('categories by group: ${categoriesGroup.valueOrNull}');
+    // log('categories by group: ${categoriesGroup.valueOrNull}');
     return Scaffold(
       appBar: homescreenAppbar(
         context: context,

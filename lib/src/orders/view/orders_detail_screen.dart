@@ -39,6 +39,9 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
     });
   }
 
+
+
+
   void connectToServer() {
     try {
       socket = io(wsBaseUrl, <String, dynamic>{
@@ -72,7 +75,9 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
       PointLatLng(widget.order.fulfillmentHub!.latitude, widget.order.fulfillmentHub!.longitude),
       travelMode: TravelMode.driving,
     );
-    print("result" + result.toString());
+    if (kDebugMode) {
+      print("result$result");
+    }
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
@@ -170,12 +175,12 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
                     ),
                   )
                 : SizedBox(
-                    height: 300,
+                    height: context.sizeHeight(0.35),
                     child: GoogleMap(
-                      
                       onMapCreated: (controller) {
                         _googleMapController = controller;
                       },
+                      mapToolbarEnabled: false,
                       polylines: _polylines,
                       markers: {
                         Marker(
@@ -195,7 +200,7 @@ class _OrdersDetailScreenState extends ConsumerState<OrdersDetailScreen> {
                             widget.order.address!.metadata?.latitude ?? 0,
                             widget.order.address!.metadata?.longitude ?? 0,
                           ),
-                          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+                          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
                         ),
                       },
                       myLocationEnabled: true,
