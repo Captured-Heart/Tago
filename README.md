@@ -94,9 +94,9 @@ fvm install
        <td style="text-align: center">
         <img src="./screenshots/tago_notifications.png" width="800" />
       </td>
-       <td style="text-align: center">
+<!--        <td style="text-align: center">
         <img src="./screenshots/themes.PNG" width="800" />
-      </td>
+      </td> -->
     </tr>
     <tr>
        <td style="text-align: center">
