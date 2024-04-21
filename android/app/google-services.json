@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "350510844843",
+    "project_id": "tagoapp-397420",
+    "storage_bucket": "tagoapp-397420.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350510844843:android:c7c9f89e69560408b620ee",
+        "android_client_info": {
+          "package_name": "com.tagonow.tago"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdI23-9xqXmPKR1ExMG4W4o8dx8sBZI14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,78 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+    
+
+        
+      
+        {
+            "name": "captured_android_adb",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "deviceId": 
+            // "192.168.164.204:1031",
+            // "192.168.1.141:1031"
+            "192.168.43.1:1031"
+
+        },
+        {
+            "name": "captured_android_physical",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "deviceId": "2b13b1a5e91c7ece"
+
+        },
+        
+        {
+            "name": "ios_device_simulator",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "deviceId": 
+            // "4D5E0151-F38C-4599-BDE8-859CDA24FB63" 
+            "04F779EC-DE4D-4E80-A242-419FEB72EDB0",
+
+        },
+
+        {
+            "name": "ios_IPAD",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "deviceId": 
+            "A0EB2855-799A-4DFF-846E-5313FA724042",
+
+
+        },
+        {
+            "name": "android_device_simulator",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "deviceId": "emulator-5554"
+        },
+
+        {
+            "name": "ios_physical_device",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "deviceId": "00008020-001A2D183A42002E"
+        },
+        
+       
+    ],
+    "compounds": [
+        {
+            "name": "All Devices",
+            "configurations": [
+                "ios_device_simulator",
+                "captured_android_physical",
+                "ios_physical_device",
+                // "android_device_simulator",
+            ],
+        }
+    ]
+  }
