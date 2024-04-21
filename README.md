@@ -1,7 +1,7 @@
 <div align="center">
    <img src="./assets/images/logo_large.png" width="200" height="200" color="0xFF2676FC"/>
 
-## Connect Me: QR code Digital ID
+## TAGO
 
 <strong> Introducing "Tago", an app that brings convenience and ease to your shopping experience, you can browse and purchase a wide variety of products from the comfort of your home, and have them delivered straight to your doorstep.
 
